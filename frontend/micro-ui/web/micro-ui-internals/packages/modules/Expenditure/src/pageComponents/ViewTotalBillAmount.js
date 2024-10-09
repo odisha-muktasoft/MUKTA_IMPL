@@ -13,8 +13,8 @@ const TotalBillAmountView = ({ detail, ...props }) => {
         </CardSectionHeader>
         <CardSectionHeader style={{ marginBottom: "0px",width:"fit-content" }}>{`₹ ${detail?.value}`}</CardSectionHeader> */}
 
-        <TextBlock subHeader={detail?.key ? t(detail.key) : t("RT_TOTAL")} subHeaderClasName={"table_total_amount"}></TextBlock>
-        <TextBlock subHeader={`₹ ${detail?.value}`} subHeaderClasName={`table_total_amount_value`}></TextBlock>
+        <TextBlock subHeader={detail?.key ? t(detail.key) : t("RT_TOTAL")} subHeaderClassName={"table_total_amount"}></TextBlock>
+        <TextBlock subHeader={`₹ ${detail?.value}`} subHeaderClassName={`table_total_amount_value`}></TextBlock>
       </div>
     </div>
   );

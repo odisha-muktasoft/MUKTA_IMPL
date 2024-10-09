@@ -1,10 +1,11 @@
-import { Card, Header, Button, Loader, TextInput, DeleteIcon } from "@egovernments/digit-ui-react-components";
+import { Card, Header, Loader, DeleteIcon } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 import { has4DecimalPlaces } from "../utils/transformData";
 import { Toast } from "@egovernments/digit-ui-components";
 import { calculateTotalAmount } from "../utils/transformData";
+import {Button, TextInput } from "@egovernments/digit-ui-components";
 
 const SORDetailsTemplate = (props) => {
   //new component only
@@ -212,7 +213,7 @@ const SORDetailsTemplate = (props) => {
       }
     }
     >
-      <div style={{ display: "flex", width: "70.25%", justifyContent: "space-between", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", width: "73%", justifyContent: "space-between", flexWrap: "wrap" ,marginBottom:"24px"}}>
         <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"? {}:{}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         {pageType !== "VIEW" && (
           <div className="search-sor-button">
@@ -222,7 +223,7 @@ const SORDetailsTemplate = (props) => {
               setSelectedSOR={setSelectedSOR}
               placeholder={t("RA_SEARCH_BAR_PLACEHOLDER")}
             />
-            <Button label={t("RA_ADD_SOR")} onButtonClick={buttonClick} style={{ padding: "revert" }} className={"add-sor-button"} />
+            <Button label={t("RA_ADD_SOR")} onClick={buttonClick} style={{ padding: "revert" ,marginTop:'24px'}} className={"add-sor-button"} />
           </div>
         )}
       </div>
@@ -285,7 +286,7 @@ const SORDetailsTemplate = (props) => {
                       <div style={cellContainerStyle}>
                         {
                           <span onClick={() => remove(row)} className="icon-wrapper">
-                            <DeleteIcon fill={"#FF9100"} />
+                            <DeleteIcon fill={"#C84C0E"} />
                           </span>
                         }
                       </div>

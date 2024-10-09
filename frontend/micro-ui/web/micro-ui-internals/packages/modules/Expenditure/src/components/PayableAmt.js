@@ -11,8 +11,8 @@ const PayableAmt = ({ detail }) => {
         {/* <CardSectionHeader style={{ fontSize: "18px", marginRight: "1rem", marginBottom: "0px", color: "#505A5F",width:"fit-content" }}>{t("EXP_NET_PAYABLE")}</CardSectionHeader>
             <CardSectionHeader style={{ marginBottom: "0px" ,width:"fit-content"}}>{`₹ ${detail?.value}`}</CardSectionHeader> */}
 
-        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClasName={`table_total_amount`}></TextBlock>
-        <TextBlock subHeader={`₹ ${detail?.value}`} subHeaderClasName={`table_total_amount_value`}></TextBlock>
+        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClassName={`table_total_amount`}></TextBlock>
+        <TextBlock subHeader={`₹ ${detail?.value}`} subHeaderClassName={`table_total_amount_value`}></TextBlock>
       </div>
     </div>
   );

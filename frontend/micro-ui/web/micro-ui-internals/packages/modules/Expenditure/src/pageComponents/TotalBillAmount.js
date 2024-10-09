@@ -33,10 +33,10 @@ const TotalBillAmount = ({ formData, setValue, ...props }) => {
         {/* <CardSectionHeader
           style={{ marginBottom: "0px", fontFamily: "Roboto", fontSize: "28px", fontWeight: 700, lineHeight: "32.81px", textAlign: "left" }}
         >{`₹ ${Digit.Utils.dss.formatterWithoutRound(getTotalAmount, "number")}`}</CardSectionHeader> */}
-        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClasName={"table_total_amount"}></TextBlock>
+        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClassName={"table_total_amount"}></TextBlock>
         <TextBlock
           subHeader={`₹ ${Digit.Utils.dss.formatterWithoutRound(getTotalAmount, "number")}`}
-          subHeaderClasName={`table_total_amount_value`}
+          subHeaderClassName={`table_total_amount_value`}
         ></TextBlock>
       </div>
     </div>

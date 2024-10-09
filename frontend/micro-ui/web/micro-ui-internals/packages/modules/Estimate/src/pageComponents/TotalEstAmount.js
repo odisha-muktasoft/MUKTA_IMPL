@@ -42,11 +42,11 @@ const TotalEstAmount = ({ formData, setValue, t, ...props }) => {
 
         <TextBlock
           subHeader={window.location.href.includes("/estimate/") ? t("TOTAL_CREATE_EST_AMOUNT") : t("TOTAL_EST_AMOUNT")}
-          subHeaderClasName={`table_total_amount ${"estimate_amount"}`}
+          subHeaderClassName={`table_total_amount ${"estimate_amount"}`}
         ></TextBlock>
         <TextBlock
           subHeader={`₹ ${Digit.Utils.dss.formatterWithoutRound(Math.round(getTotalAmount), "number")}.00`}
-          subHeaderClasName={`table_total_amount_value ${"estimate_amount"}`}
+          subHeaderClassName={`table_total_amount_value ${"estimate_amount"}`}
         ></TextBlock>
       </div>
     </div>

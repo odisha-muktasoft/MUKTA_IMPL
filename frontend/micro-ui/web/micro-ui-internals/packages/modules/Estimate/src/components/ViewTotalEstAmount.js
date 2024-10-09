@@ -17,7 +17,7 @@ const ViewTotalEstAmount = ({ detail, ...props }) => {
 
         <TextBlock
           subHeader={detail?.showTitle ? t(detail?.showTitle) : t("TOTAL_EST_AMOUNT")}
-          subHeaderClasName={`table_total_amount ${"estimate_amount"}`}
+          subHeaderClassName={`table_total_amount ${"estimate_amount"}`}
         ></TextBlock>
         <TextBlock
           subHeader={
@@ -32,7 +32,7 @@ const ViewTotalEstAmount = ({ detail, ...props }) => {
                   2
                 )}`
           }
-          subHeaderClasName={`table_total_amount_value ${"estimate_amount"}`}
+          subHeaderClassName={`table_total_amount_value ${"estimate_amount"}`}
         ></TextBlock>
       </div>
     </div>

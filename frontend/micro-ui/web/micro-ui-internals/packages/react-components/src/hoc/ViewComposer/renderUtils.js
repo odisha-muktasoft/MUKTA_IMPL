@@ -15,10 +15,10 @@ export const RenderDataSection = ({ section }) => {
   return (
     <>
       {/* {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSubHeader>} */}
-      {section.cardHeader && <TextBlock style={section?.cardHeader?.inlineStyles} headerClasName={`view-composer-header ${section?.cardHeader?.cardHeaderClassName}`} subHeader={t(section.cardHeader.value)}></TextBlock>}
+      {section.cardHeader && <TextBlock style={section?.cardHeader?.inlineStyles} headerClassName={`view-composer-header ${section?.cardHeader?.cardHeaderClassName}`} subHeader={t(section.cardHeader.value)}></TextBlock>}
       <StatusTable style={section?.inlineStyles}>
         {/* {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>} */}
-        {section.sectionHeader && <TextBlock style={section?.sectionHeader?.inlineStyles} subHeaderClasName={`view-composer-subheader ${section?.sectionHeader?.sectionheaderClassName}`} subHeader={t(section.sectionHeader.value)}></TextBlock>}
+        {section.sectionHeader && <TextBlock style={section?.sectionHeader?.inlineStyles} subHeaderClassName={`view-composer-subheader ${section?.sectionHeader?.sectionheaderClassName}`} subHeader={t(section.sectionHeader.value)}></TextBlock>}
         {section?.values?.filter((ob) => ob !== null && Object?.keys(ob)?.length > 0).map((row, rowIdx) => {
           const displayValue = row?.value !== undefined && row?.value !== null ? row.value : 'NA';
           
@@ -88,7 +88,7 @@ export const RenderDocumentsSection = ({ section }) => {
         <React.Fragment key={index}>
           {document?.title ? 
           // <CardSectionHeader style={section?.headerStyle}>{t(document?.title)}</CardSectionHeader> 
-          <TextBlock style={{...section?.headerStyle}} subHeaderClasName={`view-composer-subheader ${section?.headerClassName}`} subHeader={t(document?.title)}></TextBlock>
+          <TextBlock style={{...section?.headerStyle}} subHeaderClassName={`view-composer-subheader ${section?.headerClassName}`} subHeader={t(document?.title)}></TextBlock>
           : null}
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
             {document?.values && document?.values.length > 0
@@ -170,7 +170,7 @@ export const RenderPhotos = ({section}) => {
     <>
     {section?.cardHeader && section?.cardHeader?.value && (
       // <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
-      <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClasName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section?.cardHeader?.value)}></TextBlock>
+      <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClassName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section?.cardHeader?.value)}></TextBlock>
     )}
     <Photos data = {section?.photo} OpenImage={OpenImage} fullImage={section?.fullImage} />
     </>

@@ -98,7 +98,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     // <Card className="override-card">
     <>
       {/* <Header className="works-header-view">{t("MB_HISTORY")}</Header> */}
-      <TextBlock subHeader={t("MB_HISTORY")} subHeaderClasName={"mb-history-header"}></TextBlock>
+      <TextBlock subHeader={t("MB_HISTORY")} subHeaderClassName={"mb-history-header"}></TextBlock>
       {!isTableCollapsed && (
         <CustomCollapsibleTable isTableCollapsed={isTableCollapsed}>
           <table className="table reports-table sub-work-table mb-history-table">

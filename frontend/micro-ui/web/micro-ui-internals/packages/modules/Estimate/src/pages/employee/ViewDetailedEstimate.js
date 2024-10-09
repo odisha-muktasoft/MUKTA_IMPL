@@ -128,7 +128,7 @@ const ViewDetailedEstimate = () => {
   const handleActionBar = (option) => {
     if(validationData && Object.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.name))
     {
-      setToast({typa: validationData?.error ? "error" : "", label: validationData?.label, show:true})
+      setToast({type: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
     if (option?.name === "CREATE_CONTRACT") {

@@ -30,7 +30,7 @@ const ViewOnlyCard = (props) => {
           2
         )}`}</CardSectionHeader> */}
 
-        <TextBlock subHeader={t("MB_AMOUNT_TOTAL")} subHeaderClasName={"table_total_amount"}></TextBlock>
+        <TextBlock subHeader={t("MB_AMOUNT_TOTAL")} subHeaderClassName={"table_total_amount"}></TextBlock>
         <TextBlock
           subHeader={`₹ ${Digit.Utils.dss.formatterWithoutRound(
             Math.round(parseFloat(totalAmount)).toFixed(2),
@@ -40,7 +40,7 @@ const ViewOnlyCard = (props) => {
             undefined,
             2
           )}`}
-          subHeaderClasName={`table_total_amount_value`}
+          subHeaderClassName={`table_total_amount_value`}
         ></TextBlock>
       </div>
     </div>

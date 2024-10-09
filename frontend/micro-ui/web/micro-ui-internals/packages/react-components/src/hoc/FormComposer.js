@@ -609,10 +609,10 @@ export const FormComposer = (props) => {
         //   </CardSectionHeader>
         // </>
         <>
-          <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId}`}></TextBlock>
+          <TextBlock subHeader={t(section?.head)} subHeaderClassName={`${props?.sectionHeaderClassName} ${section?.headId}`}></TextBlock>
           <TextBlock
             subHeader={t(section?.subHead)}
-            subHeaderClasName={`${props?.sectionSubHeaderClassName} ${`${section?.headId}_DES`}`}
+            subHeaderClassName={`${props?.sectionSubHeaderClassName} ${`${section?.headId}_DES`}`}
           ></TextBlock>
         </>
       );
@@ -624,7 +624,7 @@ export const FormComposer = (props) => {
         //   </CardSectionHeader>
         // </>
 
-        <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId} create-header`}></TextBlock>
+        <TextBlock subHeader={t(section?.head)} subHeaderClassName={`${props?.sectionHeaderClassName} ${section?.headId} create-header`}></TextBlock>
       );
     } else {
       return null;

@@ -155,7 +155,7 @@ const WorkflowTimeline = ({
                                 {t("WORKS_WORKFLOW_TIMELINE")}
                             </CardSectionHeader> */}
               <TextBlock
-                subHeaderClasName={`view-composer-subheader ${workflowDetails?.data?.timeline?.headerclassName}`}
+                subHeaderClassName={`view-composer-subheader ${workflowDetails?.data?.timeline?.headerclassName}`}
                 subHeader={t("WORKS_WORKFLOW_TIMELINE")}
               ></TextBlock>
               {/* {workflowDetails?.data?.timeline && 
