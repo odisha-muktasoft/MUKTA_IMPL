@@ -50,6 +50,7 @@ class MeasurementController {
       period,
       measurementWorkflowStatus,
       enableMeasurementAfterContractEndDate,
+      measurementBookStartDate
     } = periodResponse || {};
 
     if (
@@ -76,10 +77,7 @@ class MeasurementController {
           if (newStartDate < contractResponse?.endDate) {
             return {
               startDate: newStartDate,
-              endDate:
-                newEndDate < contractResponse?.endDate
-                  ? newEndDate
-                  : contractResponse?.endDate,
+              endDate: newEndDate
             };
           }
           if (enableMeasurementAfterContractEndDate) {
@@ -112,15 +110,21 @@ class MeasurementController {
       } else if (measurementResponse?.length == 0 || measurementResponse?.code === "NO_MEASUREMENT_ROLL_FOUND" || key === "View") {
         /* no measurements are present */
 
+        // Need to implement a check with the mdms configured date with the contractResponse?.startDate 
+        //if configured date is greater than contractResponse?.startDate then we will take 
+        //the period as a configured date period
+        //otherwise it will go in the flow as is.
         //Under piece of code is used to get the same week monday epoch according to the contract startdate
-        const givenEpochTime: number = contractResponse?.startDate;
-        const givenDateTime: Date = new Date(givenEpochTime);
-        const daysToMonday: number = (givenDateTime.getDay() + 7) % 7;
-        const mondayDateTime: Date = new Date(givenDateTime);
-        mondayDateTime.setDate(givenDateTime.getDate() - daysToMonday);
+        // const givenEpochTime: number = contractResponse?.startDate;
+        // const givenDateTime: Date = new Date(givenEpochTime);
+        // const daysToMonday: number = (givenDateTime.getDay() + 7) % 7;
+        // const mondayDateTime: Date = new Date(givenDateTime);
+        // mondayDateTime.setDate(givenDateTime.getDate() - daysToMonday);
+
+       const mbStartDate:Date= this.setStartDateForMeasurementBook(periodResponse,contractResponse,measurementBookStartDate)
 
         // Get the Monday epoch datetime in milliseconds
-        const mondayEpochTimeMillis: number = mondayDateTime.getTime();
+        const mondayEpochTimeMillis: number = mbStartDate.getTime();
 
         const newEndDate = this.getEndDate(
           mondayEpochTimeMillis,   
@@ -129,10 +133,7 @@ class MeasurementController {
 
         return {
           startDate: mondayEpochTimeMillis, 
-          endDate:
-            newEndDate < contractResponse?.endDate
-              ? newEndDate
-              : contractResponse?.endDate,
+          endDate: newEndDate 
         };
       }
     }
@@ -144,6 +145,21 @@ class MeasurementController {
       type: "error",
     };
   };
+
+  setStartDateForMeasurementBook= (periodResponse:any,contractResponse: any,measurementBookStartDate:number) =>{
+    let givenEpochTime: number;
+    if(measurementBookStartDate<contractResponse?.startDate){
+      givenEpochTime = contractResponse?.startDate;
+    }else{
+      givenEpochTime=measurementBookStartDate;
+    }
+    const givenDateTime: Date = new Date(givenEpochTime);
+    const daysToMonday: number = (givenDateTime.getDay() + 7) % 7;
+    const mondayDateTime: Date = new Date(givenDateTime);
+    mondayDateTime.setDate(givenDateTime.getDate() - daysToMonday);
+    return mondayDateTime;
+
+  }
 
   // Helper function to get contract and configuration data
   getContractandConfigs = async (
@@ -253,8 +269,8 @@ class MeasurementController {
       );
     }
 
-    if(key === "View")
-    {
+    //if(key === "View")
+    //{
       nextPromises.push(
         search_muster(
           {
@@ -265,10 +281,10 @@ class MeasurementController {
           key
         )
       );
-    }
+    //}
 
     let [estimate, muster, musterRolls] = await Promise.all(nextPromises);
-
+    if(!(key === "View")) muster = muster?.[0]; 
     return { estimate, muster, musterRolls };
   };
 
