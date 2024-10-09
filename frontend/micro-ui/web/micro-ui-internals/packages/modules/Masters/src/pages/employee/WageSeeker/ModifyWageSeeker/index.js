@@ -42,7 +42,7 @@ const ModifyWageSeeker = () => {
 
     //Call Search Wage Seeker
     const payload = {
-        Individual: { individualId }
+        Individual: { individualId : [individualId] }
     }
     const searchParams = { offset: 0, limit: 100 }
     const {isLoading: wageSeekerDataFetching, data: wageSeekerData, isError, isSuccess, error} = Digit.Hooks.wageSeeker.useWageSeekerDetails({tenantId, data: payload, searchParams, config:{
