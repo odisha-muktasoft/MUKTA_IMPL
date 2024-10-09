@@ -287,6 +287,12 @@ config:
       - work-dir: "utilities/mukta-services"
         dockerfile: "utilities/mukta-services/Dockerfile"
         image-name: "mukta-mukta-services" 
+        
+  - name: "builds/mukta_impl/mukta/mukta-mukta-services"
+    build:
+      - work-dir: "utilities/mukta-services"
+        dockerfile: "utilities/mukta-services/Dockerfile"
+        image-name: "mukta-mukta-services"       
 
   - name: "builds/mukta_impl/mukta/mukta-works-pdf"
     build:
