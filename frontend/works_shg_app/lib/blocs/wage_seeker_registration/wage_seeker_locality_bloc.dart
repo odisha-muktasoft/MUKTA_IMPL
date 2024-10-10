@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/mdms/location_mdms.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../data/remote_client.dart';
 import '../../data/repositories/common_repository/common_repository.dart';
@@ -20,21 +21,24 @@ class WageSeekerLocalityBloc
   }
 
   FutureOr<void> _onWageSeekerLocality(
-      LocalityEventWageSeeker event,
-      WageSeekerLocalityEmitter emit,
-      ) async {
+    LocalityEventWageSeeker event,
+    WageSeekerLocalityEmitter emit,
+  ) async {
     Client client = Client();
     try {
       emit(const WageSeekerLocalityState.loading());
 
       Location result = await CommonRepository(client.init()).getCities(
-        url: Urls.commonServices.fetchCities,
-        queryParameters: {
-          "hierarchyTypeCode": "ADMIN",
-          "boundaryType": "locality",
-          "tenantId": event.tenantId.toString()
-        },
-      );
+          url: Urls.commonServices.fetchCities,
+          queryParameters: {
+            "hierarchyType": "ADMIN",
+            "boundaryType": "Locality",
+            "tenantId": event.tenantId.toString()
+          },
+          options: Options(extra: {
+            "accessToken": GlobalVariables.authToken,
+            "userInfo": GlobalVariables.userRequestModel,
+          }));
 
       if (result != null) {
         emit(WageSeekerLocalityState.loaded(result));

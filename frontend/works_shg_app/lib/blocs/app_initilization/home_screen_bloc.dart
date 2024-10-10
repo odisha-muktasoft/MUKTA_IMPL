@@ -73,14 +73,8 @@ class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
         actionMaster: 'actions-test',
         enabled: true,
         roleCodes: GlobalVariables.roles,
-        tenantId: "od",
+        tenantId: GlobalVariables.tenantId ?? "od",
       );
-
-     
-      // List<CBOHomeScreenConfigModel>? cboHomeScreenConfig =
-      //     configModel.commonUiConfig?.cboHomeScreenConfig;
-      // cboHomeScreenConfig = cboHomeScreenConfig?.toList()
-      //   ?..sort((a, b) => a.order!.compareTo(b.order!.toInt()));
 
       emit(HomeScreenBlocState.loaded(null, configModel));
     } on DioException catch (e) {

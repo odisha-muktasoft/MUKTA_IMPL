@@ -77,15 +77,18 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 loaded: (ContractsModel? contractsModel) {
                   return (contractsModel?.contracts ?? []).isEmpty
-                      ? const SizedBox(
-                          height: 30,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: PoweredByDigit(
-                              version: Constants.appVersion,
+                      ? Padding(
+                        padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                        child: const SizedBox(
+                            height: 45,
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: PoweredByDigit(
+                                version: Constants.appVersion,
+                              ),
                             ),
                           ),
-                        )
+                      )
                       : const SizedBox.shrink();
                 });
           });

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../data/remote_client.dart';
 import '../../data/repositories/common_repository/common_repository.dart';
@@ -28,13 +29,16 @@ class WageSeekerLocationBloc
       emit(const WageSeekerLocationState.loading());
 
       Location result = await CommonRepository(client.init()).getCities(
-        url: Urls.commonServices.fetchCities,
-        queryParameters: {
-          "hierarchyTypeCode": "ADMIN",
-          "boundaryType": "Ward",
-          "tenantId": event.tenantId.toString()
-        },
-      );
+          url: Urls.commonServices.fetchCities,
+          queryParameters: {
+            "hierarchyType": "ADMIN",
+            "boundaryType": "Ward",
+            "tenantId": event.tenantId.toString()
+          },
+          options: Options(extra: {
+            "accessToken": GlobalVariables.authToken,
+            "userInfo": GlobalVariables.userRequestModel,
+          }));
 
       if (result != null) {
         emit(WageSeekerLocationState.loaded(result));

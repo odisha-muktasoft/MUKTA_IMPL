@@ -21,7 +21,8 @@ class CommonServices {
       'egov-workflow-v2/egov-wf/businessservice/_search';
   String get fileUpload => 'filestore/v1/files';
   String get fileFetch => 'filestore/v1/files/url';
-  String get fetchCities => 'egov-location/location/v11/boundarys/_search';
+  String get fetchCitiesold => 'egov-location/location/v11/boundarys/_search';
+  String get fetchCities => 'boundary-service/boundary-relationships/_search';
   String get bankDetails => 'https://ifsc.razorpay.com';
   String get pdfDownload => 'egov-pdf/download';
 }
@@ -42,8 +43,9 @@ class BillServices {
 class WageSeekerServices {
   const WageSeekerServices();
 // unified-qa
-  // String get individualCreate => 'mukta-individual/v1/_create';
-  String get individualCreate => 'individual/v1/_create';
+   String get individualCreate => 'mukta-individual/v1/_create';
+ // uat-prod
+  //String get individualCreate => 'individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
 
   String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
@@ -71,15 +73,25 @@ class UserServices {
 
 class WorkServices {
   const WorkServices();
-  String get myWorks => 'contract/v1/_search';
-  String get updateWorkOrder => 'contract/v1/_update';
-  String get createWorkOrder => 'contract/v1/_create';
+  //uat-prod
+  // String get myWorks => 'contract/v1/_search';
+  // String get updateWorkOrder => 'contract/v1/_update';
+  // String get createWorkOrder => 'contract/v1/_create';
+
+
+  // unified-qa
+   String get myWorks => 'mukta-contract/v1/_search';
+  String get updateWorkOrder => 'mukta-contract/v1/_update';
+  String get createWorkOrder => 'mukta-contract/v1/_create';
 }
 
 class EmpHrms {
   const EmpHrms();
-  String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+  // uat-prod
+ // String get leadHrmsEmployee => 'egov-hrms/employees/_search';
   
+  // unified-qa
+  String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
 }
 
 class MusterRollServices {
@@ -92,6 +104,18 @@ class MusterRollServices {
 
 class AttendanceRegisterServices {
   const AttendanceRegisterServices();
+
+  // uat-prod
+  // String get createAttendanceRegister => 'attendance/v1/_create';
+  // String get searchAttendanceRegister => 'attendance/v1/_search';
+  // String get createAttendee => 'attendance/attendee/v1/_create';
+  // String get createAttendanceLog => 'attendance/log/v1/_create';
+  // String get updateAttendanceLog => 'attendance/log/v1/_update';
+  // String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
+  // String get individualSearch => 'individual/v1/_search';
+  // String get wmsIndividualSearch => 'wms/individual/_search';
+
+  // // unified-qa
   String get createAttendanceRegister => 'attendance/v1/_create';
   String get searchAttendanceRegister => 'attendance/v1/_search';
   String get createAttendee => 'attendance/attendee/v1/_create';
@@ -108,8 +132,15 @@ class AttendanceRegisterServices {
 class MeasurementService{
    const MeasurementService();
 
+// UAT-prod
+  //  String get measurementInbox=>'inbox/v2/_search';
+  //  String get measurementDetail=>"mukta-services/measurement/_search";
+  //  String get updateMeasurement => "measurement-service/v1/_update";
+  //  String get createMeasurement=>"measurement-service/v1/_create";
+
+   // unified-qa
    String get measurementInbox=>'inbox/v2/_search';
-   String get measurementDetail=>"mukta-services/measurement/_search";
+   String get measurementDetail=>"mukta-mukta-services/measurement/_search";
    String get updateMeasurement => "measurement-service/v1/_update";
    String get createMeasurement=>"measurement-service/v1/_create";
 }
@@ -120,6 +151,9 @@ class MeasurementService{
 class EstimateService{
    const EstimateService();
 
-   String get estimateSearch=>'estimate/v1/_search';
-   
+// uat-prod
+  //  String get estimateSearch=>'estimate/v1/_search';
+
+   // unified-qa
+   String get estimateSearch=>'mukta-estimate/v1/_search';
 }
