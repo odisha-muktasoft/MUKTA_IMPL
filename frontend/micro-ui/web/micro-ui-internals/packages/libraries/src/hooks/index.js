@@ -166,12 +166,15 @@ import useViewPaymentInstruction from "./payments/useViewPaymentInstruction";
 import useViewPayment from "./payments/useViewPayment";
 import useUpdatePI from "./expenditure/useUpdatePI";
 import useMBDataForPB from "./expenditure/useMBDataForPB";
+import useViewPaymentTracker from "./expenditure/useViewPaymentTracker";
+import useGenerateExcel from "./expenditure/useGenerateExcel";
 
 import useViewMeasurement from "./measurement/useViewMeasurement";
 import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
 import useTEorMBCreateValidation from "./mukta/useTEorMBCreateValidation";
 import fetchContractDetails from"./rateAnalysis/useviewcontractdetails";
 import useViewRateAnalysisDetails from "./rateAnalysis/useviewcontractdetails";
+import { paymentTrackerReport } from "./paymentTrackerReport";
 
 const works = {
   useViewEstimateDetails,
@@ -330,7 +333,8 @@ const paymentInstruction = {
   useViewPaymentInstruction,
   useUpdatePI,
   useMBDataForPB,
-  useViewPayment
+  useViewPayment,
+  useViewPaymentTracker
 }
 
 const measurement = {
@@ -353,6 +357,7 @@ const Hooks = {
   useFetchCitizenBillsForBuissnessService,
   useFetchBillsForBuissnessService,
   useGetPaymentRulesForBusinessServices,
+  useGenerateExcel,
   useWorkflowDetails,
   useWorkflowDetailsWorks,
   useInitStore,
@@ -374,6 +379,7 @@ const Hooks = {
   useNotificationCount,
   useStore,
   useDocumentSearch,
+  paymentTrackerReport,
   useTenants,
   useAccessControl,
   usePrivacyContext,

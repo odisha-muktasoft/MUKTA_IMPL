@@ -95,16 +95,16 @@ const Urls = {
     createPayment: "/mukta-expense/payment/v1/_create",
     ifms_funds_search : "/ifms-adapter/funds/v1/_search"
   },
-expense:{
-  createPayment: "/mukta-expense/payment/v1/_create",
-  searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
-  updatePayment: "/mukta-expense/payment/v1/_update",
-  regenerate : '/egov-pdf/bill/_generate',
-  searchPaymentWMS:"/wms/mukta-pi/_search",
-  updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
-  searchPA:"/mukta-expense/payment/v1/_search"
-
-},
+  expense:{
+    createPayment: "/mukta-expense/payment/v1/_create",
+    searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
+    updatePayment: "/mukta-expense/payment/v1/_update",
+    regenerate : '/egov-pdf/bill/_generate',
+    searchPaymentWMS:"/wms/mukta-pi/_search",
+    updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
+    searchPA:"/mukta-expense/payment/v1/_search",
+    generateExcel: "/wms/report/payment-tracker/_create"
+  },
   pt: {
     fectch_property: "/property-services/property/_search",
     fetch_payment_details: "/billing-service/bill/v2/_fetchbill",

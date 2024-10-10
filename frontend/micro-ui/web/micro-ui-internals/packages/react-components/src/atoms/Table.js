@@ -59,7 +59,8 @@ const Table = ({
   isReportTable = false,
   showCheckBox = false,
   actionLabel = 'CS_COMMON_DOWNLOAD',
-  tableSelectionHandler = () => {}
+  tableSelectionHandler = () => {},
+  stickyFooter
 }) => {
   const {
     getTableProps,
@@ -210,6 +211,16 @@ const Table = ({
                 </tr>
               );
             })}
+
+            {stickyFooter && (
+              <tr>
+                {stickyFooter?.map(el => (
+                  <td style={{ ...getCellProps().style, ...el?.style}}>
+                    <span>{el?.value}</span>
+                  </td>
+                ))}
+              </tr>
+            )}
           </tbody>
         </table>
       </span>
