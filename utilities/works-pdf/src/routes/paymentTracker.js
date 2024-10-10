@@ -116,9 +116,9 @@ router.post(
                 if(projects.estimatedAmount != null){
                     estimatedAmount = projects.estimatedAmount;
                 }
-                if(projects.total != null){
-                    total = projects.total;
-                }
+                // if(projects.total != null){
+                //     total = projects.total;
+                // }
 
                 if(projects.paymentDetails && projects.paymentDetails.length > 0){
                     for (var i = 0; i < projects.paymentDetails.length; i++) {
@@ -162,14 +162,24 @@ router.post(
                         if(bills[i].businessObject.beneficiaryDetails && bills[i].businessObject.beneficiaryDetails.length > 0){
                             for(var j = 0; j < bills[i].businessObject.beneficiaryDetails.length; j++){
                                 if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Successful"){
-                                    bills[i].businessObject["successAmount"] += bills[i].businessObject.netAmount;
+                                    bills[i].businessObject["successAmount"] += bills[i].businessObject.beneficiaryDetails[j].amount;
                                 }
                                 if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Failed"){
-                                    bills[i].businessObject["failedAmount"] += bills[i].businessObject.netAmount;
+                                    bills[i].businessObject["failedAmount"] += bills[i].businessObject.beneficiaryDetails[j].amount;
                                 }
                             }
                         }
+                    }else if(bills[i].businessObject.piStatus == "COMPLETED"){
+                        for(var j = 0; j < bills[i].businessObject.beneficiaryDetails.length; j++){
+                            if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Successful"){
+                                bills[i].businessObject["successAmount"] += bills[i].businessObject.beneficiaryDetails[j].amount;
+                            }
+                            if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Failed"){
+                                bills[i].businessObject["failedAmount"] += bills[i].businessObject.beneficiaryDetails[j].amount;
+                            }
+                        }
                     }
+                    total += bills[i].businessObject.successAmount;
                 }
             }
 
