@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer } from '@egovernments/digit-ui-components';
+import { FormComposer } from '@egovernments/digit-ui-react-components';
 import { getWageSeekerUpdatePayload, getBankAccountUpdatePayload, getWageSeekerSkillDeletePayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
-import { Toast } from '@egovernments/digit-ui-components';
+import { Loader, Toast } from '@egovernments/digit-ui-components';
 
 const navConfig =  [{
     name:"Wage_Seeker_Details",
@@ -88,14 +88,14 @@ const requestCriteria = {
               const wards = []
               const localities = {}
               data?.TenantBoundary[0]?.boundary.forEach((item) => {
-                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
-                  wards.push({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
+                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
+                  wards.push({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
               });
              return {
                   wards, localities
              }
           }
-      });
+      },true);
     const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
 
     //wage seeker form config
@@ -364,6 +364,8 @@ const requestCriteria = {
         // Call the debounced version of onModalSubmit
         debouncedOnModalSubmit(_data);
       };
+
+      if(isLoading) return <Loader/>
 
     return (
         <React.Fragment>

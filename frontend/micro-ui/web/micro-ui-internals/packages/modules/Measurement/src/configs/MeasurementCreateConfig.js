@@ -152,6 +152,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             subHead: "",
             //forOnlyUpdate : "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -169,6 +170,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "MB_SORS",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -183,6 +185,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "MB_NONSOR",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -197,19 +200,29 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "",
             subHead: "",
+            sectionClassName:"viewstatement-viewamount-wrapper-create",
             body: [
               {
                 type: "component",
                 component: "ViewOnlyCard",
                 withoutLabel: true,
                 key: "viewAmount",
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                }
               },
               {
                 "type": "component",
                 "component": "ViewAnalysisStatement",
                 "withoutLabel": true,
                 "key": "labourMaterialAnalysis",
-                
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                },
                 "formData" : {
              Measurement:measurement,
              }

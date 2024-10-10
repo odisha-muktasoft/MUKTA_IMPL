@@ -135,25 +135,30 @@ const CreateMeasurement = ({ props }) => {
   // action to be performed....
   let actionMB = [
     {
-      name: "WF_SUBMIT",
+      name: "SUBMIT",
+      displayName:"WF_SUBMIT"
     },
     {
-      name: "WF_SAVE_AS_DRAFT",
+      name:"SAVE_AS_DRAFT",
+      displayName: "WF_SAVE_AS_DRAFT"
     },
   ];
 
-  function onActionSelect(action = "WF_SUBMIT") {
+  function onActionSelect(action =     {
+    name: "SUBMIT",
+    displayName:"WF_SUBMIT"
+  }) {
     if (createState?.period?.type == "error") {
       setErrorMessage(t(createState?.period?.message));
       setShowToast({display:true, type:"error"});
       return null;
     }
-    if (action?.name === "WF_SUBMIT") {
+    if (action?.name === "SUBMIT") {
       createState.workflowAction = "SUBMIT";
       setShowModal(true);
       //handleCreateMeasurement(createState, action);
     }
-    if (action?.name === "WF_SAVE_AS_DRAFT") {
+    if (action?.name === "SAVE_AS_DRAFT") {
       createState.workflowAction = "SAVE_AS_DRAFT";
       handleCreateMeasurement(createState, action);
     }
@@ -183,7 +188,7 @@ const CreateMeasurement = ({ props }) => {
       if(action?.name === "SAVE_AS_DRAFT")
       {
         setErrorMessage(t("MB_APPLICATION_IS_SUCCESSFULLY_DRAFTED"));
-        setShowToast({display:true, type:""});
+        setShowToast({display:true});
         setTimeout(() => {history.push(`/${window.contextPath}/employee/measurement/update?tenantId=${resp.measurements[0].tenantId}&workOrderNumber=${contractNumber}&mbNumber=${resp.measurements[0].measurementNumber}`)}, 3000);;
       }
       else
@@ -205,7 +210,7 @@ const CreateMeasurement = ({ props }) => {
   };
 
   const closeToast = () => {
-    setShowToast({display:false, type:""});;
+    setShowToast({display:false});
   };
   //remove Toast after 3s
   useEffect(() => {
@@ -265,6 +270,7 @@ const CreateMeasurement = ({ props }) => {
         showMultipleCardsWithoutNavs={true}
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
+        fieldPairNoMargin={true}
       />
       {showToast?.display && <Toast type={showToast?.type} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
       <ActionBar
@@ -275,7 +281,7 @@ const CreateMeasurement = ({ props }) => {
             options={actionMB}
             label={t("ACTIONS")}
             variation={"primary"}
-            optionsKey={"name"}
+            optionsKey={"displayName"}
             isSearchable={false}
             onOptionSelect={(option) => {
               onActionSelect(option);

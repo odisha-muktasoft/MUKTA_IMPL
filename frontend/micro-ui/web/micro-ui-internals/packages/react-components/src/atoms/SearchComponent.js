@@ -28,7 +28,6 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   const [showToast,setShowToast] = useState(null)
   let updatedFields = [];
   const {apiDetails} = fullConfig
-console.log(fullConfig?.type,"type")
   if (fullConfig?.postProcessResult){
     //conditions can be added while calling postprocess function to pass different params
     Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.postProcess(data, uiConfig) 

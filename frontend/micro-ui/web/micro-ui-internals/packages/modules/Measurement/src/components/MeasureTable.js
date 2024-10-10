@@ -44,14 +44,14 @@ let defaultSOR = {
       ]
   };
 
-  function hasDecimalPlaces(number, decimalPlaces) {
+  function checkIntAndDecimalLength(number, decimalPlaces) {
     if(number == "")
     {  
         return true;
     }
     var numStr = number.toString();
-    // Using regex to check if its accepting upto given decimal places
-    var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
+    // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+    var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
     return regex.test(numStr);
   }
 
@@ -246,6 +246,7 @@ const MeasureTable = (props) => {
         t("WORKS_SNO"),
         t("MB_IS_DEDUCTION"),
         t("MB_DESCRIPTION"),
+        t("MB_MEASURE_SUMMARY"),
         t("MB_ONLY_NUMBER"),
         t("MB_LENGTH"),
         t("MB_WIDTH"),
@@ -266,7 +267,7 @@ const MeasureTable = (props) => {
         }
 
         fields[index] = { ...field };
-        if(tableKey === "NONSOR" && key === "unitRate" && !(hasDecimalPlaces(field[key],2)))
+        if(tableKey === "NONSOR" && key === "unitRate" && !(checkIntAndDecimalLength(field[key],2)))
         {
           return;
         }
@@ -335,7 +336,8 @@ const MeasureTable = (props) => {
                                     fontSize: "medium",
                                     bottom : "100%",
                                     overflow : "auto",
-
+                                    left:"100%",
+                                    marginLeft:"0px"
                                 }}>
                                     {row.description}
                                 </span>}
@@ -510,7 +512,7 @@ const MeasureTable = (props) => {
             }
           </CardSectionHeader> */}
 
-          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClassName={"table_total_amount"}></TextBlock>
           <TextBlock
             subHeader={
               <Amount
@@ -522,7 +524,7 @@ const MeasureTable = (props) => {
                 sameDisplay={true}
               ></Amount>
             }
-            subHeaderClasName={`table_total_amount_value`}
+            subHeaderClassName={`table_total_amount_value`}
           ></TextBlock>
         </div>
       </div>

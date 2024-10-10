@@ -274,7 +274,7 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
                     render={(props) =>
                       getDropDownDataFromMDMS(t, row, "uom", props, register, "name", {
                         mdmsConfig: {
-                          masterName: "uom",
+                          masterName: "UOM",
                           moduleName: "common-masters",
                           localePrefix: "ES_COMMON_UOM",
                         },

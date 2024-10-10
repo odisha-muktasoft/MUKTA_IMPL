@@ -98,58 +98,65 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     // <Card className="override-card">
     <>
       {/* <Header className="works-header-view">{t("MB_HISTORY")}</Header> */}
-      <TextBlock subHeader={t("MB_HISTORY")} subHeaderClasName={"mb-history-header"}></TextBlock>
-      {
-        !isTableCollapsed &&        <CustomCollapsibleTable isTableCollapsed={isTableCollapsed}>
-        <table className="table reports-table sub-work-table mb-history-table">
-          <thead>
-            <tr>
-              {columns.map((column, index) => (
-                <th key={index}>{column.label}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows?.length > 0 ? sortedRows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {columns.map((column, columnIndex) => (
-                  <td key={columnIndex}>
-                    {row?.[column.key]?.link == true ? (
-                    <Link
-                        to={{
-                          pathname: row?.[column.key]?.pathname,
-
-                          search: row?.[column.key]?.search,
-                        }}
-                        style={{ color: "#f37f12" }}
-                      >
-                        {row?.[column.key]?.value}
-                      </Link>
-                    ) : (
-                      row[column.key]
-                    )}
-                  </td>
+      <TextBlock subHeader={t("MB_HISTORY")} subHeaderClassName={"mb-history-header"}></TextBlock>
+      {!isTableCollapsed && (
+        <CustomCollapsibleTable isTableCollapsed={isTableCollapsed}>
+          <table className="table reports-table sub-work-table mb-history-table">
+            <thead>
+              <tr>
+                {columns.map((column, index) => (
+                  <th key={index}>{column.label}</th>
                 ))}
               </tr>
-            )):
-            <td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center"}}>
-              {t("WORKS_NO_DATA_PRESENT_IN_MB")}
-            </td>}
-          </tbody>
-        </table>
-      </CustomCollapsibleTable>
-      }
-      <Button 
-      style={{padding:"0px"}}
-      variation={"teritiary"}
-      onClick={toggleTableCollapse}
-      icon={isTableCollapsed ? "ExpandMore" : "ExpandLess"}
-      isSuffix={true}
-      label={isTableCollapsed ? t('MB_SHOW_HISTORY') : t('MB_HIDE_HISTORY')}>
-      </Button>
-
+            </thead>
+            <tbody>
+              {sortedRows?.length > 0 ? (
+                sortedRows.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {columns.map((column, columnIndex) => (
+                      <td key={columnIndex}>
+                        {row?.[column.key]?.link == true ? (
+                          <Link
+                            to={{
+                              pathname: row?.[column.key]?.pathname,
+                              search: row?.[column.key]?.search,
+                            }}
+                            style={{ color: "#C84C0E" }}
+                          >
+                            <Button
+                              size={"medium"}
+                              style={{ padding: "0px" }}
+                              variation={"link"}
+                              onClick={toggleTableCollapse}
+                              label={row?.[column.key]?.value}
+                            ></Button>
+                          </Link>
+                        ) : (
+                          row[column.key]
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <td colSpan={7} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
+                  {t("WORKS_NO_DATA_PRESENT_IN_MB")}
+                </td>
+              )}
+            </tbody>
+          </table>
+        </CustomCollapsibleTable>
+      )}
+      <Button
+        style={{ padding: "0px" }}
+        variation={"teritiary"}
+        onClick={toggleTableCollapse}
+        icon={isTableCollapsed ? "ExpandMore" : "ExpandLess"}
+        isSuffix={true}
+        label={isTableCollapsed ? t("MB_SHOW_HISTORY") : t("MB_HIDE_HISTORY")}
+      ></Button>
     </>
-    
+
     // </Card>
   );
 };

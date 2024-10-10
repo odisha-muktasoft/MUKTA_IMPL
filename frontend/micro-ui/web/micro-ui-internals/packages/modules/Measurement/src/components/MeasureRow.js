@@ -3,13 +3,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
 
-function has4DecimalPlaces(number, decimalPlaces) {
+function checkIntAndDecimalLength(number, decimalPlaces) {
 
   if(number == "" || isNaN(number))
     return true;
   var numStr = number.toString();
-  // Using regex to check if its accepting upto 4 decimal places
-  var regex = new RegExp(`^\\d+(\\.\\d{0,${decimalPlaces}})?$`);
+  // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+  var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
   return regex.test(numStr);
 }
 
@@ -43,13 +43,13 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
   return(
   <td style={style ? style : {}}>
     <TextInput
-      value={fieldKey === "description" ? value : (value > 0 && value)}
+      value={fieldKey === "description" || fieldKey === "measureSummary" ? value : (value > 0 && value)}
       //value={value}
       style={mode === "CREATE" || mode === "VIEW" ? {marginBottom:"0px"}: {}}
-      type={fieldKey == "description" ? "text" : "number"}
+      type={fieldKey == "description" || fieldKey === "measureSummary" ? "text" : "number"}
       onChange={(newValue) => {
         //newValue.target.value = fieldKey == "description" ? newValue?.target?.value :  limitDecimalDigits(newValue.target.value);
-        if(fieldKey === "description" || ((newValue?.target?.value && parseFloat(newValue?.target?.value) >= 0) || newValue?.target?.value === "" || newValue?.target?.value === null)){
+        if(fieldKey === "description" || fieldKey === "measureSummary" || ((newValue?.target?.value && parseFloat(newValue?.target?.value) >= 0) || newValue?.target?.value === "" || newValue?.target?.value === null)){
         let updatedMeasureLineItems = []
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
@@ -59,7 +59,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
           //calling the input validation here to check if the input is under provided decimal places
-            if(has4DecimalPlaces(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
+            if(checkIntAndDecimalLength(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
             dispatch({
               type: "UPDATE_ROW",
               state: mode === "CREATE" ? { id: id, value: newValue.target.value, row: row, type: fieldKey, additionalDetails : {...row?.additionalDetails, measureLineItems : updatedMeasureLineItems }} : { id: id, value: newValue.target.value, row: row, type: fieldKey },
@@ -129,6 +129,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                         measureLineItems: [
                           ...value?.additionalDetails?.measureLineItems,
                           {
+                          measureSummary: null,
                           number : 0,
                           length: 0,
                           width: 0,
@@ -171,7 +172,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
           />
         </>
       )}
-
+      {(mode === "CREATE" || mode === "VIEW") && <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"measureSummary"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["measureSummary"] : rowState?.["measureSummary"]} mode={mode} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />}
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["number"] : rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["length"] : rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}}/>
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["width"] : rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
@@ -221,6 +222,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                         measureLineItems: [
                           ...value?.additionalDetails?.measureLineItems,
                           {
+                          measureSummary:null,
                           number : 0,
                           length: 0,
                           width: 0,
@@ -236,6 +238,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             )}
           </td>}
           {idx ===  (value?.additionalDetails?.measureLineItems?.length - 1) && mode === "VIEW" && <td style={{borderTop:"hidden"}}></td>}
+          {(mode === "CREATE" || mode === "VIEW") && <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"measureSummary"} id={index + 1} value={ob?.["measureSummary"]} mode={mode} measurelineitemNo={ob?.measurelineitemNo} />}
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={ob?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo} />
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={ob?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo}/>
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={ob?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo} />

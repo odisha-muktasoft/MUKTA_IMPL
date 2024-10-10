@@ -31,7 +31,6 @@ const WorkflowTimeline = ({
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint, index) => {
-    console.log("ffff", checkpoint, index);
     let captionDetails = {
       name: "",
       date: "",
@@ -69,7 +68,6 @@ const WorkflowTimeline = ({
       thumbnailsToShow: checkpoint?.thumbnailsToShow,
     };
 
-    console.log("caption", caption);
 
     const data = caption;
 
@@ -140,7 +138,6 @@ const WorkflowTimeline = ({
     }
   }, [workflowDetails]);
 
-  console.log("work", workflowDetails);
 
   return (
     <Fragment>
@@ -158,7 +155,7 @@ const WorkflowTimeline = ({
                                 {t("WORKS_WORKFLOW_TIMELINE")}
                             </CardSectionHeader> */}
               <TextBlock
-                subHeaderClasName={`view-composer-subheader ${workflowDetails?.data?.timeline?.headerclassName}`}
+                subHeaderClassName={`view-composer-subheader ${workflowDetails?.data?.timeline?.headerclassName}`}
                 subHeader={t("WORKS_WORKFLOW_TIMELINE")}
               ></TextBlock>
               {/* {workflowDetails?.data?.timeline && 

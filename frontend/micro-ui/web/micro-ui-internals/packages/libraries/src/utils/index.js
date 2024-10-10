@@ -25,6 +25,10 @@ const GetParamFromUrl = (key, fallback, search) => {
   return fallback;
 };
 
+const getMultiRootTenant = () => {
+  return window?.globalConfigs?.getConfig("MULTI_ROOT_TENANT") || false;
+};
+
 const getPattern = (type) => {
   switch (type) {
     case "Name":
@@ -320,6 +324,10 @@ const trimStringsInObject =  ( obj ) => {
   return trimmedObj;
 }
 
+const getRoleBasedHomeCard = () => {
+  return window?.globalConfigs?.getConfig("ROLE_BASED_HOMECARD") || false;
+};
+
 export default {
   pdf: PDFUtil,
   downloadWorksPDF,
@@ -369,5 +377,7 @@ export default {
   trimStringsInObject,
   statusBasedNavigation,
   getThumbnails,
-  debouncing
+  debouncing,
+  getMultiRootTenant,
+  getRoleBasedHomeCard
 };

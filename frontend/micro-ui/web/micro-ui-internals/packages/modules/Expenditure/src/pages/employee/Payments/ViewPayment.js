@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
-import { Header } from '@egovernments/digit-ui-react-components';
+import {  Header } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
-import { Toast,ActionBar } from '@egovernments/digit-ui-components';
+import { Toast,ActionBar, Button } from '@egovernments/digit-ui-components';
 
 const ViewPayment = () => {
   const { t } = useTranslation();
@@ -34,7 +34,6 @@ const ViewPayment = () => {
 
   const handleUpdatePI = async () => {
     const paDetails = data?.[0]?.applicationData
-    // console.log("pi update");
     const payloadForUpdate = {
       tenantId,
     }

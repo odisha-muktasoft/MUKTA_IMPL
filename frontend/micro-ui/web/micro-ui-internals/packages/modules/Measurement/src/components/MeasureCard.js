@@ -1,7 +1,9 @@
-import { Button, CardLabelError, CardSectionHeader, CloseSvg } from "@egovernments/digit-ui-react-components";
+import { CardLabelError, CardSectionHeader, CloseSvg } from "@egovernments/digit-ui-react-components";
+import { Button } from "@egovernments/digit-ui-components";
 import React, { useReducer, Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MeasureRow from "./MeasureRow";
+import { multiplyFourWithFourPointerPrecision } from "../utils/view_utilization";
 
 const getStyles = (index) => {
   let obj = {};
@@ -56,6 +58,7 @@ const initialValue = (element, li) => {
 {
   /* <Amount customStyle={{ textAlign: 'right'}} value={Math.round(value)} t={t}></Amount> */
 }
+
 const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tableData, tableKey, tableIndex, unitRate, mode }) => {
   const { t } = useTranslation();
   const [error, setError] = useState({message:"",enable:false})
@@ -91,11 +94,11 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         }
 
         const element = state[findIndex];
-        let calculatedValue = validate(element?.number) * validate(element?.length) * validate(element?.width) * validate(element?.height);
+        let calculatedValue = multiplyFourWithFourPointerPrecision(validate(element?.number), validate(element?.length), validate(element?.width), validate(element?.height));
         //calculating current value according to multimeasure present inside additional details
         if(mode === "CREATE")
           calculatedValue = element?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
-            state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
+            state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : multiplyFourWithFourPointerPrecision(validate(row.number), validate(row.length), validate(row.width), validate(row.height));
             state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : ((state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(5).slice(-1) === '5') ? (Math.ceil(state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity * 10000) / 10000).toFixed(4) : state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(4));
             return sum + parseFloat(row?.quantity);
           },0);
@@ -150,7 +153,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         //calculating the new total value and setting to the noofunits
         const ele = state[findIndexofMeasure];
         let calculatedvalue = ele?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
-          state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
+          state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : multiplyFourWithFourPointerPrecision(validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height));
           state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : ((state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(5).slice(-1) === '5') ? (Math.ceil(state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity * 10000) / 10000).toFixed(4) : state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(4));
           return sum + parseFloat(row?.quantity);
         },0);
@@ -229,8 +232,9 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                     {(mode == "CREATEALL" || mode == "CREATERE") && (
                       <Button
                         className={"outline-btn"}
+                        variation={"secondary"}
                         label={t("MB_ADD_ROW")}
-                        onButtonClick={() => {
+                        onClick={() => {
                           dispatch({
                             type: "ADD_ROW",
                             state: {
@@ -253,15 +257,17 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                     )}
                     {!(mode.includes("VIEW")) && <Button
                       className={"outline-btn clear-button"}
+                      variation={"secondary"}
                       label={t("MB_CLEAR")}
-                      onButtonClick={() => {
+                      onClick={() => {
                         dispatch({ type: "CLEAR_STATE" });
                       }}
                     />}
                     {!(mode.includes("VIEW")) && <Button
+                      variation={"secondary"}
                       className={"outline-btn done-button"}
                       label={t("MB_DONE")}
-                      onButtonClick={() => {
+                      onClick={() => {
                         // check for deduction and set accordingly
                         const totalQuantity = state?.reduce((total, item) => item?.isDeduction == true ? total - parseFloat(item.noOfunit) :  total + parseFloat(item.noOfunit), 0);
                         if(mode === "CREATE" && (totalQuantity < 0 || totalQuantity > tableData[tableIndex]?.approvedQuantity - tableData[tableIndex]?.consumedQ))
@@ -270,6 +276,8 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                           setError({message:`${t("ERR_DESCRIPTION_IS_MANDATORY_AND_LENGTH")} ${state.findIndex(obj => !obj.description|| obj.description.length < 2 || obj?.description?.length > 64 )+1}`,enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (mode === "CREATERE" ? !obj?.number : !obj.noOfunit) && !obj.length && !obj.width && !obj.height) !== -1)
                           setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit)+1}`,enable:true});
+                        else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (obj.noOfunit && obj.noOfunit > 1e10)) !== -1)
+                          setError({message:`${t("ERR_QUANTITY_EXCEEDING_LIMIT")} ${state.findIndex(obj => obj.noOfunit && obj.noOfunit > 1e10)+1}`,enable:true});
                         else
                         {
                         tableData[tableIndex].measures = state;

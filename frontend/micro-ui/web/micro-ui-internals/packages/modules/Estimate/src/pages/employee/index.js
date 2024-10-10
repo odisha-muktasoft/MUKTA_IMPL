@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Switch, useLocation } from "react-router-dom";
-import { PrivateRoute, AppContainer, BreadCrumb } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, AppContainer } from "@egovernments/digit-ui-react-components";
+import { BreadCrumb } from "@egovernments/digit-ui-components";
 import CreateEstimate from "./Estimates/CreateEstimate/CreateEstimate";
 import EstimateSearch from "./EstimateSearch";
 import EstimateSearchPlain from "./EstimateSearchPlain";
@@ -104,7 +105,6 @@ const EstimateBreadCrumbs = ({ location }) => {
   return (
     <BreadCrumb
       crumbs={crumbs}
-      spanStyle={{ maxWidth: "min-content" }}
       zerothStyle={
         location.pathname.includes("/estimate/inbox") || location.pathname.includes("/estimate/search-estimate") ? {} : {}
       }

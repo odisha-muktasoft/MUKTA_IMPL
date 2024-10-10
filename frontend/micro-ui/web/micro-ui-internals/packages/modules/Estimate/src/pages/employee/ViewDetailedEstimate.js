@@ -87,7 +87,8 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "EST_VIEW_ACTIONS_CREATE_CONTRACT",
+          name:"CREATE_CONTRACT",
+          displayName:"EST_VIEW_ACTIONS_CREATE_CONTRACT",
         },
       ]);
     }
@@ -98,7 +99,8 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "EST_VIEW_ACTIONS_VIEW_CONTRACT",
+          name:"VIEW_CONTRACT",
+          displayName: "EST_VIEW_ACTIONS_VIEW_CONTRACT",
         },
       ]);
     }
@@ -111,7 +113,8 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE",
+          name: "CREATE_REVISION_ESTIMATE",
+          displayName: "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE",
         },
       ]);
     }
@@ -125,18 +128,18 @@ const ViewDetailedEstimate = () => {
   const handleActionBar = (option) => {
     if(validationData && Object.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.name))
     {
-      setToast({typa: validationData?.error ? "error" : "", label: validationData?.label, show:true})
+      setToast({type: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
-    if (option?.name === "EST_VIEW_ACTIONS_CREATE_CONTRACT") {
+    if (option?.name === "CREATE_CONTRACT") {
       history.push(`/${window.contextPath}/employee/contracts/create-contract?tenantId=${tenantId}&estimateNumber=${estimateNumber}`);
     }
-    if (option?.name === "EST_VIEW_ACTIONS_VIEW_CONTRACT") {
+    if (option?.name === "VIEW_CONTRACT") {
       history.push(
         `/${window.contextPath}/employee/contracts/contract-details?tenantId=${tenantId}&workOrderNumber=${inWorkflowContract?.contractNumber}`
       );
     }
-    if (option?.name === "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE") {
+    if (option?.name === "CREATE_REVISION_ESTIMATE") {
       history.push(
         `/${window.contextPath}/employee/estimate/create-revision-detailed-estimate?tenantId=${tenantId}&projectNumber=${project?.projectNumber}&estimateNumber=${estimateNumber}&isCreateRevisionEstimate=true`
       );
@@ -207,7 +210,7 @@ const ViewDetailedEstimate = () => {
             options={actionsMenu}
             label={t("WORKS_ACTIONS")}
             variation={"primary"}
-            optionsKey={"name"}
+            optionsKey={"displayName"}
             isSearchable={false}
             onOptionSelect={(option) => {
               handleActionBar(option);

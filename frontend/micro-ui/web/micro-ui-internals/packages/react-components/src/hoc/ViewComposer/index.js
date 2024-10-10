@@ -128,7 +128,7 @@ const renderCardSectionJSX = (section) => {
         <>
           {section?.cardHeader && section?.cardHeader?.value && (
             // <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
-            <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClasName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section.cardHeader.value)}></TextBlock>
+            <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClassName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section.cardHeader.value)}></TextBlock>
           )}
           <Component {...section.props} />
         </>
@@ -144,7 +144,6 @@ const renderCardSectionJSX = (section) => {
 const ViewComposer = ({ isLoading = false,data, ...props }) => {
   const { cards } = data;
   const [activeNav,setActiveNav] = useState(data?.horizontalNav?.activeByDefault)
-  console.log(activeNav);
 
   if (isLoading) return <Loader />;
 
@@ -152,9 +151,9 @@ const ViewComposer = ({ isLoading = false,data, ...props }) => {
     <>
     {/* This first {} is for rendering cards at the top without navigationKey(out of navbar) */}
       {cards?.filter(card => !card?.navigationKey)?.map((card, cardIdx) => {
-          const { sections } = card;
+          const { sections ,sectionClassName} = card;
           return (
-            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={"employeeCard-override"}>
+            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={`employeeCard-override ${sectionClassName || ""}`}>
               {sections?.map((section, sectionIdx) => {
                 return renderCardSectionJSX(section);
               })}
@@ -165,7 +164,7 @@ const ViewComposer = ({ isLoading = false,data, ...props }) => {
 
       <HorizontalNav showNav={data?.horizontalNav?.showNav} configNavItems={data?.horizontalNav?.configNavItems} activeLink={activeNav} setActiveLink={setActiveNav} inFormComposer={false}>
         {cards?.filter(card => card?.navigationKey)?.map((card, cardIdx) => {
-          const { sections } = card;
+          const { sections,sectionClassName } = card;
           return (
             <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={`employeeCard-override ${card?.className}`}>
               {sections?.map((section, sectionIdx) => {

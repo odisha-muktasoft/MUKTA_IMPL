@@ -1,14 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LabelFieldPair from "../atoms/LabelFieldPair";
-import CardLabel from "../atoms/CardLabel";
 import CardLabelError from "../atoms/CardLabelError";
-import CitizenInfoLabel from "../atoms/CitizenInfoLabel";
-import Header from "../atoms/Header";
 import { Loader } from "../atoms/Loader";
 import MultiUploadWrapper from "../molecules/MultiUploadWrapper";
-import TextInput from "../atoms/TextInput";
-import { InfoCard, StringManipulator, ErrorMessage } from "@egovernments/digit-ui-components";
+// import TextInput from "../atoms/TextInput";
+// import CitizenInfoLabel from "../atoms/CitizenInfoLabel";
+// import Header from "../atoms/Header";
+// import LabelFieldPair from "../atoms/LabelFieldPair";
+// import CardLabel from "../atoms/CardLabel";
+import { InfoCard, StringManipulator, ErrorMessage,TextInput ,Header,TextBlock,LabelFieldPair} from "@egovernments/digit-ui-components";
 
 const UploadFileComposer = ({ module, config, Controller, control, register, formData, errors, localePrefix, customClass, customErrorMsg }) => {
   const { t } = useTranslation();
@@ -64,7 +64,10 @@ const UploadFileComposer = ({ module, config, Controller, control, register, for
   // if(isLoading) return <Loader />
   return (
     <React.Fragment>
-      <Header styles={{ fontSize: "24px", marginTop: "40px" }}>{t("WORKS_RELEVANT_DOCUMENTS")}</Header>
+      {/* <Header styles={{ fontSize: "24px", marginTop: "40px" }}>{t("WORKS_RELEVANT_DOCUMENTS")}</Header> */}
+
+      <TextBlock subHeader={t("WORKS_RELEVANT_DOCUMENTS")} subHeaderClassName={`uploadfile-composer-header create-header`}></TextBlock>
+
       {docConfig?.bannerLabel && (
         <InfoCard
           populators={{
@@ -80,14 +83,19 @@ const UploadFileComposer = ({ module, config, Controller, control, register, for
       {docConfig?.documents?.map((item, index) => {
         if (!item?.active) return;
         return (
-          <LabelFieldPair key={index} style={{ alignItems: item?.showTextInput ? "flex-start" : "center" }}>
+          <LabelFieldPair key={index}>
             {item.code && (
-              <CardLabel className="bolder" style={{ marginTop: item?.showTextInput ? "10px" : "" }}>
-                {t(`${localePrefix}_${item?.code}`)} {item?.isMandatory ? " * " : null}
-              </CardLabel>
+              // <CardLabel className="bolder" style={{ marginTop: item?.showTextInput ? "10px" : "" }}>
+              //   {t(`${localePrefix}_${item?.code}`)} {item?.isMandatory ? " * " : null}
+              // </CardLabel>
+              <Header className={`label`}>
+                <div className={`label-container`}>
+                  <div className={`label-styles`}>{t(`${localePrefix}_${item?.code}`)}</div>
+                  <div style={{ color: "#B91900" }}>{item?.isMandatory ? " * " : null}</div>
+                </div>
+              </Header>
             )}
-
-            <div className="field">
+            <div className="digit-field">
               {item?.showTextInput && (
                 <div>
                   <Controller
@@ -99,6 +107,7 @@ const UploadFileComposer = ({ module, config, Controller, control, register, for
                         onChange={onChange}
                         inputRef={register({ minLength: 2 })}
                         errorStyle={errors?.[`${config.name}`]?.[`${item?.name}_name`]}
+                        className={"uploadfile-composer-textfield"}
                       />
                     )}
                     name={`${config?.name}.${item?.name}_name`}
@@ -113,7 +122,7 @@ const UploadFileComposer = ({ module, config, Controller, control, register, for
                   ) : null}
                 </div>
               )}
-              <div style={{ marginBottom: "24px" }}>
+              <div>
                 <Controller
                   render={({ value = [], onChange }) => {
                     function getFileStoreData(filesData) {

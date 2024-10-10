@@ -447,7 +447,7 @@ const OverheadsTable = ({ control, watch, ...props }) => {
               }
             </CardSectionHeader> */}
 
-            <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+            <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClassName={"table_total_amount"}></TextBlock>
             <TextBlock
               subHeader={
                 <Amount
@@ -468,7 +468,7 @@ const OverheadsTable = ({ control, watch, ...props }) => {
                   sameDisplay={true}
                 ></Amount>
               }
-              subHeaderClasName={"table_total_amount_value"}
+              subHeaderClassName={"table_total_amount_value"}
             ></TextBlock>
           </div>
         </div>

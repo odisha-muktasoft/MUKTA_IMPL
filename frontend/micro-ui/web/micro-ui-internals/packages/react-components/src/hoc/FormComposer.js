@@ -7,8 +7,6 @@ import CardText from "../atoms/CardText";
 import CardSubHeader from "../atoms/CardSubHeader";
 import CardLabelDesc from "../atoms/CardLabelDesc";
 import CardLabelError from "../atoms/CardLabelError";
-import ActionBar from "../atoms/ActionBar";
-import SubmitBar from "../atoms/SubmitBar";
 import LinkButton from "../atoms/LinkButton";
 import ApiDropdown from "../molecules/ApiDropdown";
 import { useTranslation } from "react-i18next";
@@ -29,6 +27,9 @@ import WrapperComponent from "../atoms/WrapperComponent";
 // import TextInput from "../atoms/TextInput";
 // import CardLabelError from "../atoms/CardLabelError";
 // import CardSectionHeader from "../atoms/CardSectionHeader";
+// import ActionBar from "../atoms/ActionBar";
+// import SubmitBar from "../atoms/SubmitBar";
+
 import {
   CustomDropdown,
   Toast,
@@ -41,6 +42,8 @@ import {
   StringManipulator,
   Header,
   TextBlock,
+  ActionBar,
+  SubmitBar
 } from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
@@ -158,6 +161,10 @@ export const FormComposer = (props) => {
       case "number":
       case "password":
       case "time":
+      case "geolocation":
+      case "search":
+      case "number":
+      case "numeric":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
           <div className="digit-field-container">
@@ -177,6 +184,7 @@ export const FormComposer = (props) => {
                   max={populators?.validation?.max}
                   min={populators?.validation?.min}
                   disabled={disable}
+                  nonEditable={populators?.nonEditable}
                   // style={type === "date" ? { paddingRight: "3px" } : ""}
                   maxlength={populators?.validation?.maxlength}
                   minlength={populators?.validation?.minlength}
@@ -215,7 +223,7 @@ export const FormComposer = (props) => {
       case "amount":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
-          <div className="field-container">
+          <div className="digit-field-container">
             {populators?.componentInFront ? (
               <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span>
             ) : null}
@@ -582,6 +590,13 @@ export const FormComposer = (props) => {
 
   const titleStyle = { color: "#505A5F", fontWeight: "700", fontSize: "16px" };
 
+  function convertToSentenceCase(inputString) {
+    // Convert the string to lowercase and capitalize the first letter of each sentence
+    return inputString.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function(c) {
+      return c.toUpperCase();
+    });
+  }
+
   const getCombinedComponent = (section) => {
     if (section.head && section.subHead) {
       return (
@@ -594,10 +609,10 @@ export const FormComposer = (props) => {
         //   </CardSectionHeader>
         // </>
         <>
-          <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId}`}></TextBlock>
+          <TextBlock subHeader={t(section?.head)} subHeaderClassName={`${props?.sectionHeaderClassName} ${section?.headId}`}></TextBlock>
           <TextBlock
             subHeader={t(section?.subHead)}
-            subHeaderClasName={`${props?.sectionSubHeaderClassName} ${`${section?.headId}_DES`}`}
+            subHeaderClassName={`${props?.sectionSubHeaderClassName} ${`${section?.headId}_DES`}`}
           ></TextBlock>
         </>
       );
@@ -609,7 +624,7 @@ export const FormComposer = (props) => {
         //   </CardSectionHeader>
         // </>
 
-        <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId} create-header`}></TextBlock>
+        <TextBlock subHeader={t(section?.head)} subHeaderClassName={`${props?.sectionHeaderClassName} ${section?.headId} create-header`}></TextBlock>
       );
     } else {
       return null;
@@ -679,7 +694,9 @@ export const FormComposer = (props) => {
                 style={
                   props?.showWrapperContainers && !field.hideContainer
                     ? { ...wrapperStyles, ...field?.populators?.customStyle }
-                    : props?.fieldPairNoMargin ? {marginBottom : "0px"} : { border: "none", background: "white", ...field?.populators?.customStyle }
+                    : props?.fieldPairNoMargin
+                    ? { marginBottom: "0px" }
+                    : { border: "none", background: "white", ...field?.populators?.customStyle }
                 }
               >
                 {/* {!field.withoutLabel && (
@@ -700,8 +717,7 @@ export const FormComposer = (props) => {
                   <Header className={`label`}>
                     <div className={`label-container`}>
                       <div className={`label-styles`}>
-                        {StringManipulator(
-                          "TOSENTENCECASE",
+                        {convertToSentenceCase(
                           StringManipulator("TRUNCATESTRING", t(field.label), {
                             maxLength: 64,
                           })
@@ -726,10 +742,9 @@ export const FormComposer = (props) => {
                         lineHeight: "1.5rem",
                       }}
                     >
-                      {StringManipulator(
-                        "TOSENTENCECASE",
+                      {convertToSentenceCase(
                         StringManipulator("TRUNCATESTRING", t(description), {
-                          maxLength: 256,
+                          maxLength: 64,
                         })
                       )}
                     </CardText>
@@ -885,7 +900,7 @@ export const FormComposer = (props) => {
         props?.config?.map((section, index, array) => {
           return (
             !section.navLink && (
-              <Card style={getCardStyles()} noCardStyle={props.noCardStyle} className={props.cardClassName}>
+              <Card style={getCardStyles()} noCardStyle={props.noCardStyle} className={` ${section?.sectionClassName} ${props.cardClassName}`}>
                 {renderFormFields(props, section, index, array)}
               </Card>
             )
@@ -908,7 +923,11 @@ export const FormComposer = (props) => {
           {props?.showMultipleCardsInNavs ? (
             props?.config?.map((section, index, array) => {
               return section.navLink ? (
-                <Card style={section.navLink !== activeLink ? getCardStyles(false) : getCardStyles()} noCardStyle={props.noCardStyle}>
+                <Card
+                  className={`${section?.sectionClassName}`}
+                  style={section.navLink !== activeLink ? getCardStyles(false) : getCardStyles()}
+                  noCardStyle={props.noCardStyle}
+                >
                   {renderFormFields(props, section, index, array, section?.sectionFormCategory)}
                 </Card>
               ) : null;
@@ -929,10 +948,14 @@ export const FormComposer = (props) => {
         </HorizontalNav>
       )}
       {!props.submitInForm && props.label && (
-        <ActionBar>
-          <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />
-          {props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />}
-        </ActionBar>
+        <ActionBar
+          actionFields={[
+            <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />,
+            props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
       )}
       {showErrorToast && <Toast type={"error"} label={t("ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS")} isDleteBtn={true} onClose={closeToast} />}
     </form>
