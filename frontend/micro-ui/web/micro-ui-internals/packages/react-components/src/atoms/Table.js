@@ -215,7 +215,7 @@ const Table = ({
             {stickyFooter && (
               <tr>
                 {stickyFooter?.map(el => (
-                  <td style={{ ...getCellProps().style, fontWeight: 'bold', textAlign: "right"}}>
+                  <td style={{ ...getCellProps().style, ...el?.style}}>
                     <span>{el?.value}</span>
                   </td>
                 ))}

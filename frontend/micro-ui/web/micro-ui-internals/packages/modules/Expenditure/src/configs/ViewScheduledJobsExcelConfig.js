@@ -116,15 +116,11 @@ const ViewScheduledJobsExcelConfig = {
                   jsonPath: "noOfProjects",
                   // additionalCustomization: true,
                 },
-                // {
-                //   label: "EXP_SUCCESSFUL",
-                //   jsonPath: "",
-                //   // additionalCustomization: true,
-                // },
                 {
                   label: "EXP_STATUS_ACTION",
                   jsonPath: "status",
                   additionalCustomization: true,
+                  headerAlign: "right",
                 },
               ],
               enableGlobalSearch: false,

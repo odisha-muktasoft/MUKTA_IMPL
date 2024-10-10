@@ -62,15 +62,15 @@ export const paymentTrackerReport = (props) => {
             }
         })
         data.stickyFooterRow = [
-            {'name': '', 'value':''},
-            {'name': 'total', 'value': t('Grand Total')},
-            {'name': 'estimatedAmount', 'value': 0},
-            {'name': 'wagebillsuccess', 'value': 0},
-            {'name': 'wagebillFailed', 'value': 0},
-            {'name': 'purchasebillSuccess', 'value': 0},
-            {'name': 'purchasebillFailed', 'value': 0},
-            {'name': 'supervisionbillSuccess', 'value': 0},
-            {'name': 'supervisionbillFailed', 'value': 0}
+            {'name': '', 'value':'', style: {fontWeight: 'bold'}},
+            {'name': 'total', 'value': t('PAGE_TOTAL'), style: {fontWeight: 'bold'}},
+            {'name': 'estimatedAmount', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'wagebillsuccess', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'wagebillFailed', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'purchasebillSuccess', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'purchasebillFailed', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'supervisionbillSuccess', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}},
+            {'name': 'supervisionbillFailed', 'value': 0, style: {fontWeight: 'bold', textAlign: 'right'}}
         ]
 
         data?.aggsResponse?.projects?.forEach((ob, index) => {

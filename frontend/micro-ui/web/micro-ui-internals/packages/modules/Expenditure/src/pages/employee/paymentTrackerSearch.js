@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import { useTranslation } from "react-i18next";
-import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
+import { Header, InboxSearchComposer,Loader, MultiLink } from "@egovernments/digit-ui-react-components";
 import { paymentTrackerSearchConfig } from "../../configs/paymentTrackerSearchConfig";
 import { Toast, ActionBar, SubmitBar } from "@egovernments/digit-ui-components";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -79,12 +79,16 @@ const PaymentTrackerSearch = () => {
         },
     });
     }
-    
 
     //if (isLoading) return <Loader />
     return (
       <React.Fragment>
-        <Header className="works-header-search">{t(configs?.label)}</Header>
+        <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+          <Header className="works-header-search" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+            {t(configs?.label)}
+          </Header>
+          <MultiLink onHeadClick={() => {history.push(`/${window.contextPath}/employee/expenditure/view-jobs-excel`) }} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        </div>
         <div className="inbox-search-wrapper">
             <InboxSearchComposer configs={configs}></InboxSearchComposer>
         </div>
@@ -93,12 +97,6 @@ const PaymentTrackerSearch = () => {
           <SubmitBar
             label={t("EXP_GENERATE_EXCEL")}
             onSubmit={() => handleGenerateExcel()}
-            style={{width: "auto"}}
-            // disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
-          />
-          <SubmitBar
-            label={t("VIEW_EXCEL")}
-            onSubmit={() => {history.push(`/${window.contextPath}/employee/expenditure/view-jobs-excel`) }}
             style={{width: "auto"}}
             // disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
           />

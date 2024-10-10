@@ -2949,19 +2949,19 @@ export const UICustomizations = {
           switch (value) {
             case "COMPLETED":
               return (
-                <div>
+                <div style={{ textAlign: "right" }}>
                   <div style={{ color: "#27AE60"}}>
                     {t(value)}
                   </div>
                   {row.fileStoreId && (
-                    // <div style={{ display: "inline-block" }}>
+                    <div style={{ display: "inline-block" }}>
                       <LinkLabel
                         style={{ cursor: "pointer",
                           width: "fit-content",
                           border: "1px solid",
                           borderRadius: "16px",
                           padding: "0px 4px",
-                          // float: "right"
+                          float: "right"
                           }}
                         onClick={async () => {
                           let excel = "";
@@ -2976,7 +2976,7 @@ export const UICustomizations = {
                       >
                         {t("CS_COMMON_DOWNLOAD")}
                       </LinkLabel>
-                    // </div>
+                    </div>
                   )}
                 </div>
               );
@@ -3176,33 +3176,26 @@ export const UICustomizations = {
           );
       }
       if (key === "EXP_ESTIMATED_AMT") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
       }
-      // if (key === "CORE_COMMON_STATUS") {
-      //   return value ? t(`BILL_STATUS_${value}`) : t("ES_COMMON_NA");
-      // }
-      // if (key === "ES_COMMON_LOCATION") {
-      //   const headerLocale = Digit.Utils.locale.getTransformedLocale(row?.tenantId);
-      //   return t(`TENANT_TENANTS_${headerLocale}`);
-      // }
   }
   }
 };

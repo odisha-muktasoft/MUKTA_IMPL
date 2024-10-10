@@ -33,10 +33,18 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("BILL_AMOUNT_RS"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("BILL_AMOUNT_RS")}
+          </div>
+        ),
         accessor: "total",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
@@ -67,24 +75,40 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PI_TYPE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_TYPE")}
+          </div>
+        ),
         accessor: "piType",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_CREATION_DATE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_CREATION_DATE")}
+          </div>
+        ),
         accessor: "piCreationDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_AMOUNT_RS"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PI_AMOUNT_RS")}
+          </div>
+        ),
         accessor: "paidAmount",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
@@ -99,24 +123,44 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PI_STATUS"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_STATUS")}
+          </div>
+        ),
         accessor: "piStatus",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PAYMENT_FAILED_RS"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PAYMENT_FAILED_RS")}
+          </div>
+        ),
         accessor: "paymentFailed",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
-        Header: t("PAYMENT_SUCCESSFUL_RS"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PAYMENT_SUCCESSFUL_RS")}
+          </div>
+        ),
         accessor: "paymentSuccessful",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
     ]

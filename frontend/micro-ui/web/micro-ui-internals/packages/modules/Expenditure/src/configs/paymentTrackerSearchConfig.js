@@ -175,38 +175,45 @@ export const paymentTrackerSearchConfig = {
                     {
                       "label": "EXP_ESTIMATED_AMT",
                       "jsonPath": "estimatedAmount",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_WAGE_PAYMENT_SUCCESS",
                       "jsonPath": "wagebillsuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_WAGE_PAYMENT_FAILED",
                       //"jsonPath": "$.paymentDetails[?(@.billType == 'EXPENSE.WAGE')].remainingAmount",
                       "jsonPath":"wagebillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_PUR_PAYMENT_SUCCESS",
                       "jsonPath": "purchasebillSuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_PUR_PAYMENT_FAILED",
                       "jsonPath": "purchasebillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_SUP_PAYMENT_SUCCESS",
                       "jsonPath": "supervisionbillSuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_SUP_PAYMENT_FAILED",
                       "jsonPath": "supervisionbillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     }
                   ],
                   "enableGlobalSearch": false,
