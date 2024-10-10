@@ -26,7 +26,7 @@ const CreateOrganizationForm = ({setCreateOrgStatus, sessionFormData, setSession
                     wards, localities
                }
             },
-        },includeChildren = true)
+        },true)
     
     const filteredLocalities = isLoading ? [] : wardsAndLocalities?.localities[selectedWard]
     

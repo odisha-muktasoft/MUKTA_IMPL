@@ -67,7 +67,7 @@ const SubProjectDetailsTable = ({t, register, control, setValue, onChange, error
                     wards, localities
                }
             }
-        },includeChildren = true);
+        },true);
         
     useEffect(()=>{
         let filteredSubTypeOfProject = ( subProjectTypeOfProjectOptions && subProjectTypeOfProjectOptions?.projectSubType ) ? (
