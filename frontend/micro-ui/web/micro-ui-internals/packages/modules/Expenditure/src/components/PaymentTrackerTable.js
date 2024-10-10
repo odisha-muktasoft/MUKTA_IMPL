@@ -33,14 +33,26 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("BILL_AMOUNT"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("BILL_AMOUNT_RS")}
+          </div>
+        ),
         accessor: "total",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
-        Header: t("PI_NUMBER"),
+        Header: () => (
+          <div style={{ minWidth: '200px' }}>
+            {t("PI_NUMBER")}
+          </div>
+        ),
         accessor: "piNumber",
         Cell: ({ value, column, row }) => {
           if (value === "NA") {
@@ -52,59 +64,103 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PARENT_PI"),
+        Header: () => (
+          <div style={{ minWidth: '200px' }}>
+            {t("PARENT_PI")}
+          </div>
+        ),
         accessor: "parentPi",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_TYPE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_TYPE")}
+          </div>
+        ),
         accessor: "piType",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_CREATION_DATE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_CREATION_DATE")}
+          </div>
+        ),
         accessor: "piCreationDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_AMOUNT"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PI_AMOUNT_RS")}
+          </div>
+        ),
         accessor: "paidAmount",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
-        Header: t("PI_DATE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_DATE")}
+          </div>
+        ),
         accessor: "piDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PI_STATUS"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_STATUS")}
+          </div>
+        ),
         accessor: "piStatus",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
-        Header: t("PAYMENT_FAILED"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PAYMENT_FAILED_RS")}
+          </div>
+        ),
         accessor: "paymentFailed",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
       {
-        Header: t("PAYMENT_SUCCESSFUL"),
+        Header: () => (
+          <div style={{ minWidth: '100px', textAlign: 'right' }}>
+            {t("PAYMENT_SUCCESSFUL_RS")}
+          </div>
+        ),
         accessor: "paymentSuccessful",
         Cell: ({ value, column, row }) => {
-          return amountFormatter(value);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {amountFormatter(value)}
+            </div>
+          );
         }
       },
     ]
@@ -121,7 +177,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   return (
     <div>
       <CheckBox 
-        styles={{marginTop: "24px"}}
+        styles={{marginTop: "14px"}}
         style={{marginLeft: "40px"}}
         onChange={() => setExcludeFailed(!excludeFailed)}
         checked={excludeFailed}

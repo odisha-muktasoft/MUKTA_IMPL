@@ -48,32 +48,31 @@ export const paymentTrackerSearchConfig = {
                       "isMandatory": false,
                       "disable": false,
                       "populators": {
-                        "name": "ward",
-                        "type": "ward",
-                        "optionsKey": "i18nKey",
-                        "allowMultiSelect": false,
-                        "optionsCustomStyle": {
-                          "top": "2.3rem"
-                        }
+                          "name": "ward",
+                          "type": "ward",
+                          "optionsKey": "name",
+                          "defaultText": "COMMON_SELECT_WARD",
+                          "selectedText": "COMMON_SELECTED",
+                          "allowMultiSelect": false
                       }
                     },
                     {
-                        "label": "WORKS_PROJECT_TYPE",
-                        "type": "dropdown",
-                        "isMandatory": false,
-                        "disable": false,
-                        "populators": {
-                          "name": "projectType",
-                          "optionsKey": "name",
-                          "optionsCustomStyle": {
-                            "top": "2.3rem"
-                          },
+                      "label": "WORKS_PROJECT_TYPE",
+                      "type": "dropdown",
+                      "isMandatory": false,
+                      "disable": false,
+                      "populators": { 
+                        "name": "projectType", 
+                        "optionsKey": "name",
+                        // "optionsCustomStyle": {
+                        //     "top": "2.3rem"
+                        //   },
                           "mdmsConfig": {
                             "masterName": "ProjectType",
                             "moduleName": "works",
                             "localePrefix": "COMMON_MASTERS"
                           }
-                        }
+                      }
                     },
                     {
                         "label": "WORKS_PROJECT_NAME",
@@ -86,14 +85,14 @@ export const paymentTrackerSearchConfig = {
                           ]
                         },
                         "populators": {
-                          "name": "name",
+                          "name": "projectName",
                           "error": "PROJECT_PATTERN_ERR_MSG",
                           "validation": {
                               "pattern": "^[^\\$\"<>?\\\\~`!@$%^()+={}\\[\\]*:;“”‘’]{1,50}$",
                               "minlength": 2
                           }
                         }
-                      },
+                    },
                     {
                       "label": "WORKS_PROJECT_ID",
                       "type": "text",
@@ -105,7 +104,7 @@ export const paymentTrackerSearchConfig = {
                         ]
                       },
                       "populators": {
-                        "name": "projectNumber",
+                        "name": "projectId",
                         "error": "PROJECT_PATTERN_ERR_MSG",
                         "validation": {
                           "pattern": "PJ\\/[0-9]+-[0-9]+\\/[0-9]+\\/[0-9]+",
@@ -175,38 +174,46 @@ export const paymentTrackerSearchConfig = {
                     },
                     {
                       "label": "EXP_ESTIMATED_AMT",
-                      "jsonPath": "estimatedAmount"
+                      "jsonPath": "estimatedAmount",
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_WAGE_PAYMENT_SUCCESS",
                       "jsonPath": "wagebillsuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_WAGE_PAYMENT_FAILED",
                       //"jsonPath": "$.paymentDetails[?(@.billType == 'EXPENSE.WAGE')].remainingAmount",
                       "jsonPath":"wagebillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_PUR_PAYMENT_SUCCESS",
                       "jsonPath": "purchasebillSuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_PUR_PAYMENT_FAILED",
                       "jsonPath": "purchasebillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_SUP_PAYMENT_SUCCESS",
                       "jsonPath": "supervisionbillSuccess",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     },
                     {
                       "label": "EXP_SUP_PAYMENT_FAILED",
                       "jsonPath": "supervisionbillFailed",
-                      "additionalCustomization": true
+                      "additionalCustomization": true,
+                      "headerAlign": "right"
                     }
                   ],
                   "enableGlobalSearch": false,
@@ -214,7 +221,8 @@ export const paymentTrackerSearchConfig = {
                   "resultsJsonPath": "aggsResponse.projects",
                   "showCheckBox": false,
                   "checkBoxActionLabel": "ES_COMMON_GENERATE_PAYMENT_ADVICE",
-                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION"
+                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION",
+                  "stickyFooter": true
                 },
                 "children": {},
                 "show": true

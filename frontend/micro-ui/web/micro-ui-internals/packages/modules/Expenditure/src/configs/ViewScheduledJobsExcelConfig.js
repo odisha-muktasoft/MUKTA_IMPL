@@ -9,17 +9,17 @@ const ViewScheduledJobsExcelConfig = {
         actionRole: "",
         actionLink: "",
         apiDetails: {
-          serviceName: "/rate-analysis/v1/scheduler/_search",
+          serviceName: "/wms/report/payment-tracker/_search",
           requestParam: {},
           requestBody: {
-              SearchCriteria: {},
+            reportSearchCriteria: {},
           },
           minParametersForSearchForm: 1,
           masterName: "commonUiConfig",
           moduleName: "ViewScheduledJobsConfig",
-          tableFormJsonPath: "requestBody.Pagination",
-          filterFormJsonPath: "requestBody.SearchCriteria",
-          searchFormJsonPath: "requestBody.SearchCriteria",
+          tableFormJsonPath: "requestBody.pagination",
+          filterFormJsonPath: "requestBody.reportSearchCriteria",
+          searchFormJsonPath: "requestBody.reportSearchCriteria",
         },
         sections: {
           search: {
@@ -48,9 +48,10 @@ const ViewScheduledJobsExcelConfig = {
                       top: "2.3rem",
                     },
                     options:[
-                      {code:"SCHEDULED",name:"Scheduled"},
-                      {code:"IN_PROGRESS",name:"In progress"},
-                      {code:"COMPLETED",name:"Completed"}
+                      {code:"INITIATED",name:"Initiated"},
+                      {code:"INPROGRESS",name:"In progress"},
+                      {code:"COMPLETED",name:"Completed"},
+                      {code:"FAILED",name:"Failed"}
                     ]
                   },
                 },
@@ -59,12 +60,12 @@ const ViewScheduledJobsExcelConfig = {
                   type: "date",
                   isMandatory: false,
                   disable: false,
-                  key: "schedulefFrom",
+                  key: "scheduledFrom",
                   preProcess: {
                     updateDependent: ["populators.max"],
                   },
                   populators: {
-                    name: "scheduleFrom",
+                    name: "scheduledFrom",
                     max: "currentDate",
                   },
                 },
@@ -73,12 +74,12 @@ const ViewScheduledJobsExcelConfig = {
                   type: "date",
                   isMandatory: false,
                   disable: false,
-                  key: "scheduleTo",
+                  key: "scheduledTo",
                   preProcess: {
                     updateDependent: ["populators.max"],
                   },
                   populators: {
-                    name: "scheduleTo",
+                    name: "scheduledTo",
                     error: "DATE_VALIDATION_MSG",
                     max: "currentDate",
                   },
@@ -102,7 +103,7 @@ const ViewScheduledJobsExcelConfig = {
               columns: [
                 {
                   label: "EXP_JOB_ID",
-                  jsonPath: "jobId",
+                  jsonPath: "reportNumber",
                   additionalCustomization: true,
                 },
                 {
@@ -111,24 +112,20 @@ const ViewScheduledJobsExcelConfig = {
                   additionalCustomization: true,
                 },
                 {
-                  label: "EXP_NO_OF_PROJECTS_SCHEDULED",
-                  jsonPath: "noOfSorScheduled",
-                  additionalCustomization: false,
+                  label: "EXP_NO_OF_PROJECTS",
+                  jsonPath: "noOfProjects",
+                  // additionalCustomization: true,
                 },
                 {
-                  label: "RA_SUCCESSFUL",
-                  jsonPath: "",
-                  additionalCustomization: true,
-                },
-                {
-                  label: "RA_STATUS",
+                  label: "EXP_STATUS_ACTION",
                   jsonPath: "status",
                   additionalCustomization: true,
+                  headerAlign: "right",
                 },
               ],
               enableGlobalSearch: false,
               enableColumnSort: true,
-              resultsJsonPath: "ScheduledJobs",
+              resultsJsonPath: "reportJobs",
             },
             children: {},
             show: true,

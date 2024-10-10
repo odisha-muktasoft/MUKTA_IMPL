@@ -11,7 +11,7 @@ const PaymentTrackerView = () => {
   const {projectData, billPaidData, billData, isProjectLoading, isBillPaidLoading, isBillLoading} = Digit.Hooks.paymentInstruction.useViewPaymentTracker({projectId, tenantId});
 
   const HandleDownloadPdf = () => {
-    // Digit.Utils.downloadEgovPDF("measurementBook/measurement-book", { contractNumber : workOrderNumber, measurementNumber : mbNumber, tenantId }, `project-payments-${projectId}.pdf`);
+    Digit.Utils.downloadEgovPDF("paymentTracker/payment-tracker", { projectId : projectId, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
   const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.[0], billData?.items, projectId);
@@ -24,7 +24,7 @@ const PaymentTrackerView = () => {
     <React.Fragment>
       <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
-          {t("PJ_PAYMENT_TRACKER")}
+          {t("PJ_PAYMENTS")}
         </Header>
         <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
       </div>

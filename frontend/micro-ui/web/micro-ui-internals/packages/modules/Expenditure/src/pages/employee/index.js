@@ -106,6 +106,24 @@ const ExpenditureBreadCrumbs = ({ location }) => {
       show: location.pathname.includes("/expenditure/create-pa") ? true : false,
       isBack: fromScreen && true,
     },
+    {
+      path: `/${window.contextPath}/employee/expenditure/payment-tracker`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("EXP_PAYMENT_TRACKER")}` : t("EXP_PAYMENT_TRACKER"),
+      show: location.pathname.includes("/expenditure/payment-tracker") ? true : false,
+      isBack: fromScreen && true,
+    },
+    {
+      path: `/${window.contextPath}/employee/expenditure/payment-tracker-view`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("EXP_PAYMENT_TRACKER_VIEW")}` : t("EXP_PAYMENT_TRACKER_VIEW"),
+      show: location.pathname.includes("/expenditure/payment-tracker-view") ? true : false,
+      isBack: fromScreen && true,
+    },
+    {
+      path: `/${window.contextPath}/employee/expenditure/view-jobs-excel`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("EXP_VIEW_JOBS_EXCEL")}` : t("EXP_VIEW_JOBS_EXCEL"),
+      show: location.pathname.includes("/expenditure/view-jobs-excel") ? true : false,
+      isBack: fromScreen && true,
+    },
   ];
   return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };

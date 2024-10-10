@@ -25,10 +25,8 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
       "searchCriteria": {
         "tenantId": "pg.citya",
         "moduleSearchCriteria": {
-          "ward": "string"
+          "projectId": projectId
         },
-        "limit": 10,
-        after_key: projectId,
       }
     }
   };
@@ -43,10 +41,10 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
         "tenantId": "pg.citya",
         "moduleSearchCriteria": {
           "tenantId": "pg.citya",
+          "projectId": projectId
         },
         "limit": 10,
         "offset": 0,
-        // "after_key": "PJ/2023-24/000172",
       }
     }
   };
