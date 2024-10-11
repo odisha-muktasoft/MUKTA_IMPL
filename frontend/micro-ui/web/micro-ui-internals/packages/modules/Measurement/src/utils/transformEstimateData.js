@@ -116,6 +116,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
   const Pward = projectWard ? t(`${headerLocale}_ADMIN_${projectWard}`) : "";
   // const city = projectLoc ? t(`${Digit.Utils.locale.getTransformedLocale(projectLoc)}`) : "";
   const city = projectLoc ? t(`${headerLocale}_ADMIN_${projectLoc}`) : "";
+  const entryDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.entryDate;
 
   const projectLocation = `${Pward ? Pward + ", " : ""}${city}`;
   let CurrentStartDate = period?.startDate;
@@ -163,7 +164,8 @@ export const getDefaultValues = (data, t, mbNumber) => {
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
     CurrentEndDate,
-    mbNumber
+    mbNumber,
+    entryDate
   };
 
   return { SOR, NONSOR, contractDetails, uploadedDocs, documents:measurement?.documents || allMeasurements?.[0]?.documents };
