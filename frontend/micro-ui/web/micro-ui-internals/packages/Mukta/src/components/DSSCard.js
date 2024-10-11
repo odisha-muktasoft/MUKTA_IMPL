@@ -3,7 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const ROLES = {
-  MUKTADASHBOARD: ["DASHBOARD_VIEWER"]
+  MUKTADASHBOARD: ["DASHBOARD_VIEWER"],
+  PAYMENT: ["EMPLOYEE_COMMON"],
 };
 
 const DSSCard = () => {
@@ -40,6 +41,12 @@ const DSSCard = () => {
         label: t("DSS_ROLLOUT_DASHBOARD"),
         link: isProduction ? `/kibana-v8/app/dashboards#/view/1cb35e7c-2a53-45e2-a46b-018d17ae4c15?_g=[…]!t,value:60000),time:(from:now-1y%2Fd,to:now))`: `/kibana-v8/app/dashboards#/view/261cb0b0-fbde-11ee-b08d-8b505ceea182?_g=[…]use:!t,value:60000),time:(from:now-1y,to:now))`,
         roles: ROLES.MUKTADASHBOARD,
+        target: "_blank"
+      },
+      {
+        label: t("PAYMENT_TRACKER"),
+        link: `/${window?.contextPath}/employee/expenditure/payment-tracker`,
+        roles: ROLES.PAYMENT,
         target: "_blank"
       },
     ],

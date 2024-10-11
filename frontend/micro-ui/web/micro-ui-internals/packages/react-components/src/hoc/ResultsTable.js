@@ -207,6 +207,7 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
                         },
                     };
                 }}
+                stickyFooter={config?.stickyFooter ? data?.stickyFooterRow : undefined}
             />}
         </div>
     )
