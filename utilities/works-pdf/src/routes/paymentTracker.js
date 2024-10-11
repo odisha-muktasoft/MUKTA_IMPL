@@ -116,9 +116,6 @@ router.post(
                 if(projects.estimatedAmount != null){
                     estimatedAmount = projects.estimatedAmount;
                 }
-                // if(projects.total != null){
-                //     total = projects.total;
-                // }
 
                 if(projects.paymentDetails && projects.paymentDetails.length > 0){
                     for (var i = 0; i < projects.paymentDetails.length; i++) {
@@ -148,12 +145,23 @@ router.post(
                 return renderError(res, "Failed to query details of the payment instruction", 500);
             }
 
+            function convertEpochToIST(epochTime) {
+                // Convert epoch time (in milliseconds) to a JavaScript Date object
+                const date = new Date(epochTime);
+            
+                // Format the date in dd/mm/yyyy and adjust to IST timezone
+                const options = { timeZone: 'Asia/Kolkata', day: '2-digit', month: '2-digit', year: 'numeric' };
+                return date.toLocaleDateString('en-GB', options);
+            }
+
             var paymentInstruction = resPaymentInstruction.data;
             var bills = paymentInstruction.items;
             if (bills && bills.length > 0) {
                 for (var i = 0; i < bills.length; i++) {
                     bills[i].businessObject["failedAmount"] = 0;
                     bills[i].businessObject["successAmount"] = 0;
+                    const formattedDate = convertEpochToIST(bills[i].businessObject.auditDetails.lastModifiedTime);
+                    bills[i].businessObject["paymentDate"] = formattedDate;
                     if(bills[i].businessObject.piStatus == "FAILED"){
                         bills[i].businessObject["failedAmount"] = bills[i].businessObject.netAmount;
                     }else if(bills[i].businessObject.piStatus == "SUCCESSFUL"){
