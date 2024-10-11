@@ -9,8 +9,8 @@ class Urls {
   static WorkServices workServices = const WorkServices();
   static ORGServices orgServices = const ORGServices();
   static BillServices billServices = const BillServices();
-  static MeasurementService measurementService= const MeasurementService();
-  static EmpHrms empHrms =const EmpHrms();
+  static MeasurementService measurementService = const MeasurementService();
+  static EmpHrms empHrms = const EmpHrms();
   static EstimateService estimateService = const EstimateService();
 }
 
@@ -43,20 +43,23 @@ class BillServices {
 class WageSeekerServices {
   const WageSeekerServices();
 // unified-qa
-   String get individualCreate => 'mukta-individual/v1/_create';
- // uat-prod
+  String get individualCreate => 'mukta-individual/v1/_create';
+  // uat-prod
   //String get individualCreate => 'individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
 
-  String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
+  String get adharVerifyUrl =>
+      'http://164.100.141.79/authekycv4/api/authenticate';
 }
 
 class InitServices {
   const InitServices();
-  String get mdms => 'egov-mdms-service/v1/_search';
-    String get mdmsSkill=>"mdms-v2/v1/_search";
+  // old
+  // String get mdms => 'egov-mdms-service/v1/_search';
+  String get mdms => 'mdms-v2/v1/_search';
+  String get mdmsSkill => "mdms-v2/v1/_search";
   String get localizationSearch => 'localization/messages/v1/_search';
-  String get empHomeConfig=>'access/v1/actions/mdms/_get';
+  String get empHomeConfig => 'access/v1/actions/mdms/_get';
 }
 
 class UserServices {
@@ -78,9 +81,8 @@ class WorkServices {
   // String get updateWorkOrder => 'contract/v1/_update';
   // String get createWorkOrder => 'contract/v1/_create';
 
-
   // unified-qa
-   String get myWorks => 'mukta-contract/v1/_search';
+  String get myWorks => 'mukta-contract/v1/_search';
   String get updateWorkOrder => 'mukta-contract/v1/_update';
   String get createWorkOrder => 'mukta-contract/v1/_create';
 }
@@ -88,8 +90,8 @@ class WorkServices {
 class EmpHrms {
   const EmpHrms();
   // uat-prod
- // String get leadHrmsEmployee => 'egov-hrms/employees/_search';
-  
+  // String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+
   // unified-qa
   String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
 }
@@ -126,11 +128,8 @@ class AttendanceRegisterServices {
   String get wmsIndividualSearch => 'wms/individual/_search';
 }
 
-
-
-
-class MeasurementService{
-   const MeasurementService();
+class MeasurementService {
+  const MeasurementService();
 
 // UAT-prod
   //  String get measurementInbox=>'inbox/v2/_search';
@@ -138,22 +137,21 @@ class MeasurementService{
   //  String get updateMeasurement => "measurement-service/v1/_update";
   //  String get createMeasurement=>"measurement-service/v1/_create";
 
-   // unified-qa
-   String get measurementInbox=>'inbox/v2/_search';
-   String get measurementDetail=>"mukta-mukta-services/measurement/_search";
-   String get updateMeasurement => "measurement-service/v1/_update";
-   String get createMeasurement=>"measurement-service/v1/_create";
+  // unified-qa
+  String get measurementInbox => 'inbox/v2/_search';
+  String get measurementDetail => "mukta-mukta-services/measurement/_search";
+  String get updateMeasurement => "measurement-service/v1/_update";
+  String get createMeasurement => "measurement-service/v1/_create";
 }
 
 //estimate/v1/_search
 
-
-class EstimateService{
-   const EstimateService();
+class EstimateService {
+  const EstimateService();
 
 // uat-prod
   //  String get estimateSearch=>'estimate/v1/_search';
 
-   // unified-qa
-   String get estimateSearch=>'mukta-estimate/v1/_search';
+  // unified-qa
+  String get estimateSearch => 'mukta-estimate/v1/_search';
 }
