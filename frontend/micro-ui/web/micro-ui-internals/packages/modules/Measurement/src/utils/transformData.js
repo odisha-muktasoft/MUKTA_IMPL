@@ -151,7 +151,7 @@ const measurement= {
   }
 
   /* added as a temporary fix that sends entrydate */
-  measurement.entryDate=new Date().getTime();
+  measurement.entryDate = data?.entryDate ? data?.entryDate : new Date().getTime();
   const transformedData = {
     measurements: [
      measurement
