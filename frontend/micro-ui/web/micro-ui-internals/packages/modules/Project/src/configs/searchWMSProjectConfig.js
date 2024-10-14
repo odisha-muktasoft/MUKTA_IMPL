@@ -50,9 +50,9 @@ const searchWMSProjectConfig = {
                     "type": "ward",
                     "optionsKey": "i18nKey",
                     "allowMultiSelect": false,
-                    "optionsCustomStyle": {
-                      "top": "2.3rem"
-                    }
+                    // "optionsCustomStyle": {
+                    //   "top": "2.3rem"
+                    // }
                   }
                 },
                 {
@@ -63,9 +63,9 @@ const searchWMSProjectConfig = {
                   "populators": {
                     "name": "projectType",
                     "optionsKey": "name",
-                    "optionsCustomStyle": {
-                      "top": "2.3rem"
-                    },
+                    // "optionsCustomStyle": {
+                    //   "top": "2.3rem"
+                    // },
                     "mdmsConfig": {
                       "masterName": "ProjectType",
                       "moduleName": "works",

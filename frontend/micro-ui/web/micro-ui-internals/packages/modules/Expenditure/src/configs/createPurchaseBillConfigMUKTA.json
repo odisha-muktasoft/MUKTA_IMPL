@@ -35,10 +35,11 @@
                   "isMandatory": false,
                   "key": "basicDetails_workOrderNumber",
                   "type": "text",
-                  "disable": true,
+                  "disable": false,
                   "populators": {
                     "name": "basicDetails_workOrderNumber",
-                    "customClass": "fc-header-texts"
+                    "customClass": "fc-header-texts-new",
+                    "nonEditable":true
                   }
                 },
                 {
@@ -46,10 +47,11 @@
                   "isMandatory": false,
                   "key": "basicDetails_projectID",
                   "type": "text",
-                  "disable": true,
+                  "disable": false,
                   "populators": {
                     "name": "basicDetails_projectID",
-                    "customClass": "fc-header-texts"
+                    "customClass": "fc-header-texts-new",
+                    "nonEditable":true
                   }
                 },
                 {
@@ -57,10 +59,11 @@
                   "isMandatory": false,
                   "key": "basicDetails_projectDesc",
                   "type": "text",
-                  "disable": true,
+                  "disable": false,
                   "populators": {
                     "name": "basicDetails_projectDesc",
-                    "customClass": "fc-header-texts"
+                    "customClass": "fc-header-texts-new",
+                    "nonEditable":true
                   }
                 },
                 {
@@ -68,10 +71,11 @@
                   "isMandatory": false,
                   "key": "basicDetails_location",
                   "type": "text",
-                  "disable": true,
+                  "disable": false,
                   "populators": {
                     "name": "basicDetails_location",
-                    "customClass": "fc-header-texts"
+                    "customClass": "fc-header-texts-new",
+                    "nonEditable":true
                   }
                 }
               ]
@@ -109,9 +113,6 @@
                       "name": "invoiceDetails_organisationType",
                       "optionsKey": "name",
                       "error": "WORKS_REQUIRED_ERR",
-                      "optionsCustomStyle": {
-                          "top": "2.3rem"
-                      },
                       "options": []
                   }
                 },
@@ -130,9 +131,6 @@
                       "name": "invoiceDetails_vendor",
                       "optionsKey": "name",
                       "error": "WORKS_REQUIRED_ERR",
-                      "optionsCustomStyle": {
-                          "top": "2.3rem"
-                      },
                       "options": []
                   }
                 },
@@ -229,11 +227,12 @@
                   "isMandatory": true,
                   "key": "billDetails_billDate",
                   "type": "date",
-                  "disable": true,
+                  "disable": false,
                   "preProcess" : {
                     "updateDependent" : ["populators.max"]
                   },
                   "populators": { 
+                    "nonEditable": true,
                     "name": "billDetails_billDate",
                     "error": "WORKS_REQUIRED_ERR",
                     "max" : "currentDate"
@@ -251,7 +250,7 @@
                   },
                   "populators": {
                     "name": "billDetails_billAmt",
-                    "customClass": "fc-header-texts",
+                    "customClass": "fc-header-texts-new",
                     "error": "EXP_BILL_AMOUNT_ERR"
                   }
                 },

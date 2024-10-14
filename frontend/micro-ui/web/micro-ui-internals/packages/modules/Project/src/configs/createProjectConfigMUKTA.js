@@ -131,9 +131,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "name",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": true,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "mdmsConfig": {
                   "masterName": "ProjectType",
                   "moduleName": "works",
@@ -152,9 +152,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "name",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": false,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "mdmsConfig": {
                   "masterName": "TargetDemography",
                   "moduleName": "works",
@@ -216,9 +216,9 @@ export const createProjectConfigMUKTA = {
                 "options": [],
                 "error": "WORKS_REQUIRED_ERR",
                 "required": true,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                }
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // }
               }
             },
             {
@@ -237,9 +237,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "i18nKey",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": false,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "options": []
               }
             },
@@ -252,9 +252,9 @@ export const createProjectConfigMUKTA = {
                 "name": "noSubProject_locality",
                 "optionsKey": "i18nKey",
                 "allowMultiSelect": false,
-                "url": "/egov-location/location/v11/boundarys/_search",
-                "params": { "hierarchyTypeCode" : "ADMIN", "boundaryType": "locality" },
-                "selectFun": "return data?.TenantBoundary[0]?.boundary?.map(item => ({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` }))"
+                "url": "/boundary-service/boundary-relationships/_search?",
+                "params": { "hierarchyType" : "ADMIN", "boundaryType": "LOCALITY" },
+                "selectFun": "return data?.boundary?.map(item => ({ code: item.code, i18nKey: `${headerLocale}_ADMIN_${item?.code}` }))"
                }
             }
           ]

@@ -60,14 +60,14 @@ const SubProjectDetailsTable = ({t, register, control, setValue, onChange, error
                 const wards = []
                 const localities = {}
                 data?.TenantBoundary[0]?.boundary.forEach((item) => {
-                    localities[item?.code] = item?.children.map(item => ({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
-                    wards.push({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
+                    localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
+                    wards.push({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
                 });
                return {
                     wards, localities
                }
             }
-        });
+        },true);
         
     useEffect(()=>{
         let filteredSubTypeOfProject = ( subProjectTypeOfProjectOptions && subProjectTypeOfProjectOptions?.projectSubType ) ? (
@@ -414,7 +414,7 @@ const SubProjectDetailsTable = ({t, register, control, setValue, onChange, error
                 {renderBody()}
                 <tr>
                     <td style={getStyles("SNO")}></td>
-                    <td style={{ ...getStyles(2), "textAlign": "center" }} onClick={addRow}><span><AddIcon fill={"#F47738"} styles={{ "margin": "auto", "display": "inline", "marginTop": "-2px" }} /><label style={{ "marginLeft": "10px" }}>{t("WORKS_ADD_ITEM")}</label></span></td>
+                    <td style={{ ...getStyles(2), "textAlign": "center" }} onClick={addRow}><span><AddIcon fill={"#C84C0E"} styles={{ "margin": "auto", "display": "inline", "marginTop": "-2px" }} /><label style={{ "marginLeft": "10px" }}>{t("WORKS_ADD_ITEM")}</label></span></td>
                     <td style={getStyles()}></td>
                     <td style={getStyles()}></td>
                 </tr>

@@ -1,5 +1,5 @@
-import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextArea } from "@egovernments/digit-ui-react-components";
-
+import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextArea,CardSectionHeader } from "@egovernments/digit-ui-react-components";
+import { TextBlock } from "@egovernments/digit-ui-components";
 import React, { Fragment, useEffect, useCallback} from "react";
 import { useTranslation } from "react-i18next";
 import MeasureCard from "./MeasureCard";
@@ -44,14 +44,14 @@ let defaultSOR = {
       ]
   };
 
-  function hasDecimalPlaces(number, decimalPlaces) {
+  function checkIntAndDecimalLength(number, decimalPlaces) {
     if(number == "")
     {  
         return true;
     }
     var numStr = number.toString();
-    // Using regex to check if its accepting upto given decimal places
-    var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
+    // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+    var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
     return regex.test(numStr);
   }
 
@@ -66,7 +66,7 @@ const MeasureTable = (props) => {
     localePrefix: "ES_COMMON_UOM",
   };
   if(mode?.includes("CREATE")){
-    fields = watch?.(tableKey);
+    fields = watch?.(`${tableKey}table`);
     append = (val)=>{
       setFormValue([...fields,val]);
     }
@@ -246,6 +246,7 @@ const MeasureTable = (props) => {
         t("WORKS_SNO"),
         t("MB_IS_DEDUCTION"),
         t("MB_DESCRIPTION"),
+        t("MB_MEASURE_SUMMARY"),
         t("MB_ONLY_NUMBER"),
         t("MB_LENGTH"),
         t("MB_WIDTH"),
@@ -266,7 +267,7 @@ const MeasureTable = (props) => {
         }
 
         fields[index] = { ...field };
-        if(tableKey === "NONSOR" && key === "unitRate" && !(hasDecimalPlaces(field[key],2)))
+        if(tableKey === "NONSOR" && key === "unitRate" && !(checkIntAndDecimalLength(field[key],2)))
         {
           return;
         }
@@ -327,7 +328,21 @@ const MeasureTable = (props) => {
                 {/*((mode === "VIEWES") && tableKey === "SOR") &&<td>{`${t(`${"Works_D"}`)}/ ${t(`${"SC_D"}`)}`}</td>*/}
                 {tableKey === "SOR" && (mode === "CREATEALL" || mode === "VIEWES" || mode === "CREATERE" || mode === "VIEWRE") && (((row?.sorType || row?.sorSubType)) ?<td>{`${t(`WORKS_SOR_TYPE_${row?.sorType}`)}/ ${t(`WORKS_SOR_SUBTYPE_${row?.sorSubType}`)}`}</td> : <td>{t(" ")}</td>)}
                 {((mode === "CREATEALL" || mode === "VIEWES" || mode === "VIEWES" || mode === "CREATERE" || mode === "VIEWRE") && tableKey === "SOR") && <td>{row?.sorCode}</td>}
-                <td>{row.description}</td>
+                <td>
+                <div className="tooltip" >
+                {row.description?.length > 128 ? `${row.description.substring(0,128)}...` : row?.description}
+                                {row.description?.length > 128 &&<span className="tooltiptext" style={{
+                                    whiteSpace: "nowrap",
+                                    fontSize: "medium",
+                                    bottom : "100%",
+                                    overflow : "auto",
+                                    left:"100%",
+                                    marginLeft:"0px"
+                                }}>
+                                    {row.description}
+                                </span>}
+                            </div>
+                </td>
                 <td>{row.uom}</td>
                 <td>
                   <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.unitRate).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
@@ -446,8 +461,8 @@ const MeasureTable = (props) => {
                   append({
                     amount: 0,
                     consumedQ: 0,
-                    category:"NON-SOR",
-                    sNo: fields?.length+1,
+                    category: "NON-SOR",
+                    sNo: fields?.length + 1,
                     currentMBEntry: 0,
                     uom: null,
                     description: "",
@@ -460,15 +475,15 @@ const MeasureTable = (props) => {
                 }}
               >
                 <span>
-                  <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
-                  <label style={{ marginLeft: "10px", fontWeight: "600", color: " #F47738" }}>{t("WORKS_ADD_SOR")}</label>
+                  <AddIcon fill={"#C84C0E"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
+                  <label style={{ marginLeft: "10px", fontWeight: "600", color: " #C84C0E" }}>{t("WORKS_ADD_SOR")}</label>
                 </span>
               </td>
             )}
           </tr>
         </tbody>
       </table>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
+      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
         <div style={{ display: "flex", flexDirection: "row", fontSize: "16px" }}>
           <span style={{ fontWeight: "bold", marginTop:"6px" }}>
             {t("WORKS_TABLE_TOTAL_AMOUNT")} :
@@ -476,6 +491,41 @@ const MeasureTable = (props) => {
           <span style={{ marginLeft: "8px" }}>
             <Amount customStyle={{ textAlign: "right", fontSize:"24px", fontWeight:"700" }} value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} rupeeSymbol={true} sameDisplay={true}></Amount>
           </span>
+        </div>
+      </div> */}
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" }}>
+        <div className={"total_amount_wrapper"}>
+          {/* <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",fontSize:"18px",width:"fit-content"}}>{`${t(
+            "WORKS_TABLE_TOTAL_AMOUNT"
+          )} :`}</CardSectionHeader>
+          <CardSectionHeader style={{ width:"fit-content",marginBottom: "0px" }}>
+            {
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+                sameDisplay={true}
+              ></Amount>
+            }
+          </CardSectionHeader> */}
+
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClassName={"table_total_amount"}></TextBlock>
+          <TextBlock
+            subHeader={
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+                sameDisplay={true}
+              ></Amount>
+            }
+            subHeaderClassName={`table_total_amount_value`}
+          ></TextBlock>
         </div>
       </div>
     </React.Fragment>

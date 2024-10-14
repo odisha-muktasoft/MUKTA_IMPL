@@ -1,4 +1,5 @@
-import { Dropdown, Loader } from "@egovernments/digit-ui-react-components";
+import { Loader } from "@egovernments/digit-ui-react-components";
+import { Dropdown } from "@egovernments/digit-ui-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -44,7 +45,7 @@ const EstimateDropdown = (props) => {
         }}
         option={filteredCodes}
         selected={filteredCodes?.filter((e) => e.code == props?.stateData[props?.type])?.[0] || { code: null }}
-        className = "dropdown-width"
+        // className = "dropdown-width"
       />
     </div>
   );

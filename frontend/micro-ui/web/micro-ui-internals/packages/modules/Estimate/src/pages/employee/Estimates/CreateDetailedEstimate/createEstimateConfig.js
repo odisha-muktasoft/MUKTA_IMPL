@@ -71,6 +71,7 @@ export const createEstimateConfig = () => {
                 "head": " SOR",
                 "subHead": "",
                 "navLink": "Work Details",
+                "sectionClassName":"table-included-section",
                 "body": [
                     {
                         type: "component",
@@ -92,6 +93,7 @@ export const createEstimateConfig = () => {
                 "head": "NON_SOR",
                 "subHead": "",
                 "navLink": "Work Details",
+                "sectionClassName":"table-included-section",
                 "body": [
                     {
                         type: "component",
@@ -111,6 +113,7 @@ export const createEstimateConfig = () => {
                 "head": "Other Charges",
                 "subHead": "",
                 "navLink": "Work Details",
+                "sectionClassName":"table-included-section",
                 "body": [
                     {
                         "type": "component",
@@ -123,13 +126,19 @@ export const createEstimateConfig = () => {
             {
                 "head": "",
                 "subHead": "",
+                "sectionClassName":"viewstatement-viewamount-wrapper-create",
                 "navLink": "Work Details",
                 "body": [
                     {
                         "type": "component",
                         "component": "TotalEstAmount",
                         "withoutLabel": true,
-                        "key": "totalEstimatedAmount"
+                        "key": "totalEstimatedAmount",
+                        "props":{
+                            style:{
+                                marginTop:"0px"
+                            }
+                        }
                     },
                     {
                         "type": "component",

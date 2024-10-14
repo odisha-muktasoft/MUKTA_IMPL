@@ -1,4 +1,4 @@
-import TextInput from "./TextInput";
+import { TextInput } from "@egovernments/digit-ui-components";
 
 import React, { forwardRef, useImperativeHandle, useMemo, useRef, useEffect, useState } from "react";
 import {

@@ -1,7 +1,9 @@
 import React, { Fragment,useEffect,useState } from "react";
-import CheckBox from "../atoms/CheckBox";
+// import CheckBox from "../atoms/CheckBox";
 import { Loader } from "../atoms/Loader";
 import CardLabel from "../atoms/CardLabel";
+
+import { CheckBox } from "@egovernments/digit-ui-components";
 
 const WorkflowStatusFilter = ({ props, t, populators, formData,inboxResponse }) => {
 //from inbox response get the statusMap and show the relevant statuses
@@ -46,7 +48,6 @@ const WorkflowStatusFilter = ({ props, t, populators, formData,inboxResponse }) 
             value={row.uuid}
             checked={formData?.[populators.name]?.[row.uuid]}
             label={t(Digit.Utils.locale.getTransformedLocale(`${populators.labelPrefix}${row?.businessService}_STATE_${row?.state}`))}
-            style={{marginLeft:"40px"}}
           />
         );
       })}

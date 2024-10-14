@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Toast,WorkflowActions,Loader,ViewDetailsCard,MultiLink } from "@egovernments/digit-ui-react-components";
+import { Header,WorkflowActions,Loader,ViewDetailsCard,MultiLink } from "@egovernments/digit-ui-react-components";
 import ApplicationDetails from "../../../../../templates/ApplicationDetails";
 import WarningPopUp from "../../../pageComponents/WarningPopUp";
+import {Toast,Button} from '@egovernments/digit-ui-components'
 import { useHistory } from "react-router-dom";
 
 const ViewAttendance = () => {
@@ -81,16 +82,24 @@ const ViewAttendance = () => {
   if(isLoading || approverLoading || isMbValidationLoading) return <Loader />
   return (
     <React.Fragment>
-      <div className={"employee-application-details"} >
-        <Header className="works-header-view">{showEditTitle ? t('ATM_EDIT_ATTENDENCE') : t("ATM_VIEW_ATTENDENCE")}</Header>
-        <MultiLink
+      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
+        <Header styles={{paddingTop: "10px"}} className="works-header-view">{showEditTitle ? t("ATM_EDIT_ATTENDENCE") : t("ATM_VIEW_ATTENDENCE")}</Header>
+        {/* <MultiLink
          onHeadClick={() => HandleDownloadPdf()}
          downloadBtnClassName={"employee-download-btn-className"}
          label={t("CS_COMMON_DOWNLOAD")}
+        /> */}
+        <Button
+          label={t("CS_COMMON_DOWNLOAD")}
+          onClick={() => HandleDownloadPdf()}
+          className={"employee-download-btn-className"}
+          variation={"teritiary"}
+          type="button"
+          icon={"FileDownload"}
         />
       </div>
 
-      {data && <ViewDetailsCard cardState={cardState} t={t}/>}
+      {data && <ViewDetailsCard cardState={cardState} t={t} />}
 
       {showDataError === null && (
         <ApplicationDetails
@@ -113,15 +122,15 @@ const ViewAttendance = () => {
           setshowEditTitle={setshowEditTitle}
           saveAttendanceState={saveAttendanceState}
           setSaveAttendanceState={setSaveAttendanceState}
-          approverList={employeeDatav1?.Employees?.length > 0 ? employeeDatav1?.Employees.filter(emp => emp?.nameOfEmp !== "NA") : []}
+          approverList={employeeDatav1?.Employees?.length > 0 ? employeeDatav1?.Employees.filter((emp) => emp?.nameOfEmp !== "NA") : []}
         />
       )}
 
-      {isSuccess && !modify &&
+      {isSuccess && !modify && (
         <WorkflowActions
-        forcedActionPrefix={`WF_${businessService}_ACTION`}
-        businessService={businessService}
-        applicationNo={musterRollNumber}
+          forcedActionPrefix={`WF_${businessService}_ACTION`}
+          businessService={businessService}
+          applicationNo={musterRollNumber}
           tenantId={tenantId}
           applicationDetails={data?.applicationData}
           url={Digit.Utils.Urls.attendencemgmt.mustorRoll.update}
@@ -129,50 +138,46 @@ const ViewAttendance = () => {
           moduleCode="attendencemgmt"
           editApplicationNumber={""}
           WorflowValidation={(setShowModal) => {
-                try {
-                  let validationFlag = false;
-                  for (const validation of mbValidationMr?.musterRollValidation) {
-                      if (validation?.type === 'error') {
-                        validationFlag = true;
-                          setShowToast({error : true, label : t(validation?.message)});
-                          break;
-                      } else if (validation?.type === 'warn') {
-                        validationFlag = true;
-                          setShowPopUp({setShowWfModal:setShowModal, label:t(validation?.message)});
-                          break;
-                      }
-                  }
-                  if(!validationFlag)
-                    setShowModal(true);
-          
-              } catch (error) {
-                  showToast(error.message);
+            try {
+              let validationFlag = false;
+              for (const validation of mbValidationMr?.musterRollValidation) {
+                if (validation?.type === "error") {
+                  validationFlag = true;
+                  setShowToast({ type: "error", label: t(validation?.message) });
+                  break;
+                } else if (validation?.type === "warn") {
+                  validationFlag = true;
+                  setShowPopUp({ setShowWfModal: setShowModal, label: t(validation?.message) });
+                  break;
+                }
               }
+              if (!validationFlag) setShowModal(true);
+            } catch (error) {
+              showToast(error.message);
+            }
           }}
           editCallback={() => {
             setModify(true);
             setshowEditTitle(true);
-            setSaveAttendanceState(prevState => {
+            setSaveAttendanceState((prevState) => {
               return {
                 ...prevState,
-                displaySave:true,
-                updatePayload:data?.applicationData?.individualEntries?.map(row => {
+                displaySave: true,
+                updatePayload: data?.applicationData?.individualEntries?.map((row) => {
                   return {
-                    totalAttendance:row?.modifiedTotalAttendance || row?.actualTotalAttendance,
-                    id:row?.id
-                  }
-                })
-              }
-            })
+                    totalAttendance: row?.modifiedTotalAttendance || row?.actualTotalAttendance,
+                    id: row?.id,
+                  };
+                }),
+              };
+            });
           }}
         />
-      }
-      {showPopup && <WarningPopUp setShowWfModal={showPopup?.setShowWfModal} label={showPopup?.label} setShowPopUp={setShowPopUp} t={t} />}
-      {showToast && (
-        <Toast error={showToast?.error} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />
       )}
+      {showPopup && <WarningPopUp setShowWfModal={showPopup?.setShowWfModal} label={showPopup?.label} setShowPopUp={setShowPopUp} t={t} />}
+      {showToast && <Toast type={showToast?.type} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />}
       {showDataError && (
-        <Toast error={true} label={t("COMMON_ERROR_FETCHING_MUSTER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+        <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_MUSTER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
       )}
     </React.Fragment>
   );

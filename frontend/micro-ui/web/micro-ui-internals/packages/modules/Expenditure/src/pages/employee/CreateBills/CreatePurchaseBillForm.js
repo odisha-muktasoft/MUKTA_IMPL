@@ -1,6 +1,7 @@
-import { Button, CardText, FormComposer, Header, PopUp, Toast, WorkflowModal, Card, CardHeader, CardSubHeader, AlertPopUp } from "@egovernments/digit-ui-react-components";
+import { Button, CardText, FormComposer, Header, PopUp, WorkflowModal, Card, CardHeader, CardSubHeader, AlertPopUp } from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Toast } from "@egovernments/digit-ui-components";
 import _ from "lodash";
 import { useHistory } from "react-router-dom";
 import { createBillPayload } from "../../../utils/createBillUtils";
@@ -28,7 +29,7 @@ const CreatePurchaseBillForm = ({
     MBValidationData
 }) => {
     const {t} = useTranslation();
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const history = useHistory();
     const tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -81,11 +82,49 @@ const CreatePurchaseBillForm = ({
                 setValue("billDetails_billAmt", parseInt(formData.invoiceDetails_materialCost)+parseInt(gstAmount));
             }
 
-            if(difference?.invoiceDetails_organisationType)
-            {
-                setValue("invoiceDetails_vendor", '');
-                setValue("invoiceDetails_vendorId", undefined);  
+            if (formData?.invoiceDetails_organisationType?.code === "CBO") {
+                setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
+                setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
+            
+                let organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    let vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Disabling and converting the field to text input
+                        vendorField.disable = true;
+                        vendorField.type = "text";
+                        vendorField.populators.customClass = "disabled-text-field";
+                    }
+                }
             }
+
+            if (difference?.invoiceDetails_organisationType && formData?.invoiceDetails_organisationType?.code === "VEN") {
+
+                setValue("invoiceDetails_vendor", '');
+                setValue("invoiceDetails_vendorId", '');
+            
+                let organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    let vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Enabling and converting back to dropdown
+                        vendorField.disable = false;
+                        vendorField.type = "dropdown";
+                        vendorField.populators.customClass = undefined;
+                    }
+                }
+            }
+            
+
+            // if(difference?.invoiceDetails_organisationType)
+            // {
+            //     setValue("invoiceDetails_vendor", '');
+            //     setValue("invoiceDetails_vendorId", undefined);  
+            // }
 
             if(formData.billDetails_billAmt) {
                 let gstAmount = formData.invoiceDetails_gst ? formData.invoiceDetails_gst : 0;
@@ -115,7 +154,7 @@ const CreatePurchaseBillForm = ({
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type : ""});
     }
 
     //remove Toast after 3s
@@ -210,15 +249,15 @@ const CreatePurchaseBillForm = ({
         data = Digit.Utils.trimStringsInObject(data)
         setInputFormData((prevState) => data)
         if(MBValidationData?.allMeasurementsIds?.length <= 0)
-            setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_NO_MB"), error : true})
+            setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_NO_MB"), type : "error"})
         // else if(MBValidationData?.totalMaterialAmount - MBValidationData?.totalPaidAmountForSuccessfulBills <=0)
-        //     setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_UNPAID"), error : true})
+        //     setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_UNPAID"), type : "error"})
         else if(MBValidationData?.totalMaterialAmount - MBValidationData?.totalPaidAmountForSuccessfulBills < data?.totalBillAmount)
          { 
             setIsPopupOpen(true);
          }
         else if(data?.totalBillAmount <= 0)
-        setToast({show : true, label : t("EXPENDITURE_VALUE_CANNOT_BE_ZERO"), error : true})
+        setToast({show : true, label : t("EXPENDITURE_VALUE_CANNOT_BE_ZERO"), type : "error"})
         else
         setShowModal(true);
         //transform formdata to Payload
@@ -273,7 +312,7 @@ const CreatePurchaseBillForm = ({
                         submitInForm={false}
                         fieldStyle={{ marginRight: 0 }}
                         inline={false}
-                        className="form-no-margin"
+                        // className="form-no-margin"
                         defaultValues={sessionFormData}
                         showWrapperContainers={false}
                         isDescriptionBold={false}
@@ -290,7 +329,7 @@ const CreatePurchaseBillForm = ({
                     />)
                 }
                 {isPopupOpen && <AlertPopUp setIsPopupOpen={setIsPopupOpen} setShowModal={setShowModal} t={t} label={"WORKS_UNPAID_AMT_MSG"} />}
-               {toast?.show && <Toast error={toast?.error} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
+               {toast?.show && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
         </React.Fragment>
     )
 }

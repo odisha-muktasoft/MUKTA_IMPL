@@ -1,9 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer,Toast } from '@egovernments/digit-ui-react-components';
+import { FormComposer } from '@egovernments/digit-ui-react-components';
 import { getWageSeekerUpdatePayload, getBankAccountUpdatePayload, getWageSeekerSkillDeletePayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
+import { Loader, Toast } from '@egovernments/digit-ui-components';
 
 const navConfig =  [{
     name:"Wage_Seeker_Details",
@@ -87,14 +88,14 @@ const requestCriteria = {
               const wards = []
               const localities = {}
               data?.TenantBoundary[0]?.boundary.forEach((item) => {
-                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
-                  wards.push({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
+                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
+                  wards.push({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
               });
              return {
                   wards, localities
              }
           }
-      });
+      },true);
     const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
 
     //wage seeker form config
@@ -364,6 +365,8 @@ const requestCriteria = {
         debouncedOnModalSubmit(_data);
       };
 
+      if(isLoading) return <Loader/>
+
     return (
         <React.Fragment>
            <FormComposer
@@ -373,7 +376,7 @@ const requestCriteria = {
                 submitInForm={false}
                 fieldStyle={{ marginRight: 0 }}
                 inline={false}
-                className="form-no-margin"
+                // className={`form-no-margin ${"wageseeker-update-form"}`}
                 defaultValues={sessionFormData}
                 showWrapperContainers={false}
                 isDescriptionBold={false}
@@ -388,7 +391,7 @@ const requestCriteria = {
                 cardClassName = "mukta-header-card"
                 labelBold={true}
             />
-            {showToast && <Toast label={showToast?.label} error={true} isDleteBtn={true} onClose={()=>{
+            {showToast && <Toast label={showToast?.label} type={"error"} isDleteBtn={true} onClose={()=>{
                 setShowToast(null)
             }}></Toast>}
         </React.Fragment>

@@ -137,6 +137,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             props: {mode: "VIEWES", detail : {...estimateDetails, value:measurement?.additionalDetails?.totalAmount} }
           }
         ],
+        sectionClassName:"viewstatement-viewamount-wrapper"
       },
       {
         sections : [

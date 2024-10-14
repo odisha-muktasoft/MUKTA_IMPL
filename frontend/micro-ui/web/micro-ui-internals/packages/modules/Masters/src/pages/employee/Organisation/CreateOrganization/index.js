@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from "react-i18next";
-import { Header, Loader, Toast } from '@egovernments/digit-ui-react-components';
+import { Header, Loader } from '@egovernments/digit-ui-react-components';
 import CreateOrganizationForm from './CreateOrganizationForm';
 import { createOrganizationConfigMUKTA } from '../../../../configs/createOrganizationConfigMUKTA';
 import { updateOrganisationFormDefaultValues } from '../../../../utils/index'
+import { Toast } from '@egovernments/digit-ui-components';
 
 const CreateOrganisation = () => {
     const {t} = useTranslation();
@@ -96,7 +97,7 @@ const CreateOrganisation = () => {
                 )
             }
             {
-                showDataError && <Toast error={true} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+                showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
             }
         </React.Fragment>
     )

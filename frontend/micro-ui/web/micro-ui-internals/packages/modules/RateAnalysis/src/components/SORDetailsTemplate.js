@@ -1,10 +1,11 @@
-import { Card, Header, Button, Loader, TextInput, DeleteIcon } from "@egovernments/digit-ui-react-components";
+import { Card, Header, Loader, DeleteIcon } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 import { has4DecimalPlaces } from "../utils/transformData";
-
+import { Toast } from "@egovernments/digit-ui-components";
 import { calculateTotalAmount } from "../utils/transformData";
+import {Button, TextInput } from "@egovernments/digit-ui-components";
 
 const SORDetailsTemplate = (props) => {
   //new component only
@@ -15,7 +16,7 @@ const SORDetailsTemplate = (props) => {
   const [stateData, setStateData] = useState({});
   const [selectedSOR, setSelectedSOR] = useState(null);
   const [SORDetails, setSORDetails] = useState([]);
-  const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
+  const [showToast, setShowToast] = useState({ show: false, label: "", type: "" });
 
   let formData = watch("SORDetails");
 
@@ -51,6 +52,19 @@ const SORDetailsTemplate = (props) => {
   }, [SORDetails]);
 
   const buttonClick = async () => {
+    //UCEM-782 : Duplicate validation for sor not required as of now, hence commenting
+    // if(formData?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    // {
+    //   setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
+    //   setSelectedSOR(null);
+    //   return;
+    // }
+    // if(window.location.href.includes("update") && SORDetails?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    // {
+    //   setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
+    //   setSelectedSOR(null);
+    //   return;
+    // }
     if (window.location.href.includes("update")) {
       const sor = transformSOR(stateData?.selectedSor, isUpdate);
       sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
@@ -199,8 +213,8 @@ const SORDetailsTemplate = (props) => {
       }
     }
     >
-      <div style={{ display: "flex", width: "70.25%", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+      <div style={{ display: "flex", width: "73%", justifyContent: "space-between", flexWrap: "wrap" ,marginBottom:"24px"}}>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"? {}:{}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         {pageType !== "VIEW" && (
           <div className="search-sor-button">
             <SearchBar
@@ -209,7 +223,7 @@ const SORDetailsTemplate = (props) => {
               setSelectedSOR={setSelectedSOR}
               placeholder={t("RA_SEARCH_BAR_PLACEHOLDER")}
             />
-            <Button label={t("RA_ADD_SOR")} onButtonClick={buttonClick} style={{ padding: "revert" }} className={"add-sor-button"} />
+            <Button label={t("RA_ADD_SOR")} onClick={buttonClick} style={{ padding: "revert" ,marginTop:'24px'}} className={"add-sor-button"} />
           </div>
         )}
       </div>
@@ -241,7 +255,7 @@ const SORDetailsTemplate = (props) => {
                             //value={row?.quantity}
                             onChange={(e) => {
                               const { value } = e.target;
-                              if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
+                              if (value ? has4DecimalPlaces(value) : true) {
                                 let detailsPicked = window.location.href.includes("update") ? SORDetails : formData;
                                 let newSOR = detailsPicked?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {
@@ -272,7 +286,7 @@ const SORDetailsTemplate = (props) => {
                       <div style={cellContainerStyle}>
                         {
                           <span onClick={() => remove(row)} className="icon-wrapper">
-                            <DeleteIcon fill={"#FF9100"} />
+                            <DeleteIcon fill={"#C84C0E"} />
                           </span>
                         }
                       </div>
@@ -300,11 +314,11 @@ const SORDetailsTemplate = (props) => {
       </table>
       {showToast?.show && (
         <Toast
-          labelstyle={{ width: "100%" }}
-          error={showToast?.error}
+          // labelstyle={{ width: "100%" }}
+          type={showToast?.type}
           label={t(showToast?.label)}
           isDleteBtn={true}
-          onClose={() => setShowToast({ show: false, label: "", error: false })}
+          onClose={() => setShowToast({ show: false, label: "", type: "" })}
         />
       )}
     </div>

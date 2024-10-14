@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Loader, ActionBar, SubmitBar, WorkflowModal, LabelFieldPair, CardLabel, TextInput, Toast } from "@egovernments/digit-ui-react-components";
+import { Loader, SubmitBar, WorkflowModal, CardLabel} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
 import getModalConfig from "./modalConfig";
 import { useHistory } from "react-router-dom";
+import {Toast,ActionBar,Button,TextInput} from '@egovernments/digit-ui-components'
 const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
   
   const history = useHistory()
@@ -114,7 +115,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
     if (!extensionRequested || !reasonForExtension || extensionRequested <= 0 || extensionRequested > 365) {
       setShowToast({
         label: "TE_SUBMIT_VALIDATION",
-        isError: true,
+        type: "error",
       });
       closeToast();
       return;
@@ -128,10 +129,10 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
         <div style={{ lineHeight: "19px", maxWidth: "950px", minWidth: "280px",marginTop:"1rem" }}>
           <div className={"employee-data-table"} >
             <div className={"row border-none"} style={{alignItems:"center"}}>
-              <CardLabel style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REQ`)}*`}</CardLabel>
+              <CardLabel className={""} style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REQ`)}*`}</CardLabel>
               <TextInput
                 className={"value"}
-                textInputStyle={{ width: "60%", marginLeft: "2%" }}
+                // textInputStyle={{ width: "60%", marginLeft: "2%" }}
                 onChange={(e) => setExtensionRequested(e.target.value)}
                 ValidationRequired={true}
                 validation={{ type: "number" }}
@@ -142,10 +143,10 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
               />
             </div>
             <div className={"row border-none"} style={{alignItems:"center"}}>
-              <CardLabel style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REASON`)}*`}</CardLabel>
+              <CardLabel className={""} style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px"}}>{`${t(`EXTENSION_REASON`)}*`}</CardLabel>
               <TextInput
-                className={"field"}
-                textInputStyle={{ width: "60%", marginLeft: "2%" }}
+                className={"value"}
+                // textInputStyle={{ width: "60%", marginLeft: "2%" }}
                 onChange={(e) => setReasonForExtension(e.target.value)}
                 defaultValue={isEdit ? contractObject?.additionalDetails?.timeExtReason : null}
               />
@@ -175,11 +176,20 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
           getTimeExtensionJSX,
         }}
       />
-      <ActionBar>
-        <SubmitBar label={t("CREATE_AND_FORWARD_TE")} onSubmit={handleSubmit} />
-      </ActionBar>
+      <ActionBar
+                actionFields={[
+                  <Button
+                    type={"submit"}
+                    label={t("CREATE_AND_FORWARD_TE")}
+                    variation={"primary"}
+                    onClick={handleSubmit}
+                  ></Button>
+                ]}
+                setactionFieldsToRight={true}
+                className={"new-actionbar"}
+              />
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={modalConfig} />}
-      {showToast && <Toast label={t(showToast?.label)} error={showToast?.isError}></Toast>}
+      {showToast && <Toast label={t(showToast?.label)} type={showToast?.type}></Toast>}
     </React.Fragment>
   );
 };

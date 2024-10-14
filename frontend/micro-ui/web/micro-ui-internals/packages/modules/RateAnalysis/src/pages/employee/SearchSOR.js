@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, createContext, Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Loader, Button, ActionBar, SubmitBar, Toast, TextInput, Modal, CardText } from "@egovernments/digit-ui-react-components";
+import { Header, Loader, Button, ActionBar, SubmitBar, TextInput, Modal, CardText } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import searchSORConfig from "../../configs/searchSORConfig";
+import {Toast} from "@egovernments/digit-ui-components";
 
 const Heading = (props) => {
   return <h1 className="heading-m">{props.t(props.heading)}</h1>;
@@ -30,7 +31,7 @@ const SearchSOR = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [triggerApiCall, setTriggerApiCall] = useState(false);
   const [selectedSorIds, setSelectedSorIds] = useState(Digit.SessionStorage.get("RA_SELECTED_SORS") || {});
-  const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
+  const [showToast, setShowToast] = useState({ show: false, label: "", type:""});
   const [popup, setPopup] = useState(false);
   const [effectiveFromDate, setEffectiveFromDate] = useState("");
   const data = searchSORConfig?.SearchSORConfig?.[0];
@@ -85,9 +86,9 @@ const SearchSOR = () => {
     if (reviseratesdata) {
       if (reviseratesdata.ResponseInfo.status === "successful") {
         const jobId = reviseratesdata.ScheduledJobs?.[0]?.jobId || "";
-        setShowToast({ show: true, label: `Revision of rates is scheduled. JOB ID ${jobId}`, error: false });
+        setShowToast({ show: true, label: `Revision of rates is scheduled. JOB ID ${jobId}`, type:"" });
       } else {
-        setShowToast({ show: true, label: "Failed to revise rates", error: true });
+        setShowToast({ show: true, label: "Failed to revise rates", type:"error" });
       }
     }
   }, [reviseratesdata]);
@@ -145,11 +146,11 @@ const SearchSOR = () => {
       </ActionBar>
       {showToast?.show && (
         <Toast
-          labelstyle={{ width: "100%" }}
-          error={showToast?.error}
+          // labelstyle={{ width: "100%" }}
+          type={showToast?.type}
           label={t(showToast?.label)}
           isDleteBtn={true}
-          onClose={() => setShowToast({ show: false, label: "", error: false })}
+          onClose={() => setShowToast({ show: false, label: "", type: "" })}
         />
       )}
       {popup && (

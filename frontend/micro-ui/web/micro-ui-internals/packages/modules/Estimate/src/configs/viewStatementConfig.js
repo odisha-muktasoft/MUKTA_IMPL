@@ -51,7 +51,7 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                // amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
                 rowContainerStyle: {justifyContent : "revert"}
               },
               {
@@ -72,7 +72,7 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                // amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
                 rowContainerStyle: {justifyContent : "revert"}
               },
 
@@ -94,7 +94,7 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                // amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
                 rowContainerStyle: {justifyContent : "revert"}
               },
               {
@@ -116,7 +116,7 @@ export const data = (statementDetails, rawData, oldData) => {
                   undefined,
                   2
                 ):parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end" },
+                // amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
             ],
           },

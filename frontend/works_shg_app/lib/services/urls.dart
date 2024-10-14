@@ -37,7 +37,7 @@ class ORGServices {
 class BillServices {
   const BillServices();
 
-  String get searchMyBills => '/expense-calculator/v1/_search';
+  String get searchMyBills => '/mukta-expense-calculator/v1/_search';
 }
 
 class WageSeekerServices {

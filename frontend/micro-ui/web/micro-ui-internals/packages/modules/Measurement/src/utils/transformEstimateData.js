@@ -49,7 +49,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       number: isMeasurementCreate ? 0 : (measuredObject?.numItems || 0),
       noOfunit:  isMeasurementCreate ? 0 : (measuredObject?.currentValue || 0),
       rowAmount: isMeasurementCreate ? 0 : (measuredObject?.additionalDetails?.mbAmount || 0),
-      additionalDetails: {...measuredObject?.additionalDetails, measureLineItems : measuredObject?.additionalDetails?.measureLineItems?.length > 0 && !(window.location.href.includes("measurement/create")) ? measuredObject?.additionalDetails?.measureLineItems : [{number:0,width:0,length:0,height:0, quantity:0, measurelineitemNo:0}]},
+      additionalDetails: {...measuredObject?.additionalDetails, measureLineItems : measuredObject?.additionalDetails?.measureLineItems?.length > 0 && !(window.location.href.includes("measurement/create")) ? measuredObject?.additionalDetails?.measureLineItems : [{number:0,width:0,length:0,height:0, quantity:0,measureSummary:null, measurelineitemNo:0}]},
       consumedRowQuantity: window.location.href.includes("/measurement/update") || (window.location.href.includes("/measurement/view"))? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
     })
   });
@@ -116,6 +116,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
   const Pward = projectWard ? t(`${headerLocale}_ADMIN_${projectWard}`) : "";
   // const city = projectLoc ? t(`${Digit.Utils.locale.getTransformedLocale(projectLoc)}`) : "";
   const city = projectLoc ? t(`${headerLocale}_ADMIN_${projectLoc}`) : "";
+  const entryDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.entryDate;
 
   const projectLocation = `${Pward ? Pward + ", " : ""}${city}`;
   let CurrentStartDate = period?.startDate;
@@ -163,7 +164,8 @@ export const getDefaultValues = (data, t, mbNumber) => {
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
     CurrentEndDate,
-    mbNumber
+    mbNumber,
+    entryDate
   };
 
   return { SOR, NONSOR, contractDetails, uploadedDocs, documents:measurement?.documents || allMeasurements?.[0]?.documents };

@@ -1,8 +1,9 @@
-import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar,ActionBar, HorizontalNav, Menu, Toast } from '@egovernments/digit-ui-react-components'
+import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar, HorizontalNav, Menu } from '@egovernments/digit-ui-react-components'
 import React, { Fragment,useEffect,useRef,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import ProjectDetailsNavDetails from './ProjectDetailsNavDetails'
+import { Toast,Button,TextBlock,ActionBar } from '@egovernments/digit-ui-components'
 
 const ProjectDetails = () => {
     const { t } = useTranslation();
@@ -23,7 +24,7 @@ const ProjectDetails = () => {
     let isProjectModifier = false;
     let isEstimateViewerAndCreator = false;
     const [actionsMenu, setActionsMenu] = useState([]);
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type:""});
     const navConfigs = [
         {
             "name":"Project_Details",
@@ -67,18 +68,19 @@ const ProjectDetails = () => {
     }
 
     const handleActionBar = (option) => {
-        if(option?.name === "CREATE_ESTIMATE"){
+        if(option?.name === "COMMON_CREATE_ESTIMATE"){
+            sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE") ? sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE") : "";
             history.push(`/${window.contextPath}/employee/estimate/create-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
         }
-        if(option?.name === "VIEW_ESTIMATE"){
+        if(option?.name === "COMMON_VIEW_ESTIMATE"){
             if(estimates?.[0]?.wfStatus?.includes("DRAFTED") && !(estimates?.[0]?.revisionNumber))
                 history.push(`/${window.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}&isEdit=true`);
             else
                 history.push(`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}`);
         }
-        if(option?.name === "MODIFY_PROJECT"){
+        if(option?.name === "COMMON_MODIFY_PROJECT"){
             if(estimates?.length !==0 && estimates?.[0]?.wfStatus !== "" &&  estimates?.[0]?.wfStatus !== "REJECTED") {
-                setToast({show : true, label : t("COMMON_CANNOT_MODIFY_PROJECT_EST_CREATED"), error : true});
+                setToast({show : true, label : t("COMMON_CANNOT_MODIFY_PROJECT_EST_CREATED"), type:"error"});
             }else {
                 // history.push(`/${window.contextPath}/employee/project/modify-project?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
                 history.push({
@@ -90,7 +92,7 @@ const ProjectDetails = () => {
     }
 
     const handleToastClose = () => {
-      setToast({show : false, label : "", error : false});
+      setToast({show : false, label : "",type:""});
     }
 
     const HandleDownloadPdf = () => {
@@ -124,14 +126,14 @@ const ProjectDetails = () => {
     useEffect(()=>{
         let isUserEstimateCreator = loggedInUserRoles?.includes("ESTIMATE_CREATOR");
         if(isEstimateSearchError && isEstimateViewerAndCreator) {
-            setToast({show : true, label : t("COMMON_ERROR_FETCHING_ESTIMATE_DETAILS"), error : true});
+            setToast({show : true, label : t("COMMON_ERROR_FETCHING_ESTIMATE_DETAILS"), type:"error"});
             setHideActionBar(true);
         }else {
             if((estimates?.length === 0 || estimates?.[0]?.wfStatus === "" || estimates?.[0]?.wfStatus === "REJECTED")) {
                 if(isUserEstimateCreator) {
                     setHideActionBar(false);
                     setUniqueActions({
-                        name : "CREATE_ESTIMATE"
+                        name : "COMMON_CREATE_ESTIMATE"
                     })
                 }else {
                     // setHideActionBar(true);
@@ -140,13 +142,13 @@ const ProjectDetails = () => {
                 //we have given search estimate access to project creator
                 setHideActionBar(false);
                 estimates && estimates?.length !== 0 && setUniqueActions({
-                    name : "VIEW_ESTIMATE"
+                    name : "COMMON_VIEW_ESTIMATE"
                 })
             }
             if(isProjectModifier) {
                 setHideActionBar(false);
                 setUniqueActions({
-                    name : "MODIFY_PROJECT"
+                    name : "COMMON_MODIFY_PROJECT"
                 })
             }
         }
@@ -181,43 +183,47 @@ const ProjectDetails = () => {
     },[location]);
 
     return (
-        <div className={"employee-main-application-details"}>
-            <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-                <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>{t("WORKS_PROJECT_DETAILS")}</Header>
-            <MultiLink
-              onHeadClick={() => HandleDownloadPdf()}
-              downloadBtnClassName={"employee-download-btn-className"}
-              label={t("CS_COMMON_DOWNLOAD")}
-            />
-            </div>
-
- 
-            <HorizontalNav showNav={false} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>  
-              <ProjectDetailsNavDetails 
-                activeLink={activeLink}
-                subProjects={subProjects}
-                searchParams={searchParams}
-                filters={filters}
-              />
-            </HorizontalNav>
-            {
-                !hideActionBar &&
-                <ActionBar>
-                    {showActions ? 
-                        <Menu
-                            localeKeyPrefix={`COMMON`}
-                            options={actionsMenu}
-                            optionKey={"name"}
-                            t={t}
-                            onSelect={handleActionBar}
-                        /> : null
-                    }
-                    <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)}/>
-                </ActionBar>
-            }
-        {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      <div className={`employee-main-application-details ${"project-details"}`}>
+        <div className={"employee-application-details"} style={{ marginBottom: "24px", alignItems: "center" }}>
+          <Header className="works-header-view" styles={{ margin: "0px" }}>
+            {t("WORKS_PROJECT_DETAILS")}
+          </Header>
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
         </div>
-    )
+
+        <HorizontalNav showNav={false} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
+          <ProjectDetailsNavDetails activeLink={activeLink} subProjects={subProjects} searchParams={searchParams} filters={filters} />
+        </HorizontalNav>
+        {!hideActionBar && (
+          <ActionBar
+            actionFields={[
+              <Button
+                t={t}
+                type={"actionButton"}
+                options={actionsMenu}
+                label={t("WORKS_ACTIONS")}
+                variation={"primary"}
+                optionsKey={"name"}
+                isSearchable={false}
+                onOptionSelect={(option) => {
+                    handleActionBar(option)
+                }}
+              ></Button>,
+            ]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
+        )}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      </div>
+    );
 }
 
 export default ProjectDetails;

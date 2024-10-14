@@ -370,8 +370,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
         <tr>
           <td colSpan={7} style={{ textAlign: "center" }} onClick={addRow}>
             <span>
-              <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
-              <label style={{ marginLeft: "10px", fontWeight: "600", color: "#F47738" }}>{t("RA_ADD_ITEM")}</label>
+              <AddIcon fill={"#C84C0E"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
+              <label style={{ marginLeft: "10px", fontWeight: "600", color: "#C84C0E" }}>{t("RA_ADD_ITEM")}</label>
             </span>
           </td>
         </tr>
