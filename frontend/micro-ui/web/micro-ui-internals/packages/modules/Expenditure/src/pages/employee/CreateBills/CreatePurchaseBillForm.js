@@ -86,10 +86,10 @@ const CreatePurchaseBillForm = ({
                 setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
                 setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
             
-                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                let organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
                 
                 if (organizationDetailsSection) {
-                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    let vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
                     
                     if (vendorField) {
                         // Disabling and converting the field to text input
@@ -98,14 +98,17 @@ const CreatePurchaseBillForm = ({
                         vendorField.populators.customClass = "disabled-text-field";
                     }
                 }
-            } else {
+            }
+
+            if (difference?.invoiceDetails_organisationType && formData?.invoiceDetails_organisationType?.code === "VEN") {
+
                 setValue("invoiceDetails_vendor", '');
                 setValue("invoiceDetails_vendorId", '');
             
-                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                let organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
                 
                 if (organizationDetailsSection) {
-                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    let vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
                     
                     if (vendorField) {
                         // Enabling and converting back to dropdown
