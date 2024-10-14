@@ -416,7 +416,7 @@ const MeasureTable = (props) => {
             {(mode == "CREATEALL" || mode == "CREATERE") && (
               <td>
                 <span className="icon-wrapper" onClick={() => checkIfDeletionisAllowed(row) ? "" : remove(index)}>
-                  <DeleteIcon fill={checkIfDeletionisAllowed(row) ? "lightgrey" : "#FF9100"} />
+                  <DeleteIcon fill={checkIfDeletionisAllowed(row) ? "lightgrey" : "#C84C0E"} />
                 </span>
               </td>
             )}

@@ -43,7 +43,8 @@ import {
   Header,
   TextBlock,
   ActionBar,
-  SubmitBar
+  SubmitBar,
+  Tab
 } from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
@@ -714,7 +715,7 @@ export const FormComposer = (props) => {
                   </CardLabel>
                 )} */}
                 {!field.withoutLabel && (
-                  <Header className={`label`}>
+                  <Header className={`label ${props?.labelBold ? "bolderLabel" : ""} ${field?.labelClassName || ""}`}>
                     <div className={`label-container`}>
                       <div className={`label-styles`}>
                         {convertToSentenceCase(
@@ -914,11 +915,16 @@ export const FormComposer = (props) => {
         </Card>
       )}
       {props?.showFormInNav && props.horizontalNavConfig && (
-        <HorizontalNav
+        <Tab
           configNavItems={props.horizontalNavConfig ? props.horizontalNavConfig : null}
           showNav={props?.showNavs}
           activeLink={activeLink}
           setActiveLink={setActiveLink}
+          configItemKey="name"
+          configDisplayKey={"code"}
+          navStyles={{}}
+          style={{}}
+          itemStyle={{width:"unset !important"}}
         >
           {props?.showMultipleCardsInNavs ? (
             props?.config?.map((section, index, array) => {
@@ -945,7 +951,7 @@ export const FormComposer = (props) => {
               })}
             </Card>
           )}
-        </HorizontalNav>
+        </Tab>
       )}
       {!props.submitInForm && props.label && (
         <ActionBar

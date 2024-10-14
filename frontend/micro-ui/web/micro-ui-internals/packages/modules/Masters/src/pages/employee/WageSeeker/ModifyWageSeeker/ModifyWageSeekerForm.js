@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer } from '@egovernments/digit-ui-components';
+import { FormComposer } from '@egovernments/digit-ui-react-components'
 import { getWageSeekerUpdatePayload, getBankAccountUpdatePayload, getWageSeekerSkillDeletePayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
 import { Toast } from '@egovernments/digit-ui-components';
@@ -95,7 +95,7 @@ const requestCriteria = {
                   wards, localities
              }
           }
-      },includeChildren = true);
+      },true);
     const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
 
     //wage seeker form config

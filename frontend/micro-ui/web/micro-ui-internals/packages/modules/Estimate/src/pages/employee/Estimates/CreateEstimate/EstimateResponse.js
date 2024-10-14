@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CreateEstimateIcon, DownloadImgIcon, GotoInboxIcon, ArrowLeftWhite } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
-import { PanelCard, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, Button, ActionBar } from "@egovernments/digit-ui-components";
 
 // state = {
 //     header,idText,id,message,links
@@ -130,15 +130,19 @@ const EstimateResponse = (props) => {
       <PanelCard
         type={"success"}
         message={state?.header}
-        footerChildren={[
-          <Link to={`/${window.contextPath}/employee`}>
-            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
-          </Link>
-        ]}
         children={children}
         info={state?.info}
         response={state?.id}
         description={t(state?.message)}
+      />
+      <ActionBar
+        actionFields={[
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+          </Link>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

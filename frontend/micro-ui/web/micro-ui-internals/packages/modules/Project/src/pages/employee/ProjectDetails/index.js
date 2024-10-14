@@ -3,7 +3,7 @@ import React, { Fragment,useEffect,useRef,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import ProjectDetailsNavDetails from './ProjectDetailsNavDetails'
-import { Toast,Button,TextBlock,ActionBar } from '@egovernments/digit-ui-components'
+import { Toast,Button,TextBlock,ActionBar,Tab } from '@egovernments/digit-ui-components'
 
 const ProjectDetails = () => {
     const { t } = useTranslation();
@@ -197,10 +197,20 @@ const ProjectDetails = () => {
             icon={"FileDownload"}
           />
         </div>
-
-        <HorizontalNav showNav={false} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
+        <Tab
+          showNav={false}
+          configNavItems={configNavItems}
+          activeLink={activeLink}
+          setActiveLink={setActiveLink}
+          inFormComposer={false}
+          configItemKey="name"
+          configDisplayKey={"code"}
+          itemStyle={{ width: "unset !important" }}
+          navStyles={{}}
+          style={{}}
+        >
           <ProjectDetailsNavDetails activeLink={activeLink} subProjects={subProjects} searchParams={searchParams} filters={filters} />
-        </HorizontalNav>
+        </Tab>
         {!hideActionBar && (
           <ActionBar
             actionFields={[
@@ -213,7 +223,7 @@ const ProjectDetails = () => {
                 optionsKey={"name"}
                 isSearchable={false}
                 onOptionSelect={(option) => {
-                    handleActionBar(option)
+                  handleActionBar(option);
                 }}
               ></Button>,
             ]}

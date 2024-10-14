@@ -177,6 +177,7 @@ const InboxMeasurementConfig = () => {
             {
               label: "MB_WORKFLOW_STATUS",
               type: "workflowstatesfilter",
+              labelClassName:"checkbox-status-filter-label" ,
               isMandatory: false,
               disable: false,
               populators: {

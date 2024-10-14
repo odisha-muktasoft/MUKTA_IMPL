@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Header, ViewDetailsCard, HorizontalNav, Loader, SubmitBar } from '@egovernments/digit-ui-react-components';
+import { Header, ViewDetailsCard, Loader, SubmitBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
-import { Toast,ActionBar,Button } from "@egovernments/digit-ui-components";
+import { Toast,ActionBar,Button ,Tab} from "@egovernments/digit-ui-components";
 
 const ViewOrganisation = () => {
   const { t } = useTranslation()
@@ -68,12 +68,17 @@ const ViewOrganisation = () => {
         <React.Fragment>
           {organisation && <ViewDetailsCard cardState={organisation?.applicationDetails?.orgDetails} t={t} />}
           {organisation && (
-            <HorizontalNav
+            <Tab
               showNav={true}
               configNavItems={configNavItems}
               activeLink={activeLink}
               setActiveLink={setActiveLink}
               inFormComposer={false}
+              configItemKey="name"
+              configDisplayKey={"code"}
+              itemStyle={{width:"unset !important"}}
+              navStyles={{}}
+              style={{}}
             >
               {activeLink === "Location_Details" && (
                 <ApplicationDetails
@@ -114,7 +119,7 @@ const ViewOrganisation = () => {
                   tenantId={tenantId}
                 />
               )}
-            </HorizontalNav>
+            </Tab>
           )}
           <ActionBar
             actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}

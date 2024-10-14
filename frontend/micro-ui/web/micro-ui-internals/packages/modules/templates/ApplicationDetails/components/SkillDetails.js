@@ -7,7 +7,7 @@ const SkillDetails = ({ data }) => {
     return (
         <React.Fragment>
             <div className='skill-details-wrapper'>
-                <CardLabel style={{fontSize: "16px", fontWeight: "600", marginBottom: 0}}>{t(data?.title)}</CardLabel>
+                <CardLabel style={{fontSize: "16px", fontWeight: "600", marginBottom: 0,width:"17rem"}}>{t(data?.title)}</CardLabel>
                 <div className='skill-details'>
                     { data?.skillData?.length > 0 ? 
                         data?.skillData?.map((item, index) => (

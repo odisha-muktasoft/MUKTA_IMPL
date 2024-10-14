@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PanelCard, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, Button,ActionBar } from "@egovernments/digit-ui-components";
 
 const Response = () => {
   const { t } = useTranslation();
@@ -17,12 +17,16 @@ const Response = () => {
         response={state?.id}
         info={state?.info}
         description={state?.message}
-        footerChildren={[
+        children={[state?.message]}
+      />
+      <ActionBar
+        actionFields={[
           <Link to={`/${window.contextPath}/employee`}>
             <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
           </Link>
         ]}
-        children={[state?.message]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

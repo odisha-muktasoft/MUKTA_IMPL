@@ -5,8 +5,11 @@
     flex-direction: column;
     padding: 1rem;
     .header {
-        display: grid;
-        grid-template-columns: 20% 1fr;
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+
         .logo {
             display: flex;
             align-items: center;

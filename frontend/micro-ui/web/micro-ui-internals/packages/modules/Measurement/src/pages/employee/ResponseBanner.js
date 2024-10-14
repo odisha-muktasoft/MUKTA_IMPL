@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { PanelCard, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, Button ,ActionBar} from "@egovernments/digit-ui-components";
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
@@ -48,12 +48,6 @@ const MeasurementServiceResponse = () => {
     }
   };
 
-  const footerChildren = [
-    <Link to={`/${window.contextPath}/employee`}>
-      <Button label={t("MB_GO_HOME")} variation="primary" type="button" />
-    </Link>,
-  ];
-
   const children = [
     <Button label={t("MB_GO_INBOX")} variation="link" icon={"ArrowBack"} onClick={() => navigate("measurement-inbox")} type="button" />,
   ];
@@ -64,9 +58,17 @@ const MeasurementServiceResponse = () => {
         type={"success"}
         message={message}
         info={t("MB_REFERENCE_NUMBER")}
-        footerChildren={footerChildren}
         children={children}
         response={mbReference}
+      />
+      <ActionBar
+        actionFields={[
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("MB_GO_HOME")} variation="primary" type="button" />
+          </Link>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

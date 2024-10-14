@@ -73,6 +73,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             {
                 type : "COMPONENT",
                 component : "MeasurementHistory",
+                customComponnetWrapperClssName:"mbhistory-wrapper",
                 props : {
                     contractNumber : contract?.contractNumber,
                     measurementNumber : measurement?.measurementNumber
@@ -86,6 +87,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             type: "COMPONENT",
             cardHeader: { value: "MB_SORS", inlineStyles: {} },
             component: "MeasureTable",
+            sectionClassName:"table-included-section",
             props: {
               config: {
                 key: "SOR",

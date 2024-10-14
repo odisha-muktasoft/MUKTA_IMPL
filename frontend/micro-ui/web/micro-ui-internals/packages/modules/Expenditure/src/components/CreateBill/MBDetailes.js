@@ -8,7 +8,7 @@ import { InfoCard,Button } from "@egovernments/digit-ui-components";
 const getMBLinks = (mblinks, tenantId, workOrderNumber, history) => {
   return (
     <React.Fragment>
-      <div style={{}}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         {mblinks?.map((measurementNumber) => (
           <Button
             label={measurementNumber}
@@ -17,7 +17,7 @@ const getMBLinks = (mblinks, tenantId, workOrderNumber, history) => {
                 `/${window.contextPath}/employee/measurement/view?tenantId=${tenantId}&workOrderNumber=${workOrderNumber}&mbNumber=${measurementNumber}`
               )
             }
-            style={{display:"inline"}}
+            style={{display:"inline" }}
             variation={"link"}
             textStyles={{width:"fit-content"}}
           />
@@ -59,12 +59,12 @@ const MBDetailes = ({ formdata }) => {
           variant="error"
           text={t("WORKS_INFO_MB_NOT_CREATED")}
           label={t("WORKS_PB_INFO")}
-          style={{ margin: "0px", marginBottom: "1.5rem",  maxWidth: "40%" }}
+          style={{ margin: "0px", marginBottom: "1.5rem" }}
         />
       )}
       <StatusTable>
         <Row
-          className="border-none"
+          className="border-none mb-numbers-container"
           label={t("WORKS_MB_NUMBERS")}
           amountStyle={{ overflow: "auto", whiteSpace: "nowrap", marginBottom: "-15px" }}
           text={allMeasurementsIds?.length > 0 ? getMBLinks(allMeasurementsIds, tenantId, workOrderNumber, history) : "NA"}
