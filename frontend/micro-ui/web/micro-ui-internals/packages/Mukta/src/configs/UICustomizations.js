@@ -2994,7 +2994,7 @@ export const UICustomizations = {
               )
             default:
               return (
-                <div style={{textAlign: "right", color: "#D4351C"}}>
+                <div style={{textAlign: "right"}}>
                   {t("CS_COMMON_NA")}
                 </div>
               );
