@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/utils/app_logger.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 EnvironmentConfiguration envConfig = EnvironmentConfiguration.instance;
@@ -25,7 +26,7 @@ class EnvironmentConfiguration {
       await _dotEnv.load();
       _variables = Variables(dotEnv: _dotEnv);
     } catch (error) {
-      print('catch Error');
+     
       AppLogger.instance.error(
         title: runtimeType.toString(),
         message: 'Error while accessing .env file. Using fallback values',

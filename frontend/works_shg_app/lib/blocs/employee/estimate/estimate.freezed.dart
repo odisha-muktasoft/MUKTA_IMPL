@@ -12,7 +12,7 @@ part of 'estimate.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$EstimateBlocEvent {
@@ -76,20 +76,21 @@ class _$EstimateBlocEventCopyWithImpl<$Res, $Val extends EstimateBlocEvent>
 }
 
 /// @nodoc
-abstract class _$$EstimateLoadBlocEventCopyWith<$Res> {
-  factory _$$EstimateLoadBlocEventCopyWith(_$EstimateLoadBlocEvent value,
-          $Res Function(_$EstimateLoadBlocEvent) then) =
-      __$$EstimateLoadBlocEventCopyWithImpl<$Res>;
+abstract class _$$EstimateLoadBlocEventImplCopyWith<$Res> {
+  factory _$$EstimateLoadBlocEventImplCopyWith(
+          _$EstimateLoadBlocEventImpl value,
+          $Res Function(_$EstimateLoadBlocEventImpl) then) =
+      __$$EstimateLoadBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String tenantId, String roles, bool isActive});
 }
 
 /// @nodoc
-class __$$EstimateLoadBlocEventCopyWithImpl<$Res>
-    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateLoadBlocEvent>
-    implements _$$EstimateLoadBlocEventCopyWith<$Res> {
-  __$$EstimateLoadBlocEventCopyWithImpl(_$EstimateLoadBlocEvent _value,
-      $Res Function(_$EstimateLoadBlocEvent) _then)
+class __$$EstimateLoadBlocEventImplCopyWithImpl<$Res>
+    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateLoadBlocEventImpl>
+    implements _$$EstimateLoadBlocEventImplCopyWith<$Res> {
+  __$$EstimateLoadBlocEventImplCopyWithImpl(_$EstimateLoadBlocEventImpl _value,
+      $Res Function(_$EstimateLoadBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +100,7 @@ class __$$EstimateLoadBlocEventCopyWithImpl<$Res>
     Object? roles = null,
     Object? isActive = null,
   }) {
-    return _then(_$EstimateLoadBlocEvent(
+    return _then(_$EstimateLoadBlocEventImpl(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
@@ -118,8 +119,8 @@ class __$$EstimateLoadBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$EstimateLoadBlocEvent implements EstimateLoadBlocEvent {
-  const _$EstimateLoadBlocEvent(
+class _$EstimateLoadBlocEventImpl implements EstimateLoadBlocEvent {
+  const _$EstimateLoadBlocEventImpl(
       {required this.tenantId, required this.roles, required this.isActive});
 
   @override
@@ -135,10 +136,10 @@ class _$EstimateLoadBlocEvent implements EstimateLoadBlocEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EstimateLoadBlocEvent &&
+            other is _$EstimateLoadBlocEventImpl &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             (identical(other.roles, roles) || other.roles == roles) &&
@@ -152,9 +153,9 @@ class _$EstimateLoadBlocEvent implements EstimateLoadBlocEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$EstimateLoadBlocEventCopyWith<_$EstimateLoadBlocEvent> get copyWith =>
-      __$$EstimateLoadBlocEventCopyWithImpl<_$EstimateLoadBlocEvent>(
-          this, _$identity);
+  _$$EstimateLoadBlocEventImplCopyWith<_$EstimateLoadBlocEventImpl>
+      get copyWith => __$$EstimateLoadBlocEventImplCopyWithImpl<
+          _$EstimateLoadBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -224,36 +225,38 @@ abstract class EstimateLoadBlocEvent implements EstimateBlocEvent {
   const factory EstimateLoadBlocEvent(
       {required final String tenantId,
       required final String roles,
-      required final bool isActive}) = _$EstimateLoadBlocEvent;
+      required final bool isActive}) = _$EstimateLoadBlocEventImpl;
 
   String get tenantId;
   String get roles;
   bool get isActive;
   @JsonKey(ignore: true)
-  _$$EstimateLoadBlocEventCopyWith<_$EstimateLoadBlocEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$EstimateLoadBlocEventImplCopyWith<_$EstimateLoadBlocEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$EstimateBlocClearEventCopyWith<$Res> {
-  factory _$$EstimateBlocClearEventCopyWith(_$EstimateBlocClearEvent value,
-          $Res Function(_$EstimateBlocClearEvent) then) =
-      __$$EstimateBlocClearEventCopyWithImpl<$Res>;
+abstract class _$$EstimateBlocClearEventImplCopyWith<$Res> {
+  factory _$$EstimateBlocClearEventImplCopyWith(
+          _$EstimateBlocClearEventImpl value,
+          $Res Function(_$EstimateBlocClearEventImpl) then) =
+      __$$EstimateBlocClearEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$EstimateBlocClearEventCopyWithImpl<$Res>
-    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateBlocClearEvent>
-    implements _$$EstimateBlocClearEventCopyWith<$Res> {
-  __$$EstimateBlocClearEventCopyWithImpl(_$EstimateBlocClearEvent _value,
-      $Res Function(_$EstimateBlocClearEvent) _then)
+class __$$EstimateBlocClearEventImplCopyWithImpl<$Res>
+    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateBlocClearEventImpl>
+    implements _$$EstimateBlocClearEventImplCopyWith<$Res> {
+  __$$EstimateBlocClearEventImplCopyWithImpl(
+      _$EstimateBlocClearEventImpl _value,
+      $Res Function(_$EstimateBlocClearEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$EstimateBlocClearEvent implements EstimateBlocClearEvent {
-  const _$EstimateBlocClearEvent();
+class _$EstimateBlocClearEventImpl implements EstimateBlocClearEvent {
+  const _$EstimateBlocClearEventImpl();
 
   @override
   String toString() {
@@ -261,9 +264,10 @@ class _$EstimateBlocClearEvent implements EstimateBlocClearEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$EstimateBlocClearEvent);
+        (other.runtimeType == runtimeType &&
+            other is _$EstimateBlocClearEventImpl);
   }
 
   @override
@@ -334,7 +338,7 @@ class _$EstimateBlocClearEvent implements EstimateBlocClearEvent {
 }
 
 abstract class EstimateBlocClearEvent implements EstimateBlocEvent {
-  const factory EstimateBlocClearEvent() = _$EstimateBlocClearEvent;
+  const factory EstimateBlocClearEvent() = _$EstimateBlocClearEventImpl;
 }
 
 /// @nodoc
@@ -411,24 +415,25 @@ class _$EstimateStateCopyWithImpl<$Res, $Val extends EstimateState>
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$EstimateStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$EstimateStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -436,9 +441,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -521,29 +526,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends EstimateState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$EstimateStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$EstimateStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -551,9 +557,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -636,14 +642,15 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends EstimateState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({EstimateDetailResponse? estimateDetailResponse});
 
@@ -651,10 +658,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$EstimateStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$EstimateStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -662,7 +670,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? estimateDetailResponse = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == estimateDetailResponse
           ? _value.estimateDetailResponse
           : estimateDetailResponse // ignore: cast_nullable_to_non_nullable
@@ -686,8 +694,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.estimateDetailResponse) : super._();
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl(this.estimateDetailResponse) : super._();
 
   @override
   final EstimateDetailResponse? estimateDetailResponse;
@@ -698,10 +706,10 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.estimateDetailResponse, estimateDetailResponse) ||
                 other.estimateDetailResponse == estimateDetailResponse));
   }
@@ -712,8 +720,8 @@ class _$_Loaded extends _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -793,28 +801,30 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends EstimateState {
   const factory _Loaded(final EstimateDetailResponse? estimateDetailResponse) =
-      _$_Loaded;
+      _$LoadedImpl;
   const _Loaded._() : super._();
 
   EstimateDetailResponse? get estimateDetailResponse;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$EstimateStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$EstimateStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -822,7 +832,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -833,8 +843,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -845,10 +855,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -858,8 +868,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -938,11 +948,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends EstimateState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

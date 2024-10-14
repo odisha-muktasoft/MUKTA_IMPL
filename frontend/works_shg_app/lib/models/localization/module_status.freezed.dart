@@ -12,7 +12,7 @@ part of 'module_status.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ModuleStatus _$ModuleStatusFromJson(Map<String, dynamic> json) {
   return _ModuleStatus.fromJson(json);
@@ -74,22 +74,22 @@ class _$ModuleStatusCopyWithImpl<$Res, $Val extends ModuleStatus>
 }
 
 /// @nodoc
-abstract class _$$_ModuleStatusCopyWith<$Res>
+abstract class _$$ModuleStatusImplCopyWith<$Res>
     implements $ModuleStatusCopyWith<$Res> {
-  factory _$$_ModuleStatusCopyWith(
-          _$_ModuleStatus value, $Res Function(_$_ModuleStatus) then) =
-      __$$_ModuleStatusCopyWithImpl<$Res>;
+  factory _$$ModuleStatusImplCopyWith(
+          _$ModuleStatusImpl value, $Res Function(_$ModuleStatusImpl) then) =
+      __$$ModuleStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Map<String, bool> status, String label, String value});
 }
 
 /// @nodoc
-class __$$_ModuleStatusCopyWithImpl<$Res>
-    extends _$ModuleStatusCopyWithImpl<$Res, _$_ModuleStatus>
-    implements _$$_ModuleStatusCopyWith<$Res> {
-  __$$_ModuleStatusCopyWithImpl(
-      _$_ModuleStatus _value, $Res Function(_$_ModuleStatus) _then)
+class __$$ModuleStatusImplCopyWithImpl<$Res>
+    extends _$ModuleStatusCopyWithImpl<$Res, _$ModuleStatusImpl>
+    implements _$$ModuleStatusImplCopyWith<$Res> {
+  __$$ModuleStatusImplCopyWithImpl(
+      _$ModuleStatusImpl _value, $Res Function(_$ModuleStatusImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_ModuleStatusCopyWithImpl<$Res>
     Object? label = null,
     Object? value = null,
   }) {
-    return _then(_$_ModuleStatus(
+    return _then(_$ModuleStatusImpl(
       status: null == status
           ? _value._status
           : status // ignore: cast_nullable_to_non_nullable
@@ -118,15 +118,15 @@ class __$$_ModuleStatusCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ModuleStatus implements _ModuleStatus {
-  _$_ModuleStatus(
+class _$ModuleStatusImpl implements _ModuleStatus {
+  _$ModuleStatusImpl(
       {required final Map<String, bool> status,
       required this.label,
       required this.value})
       : _status = status;
 
-  factory _$_ModuleStatus.fromJson(Map<String, dynamic> json) =>
-      _$$_ModuleStatusFromJson(json);
+  factory _$ModuleStatusImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ModuleStatusImplFromJson(json);
 
   final Map<String, bool> _status;
   @override
@@ -147,10 +147,10 @@ class _$_ModuleStatus implements _ModuleStatus {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ModuleStatus &&
+            other is _$ModuleStatusImpl &&
             const DeepCollectionEquality().equals(other._status, _status) &&
             (identical(other.label, label) || other.label == label) &&
             (identical(other.value, value) || other.value == value));
@@ -164,12 +164,12 @@ class _$_ModuleStatus implements _ModuleStatus {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ModuleStatusCopyWith<_$_ModuleStatus> get copyWith =>
-      __$$_ModuleStatusCopyWithImpl<_$_ModuleStatus>(this, _$identity);
+  _$$ModuleStatusImplCopyWith<_$ModuleStatusImpl> get copyWith =>
+      __$$ModuleStatusImplCopyWithImpl<_$ModuleStatusImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ModuleStatusToJson(
+    return _$$ModuleStatusImplToJson(
       this,
     );
   }
@@ -179,10 +179,10 @@ abstract class _ModuleStatus implements ModuleStatus {
   factory _ModuleStatus(
       {required final Map<String, bool> status,
       required final String label,
-      required final String value}) = _$_ModuleStatus;
+      required final String value}) = _$ModuleStatusImpl;
 
   factory _ModuleStatus.fromJson(Map<String, dynamic> json) =
-      _$_ModuleStatus.fromJson;
+      _$ModuleStatusImpl.fromJson;
 
   @override
   Map<String, bool> get status;
@@ -192,6 +192,6 @@ abstract class _ModuleStatus implements ModuleStatus {
   String get value;
   @override
   @JsonKey(ignore: true)
-  _$$_ModuleStatusCopyWith<_$_ModuleStatus> get copyWith =>
+  _$$ModuleStatusImplCopyWith<_$ModuleStatusImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

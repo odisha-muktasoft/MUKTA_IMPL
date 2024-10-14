@@ -1,21 +1,18 @@
 //mb_detail_view
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
-import '../../../models/employee/mb/filtered_Measures.dart';
+import '../../../models/employee/mb/filtered_measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/muster_rolls/muster_workflow_model.dart';
 import '../../../services/urls.dart';
@@ -155,9 +152,12 @@ class MeasurementDetailBloc
           sorList.length >= 2 ? getSorted(sorList[1].last, res) : null,
         ),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
+    }
+    on Exception catch(ex){
+       emit(MeasurementDetailState.error(ex.toString()));
     }
   }
 
@@ -185,7 +185,8 @@ class MeasurementDetailBloc
           List<MeasureLineItem> mk = [];
 
           if (event.single) {
-            MeasureLineItem mm = const MeasureLineItem(
+            MeasureLineItem mm =  MeasureLineItem(
+                measurementSummary: event.measurementSummary,
               width: 0,
               height: 0,
               length: 0,
@@ -196,6 +197,7 @@ class MeasurementDetailBloc
             mk = [mm];
           } else {
             MeasureLineItem mm = MeasureLineItem(
+              measurementSummary: event.measurementSummary,
               width: 0,
               height: 0,
               length: 0,
@@ -255,8 +257,8 @@ class MeasurementDetailBloc
             List<SorObject> data = MBLogic.deleteMeasurementLine(
               value.sor!,
               event.sorId,
-              event.filteredMeasurementMeasureId!,
-              event.measurementLineIndex!,
+              event.filteredMeasurementMeasureId,
+              event.measurementLineIndex,
             );
 
             emit(value.copyWith(
@@ -267,8 +269,8 @@ class MeasurementDetailBloc
             List<SorObject> data = MBLogic.deleteMeasurementLine(
               value.nonSor!,
               event.sorId,
-              event.filteredMeasurementMeasureId!,
-              event.measurementLineIndex!,
+              event.filteredMeasurementMeasureId,
+              event.measurementLineIndex,
             );
 
             emit(value.copyWith(
@@ -297,6 +299,7 @@ class MeasurementDetailBloc
         orElse: () => null,
         loaded: (value) {
           MeasureLineItem ml = MeasureLineItem(
+            measurementSummary: event.measurementSummary,
             width: event.width,
             height: event.height,
             length: event.length,
@@ -653,7 +656,7 @@ class MeasurementDetailBloc
           }
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
@@ -708,7 +711,7 @@ class MeasurementDetailBloc
           );
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
@@ -764,6 +767,7 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     dynamic length,
     dynamic number,
     dynamic quantity,
+     dynamic measurementSummary,
     required bool single,
   }) = AddToMeasurementLineEvent;
 
@@ -780,6 +784,7 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     dynamic length,
     dynamic number,
     dynamic quantity,
+    dynamic measurementSummary,
   }) = UpdateToMeasurementLineEvent;
   // update view mode
 

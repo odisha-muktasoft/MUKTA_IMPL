@@ -12,7 +12,7 @@ part of 'measurement_book.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MeasurementInboxBlocEvent {
@@ -136,11 +136,11 @@ class _$MeasurementInboxBlocEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxBlocEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxBlocEventCopyWith(
-          _$MeasurementBookInboxBlocEvent value,
-          $Res Function(_$MeasurementBookInboxBlocEvent) then) =
-      __$$MeasurementBookInboxBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementBookInboxBlocEventImplCopyWith(
+          _$MeasurementBookInboxBlocEventImpl value,
+          $Res Function(_$MeasurementBookInboxBlocEventImpl) then) =
+      __$$MeasurementBookInboxBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String tenantId,
@@ -151,13 +151,13 @@ abstract class _$$MeasurementBookInboxBlocEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxBlocEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxBlocEvent>
-    implements _$$MeasurementBookInboxBlocEventCopyWith<$Res> {
-  __$$MeasurementBookInboxBlocEventCopyWithImpl(
-      _$MeasurementBookInboxBlocEvent _value,
-      $Res Function(_$MeasurementBookInboxBlocEvent) _then)
+        _$MeasurementBookInboxBlocEventImpl>
+    implements _$$MeasurementBookInboxBlocEventImplCopyWith<$Res> {
+  __$$MeasurementBookInboxBlocEventImplCopyWithImpl(
+      _$MeasurementBookInboxBlocEventImpl _value,
+      $Res Function(_$MeasurementBookInboxBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -169,7 +169,7 @@ class __$$MeasurementBookInboxBlocEventCopyWithImpl<$Res>
     Object? limit = null,
     Object? offset = null,
   }) {
-    return _then(_$MeasurementBookInboxBlocEvent(
+    return _then(_$MeasurementBookInboxBlocEventImpl(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
@@ -196,8 +196,9 @@ class __$$MeasurementBookInboxBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
-  const _$MeasurementBookInboxBlocEvent(
+class _$MeasurementBookInboxBlocEventImpl
+    implements MeasurementBookInboxBlocEvent {
+  const _$MeasurementBookInboxBlocEventImpl(
       {required this.tenantId,
       required this.businessService,
       required this.moduleName,
@@ -221,10 +222,10 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxBlocEvent &&
+            other is _$MeasurementBookInboxBlocEventImpl &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             (identical(other.businessService, businessService) ||
@@ -242,9 +243,10 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementBookInboxBlocEventCopyWith<_$MeasurementBookInboxBlocEvent>
-      get copyWith => __$$MeasurementBookInboxBlocEventCopyWithImpl<
-          _$MeasurementBookInboxBlocEvent>(this, _$identity);
+  _$$MeasurementBookInboxBlocEventImplCopyWith<
+          _$MeasurementBookInboxBlocEventImpl>
+      get copyWith => __$$MeasurementBookInboxBlocEventImplCopyWithImpl<
+          _$MeasurementBookInboxBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -376,7 +378,7 @@ abstract class MeasurementBookInboxBlocEvent
       required final String businessService,
       required final String moduleName,
       required final int limit,
-      required final int offset}) = _$MeasurementBookInboxBlocEvent;
+      required final int offset}) = _$MeasurementBookInboxBlocEventImpl;
 
   String get tenantId;
   String get businessService;
@@ -384,16 +386,17 @@ abstract class MeasurementBookInboxBlocEvent
   int get limit;
   int get offset;
   @JsonKey(ignore: true)
-  _$$MeasurementBookInboxBlocEventCopyWith<_$MeasurementBookInboxBlocEvent>
+  _$$MeasurementBookInboxBlocEventImplCopyWith<
+          _$MeasurementBookInboxBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxSearchBlocEventCopyWith(
-          _$MeasurementBookInboxSearchBlocEvent value,
-          $Res Function(_$MeasurementBookInboxSearchBlocEvent) then) =
-      __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxSearchBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSearchBlocEventImplCopyWith(
+          _$MeasurementBookInboxSearchBlocEventImpl value,
+          $Res Function(_$MeasurementBookInboxSearchBlocEventImpl) then) =
+      __$$MeasurementBookInboxSearchBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {List<String>? ward,
@@ -407,13 +410,13 @@ abstract class _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxSearchBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxSearchBlocEvent>
-    implements _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
-  __$$MeasurementBookInboxSearchBlocEventCopyWithImpl(
-      _$MeasurementBookInboxSearchBlocEvent _value,
-      $Res Function(_$MeasurementBookInboxSearchBlocEvent) _then)
+        _$MeasurementBookInboxSearchBlocEventImpl>
+    implements _$$MeasurementBookInboxSearchBlocEventImplCopyWith<$Res> {
+  __$$MeasurementBookInboxSearchBlocEventImplCopyWithImpl(
+      _$MeasurementBookInboxSearchBlocEventImpl _value,
+      $Res Function(_$MeasurementBookInboxSearchBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -428,7 +431,7 @@ class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
     Object? offset = null,
     Object? data = null,
   }) {
-    return _then(_$MeasurementBookInboxSearchBlocEvent(
+    return _then(_$MeasurementBookInboxSearchBlocEventImpl(
       ward: freezed == ward
           ? _value._ward
           : ward // ignore: cast_nullable_to_non_nullable
@@ -467,9 +470,9 @@ class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementBookInboxSearchBlocEvent
+class _$MeasurementBookInboxSearchBlocEventImpl
     implements MeasurementBookInboxSearchBlocEvent {
-  const _$MeasurementBookInboxSearchBlocEvent(
+  const _$MeasurementBookInboxSearchBlocEventImpl(
       {final List<String>? ward,
       final List<String>? status,
       this.projectId,
@@ -526,10 +529,10 @@ class _$MeasurementBookInboxSearchBlocEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxSearchBlocEvent &&
+            other is _$MeasurementBookInboxSearchBlocEventImpl &&
             const DeepCollectionEquality().equals(other._ward, _ward) &&
             const DeepCollectionEquality().equals(other._status, _status) &&
             (identical(other.projectId, projectId) ||
@@ -558,10 +561,10 @@ class _$MeasurementBookInboxSearchBlocEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementBookInboxSearchBlocEventCopyWith<
-          _$MeasurementBookInboxSearchBlocEvent>
-      get copyWith => __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<
-          _$MeasurementBookInboxSearchBlocEvent>(this, _$identity);
+  _$$MeasurementBookInboxSearchBlocEventImplCopyWith<
+          _$MeasurementBookInboxSearchBlocEventImpl>
+      get copyWith => __$$MeasurementBookInboxSearchBlocEventImplCopyWithImpl<
+          _$MeasurementBookInboxSearchBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -700,7 +703,7 @@ abstract class MeasurementBookInboxSearchBlocEvent
           required final int limit,
           required final int offset,
           required final Map<String, Map<String, dynamic>> data}) =
-      _$MeasurementBookInboxSearchBlocEvent;
+      _$MeasurementBookInboxSearchBlocEventImpl;
 
   List<String>? get ward;
   List<String>? get status;
@@ -711,17 +714,17 @@ abstract class MeasurementBookInboxSearchBlocEvent
   int get offset;
   Map<String, Map<String, dynamic>> get data;
   @JsonKey(ignore: true)
-  _$$MeasurementBookInboxSearchBlocEventCopyWith<
-          _$MeasurementBookInboxSearchBlocEvent>
+  _$$MeasurementBookInboxSearchBlocEventImplCopyWith<
+          _$MeasurementBookInboxSearchBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith(
-          _$MeasurementBookInboxSearchRepeatBlocEvent value,
-          $Res Function(_$MeasurementBookInboxSearchRepeatBlocEvent) then) =
-      __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWith(
+          _$MeasurementBookInboxSearchRepeatBlocEventImpl value,
+          $Res Function(_$MeasurementBookInboxSearchRepeatBlocEventImpl) then) =
+      __$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String tenantId,
@@ -732,13 +735,13 @@ abstract class _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxSearchRepeatBlocEvent>
-    implements _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<$Res> {
-  __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl(
-      _$MeasurementBookInboxSearchRepeatBlocEvent _value,
-      $Res Function(_$MeasurementBookInboxSearchRepeatBlocEvent) _then)
+        _$MeasurementBookInboxSearchRepeatBlocEventImpl>
+    implements _$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWith<$Res> {
+  __$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWithImpl(
+      _$MeasurementBookInboxSearchRepeatBlocEventImpl _value,
+      $Res Function(_$MeasurementBookInboxSearchRepeatBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -750,7 +753,7 @@ class __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>
     Object? limit = null,
     Object? offset = null,
   }) {
-    return _then(_$MeasurementBookInboxSearchRepeatBlocEvent(
+    return _then(_$MeasurementBookInboxSearchRepeatBlocEventImpl(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
@@ -777,9 +780,9 @@ class __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementBookInboxSearchRepeatBlocEvent
+class _$MeasurementBookInboxSearchRepeatBlocEventImpl
     implements MeasurementBookInboxSearchRepeatBlocEvent {
-  const _$MeasurementBookInboxSearchRepeatBlocEvent(
+  const _$MeasurementBookInboxSearchRepeatBlocEventImpl(
       {required this.tenantId,
       required this.businessService,
       required this.moduleName,
@@ -803,10 +806,10 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxSearchRepeatBlocEvent &&
+            other is _$MeasurementBookInboxSearchRepeatBlocEventImpl &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             (identical(other.businessService, businessService) ||
@@ -824,10 +827,12 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<
-          _$MeasurementBookInboxSearchRepeatBlocEvent>
-      get copyWith => __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<
-          _$MeasurementBookInboxSearchRepeatBlocEvent>(this, _$identity);
+  _$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWith<
+          _$MeasurementBookInboxSearchRepeatBlocEventImpl>
+      get copyWith =>
+          __$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWithImpl<
+                  _$MeasurementBookInboxSearchRepeatBlocEventImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -956,11 +961,12 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
 abstract class MeasurementBookInboxSearchRepeatBlocEvent
     implements MeasurementInboxBlocEvent {
   const factory MeasurementBookInboxSearchRepeatBlocEvent(
-      {required final String tenantId,
-      required final String businessService,
-      required final String moduleName,
-      required final int limit,
-      required final int offset}) = _$MeasurementBookInboxSearchRepeatBlocEvent;
+          {required final String tenantId,
+          required final String businessService,
+          required final String moduleName,
+          required final int limit,
+          required final int offset}) =
+      _$MeasurementBookInboxSearchRepeatBlocEventImpl;
 
   String get tenantId;
   String get businessService;
@@ -968,29 +974,29 @@ abstract class MeasurementBookInboxSearchRepeatBlocEvent
   int get limit;
   int get offset;
   @JsonKey(ignore: true)
-  _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<
-          _$MeasurementBookInboxSearchRepeatBlocEvent>
+  _$$MeasurementBookInboxSearchRepeatBlocEventImplCopyWith<
+          _$MeasurementBookInboxSearchRepeatBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxSortBlocEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxSortBlocEventCopyWith(
-          _$MeasurementBookInboxSortBlocEvent value,
-          $Res Function(_$MeasurementBookInboxSortBlocEvent) then) =
-      __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxSortBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSortBlocEventImplCopyWith(
+          _$MeasurementBookInboxSortBlocEventImpl value,
+          $Res Function(_$MeasurementBookInboxSortBlocEventImpl) then) =
+      __$$MeasurementBookInboxSortBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int sortCode});
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxSortBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxSortBlocEvent>
-    implements _$$MeasurementBookInboxSortBlocEventCopyWith<$Res> {
-  __$$MeasurementBookInboxSortBlocEventCopyWithImpl(
-      _$MeasurementBookInboxSortBlocEvent _value,
-      $Res Function(_$MeasurementBookInboxSortBlocEvent) _then)
+        _$MeasurementBookInboxSortBlocEventImpl>
+    implements _$$MeasurementBookInboxSortBlocEventImplCopyWith<$Res> {
+  __$$MeasurementBookInboxSortBlocEventImplCopyWithImpl(
+      _$MeasurementBookInboxSortBlocEventImpl _value,
+      $Res Function(_$MeasurementBookInboxSortBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -998,7 +1004,7 @@ class __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>
   $Res call({
     Object? sortCode = null,
   }) {
-    return _then(_$MeasurementBookInboxSortBlocEvent(
+    return _then(_$MeasurementBookInboxSortBlocEventImpl(
       sortCode: null == sortCode
           ? _value.sortCode
           : sortCode // ignore: cast_nullable_to_non_nullable
@@ -1009,9 +1015,9 @@ class __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementBookInboxSortBlocEvent
+class _$MeasurementBookInboxSortBlocEventImpl
     implements MeasurementBookInboxSortBlocEvent {
-  const _$MeasurementBookInboxSortBlocEvent({required this.sortCode});
+  const _$MeasurementBookInboxSortBlocEventImpl({required this.sortCode});
 
   @override
   final int sortCode;
@@ -1022,10 +1028,10 @@ class _$MeasurementBookInboxSortBlocEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxSortBlocEvent &&
+            other is _$MeasurementBookInboxSortBlocEventImpl &&
             (identical(other.sortCode, sortCode) ||
                 other.sortCode == sortCode));
   }
@@ -1036,10 +1042,10 @@ class _$MeasurementBookInboxSortBlocEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementBookInboxSortBlocEventCopyWith<
-          _$MeasurementBookInboxSortBlocEvent>
-      get copyWith => __$$MeasurementBookInboxSortBlocEventCopyWithImpl<
-          _$MeasurementBookInboxSortBlocEvent>(this, _$identity);
+  _$$MeasurementBookInboxSortBlocEventImplCopyWith<
+          _$MeasurementBookInboxSortBlocEventImpl>
+      get copyWith => __$$MeasurementBookInboxSortBlocEventImplCopyWithImpl<
+          _$MeasurementBookInboxSortBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1167,39 +1173,39 @@ class _$MeasurementBookInboxSortBlocEvent
 abstract class MeasurementBookInboxSortBlocEvent
     implements MeasurementInboxBlocEvent {
   const factory MeasurementBookInboxSortBlocEvent(
-      {required final int sortCode}) = _$MeasurementBookInboxSortBlocEvent;
+      {required final int sortCode}) = _$MeasurementBookInboxSortBlocEventImpl;
 
   int get sortCode;
   @JsonKey(ignore: true)
-  _$$MeasurementBookInboxSortBlocEventCopyWith<
-          _$MeasurementBookInboxSortBlocEvent>
+  _$$MeasurementBookInboxSortBlocEventImplCopyWith<
+          _$MeasurementBookInboxSortBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxBlocClearEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxBlocClearEventCopyWith(
-          _$MeasurementBookInboxBlocClearEvent value,
-          $Res Function(_$MeasurementBookInboxBlocClearEvent) then) =
-      __$$MeasurementBookInboxBlocClearEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxBlocClearEventImplCopyWith<$Res> {
+  factory _$$MeasurementBookInboxBlocClearEventImplCopyWith(
+          _$MeasurementBookInboxBlocClearEventImpl value,
+          $Res Function(_$MeasurementBookInboxBlocClearEventImpl) then) =
+      __$$MeasurementBookInboxBlocClearEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxBlocClearEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxBlocClearEventImplCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxBlocClearEvent>
-    implements _$$MeasurementBookInboxBlocClearEventCopyWith<$Res> {
-  __$$MeasurementBookInboxBlocClearEventCopyWithImpl(
-      _$MeasurementBookInboxBlocClearEvent _value,
-      $Res Function(_$MeasurementBookInboxBlocClearEvent) _then)
+        _$MeasurementBookInboxBlocClearEventImpl>
+    implements _$$MeasurementBookInboxBlocClearEventImplCopyWith<$Res> {
+  __$$MeasurementBookInboxBlocClearEventImplCopyWithImpl(
+      _$MeasurementBookInboxBlocClearEventImpl _value,
+      $Res Function(_$MeasurementBookInboxBlocClearEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MeasurementBookInboxBlocClearEvent
+class _$MeasurementBookInboxBlocClearEventImpl
     implements MeasurementBookInboxBlocClearEvent {
-  const _$MeasurementBookInboxBlocClearEvent();
+  const _$MeasurementBookInboxBlocClearEventImpl();
 
   @override
   String toString() {
@@ -1207,10 +1213,10 @@ class _$MeasurementBookInboxBlocClearEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxBlocClearEvent);
+            other is _$MeasurementBookInboxBlocClearEventImpl);
   }
 
   @override
@@ -1342,7 +1348,7 @@ class _$MeasurementBookInboxBlocClearEvent
 abstract class MeasurementBookInboxBlocClearEvent
     implements MeasurementInboxBlocEvent {
   const factory MeasurementBookInboxBlocClearEvent() =
-      _$MeasurementBookInboxBlocClearEvent;
+      _$MeasurementBookInboxBlocClearEventImpl;
 }
 
 /// @nodoc
@@ -1449,24 +1455,25 @@ class _$MeasurementInboxStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -1474,9 +1481,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -1588,29 +1595,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends MeasurementInboxState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -1618,9 +1626,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -1732,14 +1740,15 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends MeasurementInboxState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {MBInboxResponse mbInboxResponse,
@@ -1756,10 +1765,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1775,7 +1785,7 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? search = null,
     Object? data = null,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       null == mbInboxResponse
           ? _value.mbInboxResponse
           : mbInboxResponse // ignore: cast_nullable_to_non_nullable
@@ -1826,8 +1836,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded(
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl(
       this.mbInboxResponse,
       this.isLoading,
       final List<String>? ward,
@@ -1888,10 +1898,10 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.mbInboxResponse, mbInboxResponse) ||
                 other.mbInboxResponse == mbInboxResponse) &&
             (identical(other.isLoading, isLoading) ||
@@ -1924,8 +1934,8 @@ class _$_Loaded extends _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2045,7 +2055,7 @@ abstract class _Loaded extends MeasurementInboxState {
       final String? mbNumber,
       final String? projectName,
       final bool search,
-      final Map<String, Map<String, dynamic>> data) = _$_Loaded;
+      final Map<String, Map<String, dynamic>> data) = _$LoadedImpl;
   const _Loaded._() : super._();
 
   MBInboxResponse get mbInboxResponse;
@@ -2058,23 +2068,25 @@ abstract class _Loaded extends MeasurementInboxState {
   bool get search;
   Map<String, Map<String, dynamic>> get data;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$MeasurementInboxStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2082,7 +2094,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -2093,8 +2105,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -2105,10 +2117,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -2118,8 +2130,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2227,11 +2239,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends MeasurementInboxState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

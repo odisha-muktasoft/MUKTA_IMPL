@@ -12,7 +12,7 @@ part of 'estimate_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 EstimateDetailResponse _$EstimateDetailResponseFromJson(
     Map<String, dynamic> json) {
@@ -74,11 +74,12 @@ class _$EstimateDetailResponseCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_EstimateDetailResponseCopyWith<$Res>
+abstract class _$$EstimateDetailResponseImplCopyWith<$Res>
     implements $EstimateDetailResponseCopyWith<$Res> {
-  factory _$$_EstimateDetailResponseCopyWith(_$_EstimateDetailResponse value,
-          $Res Function(_$_EstimateDetailResponse) then) =
-      __$$_EstimateDetailResponseCopyWithImpl<$Res>;
+  factory _$$EstimateDetailResponseImplCopyWith(
+          _$EstimateDetailResponseImpl value,
+          $Res Function(_$EstimateDetailResponseImpl) then) =
+      __$$EstimateDetailResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -87,12 +88,13 @@ abstract class _$$_EstimateDetailResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EstimateDetailResponseCopyWithImpl<$Res>
+class __$$EstimateDetailResponseImplCopyWithImpl<$Res>
     extends _$EstimateDetailResponseCopyWithImpl<$Res,
-        _$_EstimateDetailResponse>
-    implements _$$_EstimateDetailResponseCopyWith<$Res> {
-  __$$_EstimateDetailResponseCopyWithImpl(_$_EstimateDetailResponse _value,
-      $Res Function(_$_EstimateDetailResponse) _then)
+        _$EstimateDetailResponseImpl>
+    implements _$$EstimateDetailResponseImplCopyWith<$Res> {
+  __$$EstimateDetailResponseImplCopyWithImpl(
+      _$EstimateDetailResponseImpl _value,
+      $Res Function(_$EstimateDetailResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -101,7 +103,7 @@ class __$$_EstimateDetailResponseCopyWithImpl<$Res>
     Object? estimates = freezed,
     Object? totalCount = freezed,
   }) {
-    return _then(_$_EstimateDetailResponse(
+    return _then(_$EstimateDetailResponseImpl(
       estimates: freezed == estimates
           ? _value._estimates
           : estimates // ignore: cast_nullable_to_non_nullable
@@ -116,14 +118,14 @@ class __$$_EstimateDetailResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EstimateDetailResponse implements _EstimateDetailResponse {
-  const _$_EstimateDetailResponse(
+class _$EstimateDetailResponseImpl implements _EstimateDetailResponse {
+  const _$EstimateDetailResponseImpl(
       {@JsonKey(name: 'estimates') final List<Estimate>? estimates,
       @JsonKey(name: 'TotalCount') this.totalCount})
       : _estimates = estimates;
 
-  factory _$_EstimateDetailResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_EstimateDetailResponseFromJson(json);
+  factory _$EstimateDetailResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EstimateDetailResponseImplFromJson(json);
 
   final List<Estimate>? _estimates;
   @override
@@ -146,10 +148,10 @@ class _$_EstimateDetailResponse implements _EstimateDetailResponse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EstimateDetailResponse &&
+            other is _$EstimateDetailResponseImpl &&
             const DeepCollectionEquality()
                 .equals(other._estimates, _estimates) &&
             (identical(other.totalCount, totalCount) ||
@@ -164,13 +166,13 @@ class _$_EstimateDetailResponse implements _EstimateDetailResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EstimateDetailResponseCopyWith<_$_EstimateDetailResponse> get copyWith =>
-      __$$_EstimateDetailResponseCopyWithImpl<_$_EstimateDetailResponse>(
-          this, _$identity);
+  _$$EstimateDetailResponseImplCopyWith<_$EstimateDetailResponseImpl>
+      get copyWith => __$$EstimateDetailResponseImplCopyWithImpl<
+          _$EstimateDetailResponseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EstimateDetailResponseToJson(
+    return _$$EstimateDetailResponseImplToJson(
       this,
     );
   }
@@ -180,10 +182,10 @@ abstract class _EstimateDetailResponse implements EstimateDetailResponse {
   const factory _EstimateDetailResponse(
           {@JsonKey(name: 'estimates') final List<Estimate>? estimates,
           @JsonKey(name: 'TotalCount') final int? totalCount}) =
-      _$_EstimateDetailResponse;
+      _$EstimateDetailResponseImpl;
 
   factory _EstimateDetailResponse.fromJson(Map<String, dynamic> json) =
-      _$_EstimateDetailResponse.fromJson;
+      _$EstimateDetailResponseImpl.fromJson;
 
   @override
   @JsonKey(name: 'estimates')
@@ -193,6 +195,6 @@ abstract class _EstimateDetailResponse implements EstimateDetailResponse {
   int? get totalCount;
   @override
   @JsonKey(ignore: true)
-  _$$_EstimateDetailResponseCopyWith<_$_EstimateDetailResponse> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$EstimateDetailResponseImplCopyWith<_$EstimateDetailResponseImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

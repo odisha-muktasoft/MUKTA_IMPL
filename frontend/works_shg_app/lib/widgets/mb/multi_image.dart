@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
-import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/colors.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
-import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -33,20 +33,19 @@ class FilePickerDemo extends StatefulWidget {
   final List<WorkflowDocument>? fromServerFile;
 
   const FilePickerDemo(
-      {Key? key,
+      {super.key,
       required this.callBack,
       this.moduleName,
       this.extensions,
       this.contextKey,
       required this.headerType,
-      this.fromServerFile})
-      : super(key: key);
+      this.fromServerFile});
   @override
   FilePickerDemoState createState() => FilePickerDemoState();
 }
 
 class FilePickerDemoState extends State<FilePickerDemo> {
-  List<WorkflowDocument> _selectedFiles = <WorkflowDocument>[];
+  final List<WorkflowDocument> _selectedFiles = <WorkflowDocument>[];
   final List<FileStoreModel> _fileStoreList = <FileStoreModel>[];
   String? _extension;
   final bool _multiPick = true;
@@ -102,12 +101,13 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                     context, i18.common.accountType, 'ERROR');
             return;
           }
+          
         }
 
         if (_multiPick) {
           if ((_selectedFiles
                       .where((element) => element.isActive == true)
-                      .length! +
+                      .length +
                   paths.length) >
               5) {
             Notifiers.getToastMessage(
@@ -136,9 +136,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
         }
       }
     } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
+      
     } catch (ex) {
-      print(ex);
+   
     }
     if (!mounted) return;
     setState(() {});
@@ -156,8 +156,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
         fileUploading = FileUploadStatus.COMPLETED;
       });
       _fileStoreList.addAll(response);
-      // if (_selectedFiles.isNotEmpty) {
-//List<WorkflowDocument>ss=[];
+      
       ss.clear();
       for (int i = 0; i < _fileStoreList.length; i++) {
         ss.add(WorkflowDocument(
@@ -191,7 +190,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       }
 
       widget.callBack(_fileStoreList, _selectedFiles);
-      // }
+     
     } catch (e) {
       setState(() {
         fileUploading = FileUploadStatus.NOT_ACTIVE;
@@ -200,25 +199,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     }
   }
 
-  void _clearCachedFiles() {
-    FilePicker.platform.clearTemporaryFiles().then((result) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: result! ? Colors.green : Colors.red,
-          content: Text((result
-              ? '${AppLocalizations.of(context).translate(i18.common.reEnterAccountNo)}'
-              : '${AppLocalizations.of(context).translate(i18.common.attachments)}')),
-        ),
-      );
-    });
-  }
 
-  void _selectFolder() {
-    FilePicker.platform.getDirectoryPath().then((value) {});
-  }
 
   _getConatiner(constraints, context, List<WorkflowDocument> filteredDocument) {
-    //final List<WorkflowDocument>filteredDocument=_selectedFiles.where((element) => element.isActive==true).toList();
+   
     return [
       Container(
         width: constraints.maxWidth > 760
@@ -232,12 +216,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                 ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
                 : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 16,
-              color: widget.headerType == MediaType.mbDetail
-                  ? const DigitColors().black
-                  : const DigitColors().black,
+              color: Colors.black,
             ),
           ),
         ),
@@ -273,10 +255,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                               widget.headerType == MediaType.mbDetail
                           ? "${AppLocalizations.of(context).translate(i18.common.chooseFile)}"
                           : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
-                      //TODO:[level change]
-                      // "Choose File",
+                     
                       style: TextStyle(
-                          color: const DigitColors().burningOrange,
+                          color: Theme.of(context).colorTheme.primary.primary1,
                           fontSize: 16),
                     ),
                   )),
@@ -549,7 +530,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
             iconSize: 45,
             icon: Icon(
               icon,
-              color: const DigitColors().burningOrange,
+              color: Theme.of(context).colorTheme.primary.primary1,
             )),
         Text(
           AppLocalizations.of(context).translate(label),

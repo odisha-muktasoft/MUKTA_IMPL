@@ -90,7 +90,7 @@ class MeasurementInboxBloc
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     } catch (e) {
       emit(const MeasurementInboxState.error("CORE_SOMETHING_WENT_WRONG"));
@@ -150,7 +150,7 @@ class MeasurementInboxBloc
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -205,7 +205,7 @@ class MeasurementInboxBloc
           );
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -254,7 +254,7 @@ class MeasurementInboxBloc
                   value.mbInboxResponse.copyWith(items: itemList)));
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }

@@ -52,7 +52,7 @@ class ApiInterceptors extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     // ignore: no-empty-block
     if (err.response?.statusCode == 500) {
       scaffoldMessengerKey.currentContext!

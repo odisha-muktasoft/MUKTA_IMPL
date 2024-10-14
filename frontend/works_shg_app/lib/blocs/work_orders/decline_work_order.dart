@@ -52,7 +52,7 @@ class DeclineWorkOrderBloc
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(DeclineWorkOrderState.loaded(contractsModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(DeclineWorkOrderState.error(e.response?.data['Errors'][0]['code']));
     }
   }

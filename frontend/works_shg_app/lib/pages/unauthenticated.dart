@@ -5,10 +5,11 @@ import 'package:works_shg_app/blocs/localization/localization.dart';
 
 import '../widgets/loaders.dart';
 
-class UnauthenticatedPageWrapper extends StatelessWidget {
-  const UnauthenticatedPageWrapper({
-    Key? key,
-  }) : super(key: key);
+@RoutePage()
+class UnauthenticatedWrapperPage extends StatelessWidget {
+  const UnauthenticatedWrapperPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

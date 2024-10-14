@@ -1,11 +1,20 @@
-import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/my_bills/my_bills_inbox_bloc.dart';
+import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
@@ -13,16 +22,11 @@ import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../blocs/my_bills/search_my_bills.dart';
 import '../../models/my_bills/my_bills_model.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 
+@RoutePage()
 class MyBillsPage extends StatefulWidget {
-  const MyBillsPage({Key? key}) : super(key: key);
+  const MyBillsPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,12 +59,9 @@ class _MyBillsPage extends State<MyBillsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          title: const AppBarLogo(),
-        ),
-        drawer: DrawerWrapper(
-            Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<SearchMyBillsBloc, SearchMyBillsState>(
             builder: (context, state) {
           return state.maybeWhen(
@@ -69,10 +70,12 @@ class _MyBillsPage extends State<MyBillsPage> {
               loaded: (MyBillsListModel? myBillsModel) {
                 return billList.length < 2
                     ? const SizedBox(
-                        height: 30,
+                        height: 50,
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: PoweredByDigit(),
+                          child: PoweredByDigit(
+                            version: Constants.appVersion,
+                          ),
                         ),
                       )
                     : const SizedBox.shrink();
@@ -93,9 +96,13 @@ class _MyBillsPage extends State<MyBillsPage> {
                               orElse: () => false,
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
-                              error: (String? error) =>
-                                  Notifiers.getToastMessage(
-                                      context, error.toString(), 'ERROR'),
+                              error: (String? error) {
+                                Notifiers.getToastMessage(context,
+                                    t.translate(error.toString()), 'ERROR');
+                                // Toast.showToast(context,
+                                //     message: t.translate(error.toString()),
+                                //     type: ToastType.error);
+                              },
                               loaded: (MyBillsListModel? myBillsModel) {
                                 bills = List<MyBillModel>.from(myBillsModel!
                                     .bills!
@@ -306,10 +313,55 @@ class _MyBillsPage extends State<MyBillsPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Back(
-                                          backLabel:
-                                              AppLocalizations.of(context)
-                                                  .translate(i18.common.back),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                            vertical: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              BackNavigationButton(
+                                                backNavigationButtonThemeData:
+                                                    const BackNavigationButtonThemeData()
+                                                        .copyWith(
+                                                            context: context,
+                                                            backButtonIcon:
+                                                                Icon(
+                                                              Icons
+                                                                  .arrow_circle_left_outlined,
+                                                              size: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width <
+                                                                      500
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer5
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer6,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                            )),
+                                                backButtonText:
+                                                    AppLocalizations.of(context)
+                                                        .translate(
+                                                            i18.common.back),
+                                                handleBack: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Column(
                                             mainAxisAlignment:
@@ -319,13 +371,10 @@ class _MyBillsPage extends State<MyBillsPage> {
                                             children: [
                                               Padding(
                                                 padding:
-                                                    const EdgeInsets.all(16.0),
-                                                child: Text(
-                                                  '${AppLocalizations.of(context).translate(i18.home.myBills)} (${billList.length})',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium,
-                                                  textAlign: TextAlign.left,
+                                                     EdgeInsets.only(left:Theme.of(context).spacerTheme.spacer4,bottom: Theme.of(context).spacerTheme.spacer4,top: 0.0,right: 0.0),
+                                                child: DigitTextBlock(
+                                                  heading:
+                                                      '${AppLocalizations.of(context).translate(i18.home.myBills)} (${billList.length})',
                                                 ),
                                               ),
                                               billList.isNotEmpty
@@ -348,7 +397,10 @@ class _MyBillsPage extends State<MyBillsPage> {
                                                   ? const Align(
                                                       alignment: Alignment
                                                           .bottomCenter,
-                                                      child: PoweredByDigit(),
+                                                      child: PoweredByDigit(
+                                                        version: Constants
+                                                            .appVersion,
+                                                      ),
                                                     )
                                                   : const SizedBox.shrink()
                                             ]),

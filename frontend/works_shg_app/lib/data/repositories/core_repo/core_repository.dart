@@ -98,7 +98,7 @@ class CoreRepository {
       final response = await http.get(Uri.parse(url));
       final bytes = response.bodyBytes;
       await saveAndLaunchFile(bytes, fileName ?? 'Common.pdf');
-    } catch (e, s) {
+    } catch (e) {
       print(e);
       // Notifiers.getToastMessage(
       //     scaffoldMessengerKey.currentContext!, e.toString(), 'ERROR');

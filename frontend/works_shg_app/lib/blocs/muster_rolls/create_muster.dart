@@ -64,7 +64,7 @@ class MusterCreateBloc extends Bloc<MusterCreateEvent, MusterCreateState> {
       } else {
         emit(const MusterCreateState.error());
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const MusterCreateState.error());
     }
   }
@@ -99,7 +99,7 @@ class MusterCreateBloc extends Bloc<MusterCreateEvent, MusterCreateState> {
       } else {
         emit(const MusterCreateState.error());
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const MusterCreateState.error());
     }
   }

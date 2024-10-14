@@ -8,7 +8,7 @@ import 'package:works_shg_app/Env/env_config.dart';
 import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
-import '../../../models/employee/homeconfig/homeConfigModel.dart';
+import '../../../models/employee/homeconfig/home_config_model.dart';
 import '../../../models/mdms/location_mdms.dart';
 import '../../../models/muster_rolls/business_service_workflow.dart';
 import '../../../models/screen_config/home_screen_config.dart';
@@ -32,7 +32,7 @@ class CommonRepository {
       return Location.fromJson(
         json.decode(response.toString()),
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -54,7 +54,7 @@ class CommonRepository {
       return HomeScreenConfigModel.fromJson(
         json.decode(response.toString())['MdmsRes'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -89,7 +89,7 @@ class CommonRepository {
       });
 
       return HomeConfigModel.fromJson(response.data);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -112,7 +112,7 @@ class CommonRepository {
         json.decode(response.toString())['MdmsRes']['common-masters']
             ['AppVersion'][0],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -131,7 +131,7 @@ class CommonRepository {
       return BusinessServiceWorkflowModel.fromJson(
         json.decode(response.toString()),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -153,7 +153,7 @@ class CommonRepository {
       } else {
         throw Exception('Failed to download file.');
       }
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

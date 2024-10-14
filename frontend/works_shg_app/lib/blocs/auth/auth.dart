@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,26 +60,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           jsonDecode(jsonEncode(userDetailsModel.userRequestModel));
        GlobalVariables.roles=   userDetailsModel.userRequestModel!.rolesModel!.map((e) => e.code!).toList();
       if (kIsWeb) {
-        html.window.sessionStorage['accessToken' ?? ''] =
+        html.window.sessionStorage['accessToken'] =
             jsonEncode(userDetailsModel.access_token);
-        html.window.sessionStorage['userRequest' ?? ''] =
+        html.window.sessionStorage['userRequest'] =
             jsonEncode(userDetailsModel.userRequestModel);
-        html.window.sessionStorage['uuid' ?? ''] =
+        html.window.sessionStorage['uuid'] =
             jsonEncode(userDetailsModel.userRequestModel?.uuid);
-        html.window.sessionStorage['mobileNumber' ?? ''] =
+        html.window.sessionStorage['mobileNumber'] =
             jsonEncode(userDetailsModel.userRequestModel?.mobileNumber);
       } else {
         await storage.write(
-            key: 'accessToken' ?? '',
+            key: 'accessToken',
             value: jsonEncode(userDetailsModel.access_token));
         await storage.write(
-            key: 'userRequest' ?? '',
+            key: 'userRequest',
             value: jsonEncode(userDetailsModel.userRequestModel));
         await storage.write(
-            key: 'uuid' ?? '',
+            key: 'uuid',
             value: jsonEncode(userDetailsModel.userRequestModel?.uuid));
         await storage.write(
-            key: 'mobileNumber' ?? '',
+            key: 'mobileNumber',
             value: jsonEncode(userDetailsModel.userRequestModel?.mobileNumber));
       }
       if (userDetailsModel != null) {
@@ -92,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(const AuthState.error());
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const AuthState.error());
     }
   }
@@ -129,14 +130,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GlobalVariables.roles=[];
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const AuthState.loaded(null, null, RoleType.none));
     }
   }
 
   FutureOr<void> _onClearLoggedInDetails(
       AuthClearLoggedDetailsEvent event, AuthEmitter emit) async {
-    Client client = Client();
 
     try {
       List<DigitRowCardModel>? languages = await GlobalVariables.getLanguages();
@@ -149,7 +149,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await storage.delete(key: e.value);
         }
       });
-
+ appInitializationBloc.add(
+          AppInitializationSetupEvent(selectedLang: LanguageEnum.en_IN.name));
+          
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
       GlobalVariables.tenantId = null;
@@ -157,7 +159,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GlobalVariables.roles=[];
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const AuthState.error());
     }
   }

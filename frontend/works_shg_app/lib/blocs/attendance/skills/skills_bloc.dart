@@ -43,7 +43,7 @@ class SkillsBloc extends Bloc<SkillsBlocEvent, SkillsBlocState> {
           ]);
 
       emit(SkillsBlocState.loaded(result));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(SkillsBlocState.error(e.response?.data['Errors'][0]['code']));
     }
   }

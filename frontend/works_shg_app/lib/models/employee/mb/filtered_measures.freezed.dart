@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'filtered_Measures.dart';
+part of 'filtered_measures.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,7 +12,7 @@ part of 'filtered_Measures.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FilteredMeasurements _$FilteredMeasurementsFromJson(Map<String, dynamic> json) {
   return _FilteredMeasurements.fromJson(json);
@@ -163,11 +163,11 @@ class _$FilteredMeasurementsCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_FilteredMeasurementsCopyWith<$Res>
+abstract class _$$FilteredMeasurementsImplCopyWith<$Res>
     implements $FilteredMeasurementsCopyWith<$Res> {
-  factory _$$_FilteredMeasurementsCopyWith(_$_FilteredMeasurements value,
-          $Res Function(_$_FilteredMeasurements) then) =
-      __$$_FilteredMeasurementsCopyWithImpl<$Res>;
+  factory _$$FilteredMeasurementsImplCopyWith(_$FilteredMeasurementsImpl value,
+          $Res Function(_$FilteredMeasurementsImpl) then) =
+      __$$FilteredMeasurementsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -189,11 +189,11 @@ abstract class _$$_FilteredMeasurementsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FilteredMeasurementsCopyWithImpl<$Res>
-    extends _$FilteredMeasurementsCopyWithImpl<$Res, _$_FilteredMeasurements>
-    implements _$$_FilteredMeasurementsCopyWith<$Res> {
-  __$$_FilteredMeasurementsCopyWithImpl(_$_FilteredMeasurements _value,
-      $Res Function(_$_FilteredMeasurements) _then)
+class __$$FilteredMeasurementsImplCopyWithImpl<$Res>
+    extends _$FilteredMeasurementsCopyWithImpl<$Res, _$FilteredMeasurementsImpl>
+    implements _$$FilteredMeasurementsImplCopyWith<$Res> {
+  __$$FilteredMeasurementsImplCopyWithImpl(_$FilteredMeasurementsImpl _value,
+      $Res Function(_$FilteredMeasurementsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -215,7 +215,7 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
     Object? measures = freezed,
     Object? documents = freezed,
   }) {
-    return _then(_$_FilteredMeasurements(
+    return _then(_$FilteredMeasurementsImpl(
       totalSorAmount: freezed == totalSorAmount
           ? _value.totalSorAmount
           : totalSorAmount // ignore: cast_nullable_to_non_nullable
@@ -282,8 +282,8 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FilteredMeasurements implements _FilteredMeasurements {
-  const _$_FilteredMeasurements(
+class _$FilteredMeasurementsImpl implements _FilteredMeasurements {
+  const _$FilteredMeasurementsImpl(
       {this.totalSorAmount,
       this.totalNorSorAmount,
       this.totalAmount,
@@ -302,8 +302,8 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
       : _measures = measures,
         _documents = documents;
 
-  factory _$_FilteredMeasurements.fromJson(Map<String, dynamic> json) =>
-      _$$_FilteredMeasurementsFromJson(json);
+  factory _$FilteredMeasurementsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FilteredMeasurementsImplFromJson(json);
 
   @override
   final double? totalSorAmount;
@@ -357,10 +357,10 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FilteredMeasurements &&
+            other is _$FilteredMeasurementsImpl &&
             (identical(other.totalSorAmount, totalSorAmount) ||
                 other.totalSorAmount == totalSorAmount) &&
             (identical(other.totalNorSorAmount, totalNorSorAmount) ||
@@ -413,13 +413,14 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FilteredMeasurementsCopyWith<_$_FilteredMeasurements> get copyWith =>
-      __$$_FilteredMeasurementsCopyWithImpl<_$_FilteredMeasurements>(
-          this, _$identity);
+  _$$FilteredMeasurementsImplCopyWith<_$FilteredMeasurementsImpl>
+      get copyWith =>
+          __$$FilteredMeasurementsImplCopyWithImpl<_$FilteredMeasurementsImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FilteredMeasurementsToJson(
+    return _$$FilteredMeasurementsImplToJson(
       this,
     );
   }
@@ -441,10 +442,10 @@ abstract class _FilteredMeasurements implements FilteredMeasurements {
       final String? id,
       final String? physicalRefNumber,
       final List<FilteredMeasurementsMeasure>? measures,
-      final List<WorkflowDocument>? documents}) = _$_FilteredMeasurements;
+      final List<WorkflowDocument>? documents}) = _$FilteredMeasurementsImpl;
 
   factory _FilteredMeasurements.fromJson(Map<String, dynamic> json) =
-      _$_FilteredMeasurements.fromJson;
+      _$FilteredMeasurementsImpl.fromJson;
 
   @override
   double? get totalSorAmount;
@@ -478,8 +479,8 @@ abstract class _FilteredMeasurements implements FilteredMeasurements {
   List<WorkflowDocument>? get documents;
   @override
   @JsonKey(ignore: true)
-  _$$_FilteredMeasurementsCopyWith<_$_FilteredMeasurements> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$FilteredMeasurementsImplCopyWith<_$FilteredMeasurementsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 FilteredMeasurementsMeasure _$FilteredMeasurementsMeasureFromJson(
@@ -635,12 +636,12 @@ class _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_FilteredMeasurementsMeasureCopyWith<$Res>
+abstract class _$$FilteredMeasurementsMeasureImplCopyWith<$Res>
     implements $FilteredMeasurementsMeasureCopyWith<$Res> {
-  factory _$$_FilteredMeasurementsMeasureCopyWith(
-          _$_FilteredMeasurementsMeasure value,
-          $Res Function(_$_FilteredMeasurementsMeasure) then) =
-      __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>;
+  factory _$$FilteredMeasurementsMeasureImplCopyWith(
+          _$FilteredMeasurementsMeasureImpl value,
+          $Res Function(_$FilteredMeasurementsMeasureImpl) then) =
+      __$$FilteredMeasurementsMeasureImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -662,13 +663,13 @@ abstract class _$$_FilteredMeasurementsMeasureCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
+class __$$FilteredMeasurementsMeasureImplCopyWithImpl<$Res>
     extends _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
-        _$_FilteredMeasurementsMeasure>
-    implements _$$_FilteredMeasurementsMeasureCopyWith<$Res> {
-  __$$_FilteredMeasurementsMeasureCopyWithImpl(
-      _$_FilteredMeasurementsMeasure _value,
-      $Res Function(_$_FilteredMeasurementsMeasure) _then)
+        _$FilteredMeasurementsMeasureImpl>
+    implements _$$FilteredMeasurementsMeasureImplCopyWith<$Res> {
+  __$$FilteredMeasurementsMeasureImplCopyWithImpl(
+      _$FilteredMeasurementsMeasureImpl _value,
+      $Res Function(_$FilteredMeasurementsMeasureImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -690,7 +691,7 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
     Object? measureLineItems = freezed,
     Object? contracts = freezed,
   }) {
-    return _then(_$_FilteredMeasurementsMeasure(
+    return _then(_$FilteredMeasurementsMeasureImpl(
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
@@ -757,8 +758,9 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
-  const _$_FilteredMeasurementsMeasure(
+class _$FilteredMeasurementsMeasureImpl
+    implements _FilteredMeasurementsMeasure {
+  const _$FilteredMeasurementsMeasureImpl(
       {this.length,
       this.breath,
       this.height,
@@ -777,8 +779,9 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
       : _measureLineItems = measureLineItems,
         _contracts = contracts;
 
-  factory _$_FilteredMeasurementsMeasure.fromJson(Map<String, dynamic> json) =>
-      _$$_FilteredMeasurementsMeasureFromJson(json);
+  factory _$FilteredMeasurementsMeasureImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$FilteredMeasurementsMeasureImplFromJson(json);
 
   @override
   final double? length;
@@ -833,10 +836,10 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FilteredMeasurementsMeasure &&
+            other is _$FilteredMeasurementsMeasureImpl &&
             (identical(other.length, length) || other.length == length) &&
             (identical(other.breath, breath) || other.breath == breath) &&
             (identical(other.height, height) || other.height == height) &&
@@ -887,13 +890,13 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FilteredMeasurementsMeasureCopyWith<_$_FilteredMeasurementsMeasure>
-      get copyWith => __$$_FilteredMeasurementsMeasureCopyWithImpl<
-          _$_FilteredMeasurementsMeasure>(this, _$identity);
+  _$$FilteredMeasurementsMeasureImplCopyWith<_$FilteredMeasurementsMeasureImpl>
+      get copyWith => __$$FilteredMeasurementsMeasureImplCopyWithImpl<
+          _$FilteredMeasurementsMeasureImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FilteredMeasurementsMeasureToJson(
+    return _$$FilteredMeasurementsMeasureImplToJson(
       this,
     );
   }
@@ -917,10 +920,10 @@ abstract class _FilteredMeasurementsMeasure
           final String? referenceId,
           final List<MeasureLineItem>? measureLineItems,
           final List<FilteredMeasurementsContract>? contracts}) =
-      _$_FilteredMeasurementsMeasure;
+      _$FilteredMeasurementsMeasureImpl;
 
   factory _FilteredMeasurementsMeasure.fromJson(Map<String, dynamic> json) =
-      _$_FilteredMeasurementsMeasure.fromJson;
+      _$FilteredMeasurementsMeasureImpl.fromJson;
 
   @override
   double? get length;
@@ -954,7 +957,7 @@ abstract class _FilteredMeasurementsMeasure
   List<FilteredMeasurementsContract>? get contracts;
   @override
   @JsonKey(ignore: true)
-  _$$_FilteredMeasurementsMeasureCopyWith<_$_FilteredMeasurementsMeasure>
+  _$$FilteredMeasurementsMeasureImplCopyWith<_$FilteredMeasurementsMeasureImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1077,12 +1080,12 @@ class _$FilteredMeasurementsContractCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_FilteredMeasurementsContractCopyWith<$Res>
+abstract class _$$FilteredMeasurementsContractImplCopyWith<$Res>
     implements $FilteredMeasurementsContractCopyWith<$Res> {
-  factory _$$_FilteredMeasurementsContractCopyWith(
-          _$_FilteredMeasurementsContract value,
-          $Res Function(_$_FilteredMeasurementsContract) then) =
-      __$$_FilteredMeasurementsContractCopyWithImpl<$Res>;
+  factory _$$FilteredMeasurementsContractImplCopyWith(
+          _$FilteredMeasurementsContractImpl value,
+          $Res Function(_$FilteredMeasurementsContractImpl) then) =
+      __$$FilteredMeasurementsContractImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1100,13 +1103,13 @@ abstract class _$$_FilteredMeasurementsContractCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FilteredMeasurementsContractCopyWithImpl<$Res>
+class __$$FilteredMeasurementsContractImplCopyWithImpl<$Res>
     extends _$FilteredMeasurementsContractCopyWithImpl<$Res,
-        _$_FilteredMeasurementsContract>
-    implements _$$_FilteredMeasurementsContractCopyWith<$Res> {
-  __$$_FilteredMeasurementsContractCopyWithImpl(
-      _$_FilteredMeasurementsContract _value,
-      $Res Function(_$_FilteredMeasurementsContract) _then)
+        _$FilteredMeasurementsContractImpl>
+    implements _$$FilteredMeasurementsContractImplCopyWith<$Res> {
+  __$$FilteredMeasurementsContractImplCopyWithImpl(
+      _$FilteredMeasurementsContractImpl _value,
+      $Res Function(_$FilteredMeasurementsContractImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1121,7 +1124,7 @@ class __$$_FilteredMeasurementsContractCopyWithImpl<$Res>
     Object? contractAdditionalDetails = freezed,
     Object? estimates = freezed,
   }) {
-    return _then(_$_FilteredMeasurementsContract(
+    return _then(_$FilteredMeasurementsContractImpl(
       estimateId: freezed == estimateId
           ? _value.estimateId
           : estimateId // ignore: cast_nullable_to_non_nullable
@@ -1160,8 +1163,9 @@ class __$$_FilteredMeasurementsContractCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
-  const _$_FilteredMeasurementsContract(
+class _$FilteredMeasurementsContractImpl
+    implements _FilteredMeasurementsContract {
+  const _$FilteredMeasurementsContractImpl(
       {this.estimateId,
       this.estimateLineItemId,
       this.contractLineItemRef,
@@ -1172,8 +1176,9 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
       final List<FilteredMeasurementsEstimate>? estimates})
       : _estimates = estimates;
 
-  factory _$_FilteredMeasurementsContract.fromJson(Map<String, dynamic> json) =>
-      _$$_FilteredMeasurementsContractFromJson(json);
+  factory _$FilteredMeasurementsContractImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$FilteredMeasurementsContractImplFromJson(json);
 
   @override
   final String? estimateId;
@@ -1205,10 +1210,10 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FilteredMeasurementsContract &&
+            other is _$FilteredMeasurementsContractImpl &&
             (identical(other.estimateId, estimateId) ||
                 other.estimateId == estimateId) &&
             (identical(other.estimateLineItemId, estimateLineItemId) ||
@@ -1243,13 +1248,14 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FilteredMeasurementsContractCopyWith<_$_FilteredMeasurementsContract>
-      get copyWith => __$$_FilteredMeasurementsContractCopyWithImpl<
-          _$_FilteredMeasurementsContract>(this, _$identity);
+  _$$FilteredMeasurementsContractImplCopyWith<
+          _$FilteredMeasurementsContractImpl>
+      get copyWith => __$$FilteredMeasurementsContractImplCopyWithImpl<
+          _$FilteredMeasurementsContractImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FilteredMeasurementsContractToJson(
+    return _$$FilteredMeasurementsContractImplToJson(
       this,
     );
   }
@@ -1266,10 +1272,10 @@ abstract class _FilteredMeasurementsContract
           final String? wfStatus,
           final ContractAdditionalDetails? contractAdditionalDetails,
           final List<FilteredMeasurementsEstimate>? estimates}) =
-      _$_FilteredMeasurementsContract;
+      _$FilteredMeasurementsContractImpl;
 
   factory _FilteredMeasurementsContract.fromJson(Map<String, dynamic> json) =
-      _$_FilteredMeasurementsContract.fromJson;
+      _$FilteredMeasurementsContractImpl.fromJson;
 
   @override
   String? get estimateId;
@@ -1289,7 +1295,8 @@ abstract class _FilteredMeasurementsContract
   List<FilteredMeasurementsEstimate>? get estimates;
   @override
   @JsonKey(ignore: true)
-  _$$_FilteredMeasurementsContractCopyWith<_$_FilteredMeasurementsContract>
+  _$$FilteredMeasurementsContractImplCopyWith<
+          _$FilteredMeasurementsContractImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1444,12 +1451,12 @@ class _$FilteredMeasurementsEstimateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_FilteredMeasurementsEstimateCopyWith<$Res>
+abstract class _$$FilteredMeasurementsEstimateImplCopyWith<$Res>
     implements $FilteredMeasurementsEstimateCopyWith<$Res> {
-  factory _$$_FilteredMeasurementsEstimateCopyWith(
-          _$_FilteredMeasurementsEstimate value,
-          $Res Function(_$_FilteredMeasurementsEstimate) then) =
-      __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>;
+  factory _$$FilteredMeasurementsEstimateImplCopyWith(
+          _$FilteredMeasurementsEstimateImpl value,
+          $Res Function(_$FilteredMeasurementsEstimateImpl) then) =
+      __$$FilteredMeasurementsEstimateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1471,13 +1478,13 @@ abstract class _$$_FilteredMeasurementsEstimateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>
+class __$$FilteredMeasurementsEstimateImplCopyWithImpl<$Res>
     extends _$FilteredMeasurementsEstimateCopyWithImpl<$Res,
-        _$_FilteredMeasurementsEstimate>
-    implements _$$_FilteredMeasurementsEstimateCopyWith<$Res> {
-  __$$_FilteredMeasurementsEstimateCopyWithImpl(
-      _$_FilteredMeasurementsEstimate _value,
-      $Res Function(_$_FilteredMeasurementsEstimate) _then)
+        _$FilteredMeasurementsEstimateImpl>
+    implements _$$FilteredMeasurementsEstimateImplCopyWith<$Res> {
+  __$$FilteredMeasurementsEstimateImplCopyWithImpl(
+      _$FilteredMeasurementsEstimateImpl _value,
+      $Res Function(_$FilteredMeasurementsEstimateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1499,7 +1506,7 @@ class __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>
     Object? wfStatus = freezed,
     Object? status = freezed,
   }) {
-    return _then(_$_FilteredMeasurementsEstimate(
+    return _then(_$FilteredMeasurementsEstimateImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1566,8 +1573,9 @@ class __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
-  const _$_FilteredMeasurementsEstimate(
+class _$FilteredMeasurementsEstimateImpl
+    implements _FilteredMeasurementsEstimate {
+  const _$FilteredMeasurementsEstimateImpl(
       {this.id,
       this.sorId,
       this.category,
@@ -1584,8 +1592,9 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
       this.wfStatus,
       this.status});
 
-  factory _$_FilteredMeasurementsEstimate.fromJson(Map<String, dynamic> json) =>
-      _$$_FilteredMeasurementsEstimateFromJson(json);
+  factory _$FilteredMeasurementsEstimateImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$FilteredMeasurementsEstimateImplFromJson(json);
 
   @override
   final String? id;
@@ -1624,10 +1633,10 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FilteredMeasurementsEstimate &&
+            other is _$FilteredMeasurementsEstimateImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sorId, sorId) || other.sorId == sorId) &&
             (identical(other.category, category) ||
@@ -1673,13 +1682,14 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FilteredMeasurementsEstimateCopyWith<_$_FilteredMeasurementsEstimate>
-      get copyWith => __$$_FilteredMeasurementsEstimateCopyWithImpl<
-          _$_FilteredMeasurementsEstimate>(this, _$identity);
+  _$$FilteredMeasurementsEstimateImplCopyWith<
+          _$FilteredMeasurementsEstimateImpl>
+      get copyWith => __$$FilteredMeasurementsEstimateImplCopyWithImpl<
+          _$FilteredMeasurementsEstimateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FilteredMeasurementsEstimateToJson(
+    return _$$FilteredMeasurementsEstimateImplToJson(
       this,
     );
   }
@@ -1702,10 +1712,10 @@ abstract class _FilteredMeasurementsEstimate
       final dynamic quantity,
       final bool? isDeduction,
       final String? wfStatus,
-      final String? status}) = _$_FilteredMeasurementsEstimate;
+      final String? status}) = _$FilteredMeasurementsEstimateImpl;
 
   factory _FilteredMeasurementsEstimate.fromJson(Map<String, dynamic> json) =
-      _$_FilteredMeasurementsEstimate.fromJson;
+      _$FilteredMeasurementsEstimateImpl.fromJson;
 
   @override
   String? get id;
@@ -1739,6 +1749,7 @@ abstract class _FilteredMeasurementsEstimate
   String? get status;
   @override
   @JsonKey(ignore: true)
-  _$$_FilteredMeasurementsEstimateCopyWith<_$_FilteredMeasurementsEstimate>
+  _$$FilteredMeasurementsEstimateImplCopyWith<
+          _$FilteredMeasurementsEstimateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

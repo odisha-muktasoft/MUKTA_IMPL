@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'filtered_Measures.dart';
+part of 'filtered_measures.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
+_$FilteredMeasurementsImpl _$$FilteredMeasurementsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_FilteredMeasurements(
+    _$FilteredMeasurementsImpl(
       totalSorAmount: (json['totalSorAmount'] as num?)?.toDouble(),
       totalNorSorAmount: (json['totalNorSorAmount'] as num?)?.toDouble(),
       totalAmount: (json['totalAmount'] as num?)?.toDouble(),
@@ -16,9 +16,9 @@ _$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
       mbNumber: json['mbNumber'] as String?,
       wfStatus: json['wfStatus'] as String?,
       tenantId: json['tenantId'] as String?,
-      endDate: json['endDate'] as int?,
-      startDate: json['startDate'] as int?,
-      entryDate: json['entryDate'] as int?,
+      endDate: (json['endDate'] as num?)?.toInt(),
+      startDate: (json['startDate'] as num?)?.toInt(),
+      entryDate: (json['entryDate'] as num?)?.toInt(),
       referenceId: json['referenceId'] as String?,
       id: json['id'] as String?,
       physicalRefNumber: json['physicalRefNumber'] as String?,
@@ -31,8 +31,8 @@ _$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_FilteredMeasurementsToJson(
-        _$_FilteredMeasurements instance) =>
+Map<String, dynamic> _$$FilteredMeasurementsImplToJson(
+        _$FilteredMeasurementsImpl instance) =>
     <String, dynamic>{
       'totalSorAmount': instance.totalSorAmount,
       'totalNorSorAmount': instance.totalNorSorAmount,
@@ -51,9 +51,9 @@ Map<String, dynamic> _$$_FilteredMeasurementsToJson(
       'documents': instance.documents,
     };
 
-_$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
+_$FilteredMeasurementsMeasureImpl _$$FilteredMeasurementsMeasureImplFromJson(
         Map<String, dynamic> json) =>
-    _$_FilteredMeasurementsMeasure(
+    _$FilteredMeasurementsMeasureImpl(
       length: (json['length'] as num?)?.toDouble(),
       breath: (json['breath'] as num?)?.toDouble(),
       height: (json['height'] as num?)?.toDouble(),
@@ -76,8 +76,8 @@ _$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_FilteredMeasurementsMeasureToJson(
-        _$_FilteredMeasurementsMeasure instance) =>
+Map<String, dynamic> _$$FilteredMeasurementsMeasureImplToJson(
+        _$FilteredMeasurementsMeasureImpl instance) =>
     <String, dynamic>{
       'length': instance.length,
       'breath': instance.breath,
@@ -96,9 +96,9 @@ Map<String, dynamic> _$$_FilteredMeasurementsMeasureToJson(
       'contracts': instance.contracts,
     };
 
-_$_FilteredMeasurementsContract _$$_FilteredMeasurementsContractFromJson(
+_$FilteredMeasurementsContractImpl _$$FilteredMeasurementsContractImplFromJson(
         Map<String, dynamic> json) =>
-    _$_FilteredMeasurementsContract(
+    _$FilteredMeasurementsContractImpl(
       estimateId: json['estimateId'] as String?,
       estimateLineItemId: json['estimateLineItemId'] as String?,
       contractLineItemRef: json['contractLineItemRef'] as String?,
@@ -115,8 +115,8 @@ _$_FilteredMeasurementsContract _$$_FilteredMeasurementsContractFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_FilteredMeasurementsContractToJson(
-        _$_FilteredMeasurementsContract instance) =>
+Map<String, dynamic> _$$FilteredMeasurementsContractImplToJson(
+        _$FilteredMeasurementsContractImpl instance) =>
     <String, dynamic>{
       'estimateId': instance.estimateId,
       'estimateLineItemId': instance.estimateLineItemId,
@@ -128,9 +128,9 @@ Map<String, dynamic> _$$_FilteredMeasurementsContractToJson(
       'estimates': instance.estimates,
     };
 
-_$_FilteredMeasurementsEstimate _$$_FilteredMeasurementsEstimateFromJson(
+_$FilteredMeasurementsEstimateImpl _$$FilteredMeasurementsEstimateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_FilteredMeasurementsEstimate(
+    _$FilteredMeasurementsEstimateImpl(
       id: json['id'] as String?,
       sorId: json['sorId'] as String?,
       category: json['category'] as String?,
@@ -148,8 +148,8 @@ _$_FilteredMeasurementsEstimate _$$_FilteredMeasurementsEstimateFromJson(
       status: json['status'] as String?,
     );
 
-Map<String, dynamic> _$$_FilteredMeasurementsEstimateToJson(
-        _$_FilteredMeasurementsEstimate instance) =>
+Map<String, dynamic> _$$FilteredMeasurementsEstimateImplToJson(
+        _$FilteredMeasurementsEstimateImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'sorId': instance.sorId,

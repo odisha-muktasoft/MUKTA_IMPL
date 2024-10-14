@@ -39,7 +39,7 @@ class WageSeekerLocalityBloc
       if (result != null) {
         emit(WageSeekerLocalityState.loaded(result));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(
           WageSeekerLocalityState.error(e.response?.data['Errors'][0]['code']));
     }

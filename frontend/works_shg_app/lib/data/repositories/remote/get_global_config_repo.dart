@@ -30,7 +30,7 @@ class GetGlobalConfig {
       return GlobalConfigModel.fromJson(
         response.data,
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

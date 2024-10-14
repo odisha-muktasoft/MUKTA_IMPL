@@ -35,7 +35,7 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
       GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -55,7 +55,7 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
       GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
     }
   }

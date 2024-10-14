@@ -40,7 +40,7 @@ class EmpHRMSBloc extends Bloc<EmpHRMSBlocEvent, EmpHRMsState> {
           res.employees,
         ),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(
         EmpHRMsState.error(
           e.toString(),

@@ -29,7 +29,7 @@ class WageSeekerRepository {
 
       return SingleIndividualModelMapper.fromMap(
           response.data as Map<String, dynamic>);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -51,7 +51,7 @@ class WageSeekerRepository {
 
       return BankingDetailsModelMapper.fromMap(
           response.data as Map<String, dynamic>);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -71,7 +71,7 @@ class WageSeekerRepository {
       );
       dio.close();
       return AdharCardResponse.fromJson(jsonDecode(response.data));
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       dio.close();
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;

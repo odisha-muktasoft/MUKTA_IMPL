@@ -1,46 +1,62 @@
+import 'dart:io';
+
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/digit_tab_bar_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_tab.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
+    as ui_label;
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
+import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
+import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_component;
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
-import 'package:works_shg_app/blocs/employee/estimate/estimate.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
-import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/data/repositories/core_repo/core_repository.dart';
+import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
-import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_business_workflow.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../blocs/work_orders/search_individual_work.dart';
-import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/employee/mb/filtered_measures.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/muster_rolls/business_service_workflow.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/digit_timeline.dart';
-import '../../widgets/drawer_wrapper.dart';
-import '../../widgets/mb/float_action_card.dart';
-import '../../widgets/mb/multi_image.dart';
-import '../../widgets/mb/workFlowButtonList.dart';
+import '../../widgets/mb/work_flow_button_list.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
-import '../../widgets/mb/text_button_underline.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
+import 'package:path/path.dart' as path;
 
+@RoutePage()
 class MBDetailPage extends StatefulWidget {
   final String contractNumber;
   final String mbNumber;
@@ -60,10 +76,15 @@ class MBDetailPage extends StatefulWidget {
 class _MBDetailPageState extends State<MBDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedIndex = 0;
+  //int _selectedIndex = 0;
 
   int phots = 0;
   List<DigitTimelineOptions> timeLineAttributes = [];
+
+  late TextEditingController consumedQty;
+  late TextEditingController currentAmt;
+
+  int tabIndex = 0;
 
   // check points for creating new MB
 //  ACTIVE
@@ -72,6 +93,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   String estimateStatus = "";
   @override
   void initState() {
+    consumedQty = TextEditingController();
+    currentAmt = TextEditingController();
+
     if (widget.type == MBScreen.create) {
       context.read<BusinessWorkflowBloc>().add(
             //hard coded
@@ -103,20 +127,201 @@ class _MBDetailPageState extends State<MBDetailPage>
 
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_handleTabSelection);
+    // _tabController.addListener(_handleTabSelection);
   }
 
-  void _handleTabSelection() {
-    setState(() {
-      _selectedIndex = _tabController.index;
-    });
-  }
+  // void _handleTabSelection() {
+  //   setState(() {
+  //     _selectedIndex = _tabController.index;
+  //   });
+  // }
 
   @override
   void dispose() {
+    consumedQty.clear();
+    currentAmt.clear();
+    consumedQty.dispose();
+    currentAmt.dispose();
+
     _tabController.dispose();
-    _tabController.removeListener(_handleTabSelection);
+    // _tabController.removeListener(_handleTabSelection);
     super.dispose();
+  }
+
+  void uploadDocument(List<PlatformFile> files, BuildContext context,
+      List<WorkflowDocument> serverData) async {
+    List<WorkflowDocument> dataDocument = [];
+    List<PlatformFile> payload = files.where((er) => er.path != null).toList();
+
+    try {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).popUntil(
+        (route) => route is! PopupRoute,
+      );
+      if (payload.isNotEmpty) {
+        // Loaders.showLoadingDialog(context, label: "Uploading...");
+        shg_loader.Loaders.showLoadingDialog(context,
+            label:
+                AppLocalizations.of(context).translate(i18.common.uploading));
+        var response = await CoreRepository().uploadFiles(
+            payload.map((e) => File(e.path ?? e.name!)).toList(),
+            "img_measurement_book");
+
+        for (int i = 0; i < response.length; i++) {
+          dataDocument.add(WorkflowDocument(
+              indexing:
+                  dataDocument.isEmpty ? 0 : (dataDocument.last.indexing! + 1),
+              isActive: true,
+              tenantId: response[i].tenantId,
+              fileStore: response[i].fileStoreId,
+              documentType: path.extension(payload[i].name ?? ''),
+              documentUid: path.basename(payload[i].name ?? ''),
+              documentAdditionalDetails: DocumentAdditionalDetails(
+                fileName: path.basename(payload[i].name ?? ''),
+                fileType: "img_measurement_book",
+                tenantId: response[i].tenantId,
+              )));
+        }
+        List<PlatformFile> noPath =
+            files.where((element) => element.path == null).toList();
+
+        // serverData = serverData.where((file) {
+        //   return noPath.any(
+        //       (ref) => ref.name == file.documentAdditionalDetails!.fileName);
+        // }).toList();
+
+        serverData = serverData.map((file) {
+          if (noPath.any(
+              (ref) => ref.name == file.documentAdditionalDetails!.fileName)) {
+            // Return the WorkflowDocument with isActive: true
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: true, // Set isActive to true
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          } else {
+            // Return the WorkflowDocument with isActive: false
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: false, // Set isActive to false
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          }
+        }).toList();
+
+        dataDocument.addAll(serverData);
+
+        context.read<MeasurementDetailBloc>().add(
+              MeasurementUploadDocumentBlocEvent(
+                tenantId: '',
+                workflowDocument: dataDocument,
+              ),
+            );
+        Navigator.of(
+          context,
+          rootNavigator: true,
+        ).popUntil(
+          (route) => route is! PopupRoute,
+        );
+      } else {
+        // serverData = serverData.where((file) {
+        //   return files.any(
+        //       (ref) => ref.name == file.documentAdditionalDetails!.fileName);
+        // }).toList();
+        serverData = serverData.map((file) {
+          if (files.any(
+              (ref) => ref.name == file.documentAdditionalDetails!.fileName)) {
+            // Return the WorkflowDocument with isActive: true
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: true, // Set isActive to true
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          } else {
+            // Return the WorkflowDocument with isActive: false
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: false, // Set isActive to false
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          }
+        }).toList();
+
+        dataDocument.addAll(serverData);
+        context.read<MeasurementDetailBloc>().add(
+              MeasurementUploadDocumentBlocEvent(
+                tenantId: '',
+                workflowDocument: dataDocument,
+              ),
+            );
+      }
+    } catch (ex) {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).popUntil(
+        (route) => route is! PopupRoute,
+      );
+    }
+    // serverData = serverData.where((item  ) => noPath.contains(item.documentAdditionalDetails!.fileName!)).toList();
+
+// for (var element in serverData) {
+
+//   dataDocument.add(WorkflowDocument(
+//     indexing:
+//               dataDocument.isEmpty ? 0 : (dataDocument.last.indexing! + 1),
+//           isActive: true,
+//           tenantId: response[i].tenantId,
+//           fileStore: response[i].fileStoreId,
+//           documentType: path.extension(element.name ?? ''),
+//           documentUid: path.basename(files[i].path ?? ''),
+//           documentAdditionalDetails: DocumentAdditionalDetails(
+//             fileName: path.basename(files[i].path ?? ''),
+//             fileType: "img_measurement_book",
+//             tenantId: response[i].tenantId,
+//           )
+//   ));
+// }
+    // dataDocument.add(WorkflowDocument(
+    //     indexing: dataDocument.isEmpty
+    //         ? 0
+    //         : (_selectedFiles.last.indexing! + 1),
+    //     isActive: true,
+    //     tenantId: _fileStoreList[i].tenantId,
+    //     fileStore: _fileStoreList[i].fileStoreId,
+    //     documentType: path.extension(files[i].path),
+    //     documentUid: path.basename(files[i].path),
+    //     documentAdditionalDetails: DocumentAdditionalDetails(
+    //       fileName: path.basename(files[i].path),
+    //       fileType: "img_measurement_book",
+    //       tenantId: _fileStoreList[i].tenantId,
+    //     )));
   }
 
   @override
@@ -134,7 +339,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   context.read<MusterGetWorkflowBloc>().add(
                         FetchMBWorkFlowEvent(
                             tenantId: GlobalVariables.tenantId!,
-                            mbNumber: widget.mbNumber!),
+                            mbNumber: widget.mbNumber),
                       );
 
                   context.read<MeasurementDetailBloc>().add(
@@ -174,27 +379,40 @@ class _MBDetailPageState extends State<MBDetailPage>
                     context,
                     t.translate(
                         "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
-                    'SUCCESS');
+                    "SUCCESS");
+
+                // Toast.showToast(
+                //   context,
+                //   message: t.translate(
+                //       "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
+                //   type: ToastType.success,
+                // );
 
                 context.read<MeasurementDetailBloc>().add(
                       MeasurementDetailBookBlocEvent(
                         tenantId: widget.tenantId!,
                         contractNumber: widget.contractNumber,
                         measurementNumber:
-                            valueLoaded!.measurement!.measurementNumber!,
+                            valueLoaded.measurement!.measurementNumber!,
                         screenType: MBScreen.update,
                       ),
                     );
               },
               error: (value) {
-                 Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).popUntil(
-                    (route) => route is! PopupRoute,
-                  );
-                Notifiers.getToastMessage(
-                    context, value.error.toString(), 'ERROR');
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).popUntil(
+                  (route) => route is! PopupRoute,
+                );
+                // Notifiers.getToastMessage(
+                //     context, value.error.toString(), 'ERROR');
+
+                Toast.showToast(
+                  context,
+                  message: value.error.toString(),
+                  type: ToastType.error,
+                );
               },
             );
           },
@@ -228,411 +446,10 @@ class _MBDetailPageState extends State<MBDetailPage>
         child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, state) {
             return Scaffold(
-              bottomNavigationBar:
-                  BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
-                builder: (context, state) {
-                  return state.maybeMap(
-                    orElse: () {
-                      return const SizedBox.shrink();
-                    },
-                    loaded: (value) {
-                      double sorprice = 0.00;
+              backgroundColor: Theme.of(context).colorTheme.generic.background,
 
-                      for (int i = 0; i < value.sor!.length; i++) {
-                        final key = value.sor![i];
-                        List<FilteredMeasurementsEstimate> line =
-                            value.sor![i].filteredMeasurementsMeasure.map(
-                          (e) {
-                            return e.contracts!.first.estimates!.first;
-                          },
-                        ).toList();
-                        int consumed = value.sor![i].filteredMeasurementsMeasure
-                            .fold(0, (sum, obj) {
-                          double m = obj!.currentValue!;
-                          return sum + m.toInt();
-                        });
-                        sorprice += (line.first.unitRate! * consumed);
-                      }
-                      if (widget.type == MBScreen.update) {
-                        return BlocBuilder<MusterGetWorkflowBloc,
-                            MusterGetWorkflowState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              orElse: () => const SizedBox.shrink(),
-                              loaded: (mbWorkFlow) {
-                                final g = mbWorkFlow
-                                    .musterWorkFlowModel?.processInstances;
-
-                                return Draggable(
-                                  childWhenDragging: FloatActionCard(
-                                    actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                        ),
-                                      );
-                                    },
-                                    // amount: sorprice.toString(),
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          null,
-                                          (g != null &&
-                                                  (g.first.nextActions !=
-                                                          null &&
-                                                      g.first.nextActions!
-                                                          .isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : false));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                  onDragEnd: (details) {
-                                    _openBottomSheet(
-                                        t,
-                                        context,
-                                        value.data.first.totalSorAmount!,
-                                        value.data.first.totalNorSorAmount!,
-                                        value.data.first.totalAmount!,
-                                        g,
-                                        widget.contractNumber,
-                                        widget.mbNumber,
-                                        widget.type,
-                                        null,
-                                        (g != null &&
-                                                (g.first.nextActions != null &&
-                                                    g.first.nextActions!
-                                                        .isEmpty))
-                                            ? false
-                                            : true,
-                                        workorderStatus,
-                                        estimateStatus,
-                                        (value.data.length >= 2
-                                            ? (value.data[1].wfStatus ==
-                                                    "APPROVED" ||
-                                                value.data[1].wfStatus ==
-                                                    "REJECTED")
-                                            : false));
-                                  },
-                                  feedback: const SizedBox.shrink(),
-                                  // feedback: FloatActionCard(
-                                  //   actions: () {
-                                  //     DigitActionDialog.show(
-                                  //       context,
-                                  //       widget: CommonButtonCard(
-                                  //         g: g,
-                                  //         contractNumber: widget.contractNumber,
-                                  //         mbNumber: widget.mbNumber,
-                                  //         type: widget.type,
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  //   // amount: sorprice.toString(),
-                                  //   amount: value.data.first.totalAmount != null
-                                  //       ? value.data.first.totalAmount!
-                                  //           .roundToDouble()
-                                  //           .toStringAsFixed(2)
-                                  //       : "0.00",
-                                  //   openButtonSheet: () {
-                                  //     _openBottomSheet(
-                                  //         t,
-                                  //         context,
-                                  //         value.data.first.totalSorAmount!,
-                                  //         value.data.first.totalNorSorAmount!,
-                                  //         value.data.first.totalAmount!,
-                                  //         g,
-                                  //         widget.contractNumber,
-                                  //         widget.mbNumber,
-                                  //         widget.type,
-                                  //         null,
-                                  //         (g != null &&
-                                  //                 (g.first.nextActions !=
-                                  //                         null &&
-                                  //                     g.first.nextActions!
-                                  //                         .isEmpty))
-                                  //             ? false
-                                  //             : true,
-                                  //         workorderStatus,
-                                  //         estimateStatus,
-                                  //         (value.data.length >= 2
-                                  //             ? (value.data[1].wfStatus ==
-                                  //                     "APPROVED" ||
-                                  //                 value.data[1].wfStatus ==
-                                  //                     "REJECTED")
-                                  //             : false));
-                                  //   },
-                                  //   totalAmountText: t.translate(
-                                  //       i18.measurementBook.totalMbAmount),
-                                  //   subtext: t.translate(
-                                  //       i18.measurementBook.forCurrentEntry),
-                                  //   showAction: (g != null &&
-                                  //           (g.first.nextActions != null &&
-                                  //               g.first.nextActions!.isEmpty))
-                                  //       ? false
-                                  //       : true,
-                                  // ),
-                                  child: FloatActionCard(
-                                    actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                        ),
-                                      );
-                                    },
-                                    // amount: sorprice.toString(),
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          null,
-                                          (g != null &&
-                                                  (g.first.nextActions !=
-                                                          null &&
-                                                      g.first.nextActions!
-                                                          .isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : false));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      } else {
-                        return BlocBuilder<BusinessWorkflowBloc,
-                            BusinessGetWorkflowState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              orElse: () => const SizedBox.shrink(),
-                              loaded: (business) {
-                                const g = null;
-                                final bk = business.businessWorkFlowModel!
-                                        .businessServices ??
-                                    [];
-
-                                return Draggable(
-                                  childWhenDragging: FloatActionCard(
-                                    actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                          bs: bk,
-                                        ),
-                                      );
-                                    },
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          bk,
-                                          (bk != null &&
-                                                  (bk != null && bk.isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : true));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (bk != null &&
-                                            (bk != null && bk.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                  onDragEnd: (details) {
-                                    _openBottomSheet(
-                                        t,
-                                        context,
-                                        value.data.first.totalSorAmount!,
-                                        value.data.first.totalNorSorAmount!,
-                                        value.data.first.totalAmount!,
-                                        g,
-                                        widget.contractNumber,
-                                        widget.mbNumber,
-                                        widget.type,
-                                        bk,
-                                        (bk != null &&
-                                                (bk != null && bk.isEmpty))
-                                            ? false
-                                            : true,
-                                        workorderStatus,
-                                        estimateStatus,
-                                        (value.data.length >= 2
-                                            ? (value.data[1].wfStatus ==
-                                                    "APPROVED" ||
-                                                value.data[1].wfStatus ==
-                                                    "REJECTED")
-                                            : true));
-                                  },
-                                  feedback: const SizedBox.shrink(),
-                                  child: FloatActionCard(
-                                    actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                          bs: bk,
-                                        ),
-                                      );
-                                    },
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          bk,
-                                          (bk != null &&
-                                                  (bk != null && bk.isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : true));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (bk != null &&
-                                            (bk != null && bk.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      }
-                    },
-                    loading: (value) {
-                      return const SizedBox.shrink();
-                    },
-                  );
-                },
-              ),
-              backgroundColor: const DigitColors().seaShellGray,
-              appBar: AppBar(
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
               body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
                 builder: (context, state) {
                   return state.maybeMap(
@@ -654,504 +471,669 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 ))
                             .toList();
                       }
-                      return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Back(
-                              callback: () {
-                                context.router.popUntilRouteWithPath(
-                                    widget.type == MBScreen.update
-                                        ? 'measurement-inbox'
-                                        : 'workOrder-inbox');
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                t.translate(
-                                    i18.measurementBook.measurementBookTitle),
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineLarge,
-                              ),
-                            ),
-                            DigitCard(
-                              // margin: EdgeInsets.zero,
-                              padding: EdgeInsets.zero,
-                              child: ExpansionTile(
-                                expandedCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                expandedAlignment: Alignment.topLeft,
-                                title: Text(
-                                  t.translate(
-                                      i18.measurementBook.primaryDetails),
-                                  style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineMedium,
+                      return Stack(children: [
+                        SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      Theme.of(context).spacerTheme.spacer4,
+                                  vertical:
+                                      Theme.of(context).spacerTheme.spacer4,
                                 ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      BackNavigationButton(
+                                        backNavigationButtonThemeData:
+                                            const BackNavigationButtonThemeData()
+                                                .copyWith(
+                                                    textColor: Theme.of(context)
+                                                        .colorTheme
+                                                        .primary
+                                                        .primary2,
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                    context: context,
+                                                    backButtonIcon: Icon(
+                                                      Icons
+                                                          .arrow_circle_left_outlined,
+                                                      size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width <
+                                                              500
+                                                          ? Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer5
+                                                          : Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer6,
+                                                      color: Theme.of(context)
+                                                          .colorTheme
+                                                          .primary
+                                                          .primary2,
+                                                    )),
+                                        backButtonText: AppLocalizations.of(
+                                                    context)
+                                                .translate(i18.common.back) ??
+                                            'Back',
+                                        handleBack: () {
+                                          context.router.popUntilRouteWithPath(
+                                            widget.type == MBScreen.update
+                                                ? 'measurement-inbox'
+                                                : 'workOrder-inbox',
+                                          );
+                                        },
+                                      ),
+                                    ]),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 0.0,
+                                  left: Theme.of(context).spacerTheme.spacer4,
+                                  // bottom:
+                                  //     Theme.of(context).spacerTheme.spacer2,
+                                ),
+                                child: DigitTextBlock(
+                                  heading: t.translate(
+                                      i18.measurementBook.measurementBookTitle),
+                                  //  headingStyle: Theme.of(context).digitTextTheme(context).headingXl,
+                                ),
+                              ),
+                              ui_component.DigitCard(
+                                margin: EdgeInsets.all(
+                                    Theme.of(context).spacerTheme.spacer2),
+                                cardType: CardType.primary,
+                                padding: EdgeInsets.zero,
                                 children: [
-                                  CommonMBCard(
-                                    items: primaryItems(
-                                        t, value.data, widget.type),
-                                    widget: value.data.length > 1
-                                        ? CommonTextButtonUnderline(
-                                            label: t.translate(i18
-                                                .measurementBook.mbShowHistory),
-                                            onPressed: () {
-                                              context.router.push(
-                                                MBHistoryBookRoute(
-                                                  contractNumber:
-                                                      widget.contractNumber,
-                                                  mbNumber: widget.mbNumber,
-                                                  tenantId: widget.tenantId,
-                                                  type: widget.type,
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : const SizedBox.shrink(),
-                                    show: false,
-                                    sla: 1,
+                                  ExpansionTile(
+                                    collapsedIconColor: Theme.of(context)
+                                        .colorTheme
+                                        .text
+                                        .secondary,
+                                    iconColor: Theme.of(context)
+                                        .colorTheme
+                                        .primary
+                                        .primary1,
+                                    tilePadding: EdgeInsets.symmetric(
+                                        horizontal: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer2),
+                                    // childrenPadding: EdgeInsets.zero,
+                                    expandedCrossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    expandedAlignment: Alignment.topLeft,
+                                    title: DigitTextBlock(
+                                      subHeading: t.translate(
+                                          i18.measurementBook.primaryDetails),
+                                      subHeadingStyle: Theme.of(context)
+                                          .digitTextTheme(context)
+                                          .headingM,
+                                    ),
+                                    children: [
+                                      ui_component.DigitCard(
+                                          padding: const EdgeInsets.only(
+                                              top: 0.0,
+                                              left: 8.0,
+                                              right: 8.0,
+                                              bottom: 0.0),
+                                          cardType: CardType.primary,
+                                          children: [
+                                            LabelValueList(
+                                                maxLines: 3,
+                                                labelFlex: 5,
+                                                valueFlex: 5,
+                                                items: primaryItems(t,
+                                                        value.data, widget.type)
+                                                    .entries
+                                                    .map(
+                                                  (e) {
+                                                    return LabelValuePair(
+                                                        label: e.key,
+                                                        value: e.value);
+                                                  },
+                                                ).toList()),
+                                            value.data.length > 1
+                                                ? Button(
+                                                    suffixIcon: Icons
+                                                        .arrow_forward_outlined,
+                                                    label: t.translate(i18
+                                                        .measurementBook
+                                                        .mbShowHistory),
+                                                    onPressed: () {
+                                                      context.router.push(
+                                                        MBHistoryBookRoute(
+                                                          contractNumber: widget
+                                                              .contractNumber,
+                                                          mbNumber:
+                                                              widget.mbNumber,
+                                                          tenantId:
+                                                              widget.tenantId,
+                                                          type: widget.type,
+                                                        ),
+                                                      );
+                                                    },
+                                                    type: ButtonType.link,
+                                                    size: ButtonSize.large)
+                                                : const SizedBox.shrink(),
+                                          ]),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ),
 
-                            // tab
-
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0, left: 8.0, right: 8.0, bottom: 0.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                // padding: EdgeInsets.zero,
-                                // controller: _tabController,
-                                children: [
-                                  Expanded(
-                                    child: CustomTab(
-                                      text: t
-                                          .translate(i18.measurementBook.mbSor),
-                                      isSelected: _selectedIndex == 0,
-                                      onTap: () {
-                                        _tabController.animateTo(0);
-                                      },
-                                    ),
+                              // tab
+                              /////////////////////////
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16.0,
+                                    left: 8.0,
+                                    right: 8.0,
+                                    bottom: 0.0),
+                                child: AnimatedBuilder(
+                                  animation: _tabController.animation!,
+                                  builder: (context, child) =>
+                                      //Expanded(
+                                      //child:
+                                      DigitTabBar(
+                                    tabBarThemeData:
+                                        const DigitTabBarThemeData().copyWith(
+                                            tabWidth: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.32001,
+                                            padding: const EdgeInsets.all(0)),
+                                    tabs: [
+                                      t.translate(i18.measurementBook.mbSor),
+                                      t.translate(i18.measurementBook.mbNonSor),
+                                      t.translate(
+                                          i18.measurementBook.mbWorksitePhotos)
+                                    ],
+                                    onTabSelected: (index) {
+                                      setState(() {
+                                        tabIndex = index;
+                                      });
+                                      //  _tabController.animateTo(index);
+                                    },
+                                    initialIndex: tabIndex,
                                   ),
-                                  Expanded(
-                                    child: CustomTab(
-                                      text: t.translate(
-                                          i18.measurementBook.mbNonSor),
-                                      isSelected: _selectedIndex == 1,
-                                      onTap: () {
-                                        _tabController.animateTo(1);
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: CustomTab(
-                                      text: t.translate(
-                                          i18.measurementBook.mbWorksitePhotos),
-                                      isSelected: _selectedIndex == 2,
-                                      onTap: () {
-                                        _tabController.animateTo(2);
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: tabViewHeight(
-                                value.sor!.length,
-                                value.nonSor!.length,
-                                widget.type == MBScreen.create ||
-                                        value.data.first.wfStatus == "DRAFTED"
-                                    ? 0
-                                    : value.data.first.documents != null &&
-                                            value.data.first.documents!.isEmpty
-                                        ? 0
-                                        : !value.viewStatus
-                                            ? 0
-                                            : value
-                                                .data.first.documents!.length,
-                              ),
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  value.sor!.isEmpty
-                                      ? Card(
-                                          child: Center(
-                                              child: EmptyImage(
-                                            align: Alignment.center,
-                                            label: t
-                                                .translate(i18.common.notFound),
-                                          )),
-                                        )
-                                      : ListView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return sorCard(
-                                              t,
-                                              context,
-                                              index,
-                                              magic: value.sor![index]
-                                                  .filteredMeasurementsMeasure,
 
-                                              preSorNonSor: value.preSor == null
-                                                  ? null
-                                                  : value.preSor!.firstWhereOrNull(
-                                                              (element) =>
-                                                                  element
-                                                                      .sorId ==
-                                                                  value
-                                                                      .sor![
-                                                                          index]
-                                                                      .sorId) ==
-                                                          null
-                                                      ? null
-                                                      : value.preSor!
-                                                          .firstWhereOrNull(
-                                                              (element) =>
-                                                                  element
-                                                                      .sorId ==
-                                                                  value
-                                                                      .sor![
-                                                                          index]
-                                                                      .sorId)!
-                                                          .filteredMeasurementsMeasure,
-                                              // value.preSor![index]
-                                              //     .filteredMeasurementsMeasure,
-                                              type: "sor",
-                                              sorNonSorId:
-                                                  value.sor![index].sorId!,
-                                              cardLevel: t.translate(
-                                                  i18.measurementBook.mbSor),
-                                            );
-                                          },
-                                          itemCount: value.sor!.length,
+                              if (tabIndex == 0)
+                                value.sor!.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 8.0,
+                                          right: 8.0,
+                                          bottom: 8.0,
+                                          top: 0.0,
                                         ),
-                                  value.nonSor!.isEmpty
-                                      ? Card(
-                                          child: Center(
-                                            child: EmptyImage(
+                                        child: ui_component.DigitCard(
+                                          cardType: CardType.primary,
+                                          children: [
+                                            Center(
+                                                child: EmptyImage(
                                               align: Alignment.center,
                                               label: t.translate(
                                                   i18.common.notFound),
-                                            ),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return sorCard(
-                                              t,
-                                              context,
-                                              index,
-                                              magic: value.nonSor![index]
-                                                  .filteredMeasurementsMeasure,
-                                              preSorNonSor: value.preNonSor ==
-                                                      null
-                                                  ? null
-                                                  : value.preNonSor!.firstWhereOrNull(
-                                                              (element) =>
-                                                                  element
-                                                                      .sorId ==
-                                                                  value
-                                                                      .nonSor![
-                                                                          index]
-                                                                      .sorId) !=
-                                                          null
-                                                      ? value.preNonSor!
-                                                          .firstWhereOrNull(
-                                                              (element) =>
-                                                                  element
-                                                                      .sorId ==
-                                                                  value
-                                                                      .nonSor![
-                                                                          index]
-                                                                      .sorId)!
-                                                          .filteredMeasurementsMeasure
-                                                      : null,
-                                              type: "NonSor",
-                                              sorNonSorId:
-                                                  value.nonSor![index].sorId!,
-                                              cardLevel: t.translate(
-                                                  i18.measurementBook.mbNonSor),
-                                            );
-                                          },
-                                          itemCount: value.nonSor!.length,
+                                            ))
+                                          ],
                                         ),
-                                  widget.type == MBScreen.create
-                                      ? Card(
-                                          child: Center(
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
-                                                  child: FilePickerDemo(
-                                                    fromServerFile: value
-                                                        .data.first.documents,
-                                                    callBack: (List<
-                                                                FileStoreModel>?
-                                                            g,
-                                                        List<WorkflowDocument>?
-                                                            l) {
-                                                      context
-                                                          .read<
-                                                              MeasurementDetailBloc>()
-                                                          .add(
-                                                            MeasurementUploadDocumentBlocEvent(
-                                                              tenantId: '',
-                                                              workflowDocument:
-                                                                  l!,
-                                                            ),
-                                                          );
-                                                    },
-                                                    extensions: const [
-                                                      'jpg',
-                                                      'png',
-                                                      'jpeg',
-                                                    ],
-                                                    moduleName:
-                                                        'img_measurement_book',
-                                                    headerType:
-                                                        MediaType.mbDetail,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(4),
-                                                  //  color: DigitColors().curiousBlue,
-                                                  child: Text(t.translate(i18
-                                                      .measurementBook
-                                                      .mbPhotoInfo)),
-                                                ),
-                                              ],
+                                      )
+                                    : renderSor(value.sor!, "sor"),
+
+                              if (tabIndex == 1)
+                                value.nonSor!.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 8.0,
+                                          right: 8.0,
+                                          bottom: 8.0,
+                                          top: 0.0,
+                                        ),
+                                        child: ui_component.DigitCard(
+                                          cardType: CardType.primary,
+                                          children: [
+                                            Center(
+                                              child: EmptyImage(
+                                                align: Alignment.center,
+                                                label: t.translate(
+                                                    i18.common.notFound),
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      : value.data.first.documents != null &&
-                                              value
-                                                  .data.first.documents!.isEmpty
-                                          ? !value.viewStatus
-                                              ? Card(
-                                                  child: Center(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      8.0),
-                                                          child: FilePickerDemo(
-                                                            fromServerFile:
-                                                                value.data.first
-                                                                    .documents,
-                                                            callBack: (List<
-                                                                        FileStoreModel>?
-                                                                    g,
-                                                                List<WorkflowDocument>?
-                                                                    l) {
-                                                              context
-                                                                  .read<
-                                                                      MeasurementDetailBloc>()
-                                                                  .add(
-                                                                    MeasurementUploadDocumentBlocEvent(
-                                                                      tenantId:
-                                                                          '',
-                                                                      workflowDocument:
-                                                                          l!,
-                                                                    ),
-                                                                  );
-                                                            },
-                                                            extensions: const [
-                                                              'jpg',
-                                                              'png',
-                                                              'jpeg',
-                                                            ],
-                                                            moduleName:
-                                                                'img_measurement_book',
-                                                            headerType:
-                                                                MediaType
-                                                                    .mbDetail,
-                                                          ),
-                                                        ),
-                                                        // TODO:[text change]
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4),
-                                                          child: Text(
+                                          ],
+                                        ),
+                                      )
+                                    : renderSor(value.nonSor!, "NonSor"),
+
+                              if (tabIndex == 2)
+                                widget.type == MBScreen.create
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            bottom: 8.0,
+                                            top: 0.0),
+                                        child: ui_component.DigitCard(
+                                            cardType: CardType.primary,
+                                            children: [
+                                              Center(
+                                                child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 0.0),
+                                                      child:
+                                                          ui_label.LabeledField(
+                                                        label:
+                                                            "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                        child: FileUploadWidget(
+                                                          // onFileTap: (p0) {
+                                                          //   print("hello");
+                                                          // },
+                                                          initialFiles: value
+                                                                      .data
+                                                                      .first
+                                                                      .documents !=
+                                                                  null
+                                                              ? value.data.first
+                                                                  .documents!
+                                                                  .where((element) =>
+                                                                      element
+                                                                          .isActive ==
+                                                                      true)
+                                                                  .toList()
+                                                                  .map((e) => PlatformFile(
+                                                                      name: e
+                                                                          .documentAdditionalDetails!
+                                                                          .fileName!,
+                                                                      size: 0))
+                                                                  .toList()
+                                                              : [],
+                                                          noFileSelectedText:
                                                               t.translate(i18
-                                                                  .measurementBook
-                                                                  .mbPhotoInfo)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                              : Card(
-                                                  child: Center(
-                                                  child: EmptyImage(
-                                                    align: Alignment.center,
-                                                    label: t.translate(i18
-                                                        .measurementBook
-                                                        .noDocumentFound),
-                                                  ),
-                                                ))
-                                          : !value.viewStatus
-                                              ? Card(
-                                                  child: Center(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      8.0),
-                                                          child: FilePickerDemo(
-                                                            fromServerFile:
-                                                                value.data.first
-                                                                    .documents,
-                                                            callBack: (List<
-                                                                        FileStoreModel>?
-                                                                    g,
-                                                                List<WorkflowDocument>?
-                                                                    l) {
-                                                              context
-                                                                  .read<
-                                                                      MeasurementDetailBloc>()
-                                                                  .add(
-                                                                    MeasurementUploadDocumentBlocEvent(
-                                                                      tenantId:
-                                                                          '',
-                                                                      workflowDocument:
-                                                                          l!,
-                                                                    ),
-                                                                  );
-                                                            },
-                                                            extensions: const [
-                                                              'jpg',
-                                                              'png',
-                                                              'jpeg',
-                                                            ],
-                                                            moduleName:
-                                                                'img_measurement_book',
-                                                            headerType:
-                                                                MediaType
-                                                                    .mbDetail,
-                                                          ),
-                                                        ),
-                                                        // TODO:[text change]
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4),
-                                                          //  color: DigitColors().curiousBlue,
-                                                          child: Text(
-                                                              t.translate(i18
-                                                                  .measurementBook
-                                                                  .mbPhotoInfo)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                              : DigitCard(
-                                                  child: ListView.builder(
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        if (index == 0) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom:
-                                                                        8.0),
-                                                            child: Column(
-                                                              children: [
-                                                                DigitInfoCard(
-                                                                  title: t.translate(
-                                                                      i18.common
-                                                                          .info),
-                                                                  description: t
-                                                                      .translate(i18
+                                                                  .common
+                                                                  .noFileSelected),
+                                                          allowMultiples: true,
+                                                          label:
+                                                              "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
+                                                          onFilesSelected:
+                                                              (List<PlatformFile>
+                                                                  files) {
+                                                            Map<PlatformFile,
+                                                                    String?>
+                                                                fileErrors = {};
+
+                                                            try {
+                                                              const int
+                                                                  fileSizeLimit =
+                                                                  5 *
+                                                                      1024 *
+                                                                      1024; // 5 MB in bytes
+
+                                                              // Iterate over each file and check the size
+                                                              for (var file
+                                                                  in files) {
+                                                                if (file.size >
+                                                                    fileSizeLimit) {
+                                                                  fileErrors[
+                                                                          file] =
+                                                                      t.translate(i18
                                                                           .measurementBook
-                                                                          .infoImageTip),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () =>
-                                                                      CommonMethods()
-                                                                          .onTapOfAttachment(
-                                                                    mm![index],
-                                                                    mm![index]
-                                                                        .tenantId!,
-                                                                    context,
-                                                                    roleType:
-                                                                        RoleType
-                                                                            .employee,
-                                                                  ),
-                                                                  child: Chip(
-                                                                    labelPadding:
-                                                                        const EdgeInsets.all(
-                                                                            10),
-                                                                    // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                                                    label:
-                                                                        SizedBox(
-                                                                      width: MediaQuery.sizeOf(
-                                                                              context)
-                                                                          .width,
-                                                                      child:
-                                                                          Text(
-                                                                        AppLocalizations.of(context)
-                                                                            .translate(
-                                                                          mm![index]
-                                                                              .name
-                                                                              .toString(),
-                                                                        ),
-                                                                        maxLines:
-                                                                            3,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          return Padding(
+                                                                          .imageSize);
+                                                                }
+                                                              }
+
+                                                              if (fileErrors
+                                                                  .isEmpty) {
+                                                                uploadDocument(
+                                                                  files,
+                                                                  context,
+                                                                  value.data.first
+                                                                              .documents !=
+                                                                          null
+                                                                      ? value
+                                                                          .data
+                                                                          .first
+                                                                          .documents!
+                                                                      : [],
+                                                                );
+                                                              }
+
+                                                              return fileErrors;
+                                                            } catch (e) {
+                                                              return fileErrors;
+                                                            }
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    DigitTextBlock(
+                                                        description:
+                                                            t.translate(i18
+                                                                .measurementBook
+                                                                .mbPhotoInfo)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ]),
+                                      )
+                                    : value.data.first.documents != null &&
+                                            value.data.first.documents!.isEmpty
+                                        ? !value.viewStatus
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    bottom: 8.0,
+                                                    top: 0.0),
+                                                child: ui_component.DigitCard(
+                                                  cardType: CardType.primary,
+                                                  children: [
+                                                    Center(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
-                                                                    bottom:
-                                                                        8.0),
-                                                            child: InkWell(
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        0.0),
+                                                            child: ui_label
+                                                                .LabeledField(
+                                                              label:
+                                                                  "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                              child:
+                                                                  FileUploadWidget(
+                                                                // onFileTap: (p0) {
+                                                                //   print("hooo");
+                                                                // },
+                                                                initialFiles: value
+                                                                            .data
+                                                                            .first
+                                                                            .documents !=
+                                                                        null
+                                                                    ? value
+                                                                        .data
+                                                                        .first
+                                                                        .documents!
+                                                                        .where((element) =>
+                                                                            element.isActive ==
+                                                                            true)
+                                                                        .toList()
+                                                                        .map((e) => PlatformFile(
+                                                                            name:
+                                                                                e.documentAdditionalDetails!.fileName!,
+                                                                            size: 0))
+                                                                        .toList()
+                                                                    : [],
+                                                                noFileSelectedText:
+                                                                    t.translate(i18
+                                                                        .common
+                                                                        .noFileSelected),
+                                                                allowMultiples:
+                                                                    true,
+                                                                label:
+                                                                    "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
+                                                                onFilesSelected:
+                                                                    (List<PlatformFile>
+                                                                        files) {
+                                                                  Map<PlatformFile,
+                                                                          String?>
+                                                                      fileErrors =
+                                                                      {};
+
+                                                                  try {
+                                                                    const int
+                                                                        fileSizeLimit =
+                                                                        5 *
+                                                                            1024 *
+                                                                            1024; // 5 MB in bytes
+
+                                                                    // Iterate over each file and check the size
+                                                                    for (var file
+                                                                        in files) {
+                                                                      if (file.size >
+                                                                          fileSizeLimit) {
+                                                                        fileErrors[file] = t.translate(i18
+                                                                            .measurementBook
+                                                                            .imageSize);
+                                                                      }
+                                                                    }
+
+                                                                    if (fileErrors
+                                                                        .isEmpty) {
+                                                                      uploadDocument(
+                                                                        files,
+                                                                        context,
+                                                                        value.data.first.documents !=
+                                                                                null
+                                                                            ? value.data.first.documents!
+                                                                            : [],
+                                                                      );
+                                                                    }
+
+                                                                    return fileErrors;
+                                                                  } catch (e) {
+                                                                    return fileErrors;
+                                                                  }
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          // TODO:[text change]
+                                                          DigitTextBlock(
+                                                              description: t
+                                                                  .translate(i18
+                                                                      .measurementBook
+                                                                      .mbPhotoInfo)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    top: 0.0),
+                                                child: ui_component.DigitCard(
+                                                    cardType: CardType.primary,
+                                                    children: [
+                                                      Center(
+                                                        child: EmptyImage(
+                                                          align:
+                                                              Alignment.center,
+                                                          label: t.translate(i18
+                                                              .measurementBook
+                                                              .noDocumentFound),
+                                                        ),
+                                                      )
+                                                    ]),
+                                              )
+                                        : !value.viewStatus
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    top: 0.0),
+                                                child: ui_component.DigitCard(
+                                                    cardType: CardType.primary,
+                                                    children: [
+                                                      Center(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          0.0),
+                                                              child: ui_label
+                                                                  .LabeledField(
+                                                                label:
+                                                                    "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                                child:
+                                                                    FileUploadWidget(
+                                                                  // onFileTap: (p0) {
+                                                                  //   print("object");
+                                                                  // },
+                                                                  initialFiles: value
+                                                                              .data
+                                                                              .first
+                                                                              .documents !=
+                                                                          null
+                                                                      ? value
+                                                                          .data
+                                                                          .first
+                                                                          .documents!
+                                                                          .where((element) =>
+                                                                              element.isActive ==
+                                                                              true)
+                                                                          .toList()
+                                                                          .map((e) => PlatformFile(
+                                                                              name: e.documentAdditionalDetails!.fileName!,
+                                                                              size: 0))
+                                                                          .toList()
+                                                                      : [],
+                                                                  noFileSelectedText:
+                                                                      t.translate(i18
+                                                                          .common
+                                                                          .noFileSelected),
+                                                                  allowMultiples:
+                                                                      true,
+                                                                  label:
+                                                                      "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
+                                                                  onFilesSelected:
+                                                                      (List<PlatformFile>
+                                                                          files) {
+                                                                    Map<PlatformFile,
+                                                                            String?>
+                                                                        fileErrors =
+                                                                        {};
+
+                                                                    try {
+                                                                      const int
+                                                                          fileSizeLimit =
+                                                                          5 *
+                                                                              1024 *
+                                                                              1024; // 5 MB in bytes
+
+                                                                      // Iterate over each file and check the size
+                                                                      for (var file
+                                                                          in files) {
+                                                                        if (file.size >
+                                                                            fileSizeLimit) {
+                                                                          fileErrors[file] = t.translate(i18
+                                                                              .measurementBook
+                                                                              .imageSize);
+                                                                        }
+                                                                      }
+
+                                                                      if (fileErrors
+                                                                          .isEmpty) {
+                                                                        uploadDocument(
+                                                                          files,
+                                                                          context,
+                                                                          value.data.first.documents != null
+                                                                              ? value.data.first.documents!
+                                                                              : [],
+                                                                        );
+                                                                      }
+
+                                                                      return fileErrors;
+                                                                    } catch (e) {
+                                                                      return fileErrors;
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            DigitTextBlock(
+                                                                description: t
+                                                                    .translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              )
+                                            : Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    bottom: 8.0,
+                                                    top: 0.0),
+                                                child: ui_component.DigitCard(
+                                                  cardType: CardType.primary,
+                                                  children: List.generate(
+                                                      value
+                                                          .data
+                                                          .first
+                                                          .documents!
+                                                          .length, (index) {
+                                                    if (index == 0) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 8.0),
+                                                        child: Column(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          16.0),
+                                                              child: InfoCard(
+                                                                title: t
+                                                                    .translate(i18
+                                                                        .common
+                                                                        .info),
+                                                                type: InfoType
+                                                                    .info,
+                                                                description: t
+                                                                    .translate(i18
+                                                                        .measurementBook
+                                                                        .infoImageTip),
+                                                              ),
+                                                            ),
+                                                            InkWell(
                                                               onTap: () =>
                                                                   CommonMethods()
                                                                       .onTapOfAttachment(
@@ -1165,207 +1147,852 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               child: Chip(
                                                                 labelPadding:
                                                                     const EdgeInsets
-                                                                        .all(10),
-                                                                // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                                        .all(
+                                                                        10),
                                                                 label: SizedBox(
                                                                   width: MediaQuery
                                                                           .sizeOf(
                                                                               context)
                                                                       .width,
+                                                                  height: 25,
                                                                   child: Text(
-                                                                    AppLocalizations.of(
-                                                                            context)
-                                                                        .translate(
-                                                                      mm![index]
-                                                                          .name
-                                                                          .toString(),
-                                                                    ),
-                                                                    maxLines: 3,
+                                                                    mm![index]
+                                                                        .name
+                                                                        .toString(),
+                                                                    maxLines: 1,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .bodyMedium,
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          );
-                                                        }
-                                                      },
-                                                      itemCount: value
-                                                          .data
-                                                          .first
-                                                          .documents!
-                                                          .length),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 8.0),
+                                                        child: InkWell(
+                                                          onTap: () =>
+                                                              CommonMethods()
+                                                                  .onTapOfAttachment(
+                                                            mm![index],
+                                                            mm![index]
+                                                                .tenantId!,
+                                                            context,
+                                                            roleType: RoleType
+                                                                .employee,
+                                                          ),
+                                                          child: Chip(
+                                                            labelPadding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                            label: SizedBox(
+                                                              width: MediaQuery
+                                                                      .sizeOf(
+                                                                          context)
+                                                                  .width,
+                                                              height: 25,
+                                                              child: Text(
+                                                                mm![index]
+                                                                    .name
+                                                                    .toString(),
+                                                                maxLines: 1,
+                                                                softWrap: true,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyMedium,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  }).toList(),
                                                 ),
-                                ],
+                                              ),
+
+                              // ////////////////
+                              SizedBox(
+                                height: Theme.of(context).spacerTheme.spacer4,
                               ),
-                            ),
-                            widget.type == MBScreen.update
-                                ?
-                                //workflow
-                                BlocBuilder<MusterGetWorkflowBloc,
-                                    MusterGetWorkflowState>(
-                                    builder: (context, state) {
-                                      return state.maybeMap(
-                                        orElse: SizedBox.shrink,
-                                        loaded: (value) {
-                                          List<ProcessInstances> modifiedData =
-                                              value.musterWorkFlowModel!
-                                                  .processInstances!
-                                                  .where((element) =>
-                                                      element.action !=
-                                                      Constants.saveAsDraft)
-                                                  .toList();
-                                          // ..insert(0, value
-                                          // .musterWorkFlowModel!
-                                          // .processInstances!.first);
-                                          if (modifiedData.isNotEmpty &&
-                                              (modifiedData.first.nextActions !=
-                                                      null &&
-                                                  modifiedData
-                                                      .first
-                                                      .nextActions!
-                                                      .isNotEmpty)) {
-                                            modifiedData = [
-                                              ...[modifiedData.first],
-                                              ...modifiedData
-                                            ];
-                                          } else if (modifiedData.isNotEmpty) {
-                                            modifiedData = [
-                                              ...[modifiedData.first],
-                                              ...modifiedData
-                                            ];
-                                          }
-                                          timeLineAttributes.clear();
+                              widget.type == MBScreen.update
+                                  ?
+                                  //workflow
+                                  BlocBuilder<MusterGetWorkflowBloc,
+                                      MusterGetWorkflowState>(
+                                      builder: (context, state) {
+                                        return state.maybeMap(
+                                          orElse: SizedBox.shrink,
+                                          loaded: (value) {
+                                            List<ProcessInstances>
+                                                modifiedData = value
+                                                    .musterWorkFlowModel!
+                                                    .processInstances!
+                                                    .where((element) =>
+                                                        element.action !=
+                                                        Constants.saveAsDraft)
+                                                    .toList();
+                                            // ..insert(0, value
+                                            // .musterWorkFlowModel!
+                                            // .processInstances!.first);
+                                            if (modifiedData.isNotEmpty &&
+                                                (modifiedData.first
+                                                            .nextActions !=
+                                                        null &&
+                                                    modifiedData
+                                                        .first
+                                                        .nextActions!
+                                                        .isNotEmpty)) {
+                                              modifiedData = [
+                                                ...[modifiedData.first],
+                                                ...modifiedData
+                                              ];
+                                            } else if (modifiedData
+                                                .isNotEmpty) {
+                                              modifiedData = [
+                                                ...[modifiedData.first],
+                                                ...modifiedData
+                                              ];
+                                            }
+                                            timeLineAttributes.clear();
 
-                                          timeLineAttributes = modifiedData
-                                              .mapIndexed((i, e) =>
-                                                  DigitTimelineOptions(
-                                                    title: t.translate((i ==
-                                                                0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.workflowState
-                                                                    ?.state ==
-                                                                "EDIT_RE_SUBMIT"
-                                                            ? 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                            : 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                        : i == 0
-                                                            ? e.workflowState
-                                                                        ?.state ==
-                                                                    "EDIT_RE_SUBMIT"
-                                                                ? 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                                : 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                            : 'WF_MB_STATUS_${e.action}'),
-                                                    subTitle: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? DateFormats
-                                                            .getTimeLineDate(e
-                                                                    .auditDetails
-                                                                    ?.lastModifiedTime ??
-                                                                0)
-                                                        : i != 0
-                                                            ? DateFormats
-                                                                .getTimeLineDate(e
-                                                                        .auditDetails
-                                                                        ?.lastModifiedTime ??
-                                                                    0)
-                                                            : null,
-                                                    isCurrentState: i == 0,
-                                                    comments: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.comment
-                                                        : i != 0
-                                                            ? e.comment
-                                                            : null,
-                                                    documents: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.documents != null
-                                                            ? e.documents
-                                                                ?.map((d) =>
-                                                                    FileStoreModel(
-                                                                        name:
-                                                                            '',
-                                                                        fileStoreId: d
-                                                                            .documentUid))
-                                                                .toList()
-                                                            : null
-                                                        : i != 0
-                                                            ? e.documents !=
-                                                                    null
-                                                                ? e
-                                                                    .documents
-                                                                    ?.map((d) => FileStoreModel(
-                                                                        name:
-                                                                            '',
-                                                                        fileStoreId:
-                                                                            d.documentUid))
-                                                                    .toList()
-                                                                : null
-                                                            : null,
-                                                    assignee: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.assigner?.name
-                                                        : i != 0
-                                                            ? e.assigner?.name
-                                                            : null,
-                                                    mobileNumber: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.assigner != null
-                                                            ? '+91-${e.assigner?.mobileNumber}'
-                                                            : null
-                                                        : i != 0
-                                                            ? e.assigner != null
-                                                                ? '+91-${e.assigner?.mobileNumber}'
-                                                                : null
-                                                            : null,
-                                                  ))
-                                              .toList();
+                                            timeLineAttributes = modifiedData
+                                                .mapIndexed((i, e) =>
+                                                    DigitTimelineOptions(
+                                                      title: t.translate((i ==
+                                                                  0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.workflowState
+                                                                      ?.state ==
+                                                                  "EDIT_RE_SUBMIT"
+                                                              ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                              : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                          : i == 0
+                                                              ? e.workflowState
+                                                                          ?.state ==
+                                                                      "EDIT_RE_SUBMIT"
+                                                                  ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                                  : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                              : 'WF_MB_STATUS_${e.action}'),
+                                                      subTitle: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? DateFormats
+                                                              .getTimeLineDate(e
+                                                                      .auditDetails
+                                                                      ?.lastModifiedTime ??
+                                                                  0)
+                                                          : i != 0
+                                                              ? DateFormats
+                                                                  .getTimeLineDate(e
+                                                                          .auditDetails
+                                                                          ?.lastModifiedTime ??
+                                                                      0)
+                                                              : null,
+                                                      isCurrentState:
+                                                          e.action == "APPROVE"
+                                                              ? false
+                                                              : i == 0,
+                                                      comments: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.comment
+                                                          : i != 0
+                                                              ? e.comment
+                                                              : null,
+                                                      documents: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.documents != null &&
+                                                                  e.documents!
+                                                                      .isNotEmpty
+                                                              ? e.documents
+                                                                  ?.map((d) => FileStoreModel(
+                                                                      name: '',
+                                                                      fileStoreId: d
+                                                                          .documentUid))
+                                                                  .toList()
+                                                              : null
+                                                          : i != 0
+                                                              ? e.documents !=
+                                                                          null &&
+                                                                      e.documents!
+                                                                          .isNotEmpty
+                                                                  ? e.documents
+                                                                      ?.map((d) => FileStoreModel(
+                                                                          name: '',
+                                                                          fileStoreId: d.documentUid))
+                                                                      .toList()
+                                                                  : null
+                                                              : null,
+                                                      assignee: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.assigner?.name
+                                                          : i != 0
+                                                              ? e.assigner?.name
+                                                              : null,
+                                                      mobileNumber: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.assigner != null
+                                                              ? '+91-${e.assigner?.mobileNumber}'
+                                                              : null
+                                                          : i != 0
+                                                              ? e.assigner !=
+                                                                      null
+                                                                  ? '+91-${e.assigner?.mobileNumber}'
+                                                                  : null
+                                                              : null,
+                                                    ))
+                                                .toList();
+                                            timeLineAttributes =
+                                                timeLineAttributes.reversed
+                                                    .toList();
 
-                                          return timeLineAttributes.isNotEmpty
-                                              ? DigitCard(
-                                                  child: ExpansionTile(
-                                                    title: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 8.0),
-                                                      child: Text(
-                                                        t.translate(i18.common
-                                                            .workflowTimeline),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
-                                                      ),
-                                                    ),
+                                            return timeLineAttributes.isNotEmpty
+                                                ? ui_component.DigitCard(
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8),
+                                                    cardType:
+                                                        CardType.secondary,
                                                     children: [
-                                                      DigitTimeline(
-                                                        timelineOptions:
-                                                            timeLineAttributes,
+                                                      LabelValueList(
+                                                        heading: t.translate(i18
+                                                            .common
+                                                            .workflowTimeline),
+                                                        items: const [],
+                                                      ),
+                                                      Builder(
+                                                        builder: (context) {
+                                                          return TimelineMolecule(
+                                                            steps:
+                                                                List.generate(
+                                                              timeLineAttributes
+                                                                  .length,
+                                                              (i) =>
+                                                                  TimelineStep(
+                                                                additionalWidgets: timeLineAttributes[i].documents !=
+                                                                            null &&
+                                                                        timeLineAttributes[i]
+                                                                            .documents!
+                                                                            .isNotEmpty
+                                                                    ? List.generate(
+                                                                        timeLineAttributes[i].documents!.length,
+                                                                        (index) => InkWell(
+                                                                              onTap: () => CommonMethods().onTapOfAttachment(
+                                                                                  timeLineAttributes[i].documents![index],
+                                                                                  timeLineAttributes[i].documents![index].tenantId == null
+                                                                                      ? GlobalVariables.roleType == RoleType.employee
+                                                                                          ? GlobalVariables.tenantId!
+                                                                                          : GlobalVariables.stateInfoListModel!.code.toString()
+                                                                                      : timeLineAttributes[i].documents![index].tenantId!,
+                                                                                  // "od.testing",
+                                                                                  context,
+                                                                                  roleType: GlobalVariables.roleType == RoleType.employee ? RoleType.employee : RoleType.cbo),
+                                                                              child: Container(
+                                                                                  width: 50,
+                                                                                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                                                                  child: Wrap(runSpacing: 5, spacing: 8, children: [
+                                                                                    Image.asset('assets/png/attachment.png'),
+                                                                                    Text(
+                                                                                      AppLocalizations.of(context).translate(timeLineAttributes[i].documents![index].name.toString()),
+                                                                                      maxLines: 2,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                    )
+                                                                                  ])),
+                                                                            )).toList()
+                                                                    : [],
+                                                                description: [
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .subTitle ??
+                                                                      '',
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .assignee ??
+                                                                      '',
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .mobileNumber ??
+                                                                      '',
+                                                                ],
+                                                                label:
+                                                                    timeLineAttributes[
+                                                                            i]
+                                                                        .title,
+                                                                state: timeLineAttributes[
+                                                                            i]
+                                                                        .isCurrentState
+                                                                    ? TimelineStepState
+                                                                        .present
+                                                                    : TimelineStepState
+                                                                        .completed,
+                                                              ),
+                                                            ).toList(),
+                                                          );
+                                                        },
                                                       ),
                                                     ],
+                                                  )
+                                                : const SizedBox.shrink();
+
+                                            //
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : const SizedBox.shrink(),
+                              const SizedBox(
+                                height: 200,
+                              ),
+                            ],
+                          ),
+                        ),
+                        BlocBuilder<MeasurementDetailBloc,
+                            MeasurementDetailState>(
+                          builder: (context, state) {
+                            return state.maybeMap(
+                              orElse: () {
+                                return const SizedBox.shrink();
+                              },
+                              loaded: (value) {
+                                if (widget.type == MBScreen.update) {
+                                  return BlocBuilder<MusterGetWorkflowBloc,
+                                      MusterGetWorkflowState>(
+                                    builder: (context, state) {
+                                      return state.maybeMap(
+                                        orElse: () => const SizedBox.shrink(),
+                                        loaded: (mbWorkFlow) {
+                                          final g = mbWorkFlow
+                                              .musterWorkFlowModel
+                                              ?.processInstances;
+
+                                          return DigitBottomSheet(
+                                            primaryActionLabel: t.translate(
+                                                i18.measurementBook.mbAction),
+                                            onPrimaryAction: (g != null &&
+                                                    (g.first.nextActions !=
+                                                            null &&
+                                                        g.first.nextActions!
+                                                            .isEmpty))
+                                                ? null
+                                                : (ctx) {
+                                                    // Navigator.of(context).pop();
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          CommonButtonCard(
+                                                        g: mbWorkFlow
+                                                            .musterWorkFlowModel
+                                                            ?.processInstances,
+                                                        contractNumber: widget
+                                                            .contractNumber,
+                                                        mbNumber:
+                                                            widget.mbNumber,
+                                                        type: widget.type,
+                                                      ),
+                                                    );
+                                                  },
+                                            fixedHeight: 200,
+                                            initialHeightPercentage: 30,
+                                            content: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
                                                   ),
-                                                )
-                                              : const SizedBox.shrink();
-                                          //
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalSorAmount),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingL
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total Non SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalNonSorAmount),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalNorSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalNonSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingL
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Container(
+                                                  //  height: 80,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  decoration: BoxDecoration(
+                                                    //color: Colors.red,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                              // "Total MB Amount",
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .totalMbAmount),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .headingM
+                                                                  .copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .secondary,
+                                                                  ),
+                                                            ),
+                                                            subtitle: Text(
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .forCurrentEntry),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .bodyS
+                                                                  .copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .secondary,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 4,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  // '3456',
+                                                                  value
+                                                                      .data
+                                                                      .first
+                                                                      .totalAmount!
+                                                                      .roundToDouble()
+                                                                      .toStringAsFixed(
+                                                                          2),
+                                                                  // mbAmount.roundToDouble().toStringAsFixed(2),
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .digitTextTheme(
+                                                                          context)
+                                                                      .headingL
+                                                                      .copyWith(
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
                                         },
                                       );
                                     },
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
+                                  );
+                                } else {
+                                  return BlocBuilder<BusinessWorkflowBloc,
+                                      BusinessGetWorkflowState>(
+                                    builder: (context, state) {
+                                      return state.maybeMap(
+                                        orElse: () => const SizedBox.shrink(),
+                                        loaded: (business) {
+                                          const g = null;
+                                          final bk = business
+                                                  .businessWorkFlowModel!
+                                                  .businessServices ??
+                                              [];
+
+                                          return DigitBottomSheet(
+                                            primaryActionLabel: t.translate(
+                                                i18.measurementBook.mbAction),
+                                            onPrimaryAction: (ctx) {
+                                              // Navigator.of(context).pop();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CommonButtonCard(
+                                                  g: g,
+                                                  bs: bk,
+                                                  contractNumber:
+                                                      widget.contractNumber,
+                                                  mbNumber: widget.mbNumber,
+                                                  type: widget.type,
+                                                ),
+                                              );
+                                            },
+                                            fixedHeight: 200,
+                                            initialHeightPercentage: 30,
+                                            content: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalSorAmount),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS,
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total Non SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalNonSorAmount),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS,
+                                                      ),
+                                                      trailing: Text(
+                                                        // "23.98",
+                                                        value.data.first
+                                                            .totalNorSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalNonSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Container(
+                                                  //  height: 80,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  decoration: BoxDecoration(
+                                                    //color: Colors.red,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                              // "Total MB Amount",
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .totalMbAmount),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .headingM,
+                                                            ),
+                                                            subtitle: Text(
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .forCurrentEntry),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .bodyS,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 4,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  // '3456',
+                                                                  value
+                                                                      .data
+                                                                      .first
+                                                                      .totalAmount!
+                                                                      .roundToDouble()
+                                                                      .toStringAsFixed(
+                                                                          2),
+                                                                  // mbAmount.roundToDouble().toStringAsFixed(2),
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .digitTextTheme(
+                                                                          context)
+                                                                      .headingM,
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              loading: (value) {
+                                return const SizedBox.shrink();
+                              },
+                            );
+                          },
                         ),
-                      );
+                      ]);
                     },
                     loading: (value) {
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive(),
+                      return Center(
+                        child: shg_loader.Loaders.circularLoader(context),
+                      );
+                    },
+                    error: (value) {
+                      return Center(
+                        child: EmptyImage(
+                          align: Alignment.center,
+                          label: t.translate(i18.common.wentWrong),
+                        ),
                       );
                     },
                   );
@@ -1411,9 +2038,17 @@ class _MBDetailPageState extends State<MBDetailPage>
   double tabViewHeight(int sork, int nonSork, int photo) {
     switch (_tabController.index) {
       case 0:
-        return sork == 0 ? 300 : sork * 500;
+        return sork == 0
+            ? 300
+            : sork == 1
+                ? (sork * 500)
+                : (sork * 500) + (sork * 20);
       case 1:
-        return nonSork == 0 ? 300 : nonSork * 500;
+        return nonSork == 0
+            ? 300
+            : nonSork == 1
+                ? (nonSork * 500)
+                : (nonSork * 500) + (sork * 20);
       case 2:
         return photoSize(photo);
       default:
@@ -1424,22 +2059,22 @@ class _MBDetailPageState extends State<MBDetailPage>
   double photoSize(int photok) {
     switch (photok) {
       case 1:
-        return (photok * 115) + 112;
+        return (photok * 115) + 132;
       case 2:
-        return (photok * 100) + 88;
+        return (photok * 100) + 120;
       case 3:
-        return (photok * 100) + 80;
+        return (photok * 100) + 90;
       case 4:
-        return (photok * 90) + 80;
+        return (photok * 90) + 100;
       case 5:
-        return (photok * 80) + 80;
+        return (photok * 86.2) + 100;
 
       default:
         return 350;
     }
   }
 
-  Card sorCard(
+  Widget sorCard(
     AppLocalizations t,
     BuildContext ctx,
     int index, {
@@ -1448,6 +2083,8 @@ class _MBDetailPageState extends State<MBDetailPage>
     required String type,
     required String sorNonSorId,
     required String cardLevel,
+    // required TextEditingController consumedQty,
+    // required TextEditingController currentAmt,
   }) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
@@ -1462,7 +2099,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
     final String preConumed = preSorNonSor == null
         ? "0.0000"
-        : preSorNonSor!.fold("0.0000", (sum, obj) {
+        : preSorNonSor.fold("0.0000", (sum, obj) {
             double m = obj.contracts!.first.estimates!.first.isDeduction == true
                 ? -(obj.cumulativeValue!)
                 : (obj.cumulativeValue!);
@@ -1470,183 +2107,82 @@ class _MBDetailPageState extends State<MBDetailPage>
                 .toStringAsFixed(4);
           });
 
-    return Card(
-      child: SizedBox(
-        height: 480,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-          child: Column(
+    return ui_component.DigitCard(
+        margin: const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+        cardType: CardType.primary,
+        children: [
+          LabelValueList(
+              heading: "$cardLevel ${index + 1}",
+              maxLines: 3,
+              labelFlex: 5,
+              valueFlex: 5,
+              items: [
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.description),
+                    value: magic.first.contracts!.first.estimates!.first.name ??
+                        ""),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.unit),
+                    value: line[0].uom ?? ''),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.rate),
+                    value: line[0].unitRate == null
+                        ? 0.00.toString()
+                        : double.parse(line[0].unitRate!.toString())
+                            .toStringAsFixed(2)),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.approvedQty),
+                    value: noOfQty),
+                LabelValuePair(
+                    label:
+                        "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}",
+                    value: preSorNonSor == null ? "0.0000" : preConumed),
+              ]),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "$cardLevel ${index + 1}",
-                  style:
-                      DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(t.translate(i18.measurementBook.currentMBEntry),
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ),
+              Container(
+                padding: const EdgeInsets.all(5.0),
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorTheme.paper.secondary,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(1),
                 ),
-              ),
-              SORTableCard(
-                element: {
-                  t.translate(i18.measurementBook.description):
-                      magic.first.contracts!.first.estimates!.first.name,
-                  t.translate(i18.measurementBook.unit): line[0].uom,
-                  t.translate(i18.measurementBook.rate):
-                      line[0].unitRate == null
-                          ? 0.00
-                          : double.parse(line[0].unitRate!.toString())
-                              .toStringAsFixed(2),
-                  t.translate(i18.measurementBook.approvedQty): noOfQty,
-
-                  //TODO:[localization]
-                  "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
-                      //  t.translate(i18.measurementBook.consumedQty):
-                      preSorNonSor == null ? "0.0000" : preConumed
-                },
-              ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(t.translate(i18.measurementBook.currentMBEntry),
-                        style: Theme.of(context).textTheme.headlineSmall),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const DigitColors().cloudGray,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            (magic.fold(0.0, (sum, obj) {
-                              double m;
-                              if (obj.contracts?.first.estimates?.first
-                                      .isDeduction ==
-                                  false) {
-                                m = obj.measureLineItems!.fold(0.0,
-                                    (subSum, ob) {
-                                  double mk =
-                                      double.parse(ob.quantity!.toString());
-                                  return subSum + mk;
-                                });
-                              } else {
-                                m = obj.measureLineItems!.fold(0.0,
-                                    (subSum, ob) {
-                                  double mr =
-                                      double.parse(ob.quantity!.toString());
-                                  return subSum + mr;
-                                });
-                                m = -m;
-                              }
-                              return sum + m;
-                            })).toStringAsFixed(4),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            maxLines: 3,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: ctx,
-                              builder: (_) {
-                                return HorizontalCardListDialog(
-                                  lineItems: magic,
-                                  index: index,
-                                  type: type,
-                                  // noOfUnit: line[0].noOfunit,
-                                  noOfUnit: noOfQty,
-                                  cummulativePrevQty: preSorNonSor == null
-                                      ? 0.0000
-                                      // : preSorNonSor!.first.cumulativeValue,
-                                      : preSorNonSor!.fold(0.0000, (sum, obj) {
-                                          double m = obj
-                                                      .contracts!
-                                                      .first
-                                                      .estimates!
-                                                      .first
-                                                      .isDeduction ==
-                                                  true
-                                              ? -(obj.cumulativeValue!)
-                                              : (obj.cumulativeValue!);
-                                          return sum + m.toDouble();
-                                        }),
-                                  sorId: sorNonSorId,
-                                );
-                              },
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 0.0),
-                            child: Icon(
-                              Icons.add_circle,
-                              size: 30,
-                              color: const DigitColors().burningOrange,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              // end
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
-                    child: Text(
-                      t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textScaleFactor: 0.99,
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 5.0, right: 5.0, bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const DigitColors().cloudGray,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                    child: Padding(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
                         (magic.fold(0.0, (sum, obj) {
-                          double m = obj.mbAmount != null
-                              ? (obj.mbAmount != null && obj.mbAmount! < 0)
-                                  ? (obj.mbAmount! * (-1))
-                                  : obj.mbAmount!
-                              : 0.00;
+                          double m;
                           if (obj.contracts?.first.estimates?.first
                                   .isDeduction ==
-                              true) {
-                            m = -(m); // Negate the amount for deductions
+                              false) {
+                            m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                              double mk = double.parse(ob.quantity!.toString());
+                              return subSum + mk;
+                            });
                           } else {
-                            m = (m);
+                            m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                              double mr = double.parse(ob.quantity!.toString());
+                              return subSum + mr;
+                            });
+                            m = -m;
                           }
                           return sum + m;
-                        })).toStringAsFixed(2),
+                        })).toStringAsFixed(4),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -1654,37 +2190,101 @@ class _MBDetailPageState extends State<MBDetailPage>
                         maxLines: 3,
                       ),
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: ctx,
+                          builder: (_) {
+                            return HorizontalCardListDialog(
+                              lineItems: magic,
+                              index: index,
+                              type: type,
+                              noOfUnit: noOfQty,
+                              cummulativePrevQty: preSorNonSor == null
+                                  ? 0.0000
+                                  : preSorNonSor.fold(0.0000, (sum, obj) {
+                                      double m = obj.contracts!.first.estimates!
+                                                  .first.isDeduction ==
+                                              true
+                                          ? -(obj.cumulativeValue!)
+                                          : (obj.cumulativeValue!);
+                                      return sum + m.toDouble();
+                                    }),
+                              sorId: sorNonSorId,
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 0.0),
+                        child: Icon(
+                          Icons.add_circle,
+                          size: 30,
+                          color: Theme.of(context).colorTheme.primary.primary1,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
-              //
-
-              // DigitTextField(
-              //   controller: TextEditingController()
-              //     ..value
-              //     ..text = (magic.fold(0.0, (sum, obj) {
-              //       double m = obj.mbAmount != null
-              //           ? (obj.mbAmount != null && obj.mbAmount! < 0)
-              //               ? (obj.mbAmount! * (-1))
-              //               : obj.mbAmount!
-              //           : 0.00;
-              //       if (obj.contracts?.first.estimates?.first.isDeduction ==
-              //           true) {
-              //         m = -(m); // Negate the amount for deductions
-              //       } else {
-              //         m = (m);
-              //       }
-              //       return sum + m;
-              //     })).toStringAsFixed(2),
-              //   label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
-              //   isDisabled: true,
-              // ),
             ],
           ),
-        ),
-      ),
-    );
+
+          // // end
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                child: Text(
+                  t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textScaler: const TextScaler.linear(0.99),
+                ),
+              ),
+              Container(
+                width: MediaQuery.sizeOf(context).width,
+                height: 50,
+                padding: const EdgeInsets.only(
+                    top: 10.0, left: 5.0, right: 5.0, bottom: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorTheme.paper.secondary,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text(
+                    (magic.fold(0.0, (sum, obj) {
+                      double m = obj.mbAmount != null
+                          ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                              ? (obj.mbAmount! * (-1))
+                              : obj.mbAmount!
+                          : 0.00;
+                      if (obj.contracts?.first.estimates?.first.isDeduction ==
+                          true) {
+                        m = -(m); // Negate the amount for deductions
+                      } else {
+                        m = (m);
+                      }
+                      return sum + m;
+                    })).toStringAsFixed(2),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 3,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+//
+        ]);
   }
 
   void _openBottomSheet(
@@ -1712,7 +2312,8 @@ class _MBDetailPageState extends State<MBDetailPage>
       context: context,
       builder: (BuildContext context) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+              left: 16.0, right: 16.0, top: 16.0, bottom: 0.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
@@ -1720,8 +2321,8 @@ class _MBDetailPageState extends State<MBDetailPage>
               const Center(
                 child: SizedBox(
                   width: 100,
-                  child: Divider(
-                    thickness: 5,
+                  child: DigitDivider(
+                    dividerType: DividerType.large,
                   ),
                 ),
               ),
@@ -1735,21 +2336,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      // "Total SOR Amount",
                       t.translate(i18.measurementBook.totalSorAmount),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: Text(
-                      // "(for current entry)",
                       t.translate(i18.measurementBook.forCurrentEntry),
-                      style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount!.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      totalSorAmount.toDouble().toStringAsFixed(2),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ),
@@ -1767,21 +2364,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      // "Total Non SOR Amount",
                       t.translate(i18.measurementBook.totalNonSorAmount),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: Text(
-                      // "(for current entry)",
                       t.translate(i18.measurementBook.forCurrentEntry),
-                      style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      totalNonSorAmount.toDouble().toStringAsFixed(2),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ),
@@ -1790,7 +2382,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               Container(
-                height: 80,
+                //height: 80,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
                   //color: Colors.red,
@@ -1813,14 +2405,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                           title: Text(
                             // "Total MB Amount",
                             t.translate(i18.measurementBook.totalMbAmount),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineMedium,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           subtitle: Text(
                             // "(for current entry)",
                             t.translate(i18.measurementBook.forCurrentEntry),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.bodySmall,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
                       ),
@@ -1830,9 +2420,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.roundToDouble().toStringAsFixed(2),
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineMedium,
+                                mbAmount.roundToDouble().toStringAsFixed(2),
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
                             ],
                           )),
@@ -1844,36 +2434,41 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               showBtn
-                  ? DigitElevatedButton(
-                      child: Text(t.translate(i18.measurementBook.mbAction)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        if (widget.type == MBScreen.update) {
-                          DigitActionDialog.show(
-                            context,
-                            widget: CommonButtonCard(
-                              g: processInstances,
-                              contractNumber: contractNumber,
-                              mbNumber: mbNumber,
-                              type: widget.type,
-                              bs: bs,
-                            ),
-                          );
-                        } else {
-                          DigitActionDialog.show(
-                            context,
-                            widget: CommonButtonCard(
-                              g: processInstances,
-                              contractNumber: contractNumber,
-                              mbNumber: mbNumber,
-                              type: widget.type,
-                              bs: bs,
-                            ),
-                          );
-                        }
-
-                        // before
-                      })
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Button(
+                        mainAxisSize: MainAxisSize.max,
+                        label: t.translate(i18.measurementBook.mbAction),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          if (widget.type == MBScreen.update) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => CommonButtonCard(
+                                g: processInstances,
+                                contractNumber: contractNumber,
+                                mbNumber: mbNumber,
+                                type: widget.type,
+                                bs: bs,
+                              ),
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => CommonButtonCard(
+                                g: processInstances,
+                                contractNumber: contractNumber,
+                                mbNumber: mbNumber,
+                                type: widget.type,
+                                bs: bs,
+                              ),
+                            );
+                          }
+                        },
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                      ),
+                    )
                   : const SizedBox.shrink(),
             ],
           ),
@@ -1883,137 +2478,281 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 }
 
-class CustomTab extends StatelessWidget {
-  final String text;
-  final bool isSelected;
-  final Function onTap;
+//
 
-  const CustomTab(
+class SorCard extends StatefulWidget {
+  final int index;
+  final List<FilteredMeasurementsMeasure>? magic;
+  final List<FilteredMeasurementsMeasure>? preSorNonSor;
+  final String type;
+  final String sorNonSorId;
+  final String cardLevel;
+
+  const SorCard(
       {super.key,
-      required this.text,
-      required this.isSelected,
-      required this.onTap});
+      required this.index,
+      this.magic,
+      this.preSorNonSor,
+      required this.type,
+      required this.sorNonSorId,
+      required this.cardLevel});
+
+  @override
+  State<SorCard> createState() => _SorCardState();
+}
+
+class _SorCardState extends State<SorCard> {
+  List<FilteredMeasurementsEstimate> line = [];
+  String noOfQty = '';
+  String preConumed = '';
+  late TextEditingController consumedQtyController;
+  late TextEditingController currentAmtController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    consumedQtyController = TextEditingController();
+    currentAmtController = TextEditingController();
+
+    line = widget.magic!.map(
+      (e) {
+        return e.contracts!.first.estimates!.first;
+      },
+    ).toList();
+    noOfQty = line.fold("0.0000", (sum, obj) {
+      double m = double.parse(obj.noOfunit!.toString()).toDouble();
+      return double.parse((double.parse(sum) + m.toDouble()).toString())
+          .toStringAsFixed(4);
+    });
+
+    preConumed = widget.preSorNonSor == null
+        ? "0.0000"
+        : widget.preSorNonSor!.fold("0.0000", (sum, obj) {
+            double m = obj.contracts!.first.estimates!.first.isDeduction == true
+                ? -(obj.cumulativeValue!)
+                : (obj.cumulativeValue!);
+            return double.parse((double.parse(sum) + m.toDouble()).toString())
+                .toStringAsFixed(4);
+          });
+
+    consumedQtyController.text = (widget.magic!.fold(0.0, (sum, obj) {
+      double m;
+      if (obj.contracts?.first.estimates?.first.isDeduction == false) {
+        m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+          double mk = double.parse(ob.quantity!.toString());
+          return subSum + mk;
+        });
+      } else {
+        m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+          double mr = double.parse(ob.quantity!.toString());
+          return subSum + mr;
+        });
+        m = -m;
+      }
+      return sum + m;
+    })).toStringAsFixed(4);
+
+    currentAmtController.text = (widget.magic!.fold(0.0, (sum, obj) {
+      double m = obj.mbAmount != null
+          ? (obj.mbAmount != null && obj.mbAmount! < 0)
+              ? (obj.mbAmount! * (-1))
+              : obj.mbAmount!
+          : 0.00;
+      if (obj.contracts?.first.estimates?.first.isDeduction == true) {
+        m = -(m); // Negate the amount for deductions
+      } else {
+        m = (m);
+      }
+      return sum + m;
+    })).toStringAsFixed(2);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Container(
-        height: 50,
-        width: MediaQuery.sizeOf(context).width / 3,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: isSelected
-                  ? const DigitColors().burningOrange
-                  : const DigitColors().cloudGray,
-              width: 1.0,
-            ),
-            left: BorderSide(
-              color: isSelected
-                  ? const DigitColors().burningOrange
-                  : const DigitColors().cloudGray,
-              width: 1.0,
-            ),
-            right: BorderSide(
-              color: isSelected
-                  ? const DigitColors().burningOrange
-                  : const DigitColors().cloudGray,
-              width: 1.0,
-            ),
-            bottom: BorderSide(
-              color: isSelected
-                  ? const DigitColors().burningOrange
-                  : const DigitColors().cloudGray,
-              width: isSelected ? 3.0 : 1.0,
-            ),
-          ),
-          borderRadius: BorderRadius.circular(2),
-          color: isSelected
-              ? const DigitColors().white.withOpacity(0.2)
-              : Colors.transparent,
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Text(
-              text,
-              style: TextStyle(
-                color: isSelected
-                    ? const DigitColors().black
-                    : const DigitColors().cloudGray,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    final tk = AppLocalizations.of(context);
+    return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+        builder: (context, state) {
+      return state.maybeMap(
+        orElse: () => const SizedBox.shrink(),
+        loaded: (value) {
+          line = widget.magic!.map(
+            (e) {
+              return e.contracts!.first.estimates!.first;
+            },
+          ).toList();
+          noOfQty = line.fold("0.0000", (sum, obj) {
+            double m = double.parse(obj.noOfunit!.toString()).toDouble();
+            return double.parse((double.parse(sum) + m.toDouble()).toString())
+                .toStringAsFixed(4);
+          });
+
+          preConumed = widget.preSorNonSor == null
+              ? "0.0000"
+              : widget.preSorNonSor!.fold("0.0000", (sum, obj) {
+                  double m =
+                      obj.contracts!.first.estimates!.first.isDeduction == true
+                          ? -(obj.cumulativeValue!)
+                          : (obj.cumulativeValue!);
+                  return double.parse(
+                          (double.parse(sum) + m.toDouble()).toString())
+                      .toStringAsFixed(4);
+                });
+
+          consumedQtyController.text = (widget.magic!.fold(0.0, (sum, obj) {
+            double m;
+            if (obj.contracts?.first.estimates?.first.isDeduction == false) {
+              m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                double mk = double.parse(ob.quantity!.toString());
+                return subSum + mk;
+              });
+            } else {
+              m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                double mr = double.parse(ob.quantity!.toString());
+                return subSum + mr;
+              });
+              m = -m;
+            }
+            return sum + m;
+          })).toStringAsFixed(4);
+
+          currentAmtController.text = (widget.magic!.fold(0.0, (sum, obj) {
+            double m = obj.mbAmount != null
+                ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                    ? (obj.mbAmount! * (-1))
+                    : obj.mbAmount!
+                : 0.00;
+            if (obj.contracts?.first.estimates?.first.isDeduction == true) {
+              m = -(m); // Negate the amount for deductions
+            } else {
+              m = (m);
+            }
+            return sum + m;
+          })).toStringAsFixed(2);
+          return ui_component.DigitCard(
+              margin:
+                  const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+              cardType: CardType.primary,
+              children: [
+                LabelValueList(
+                    heading: "${widget.cardLevel} ${widget.index + 1}",
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: [
+                      LabelValuePair(
+                          label: tk.translate(i18.measurementBook.description),
+                          value: widget.magic!.first.contracts!.first.estimates!
+                                  .first.name ??
+                              ""),
+                      LabelValuePair(
+                          label: tk.translate(i18.measurementBook.unit),
+                          value: line[0].uom ?? ''),
+                      LabelValuePair(
+                          label: tk.translate(i18.measurementBook.rate),
+                          value: line[0].unitRate == null
+                              ? 0.00.toString()
+                              : double.parse(line[0].unitRate!.toString())
+                                  .toStringAsFixed(2)),
+                      LabelValuePair(
+                          label: tk.translate(i18.measurementBook.approvedQty),
+                          value: noOfQty),
+                      LabelValuePair(
+                          label:
+                              "${tk.translate(i18.measurementBook.preConsumedKey)}\n${tk.translate(i18.measurementBook.preConsumedPre)}",
+                          value: widget.preSorNonSor == null
+                              ? "0.0000"
+                              : preConumed),
+                    ]),
+                ui_label.LabeledField(
+                  label: tk.translate(i18.measurementBook.currentMBEntry),
+                  labelStyle: Theme.of(context).textTheme.labelLarge,
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return HorizontalCardListDialog(
+                            lineItems: widget.magic,
+                            index: widget.index,
+                            type: widget.type,
+                            noOfUnit: noOfQty,
+                            cummulativePrevQty: widget.preSorNonSor == null
+                                ? 0.0000
+                                : widget.preSorNonSor!.fold(0.0000, (sum, obj) {
+                                    double m = obj.contracts!.first.estimates!
+                                                .first.isDeduction ==
+                                            true
+                                        ? -(obj.cumulativeValue!)
+                                        : (obj.cumulativeValue!);
+                                    return sum + m.toDouble();
+                                  }),
+                            sorId: widget.sorNonSorId,
+                          );
+                        },
+                      );
+                    },
+                    child: IgnorePointer(
+                      child: DigitSearchFormInput(
+                        controller: consumedQtyController,
+                        readOnly: true,
+                        suffixIcon: Icons.add_circle,
+                        iconColor:
+                            Theme.of(context).colorTheme.primary.primary1,
+                        onSuffixTap: (p0) {},
+                      ),
+                    ),
+                  ),
+                ),
+                ui_label.LabeledField(
+                  label: tk.translate(i18.measurementBook.mbAmtCurrentEntry),
+                  labelStyle: Theme.of(context).textTheme.labelLarge,
+                  child: DigitTextFormInput(
+                    controller: currentAmtController,
+                    readOnly: true,
+                  ),
+                ),
+              ]);
+        },
+      );
+    });
   }
 }
 
-class SORTableCard extends StatelessWidget {
-  final Map<String, dynamic> element;
-  final Border? border;
-  final Color? color;
-  final EdgeInsetsGeometry? padding;
-  final double gap;
-  final num fraction;
+Widget renderSor(
+  List<SorObject> value,
+  String type,
+) {
+  return ListView.builder(
+    shrinkWrap: true,
+    padding: EdgeInsets.zero,
+    physics: const NeverScrollableScrollPhysics(),
+    itemBuilder: (BuildContext context, int index) {
+      return SorCard(
+        // consumedQty: consumedQty,
+        // currentAmt: currentAmt,
 
-  const SORTableCard({
-    super.key,
-    required this.element,
-    this.border,
-    this.color,
-    this.padding,
-    this.gap = 0,
-    this.fraction = 2,
-  });
+        index: index,
+        magic: value![index].filteredMeasurementsMeasure,
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Container(
-        decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4),
-            border: border),
-        child: Padding(
-          padding: padding ?? const EdgeInsets.only(right: 8, bottom: 16),
-          child: Column(
-            children: element.keys
-                .map((e) => Container(
-                      margin: DigitTheme.instance.verticalMargin,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / fraction,
-                            child: Text(
-                              e,
-                              style: theme.textTheme.headlineSmall,
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          SizedBox(width: gap),
-                          Flexible(
-                              child: Padding(
-                            padding: const EdgeInsets.only(top: 1.4),
-                            child: Text(
-                              element[e].toString(),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )),
-                        ],
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
-      ),
-    );
-  }
+        preSorNonSor: value == null
+            ? null
+            : value?.firstWhereOrNull(
+                        (element) => element.sorId == value![index].sorId) ==
+                    null
+                ? null
+                : value!
+                    .firstWhereOrNull(
+                        (element) => element.sorId == value![index].sorId)!
+                    .filteredMeasurementsMeasure,
+        // value.preSor![index]
+        //     .filteredMeasurementsMeasure,
+        type: type,
+        sorNonSorId: value![index].sorId!,
+        cardLevel: AppLocalizations.of(context).translate(type == "sor"
+            ? i18.measurementBook.mbSor
+            : i18.measurementBook.mbNonSor),
+      );
+    },
+    itemCount: value!.length,
+  );
 }

@@ -12,7 +12,7 @@ part of 'adhar_response.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AdharCardResponse _$AdharCardResponseFromJson(Map<String, dynamic> json) {
   return _AdharCardResponse.fromJson(json);
@@ -128,11 +128,11 @@ class _$AdharCardResponseCopyWithImpl<$Res, $Val extends AdharCardResponse>
 }
 
 /// @nodoc
-abstract class _$$_AdharCardResponseCopyWith<$Res>
+abstract class _$$AdharCardResponseImplCopyWith<$Res>
     implements $AdharCardResponseCopyWith<$Res> {
-  factory _$$_AdharCardResponseCopyWith(_$_AdharCardResponse value,
-          $Res Function(_$_AdharCardResponse) then) =
-      __$$_AdharCardResponseCopyWithImpl<$Res>;
+  factory _$$AdharCardResponseImplCopyWith(_$AdharCardResponseImpl value,
+          $Res Function(_$AdharCardResponseImpl) then) =
+      __$$AdharCardResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -148,11 +148,11 @@ abstract class _$$_AdharCardResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AdharCardResponseCopyWithImpl<$Res>
-    extends _$AdharCardResponseCopyWithImpl<$Res, _$_AdharCardResponse>
-    implements _$$_AdharCardResponseCopyWith<$Res> {
-  __$$_AdharCardResponseCopyWithImpl(
-      _$_AdharCardResponse _value, $Res Function(_$_AdharCardResponse) _then)
+class __$$AdharCardResponseImplCopyWithImpl<$Res>
+    extends _$AdharCardResponseCopyWithImpl<$Res, _$AdharCardResponseImpl>
+    implements _$$AdharCardResponseImplCopyWith<$Res> {
+  __$$AdharCardResponseImplCopyWithImpl(_$AdharCardResponseImpl _value,
+      $Res Function(_$AdharCardResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -168,7 +168,7 @@ class __$$_AdharCardResponseCopyWithImpl<$Res>
     Object? mobileNumber = freezed,
     Object? email = freezed,
   }) {
-    return _then(_$_AdharCardResponse(
+    return _then(_$AdharCardResponseImpl(
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -211,8 +211,8 @@ class __$$_AdharCardResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AdharCardResponse implements _AdharCardResponse {
-  const _$_AdharCardResponse(
+class _$AdharCardResponseImpl implements _AdharCardResponse {
+  const _$AdharCardResponseImpl(
       {@JsonKey(name: 'status') this.status,
       @JsonKey(name: 'txn') this.txn,
       @JsonKey(name: 'ret') this.ret,
@@ -223,8 +223,8 @@ class _$_AdharCardResponse implements _AdharCardResponse {
       @JsonKey(name: 'mobileNumber') this.mobileNumber,
       @JsonKey(name: 'email') this.email});
 
-  factory _$_AdharCardResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_AdharCardResponseFromJson(json);
+  factory _$AdharCardResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AdharCardResponseImplFromJson(json);
 
   @override
   @JsonKey(name: 'status')
@@ -260,10 +260,10 @@ class _$_AdharCardResponse implements _AdharCardResponse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AdharCardResponse &&
+            other is _$AdharCardResponseImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.txn, txn) || other.txn == txn) &&
             (identical(other.ret, ret) || other.ret == ret) &&
@@ -286,13 +286,13 @@ class _$_AdharCardResponse implements _AdharCardResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AdharCardResponseCopyWith<_$_AdharCardResponse> get copyWith =>
-      __$$_AdharCardResponseCopyWithImpl<_$_AdharCardResponse>(
+  _$$AdharCardResponseImplCopyWith<_$AdharCardResponseImpl> get copyWith =>
+      __$$AdharCardResponseImplCopyWithImpl<_$AdharCardResponseImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AdharCardResponseToJson(
+    return _$$AdharCardResponseImplToJson(
       this,
     );
   }
@@ -308,10 +308,10 @@ abstract class _AdharCardResponse implements AdharCardResponse {
       @JsonKey(name: 'responseCode') final String? responseCode,
       @JsonKey(name: 'uidToken') final String? uidToken,
       @JsonKey(name: 'mobileNumber') final String? mobileNumber,
-      @JsonKey(name: 'email') final String? email}) = _$_AdharCardResponse;
+      @JsonKey(name: 'email') final String? email}) = _$AdharCardResponseImpl;
 
   factory _AdharCardResponse.fromJson(Map<String, dynamic> json) =
-      _$_AdharCardResponse.fromJson;
+      _$AdharCardResponseImpl.fromJson;
 
   @override
   @JsonKey(name: 'status')
@@ -342,6 +342,6 @@ abstract class _AdharCardResponse implements AdharCardResponse {
   String? get email;
   @override
   @JsonKey(ignore: true)
-  _$$_AdharCardResponseCopyWith<_$_AdharCardResponse> get copyWith =>
+  _$$AdharCardResponseImplCopyWith<_$AdharCardResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

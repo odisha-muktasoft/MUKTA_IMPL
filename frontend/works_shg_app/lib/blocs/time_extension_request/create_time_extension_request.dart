@@ -57,7 +57,7 @@ class CreateTimeExtensionRequestBloc extends Bloc<
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(CreateTimeExtensionRequestState.loaded(timeExtensions));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(CreateTimeExtensionRequestState.error(
           e.response?.data['Errors'][0]['code']));
     }
