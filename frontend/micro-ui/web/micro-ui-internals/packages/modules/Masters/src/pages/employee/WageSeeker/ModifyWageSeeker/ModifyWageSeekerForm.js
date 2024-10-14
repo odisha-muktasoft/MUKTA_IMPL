@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer } from '@egovernments/digit-ui-react-components'
+import { FormComposer } from '@egovernments/digit-ui-react-components';
 import { getWageSeekerUpdatePayload, getBankAccountUpdatePayload, getWageSeekerSkillDeletePayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
-import { Toast } from '@egovernments/digit-ui-components';
+import { Loader, Toast } from '@egovernments/digit-ui-components';
 
 const navConfig =  [{
     name:"Wage_Seeker_Details",
@@ -364,6 +364,8 @@ const requestCriteria = {
         // Call the debounced version of onModalSubmit
         debouncedOnModalSubmit(_data);
       };
+
+      if(isLoading) return <Loader/>
 
     return (
         <React.Fragment>

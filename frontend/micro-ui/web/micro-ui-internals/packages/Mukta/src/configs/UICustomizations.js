@@ -2882,17 +2882,24 @@ export const UICustomizations = {
   },
   ViewScheduledJobsConfig: {
     preProcess: (data) => {
-      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.SearchCriteria?.scheduleFrom);
-      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduleTo);
-      const status = data.body.SearchCriteria?.status?.code;
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.reportSearchCriteria?.scheduledFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.reportSearchCriteria?.scheduledTo);
+      const status = data.body.reportSearchCriteria?.status?.code;
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
-      data.body.SearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
-      data.body.SearchCriteria = {
-        ...data.body.SearchCriteria,
+      data.body.reportSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.reportSearchCriteria = {
+        ...data.body.reportSearchCriteria,
         tenantId: Digit.ULBService.getCurrentTenantId(),
         status,
-        scheduleFrom:scheduledFrom,
-        scheduleTo:scheduledTo,
+        scheduledFrom:scheduledFrom,
+        scheduledTo:scheduledTo,
+      };
+
+      data.body.pagination = {
+        "limit": 10,
+        "offSet": 0,
+        "order": null,
+        "sortBy": "createdTime"
       };
       return data;
     },
@@ -2905,24 +2912,21 @@ export const UICustomizations = {
       return false;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      //here we can add multiple conditions
-      //like if a cell is link then we return link
-      //first we can identify which column it belongs to then we can return relevant result
       switch (key) {
-        case "RA_JOB_ID":
+        case "EXP_JOB_ID":
           return value;
 
-        case "RA_SCHEDULED_ON":
+        case "EXP_SCHEDULED_ON":
           return Digit.DateUtils.ConvertEpochToDate(value);
 
-        case "RA_RATE_EFFECTIVE_FROM": {
+        case "EXP_RATE_EFFECTIVE_FROM": {
           return Digit.DateUtils.ConvertEpochToDate(value);
         }
 
-        case "RA_NO_OF_SOR_SCHEDULED":
+        case "EXP_NO_OF_SOR_SCHEDULED":
           return { value };
 
-        case "RA_SUCCESSFUL": {
+        case "EXP_SUCCESSFUL": {
           let successfulCount = 0;
           row.sorDetails.forEach((detail) => {
             if (detail.status === "SUCCESSFUL") {
@@ -2931,7 +2935,7 @@ export const UICustomizations = {
           });
           return successfulCount;
         }
-        case "RA_FAILED": {
+        case "EXP_FAILED": {
           let failedCount = 0;
           value.forEach((detail) => {
             if (detail.status === "FAILED") {
@@ -2941,13 +2945,60 @@ export const UICustomizations = {
           return failedCount;
         }
 
-        case "RA_STATUS":
-          return (
-            <div style={{ color: value === "FAILED" ? "#D4351C" : value === "COMPLETED" ? "#27AE60" : "#F47738" }}>
-              {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "IN_PROGRESS" ? "In Progress" : "Scheduled"}
-            </div>
-          );
-
+        case "EXP_STATUS_ACTION":
+          switch (value) {
+            case "COMPLETED":
+              return (
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ color: "#27AE60"}}>
+                    {t(value)}
+                  </div>
+                  {row.fileStoreId && (
+                    <div style={{ display: "inline-block" }}>
+                      <LinkLabel
+                        style={{ cursor: "pointer",
+                          width: "fit-content",
+                          border: "1px solid",
+                          borderRadius: "16px",
+                          padding: "0px 4px",
+                          float: "right"
+                          }}
+                        onClick={async () => {
+                          let excel = "";
+                          try {
+                            excel = row.fileStoreId && (await Digit.UploadServices.Filefetch([row.fileStoreId], Digit.ULBService.getCurrentTenantId()));
+                            const excelLink = excel?.data?.fileStoreIds?.[0]?.url;
+                            downloadPdf(excelLink);
+                          } catch (error) {
+                            console.error(error, "downloaderror");
+                          }
+                        }}
+                      >
+                        {t("CS_COMMON_DOWNLOAD")}
+                      </LinkLabel>
+                    </div>
+                  )}
+                </div>
+              );
+            case "INPROGRESS":
+              return (
+                <div style={{textAlign: "right", color: "#F47738"}}>
+                  {t(value)}
+                </div>
+              )
+            case "FAILED":
+              return (
+                <div style={{textAlign: "right", color: "#D4351C"}}>
+                  {t(value)}
+                </div>
+              )
+            default:
+              return (
+                <div style={{textAlign: "right"}}>
+                  {t("CS_COMMON_NA")}
+                </div>
+              );
+          }
         default:
           return t("ES_COMMON_NA");
       }
@@ -3065,6 +3116,92 @@ export const UICustomizations = {
       }
     },
   },
+  paymentTrackerSearchConfig:{
+    preProcess: (data) => {
+      data.body.searchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.searchCriteria.limit = data?.body?.pagination?.limit;
+      delete data.body.pagination;
+      if(data?.state?.searchForm?.ward)
+        data.body.searchCriteria.moduleSearchCriteria.ward = data?.state?.searchForm?.ward?.[0]?.code;
+
+      const projectType = data?.body?.searchCriteria?.moduleSearchCriteria?.projectType?.code;
+      delete data.body.searchCriteria.moduleSearchCriteria.projectType;
+      if (projectType) data.body.searchCriteria.moduleSearchCriteria.projectType = projectType;
+      
+      const projectName = data?.body?.searchCriteria?.moduleSearchCriteria?.projectName?.trim();
+      if (projectName) data.body.searchCriteria.moduleSearchCriteria.projectName = projectName;
+
+      const createdFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.searchCriteria?.moduleSearchCriteria?.createdFrom, "daystart");
+      if (createdFrom) data.body.searchCriteria.moduleSearchCriteria.createdFrom = createdFrom;
+      const createdTo = Digit.Utils.pt.convertDateToEpoch(data?.body?.searchCriteria?.moduleSearchCriteria?.createdTo);
+      if (createdTo) data.body.searchCriteria.moduleSearchCriteria.createdTo = createdTo;
+
+      return data;
+    },
+    postProcess: (responseArray, uiConfig) => {
+      return responseArray;
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      if (key === "EXP_PROJECT_NUMBER") {
+
+        //const billType = getBillType(row?.businessService);
+        return (
+          <span className="link">
+            <Link to={`/${window.contextPath}/employee/expenditure/payment-tracker-view?projectId=${value}`}>
+            <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
+            </Link>
+          </span>
+        );
+      }
+      if(key === "EXP_PROJECT_NAME") {
+          return (
+            <div class="tooltip">
+              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+                {value && value !== '' ? String(t(value)) : t("ES_COMMON_NA")}
+              </div>
+              {/* check condtion - if length greater than 20 */}
+              <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
+                {row?.project?.businessObject?.description}
+              </span>
+            </div>
+          );
+      }
+      if (key === "EXP_ESTIMATED_AMT") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_WAGE_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_PUR_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_PUR_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_SUP_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+      if (key === "EXP_SUP_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+      }
+  }
+  }
 };
 
 const downloadPdf = (link, openIn = "_blank") => {
