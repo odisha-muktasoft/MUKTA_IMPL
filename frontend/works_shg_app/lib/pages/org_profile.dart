@@ -380,11 +380,14 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                         });
                   },
                 ),
-                const SizedBox(height: 30),
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: PoweredByDigit(
-                    version: Constants.appVersion,
+             
+                Padding(
+                   padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                  child: const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: PoweredByDigit(
+                      version: Constants.appVersion,
+                    ),
                   ),
                 ),
               ]));
