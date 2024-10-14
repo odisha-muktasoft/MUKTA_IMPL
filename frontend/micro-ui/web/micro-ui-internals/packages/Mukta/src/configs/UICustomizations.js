@@ -2982,18 +2982,22 @@ export const UICustomizations = {
               );
             case "INPROGRESS":
               return (
-                <div style={{ color: "#F47738"}}>
+                <div style={{textAlign: "right", color: "#F47738"}}>
                   {t(value)}
                 </div>
               )
             case "FAILED":
               return (
-                <div style={{ color: "#D4351C"}}>
+                <div style={{textAlign: "right", color: "#D4351C"}}>
                   {t(value)}
                 </div>
               )
             default:
-              return t("CS_COMMON_NA");
+              return (
+                <div style={{textAlign: "right", color: "#D4351C"}}>
+                  {t("CS_COMMON_NA")}
+                </div>
+              );
           }
         default:
           return t("ES_COMMON_NA");
