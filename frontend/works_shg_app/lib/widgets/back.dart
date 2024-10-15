@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -12,8 +12,7 @@ class Back extends StatelessWidget {
   final VoidCallback? callback;
   final String? backLabel;
 
-  const Back({Key? key, this.widget, this.callback, this.backLabel})
-      : super(key: key);
+  const Back({super.key, this.widget, this.callback, this.backLabel});
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +31,16 @@ class Back extends StatelessWidget {
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.arrow_left,
-                          color: const DigitColors().black,
+                          color: Colors.black,
                         ),
                         Text(
                             AppLocalizations.of(context)
                                     .translate(i18.common.back) ??
                                 'Back',
-                            style: TextStyle(
-                              color: const DigitColors().black,
+                            style: const TextStyle(
+                              color: Colors.black,
                             ))
                       ],
                     )),

@@ -1,12 +1,18 @@
-import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/utils/constants.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
+import 'package:works_shg_app/widgets/atoms/multiselect_checkbox.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/wage_seeker/skill_details_model.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/atoms/multiselect_checkbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -35,6 +41,8 @@ class IndividualSkillSubPage extends StatefulWidget {
 
 class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
   List<String> selectedOptions = [];
+  List<String> initialOptions = [];
+  List<String> options = [];
 
   @override
   void initState() {
@@ -47,7 +55,16 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                   .where((e) => e.type != null)
                   .map((e) => '${e.level}')
                   .toList();
+      initialOptions =
+          widget.skillDetails!.individualSkills!.any((a) => a.type == null)
+              ? []
+              : widget.skillDetails!.individualSkills!
+                  .where((e) => e.type != null)
+                  .map((e) => '${e.level}')
+                  .toList();
     }
+
+    options = widget.skills;
 
     super.initState();
   }
@@ -62,87 +79,103 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
-    return GestureDetector(
-      onTap: () {
-        if (FocusScope.of(context).hasFocus) {
-          FocusScope.of(context).unfocus();
-        }
-      },
-      child: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.sizeOf(context).height*0.70,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              DigitCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      //  "Individual's Skill Details",
-                      t.translate(i18.wageSeeker.individualSkillHeader),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.displayMedium
-                          ?.apply(color: const DigitColors().black),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          MultiSelectSearchCheckBox(
-                            label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                            onChange: _onSelectedOptionsChanged,
-                            options: widget.skills,
-                            hintText: t.translate(i18.attendanceMgmt.skill),
-                            selectedOptions: selectedOptions,
-                          ),
-                           const SizedBox(
-                        height: 10,
-                      ),
-                        ],
-                      ),
-                    ),
-                   
-                  ],
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.sizeOf(context).height * 0.72,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.50,
+              child: ui_card.DigitCard(
+                margin: const EdgeInsets.all(8),
+                cardType: CardType.primary,
+                children: [
+                  DigitTextBlock(
+                    //  "Individual's Skill Details",
+                    heading: t.translate(i18.wageSeeker.individualSkillHeader),
+                  ),
+                  
+
+                  MultiSelectDropDown(
+                    //  showSelectAll: true,
+                    isSearchable: true,
+                    initialOptions: selectedOptions
+                        .map((e) => DropdownItem(
+                            name: t.translate("COMMON_MASTERS_SKILLS_$e"),
+                            code: e))
+                        .toList(),
+                    //  selectAllText: 'Select All',
+                    // options: const [DropdownItem(name: 'sdfsdf', code: '1'),
+                    // DropdownItem(name: 'sdfsdhgf', code: '2'),
+                    // ],
+                    options: options
+                        .map((e) => DropdownItem(
+                            name: t.translate("COMMON_MASTERS_SKILLS_$e"),
+                            code: e))
+                        .toList(),
+                    onOptionSelected: (List<DropdownItem> selectedOptionss) {
+                      _onSelectedOptionsChanged(
+                          selectedOptionss.map((e) => e.code).toList());
+                    },
+                    // selectedOptions: selectedOptions.map((e) => DropdownItem(
+                    //     name: t.translate(
+                    //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                    //     code: e.toString()))
+                    // .toList(),
+                  ),
+                ],
+              ),
+            ),
+             const Align(
+                alignment: Alignment.bottomCenter,
+                child: PoweredByDigit(
+                  version: Constants.appVersion,
                 ),
               ),
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
-                  color: const DigitColors().white,
-                  child: DigitElevatedButton(
-                      onPressed: () {
-                        if (!getSkillsValid()) {
-                          Notifiers.getToastMessage(context,
-                              i18.wageSeeker.selectSkillValidation, 'ERROR');
-                        } else if (selectedOptions.isEmpty) {
-                          Notifiers.getToastMessage(
-                              context, i18.wageSeeker.skillsRequired, 'ERROR');
-                        } else {
-                          final skillList = SkillDetails(
-                              individualSkills: selectedOptions
-                                  .map((e) => IndividualSkill(
-                                      type: e.toString().split('.').last,
-                                      level: e.toString().split('.').first))
-                                  .toList());
-                        
-                          context.read<WageSeekerBloc>().add(
-                                WageSeekerSkillCreateEvent(skillDetails: skillList),
-                              );
-                        
-                          widget.onPageChanged(3);
-                        }
-                      },
-                      child: Center(
-                        child: Text(t.translate(i18.common.next)),
-                      )),
-                ),
-              )
-            ],
-          ),
+            Center(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                color: Colors.white,
+                child: Button(
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      if (!getSkillsValid()) {
+                        Notifiers.getToastMessage(context,
+                            i18.wageSeeker.selectSkillValidation, 'ERROR');
+                        // Toast.showToast(context,
+                        //     message: t.translate(
+                        //         i18.wageSeeker.selectSkillValidation),
+                        //     type: ToastType.error);
+                      } else if (selectedOptions.isEmpty) {
+                        Notifiers.getToastMessage(
+                            context, i18.wageSeeker.skillsRequired, 'ERROR');
+                        // Toast.showToast(context,
+                        //     message: t.translate(i18.wageSeeker.skillsRequired),
+                        //     type: ToastType.error);
+                      } else {
+                        final skillList = SkillDetails(
+                            individualSkills: selectedOptions
+                                .map((e) => IndividualSkill(
+                                    type: e.toString().split('.').last,
+                                    level: e.toString().split('.').first))
+                                .toList());
+
+                        context.read<WageSeekerBloc>().add(
+                              WageSeekerSkillCreateEvent(
+                                  skillDetails: skillList),
+                            );
+
+                        widget.onPageChanged(3);
+                      }
+                    },
+                    label: t.translate(i18.common.next)),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -6,8 +6,9 @@ part of 'mb_detail_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
-    _$_MBDetailResponse(
+_$MBDetailResponseImpl _$$MBDetailResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MBDetailResponseImpl(
       contract: json['contract'] == null
           ? null
           : Contract.fromJson(json['contract'] as Map<String, dynamic>),
@@ -24,7 +25,8 @@ _$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
       musterRolls: json['musterRolls'],
     );
 
-Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
+Map<String, dynamic> _$$MBDetailResponseImplToJson(
+        _$MBDetailResponseImpl instance) =>
     <String, dynamic>{
       'contract': instance.contract,
       'estimate': instance.estimate,
@@ -34,7 +36,8 @@ Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
       'musterRolls': instance.musterRolls,
     };
 
-_$_WorkFlow _$$_WorkFlowFromJson(Map<String, dynamic> json) => _$_WorkFlow(
+_$WorkFlowImpl _$$WorkFlowImplFromJson(Map<String, dynamic> json) =>
+    _$WorkFlowImpl(
       action: json['action'] as String?,
       comment: json['comment'] as String?,
       assignees: (json['assignees'] as List<dynamic>?)
@@ -46,7 +49,7 @@ _$_WorkFlow _$$_WorkFlowFromJson(Map<String, dynamic> json) => _$_WorkFlow(
           .toList(),
     );
 
-Map<String, dynamic> _$$_WorkFlowToJson(_$_WorkFlow instance) =>
+Map<String, dynamic> _$$WorkFlowImplToJson(_$WorkFlowImpl instance) =>
     <String, dynamic>{
       'action': instance.action,
       'comment': instance.comment,
@@ -54,9 +57,9 @@ Map<String, dynamic> _$$_WorkFlowToJson(_$_WorkFlow instance) =>
       'documents': instance.documents,
     };
 
-_$_WorkFlowSupportDocument _$$_WorkFlowSupportDocumentFromJson(
+_$WorkFlowSupportDocumentImpl _$$WorkFlowSupportDocumentImplFromJson(
         Map<String, dynamic> json) =>
-    _$_WorkFlowSupportDocument(
+    _$WorkFlowSupportDocumentImpl(
       documentType: json['documentType'] as String?,
       documentUid: json['documentUid'] as String?,
       fileName: json['fileName'] as String?,
@@ -64,8 +67,8 @@ _$_WorkFlowSupportDocument _$$_WorkFlowSupportDocumentFromJson(
       tenantId: json['tenantId'] as String?,
     );
 
-Map<String, dynamic> _$$_WorkFlowSupportDocumentToJson(
-        _$_WorkFlowSupportDocument instance) =>
+Map<String, dynamic> _$$WorkFlowSupportDocumentImplToJson(
+        _$WorkFlowSupportDocumentImpl instance) =>
     <String, dynamic>{
       'documentType': instance.documentType,
       'documentUid': instance.documentUid,
@@ -74,16 +77,16 @@ Map<String, dynamic> _$$_WorkFlowSupportDocumentToJson(
       'tenantId': instance.tenantId,
     };
 
-_$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>
-    _$_MusterRoll(
+_$MusterRollImpl _$$MusterRollImplFromJson(Map<String, dynamic> json) =>
+    _$MusterRollImpl(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       musterRollNumber: json['musterRollNumber'],
       registerId: json['registerId'] as String?,
       status: json['status'] as String?,
       musterRollStatus: json['musterRollStatus'] as String?,
-      startDate: json['startDate'] as int?,
-      endDate: json['endDate'] as int?,
+      startDate: (json['startDate'] as num?)?.toInt(),
+      endDate: (json['endDate'] as num?)?.toInt(),
       referenceId: json['referenceId'] as String?,
       serviceCode: json['serviceCode'] as String?,
       auditDetails: json['auditDetails'] == null
@@ -95,7 +98,7 @@ _$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>
               json['additionalDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_MusterRollToJson(_$_MusterRoll instance) =>
+Map<String, dynamic> _$$MusterRollImplToJson(_$MusterRollImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tenantId': instance.tenantId,
@@ -111,9 +114,9 @@ Map<String, dynamic> _$$_MusterRollToJson(_$_MusterRoll instance) =>
       'additionalDetails': instance.additional,
     };
 
-_$_MusterRollAdditionalDetails _$$_MusterRollAdditionalDetailsFromJson(
+_$MusterRollAdditionalDetailsImpl _$$MusterRollAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_MusterRollAdditionalDetails(
+    _$MusterRollAdditionalDetailsImpl(
       ward: json['ward'] as String?,
       orgId: json['orgId'] as String?,
       amount: (json['amount'] as num?)?.toDouble(),
@@ -129,8 +132,8 @@ _$_MusterRollAdditionalDetails _$$_MusterRollAdditionalDetailsFromJson(
       attendanceRegisterName: json['attendanceRegisterName'] as String?,
     );
 
-Map<String, dynamic> _$$_MusterRollAdditionalDetailsToJson(
-        _$_MusterRollAdditionalDetails instance) =>
+Map<String, dynamic> _$$MusterRollAdditionalDetailsImplToJson(
+        _$MusterRollAdditionalDetailsImpl instance) =>
     <String, dynamic>{
       'ward': instance.ward,
       'orgId': instance.orgId,
@@ -147,14 +150,14 @@ Map<String, dynamic> _$$_MusterRollAdditionalDetailsToJson(
       'attendanceRegisterName': instance.attendanceRegisterName,
     };
 
-_$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
-    _$_Measurement(
+_$MeasurementImpl _$$MeasurementImplFromJson(Map<String, dynamic> json) =>
+    _$MeasurementImpl(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       measurementNumber: json['measurementNumber'] as String?,
       physicalRefNumber: json['physicalRefNumber'] as String?,
       referenceId: json['referenceId'] as String?,
-      entryDate: json['entryDate'] as int?,
+      entryDate: (json['entryDate'] as num?)?.toInt(),
       isActive: json['isActive'] as bool?,
       wfStatus: json['wfStatus'] as String?,
       workflow: json['workflow'] == null
@@ -175,7 +178,7 @@ _$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
+Map<String, dynamic> _$$MeasurementImplToJson(_$MeasurementImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tenantId': instance.tenantId,
@@ -192,19 +195,20 @@ Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
       'documents': instance.documents,
     };
 
-_$_MeasurementAdditionalDetail _$$_MeasurementAdditionalDetailFromJson(
+_$MeasurementAdditionalDetailImpl _$$MeasurementAdditionalDetailImplFromJson(
         Map<String, dynamic> json) =>
-    _$_MeasurementAdditionalDetail(
-      endDate: json['endDate'] as int?,
+    _$MeasurementAdditionalDetailImpl(
+      endDate: (json['endDate'] as num?)?.toInt(),
       sorAmount: (json['sorAmount'] as num?)?.toDouble(),
-      startDate: json['startDate'] as int?,
+      startDate: (json['startDate'] as num?)?.toInt(),
       totalAmount: (json['totalAmount'] as num?)?.toDouble(),
       nonSorAmount: (json['nonSorAmount'] as num?)?.toDouble(),
       musterRollNumber: json['musterRollNumber'],
+      source: json['source'],
     );
 
-Map<String, dynamic> _$$_MeasurementAdditionalDetailToJson(
-        _$_MeasurementAdditionalDetail instance) =>
+Map<String, dynamic> _$$MeasurementAdditionalDetailImplToJson(
+        _$MeasurementAdditionalDetailImpl instance) =>
     <String, dynamic>{
       'endDate': instance.endDate,
       'sorAmount': instance.sorAmount,
@@ -212,23 +216,26 @@ Map<String, dynamic> _$$_MeasurementAdditionalDetailToJson(
       'totalAmount': instance.totalAmount,
       'nonSorAmount': instance.nonSorAmount,
       'musterRollNumber': instance.musterRollNumber,
+      'source': instance.source,
     };
 
-_$_Period _$$_PeriodFromJson(Map<String, dynamic> json) => _$_Period(
-      startDate: json['startDate'] as int?,
-      endDate: json['endDate'] as int?,
+_$PeriodImpl _$$PeriodImplFromJson(Map<String, dynamic> json) => _$PeriodImpl(
+      startDate: (json['startDate'] as num?)?.toInt(),
+      endDate: (json['endDate'] as num?)?.toInt(),
       message: json['message'] as String?,
       type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$_PeriodToJson(_$_Period instance) => <String, dynamic>{
+Map<String, dynamic> _$$PeriodImplToJson(_$PeriodImpl instance) =>
+    <String, dynamic>{
       'startDate': instance.startDate,
       'endDate': instance.endDate,
       'message': instance.message,
       'type': instance.type,
     };
 
-_$_Estimate _$$_EstimateFromJson(Map<String, dynamic> json) => _$_Estimate(
+_$EstimateImpl _$$EstimateImplFromJson(Map<String, dynamic> json) =>
+    _$EstimateImpl(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       estimateNumber: json['estimateNumber'] as String?,
@@ -236,8 +243,8 @@ _$_Estimate _$$_EstimateFromJson(Map<String, dynamic> json) => _$_Estimate(
       businessService: json['businessService'] as String?,
       oldUuid: json['oldUuid'] as String?,
       projectId: json['projectId'] as String?,
-      versionNumber: json['versionNumber'] as int?,
-      proposalDate: json['proposalDate'] as int?,
+      versionNumber: (json['versionNumber'] as num?)?.toInt(),
+      proposalDate: (json['proposalDate'] as num?)?.toInt(),
       status: json['status'] as String?,
       wfStatus: json['wfStatus'] as String?,
       name: json['name'] as String?,
@@ -255,7 +262,7 @@ _$_Estimate _$$_EstimateFromJson(Map<String, dynamic> json) => _$_Estimate(
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_EstimateToJson(_$_Estimate instance) =>
+Map<String, dynamic> _$$EstimateImplToJson(_$EstimateImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tenantId': instance.tenantId,
@@ -277,8 +284,8 @@ Map<String, dynamic> _$$_EstimateToJson(_$_Estimate instance) =>
       'auditDetails': instance.auditDetails,
     };
 
-_$_EstimateDetail _$$_EstimateDetailFromJson(Map<String, dynamic> json) =>
-    _$_EstimateDetail(
+_$EstimateDetailImpl _$$EstimateDetailImplFromJson(Map<String, dynamic> json) =>
+    _$EstimateDetailImpl(
       id: json['id'] as String?,
       previousLineItemId: json['previousLineItemId'] as String?,
       sorId: json['sorId'] as String?,
@@ -300,7 +307,8 @@ _$_EstimateDetail _$$_EstimateDetailFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_EstimateDetailToJson(_$_EstimateDetail instance) =>
+Map<String, dynamic> _$$EstimateDetailImplToJson(
+        _$EstimateDetailImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'previousLineItemId': instance.previousLineItemId,
@@ -321,15 +329,15 @@ Map<String, dynamic> _$$_EstimateDetailToJson(_$_EstimateDetail instance) =>
       'amountDetail': instance.amountDetails,
     };
 
-_$_AmoutDetail _$$_AmoutDetailFromJson(Map<String, dynamic> json) =>
-    _$_AmoutDetail(
+_$AmoutDetailImpl _$$AmoutDetailImplFromJson(Map<String, dynamic> json) =>
+    _$AmoutDetailImpl(
       type: json['type'] as String?,
       amount: (json['amount'] as num?)?.toDouble(),
       id: json['id'] as String?,
       isActive: json['isActive'] as bool?,
     );
 
-Map<String, dynamic> _$$_AmoutDetailToJson(_$_AmoutDetail instance) =>
+Map<String, dynamic> _$$AmoutDetailImplToJson(_$AmoutDetailImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
       'amount': instance.amount,
@@ -337,8 +345,9 @@ Map<String, dynamic> _$$_AmoutDetailToJson(_$_AmoutDetail instance) =>
       'isActive': instance.isActive,
     };
 
-_$_EstimateAddress _$$_EstimateAddressFromJson(Map<String, dynamic> json) =>
-    _$_EstimateAddress(
+_$EstimateAddressImpl _$$EstimateAddressImplFromJson(
+        Map<String, dynamic> json) =>
+    _$EstimateAddressImpl(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       doorNo: json['doorNo'] as String?,
@@ -353,7 +362,8 @@ _$_EstimateAddress _$$_EstimateAddressFromJson(Map<String, dynamic> json) =>
       city: json['city'] as String?,
     );
 
-Map<String, dynamic> _$$_EstimateAddressToJson(_$_EstimateAddress instance) =>
+Map<String, dynamic> _$$EstimateAddressImplToJson(
+        _$EstimateAddressImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tenantId': instance.tenantId,
@@ -369,7 +379,8 @@ Map<String, dynamic> _$$_EstimateAddressToJson(_$_EstimateAddress instance) =>
       'city': instance.city,
     };
 
-_$_SorObject _$$_SorObjectFromJson(Map<String, dynamic> json) => _$_SorObject(
+_$SorObjectImpl _$$SorObjectImplFromJson(Map<String, dynamic> json) =>
+    _$SorObjectImpl(
       sorId: json['sorId'] as String?,
       id: json['id'] as String?,
       filteredMeasurementsMeasure:
@@ -380,7 +391,7 @@ _$_SorObject _$$_SorObjectFromJson(Map<String, dynamic> json) => _$_SorObject(
               const [],
     );
 
-Map<String, dynamic> _$$_SorObjectToJson(_$_SorObject instance) =>
+Map<String, dynamic> _$$SorObjectImplToJson(_$SorObjectImpl instance) =>
     <String, dynamic>{
       'sorId': instance.sorId,
       'id': instance.id,

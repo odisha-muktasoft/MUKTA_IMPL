@@ -52,7 +52,7 @@ class SearchMyServiceRequestsBloc
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(SearchMyServiceRequestsState.loaded(contractsModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(SearchMyServiceRequestsState.error(
           e.response?.data['Errors'][0]['code']));
     }

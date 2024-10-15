@@ -88,7 +88,7 @@ class MeasurementCheckBloc
           ),
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementCheckState.error(e.toString()));
     } on CustomException catch (e) {

@@ -13,6 +13,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/data/schema/localization.dart';
+import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
 import 'package:works_shg_app/services/local_storage.dart';
 
 import '../data/repositories/core_repo/core_repository.dart';
@@ -22,7 +23,7 @@ import 'global_variables.dart';
 class CommonMethods {
   Future<void> deleteLocalStorageKey() async {
     if (kIsWeb) {
-      html.window.sessionStorage.remove(GlobalVariables.selectedLocale());
+      html.window.sessionStorage.remove(await GlobalVariables.selectedLocale());
     } else {
       await storage.delete(key: GlobalVariables.selectedLocale().toString());
     }
@@ -40,7 +41,7 @@ class CommonMethods {
         await storage.deleteAll();
       }
       packageInfo = await PackageInfo.fromPlatform();
-    } catch (e, s) {
+    } catch (e) {
       print(e);
     }
   }
@@ -55,34 +56,36 @@ class CommonMethods {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return WillPopScope(
-                  child: AlertDialog(
-                    title: const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.warning_rounded,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          'UNSUPPORTED DEVICE!',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    content: Text(
-                      '${(rootedCheck) ? 'Application can not be run on a rooted device' : 'Please disable developer mode of your device to run the application'} ',
-                    ),
+              return PopScope(
+                onPopInvoked: (val) async {
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else if (Platform.isIOS) {
+                    exit(0);
+                  }
+                  //return true;
+                },
+                canPop: true,
+                child: AlertDialog(
+                  title: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.warning_rounded,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        'UNSUPPORTED DEVICE!',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
-                  onWillPop: () async {
-                    if (Platform.isAndroid) {
-                      SystemNavigator.pop();
-                    } else if (Platform.isIOS) {
-                      exit(0);
-                    }
-                    return true;
-                  });
+                  content: Text(
+                    '${(rootedCheck) ? 'Application can not be run on a rooted device' : 'Please disable developer mode of your device to run the application'} ',
+                  ),
+                ),
+              );
             });
       } else if (latestAppVersion != null && !kIsWeb) {
         if (int.parse(packageInfo!.version.split('.').join("").toString()) <
@@ -100,30 +103,31 @@ class CommonMethods {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return WillPopScope(
-                    child: AlertDialog(
-                      title: const Text('UPDATE AVAILABLE'),
-                      content: Text(
-                          'Please update the app from ${packageInfo?.version} to $latestAppVersion'),
-                      actions: [
-                        TextButton(
-                            onPressed: () => launchPlayStore(uri, context),
-                            child: const Text('Update'))
-                      ],
-                    ),
-                    onWillPop: () async {
-                      if (Platform.isAndroid) {
-                        SystemNavigator.pop();
-                      } else if (Platform.isIOS) {
-                        exit(0);
-                      }
-                      return true;
-                    });
+                return PopScope(
+                  onPopInvoked: (val) async {
+                    if (Platform.isAndroid) {
+                      SystemNavigator.pop();
+                    } else if (Platform.isIOS) {
+                      exit(0);
+                    }
+                    //return true;
+                  },
+                  canPop: true,
+                  child: AlertDialog(
+                    title: const Text('UPDATE AVAILABLE'),
+                    content: Text(
+                        'Please update the app from ${packageInfo?.version} to $latestAppVersion'),
+                    actions: [
+                      TextButton(
+                          onPressed: () => launchPlayStore(uri, context),
+                          child: const Text('Update'))
+                    ],
+                  ),
+                );
               });
         }
       }
     } catch (e) {
-      print('Error');
       print(e);
     }
   }
@@ -152,7 +156,7 @@ class CommonMethods {
 
   void onTapOfAttachment(
       FileStoreModel store, String tenantId, BuildContext context,
-      {  RoleType roleType=RoleType.cbo}) async {
+      {RoleType roleType = RoleType.cbo}) async {
     var random = Random();
     List<FileStoreModel>? file = await CoreRepository().fetchFiles(
       [store.fileStoreId.toString()],
@@ -201,15 +205,15 @@ class CommonMethods {
   static getConvertedLocalizedCode(String type, {String subString = ''}) {
     switch (type) {
       case 'city':
-        return GlobalVariables.tenantId ?? GlobalVariables
-            .organisationListModel!.organisations!.first.tenantId
-            .toString()
-            .toUpperCase()
-            .replaceAll('.', '_');
+        return GlobalVariables.tenantId ??
+            GlobalVariables.organisationListModel!.organisations!.first.tenantId
+                .toString()
+                .toUpperCase()
+                .replaceAll('.', '_');
 
       case 'ward':
       case 'locality':
-        return '${GlobalVariables.tenantId!=null?GlobalVariables.tenantId.toString().toUpperCase().replaceAll('.', '_') : GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
+        return '${GlobalVariables.tenantId != null ? GlobalVariables.tenantId.toString().toUpperCase().replaceAll('.', '_') : GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
     }
   }
 
@@ -239,7 +243,8 @@ class CommonMethods {
     // For Sunday as endDay date.add(Duration(days: DateTime.daysPerWeek - currentDay + 1));
     return endDayOfWeek;
   }
-   static initilizeHiveBox() async {
+
+  static initilizeHiveBox() async {
     await Hive.initFlutter();
 
     Hive.registerAdapter(KeyLocaleModelAdapter());
@@ -249,4 +254,43 @@ class CommonMethods {
     await Hive.box<KeyLocaleModel>('keyValueModel').clear();
     await Hive.box<Localization>('localization').clear();
   }
+
+  // error message processing for same   day attendance mark of particular wage seeker in different projects
+
+  static List<DuplicateWageSeeker>? getListofErrorWageSeeker(
+      {required String message}) {
+    try {
+      // Split the text by "||"
+      List<String> splitText = message.split("||");
+
+      // List to hold the attendance objects
+      List<DuplicateWageSeeker> attendanceList = [];
+
+      for (String part in splitText) {
+        // Extract individualId
+        String individualId = part.split('[')[1].split(' ')[0];
+
+        // Extract name (from givenName)
+        String name = part.split('givenName=')[1].split(',')[0];
+
+        // Extract date
+        String date = part.split('on this day : ')[1].split(' ')[0];
+
+        // Create an Attendance object and add it to the list
+        DuplicateWageSeeker attendance = DuplicateWageSeeker(
+            individualId: individualId, name: name, date: date);
+        attendanceList.add(attendance);
+
+       
+      }
+      // for development purpose to check the list 
+      //  return [...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,
+      //   ...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList];
+      return attendanceList;
+    } catch (ex) {
+      return null;
+    }
+  }
 }
+
+

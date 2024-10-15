@@ -85,7 +85,7 @@ class WageSeekerMDMSBloc
       if (updatedCommonMDMS != null) {
         emit(WageSeekerMDMSState.loaded(updatedCommonMDMS));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WageSeekerMDMSState.error(e.response?.data['Errors'][0]['code']));
     }
   }

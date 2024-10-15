@@ -12,7 +12,7 @@ part of 'wo_inbox_response.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 WOInboxResponse _$WOInboxResponseFromJson(Map<String, dynamic> json) {
   return _WOInboxResponse.fromJson(json);
@@ -88,11 +88,11 @@ class _$WOInboxResponseCopyWithImpl<$Res, $Val extends WOInboxResponse>
 }
 
 /// @nodoc
-abstract class _$$_WOInboxResponseCopyWith<$Res>
+abstract class _$$WOInboxResponseImplCopyWith<$Res>
     implements $WOInboxResponseCopyWith<$Res> {
-  factory _$$_WOInboxResponseCopyWith(
-          _$_WOInboxResponse value, $Res Function(_$_WOInboxResponse) then) =
-      __$$_WOInboxResponseCopyWithImpl<$Res>;
+  factory _$$WOInboxResponseImplCopyWith(_$WOInboxResponseImpl value,
+          $Res Function(_$WOInboxResponseImpl) then) =
+      __$$WOInboxResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -103,11 +103,11 @@ abstract class _$$_WOInboxResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WOInboxResponseCopyWithImpl<$Res>
-    extends _$WOInboxResponseCopyWithImpl<$Res, _$_WOInboxResponse>
-    implements _$$_WOInboxResponseCopyWith<$Res> {
-  __$$_WOInboxResponseCopyWithImpl(
-      _$_WOInboxResponse _value, $Res Function(_$_WOInboxResponse) _then)
+class __$$WOInboxResponseImplCopyWithImpl<$Res>
+    extends _$WOInboxResponseCopyWithImpl<$Res, _$WOInboxResponseImpl>
+    implements _$$WOInboxResponseImplCopyWith<$Res> {
+  __$$WOInboxResponseImplCopyWithImpl(
+      _$WOInboxResponseImpl _value, $Res Function(_$WOInboxResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +118,7 @@ class __$$_WOInboxResponseCopyWithImpl<$Res>
     Object? statusMap = freezed,
     Object? items = freezed,
   }) {
-    return _then(_$_WOInboxResponse(
+    return _then(_$WOInboxResponseImpl(
       totalCount: freezed == totalCount
           ? _value.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
@@ -141,8 +141,8 @@ class __$$_WOInboxResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WOInboxResponse implements _WOInboxResponse {
-  const _$_WOInboxResponse(
+class _$WOInboxResponseImpl implements _WOInboxResponse {
+  const _$WOInboxResponseImpl(
       {@JsonKey(name: 'totalCount') this.totalCount,
       @JsonKey(name: 'nearingSlaCount') this.nearingSlaCount,
       @JsonKey(name: 'statusMap') final List<StatusMap>? statusMap,
@@ -150,8 +150,8 @@ class _$_WOInboxResponse implements _WOInboxResponse {
       : _statusMap = statusMap,
         _items = items;
 
-  factory _$_WOInboxResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_WOInboxResponseFromJson(json);
+  factory _$WOInboxResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WOInboxResponseImplFromJson(json);
 
   @override
   @JsonKey(name: 'totalCount')
@@ -187,10 +187,10 @@ class _$_WOInboxResponse implements _WOInboxResponse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WOInboxResponse &&
+            other is _$WOInboxResponseImpl &&
             (identical(other.totalCount, totalCount) ||
                 other.totalCount == totalCount) &&
             (identical(other.nearingSlaCount, nearingSlaCount) ||
@@ -212,12 +212,13 @@ class _$_WOInboxResponse implements _WOInboxResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WOInboxResponseCopyWith<_$_WOInboxResponse> get copyWith =>
-      __$$_WOInboxResponseCopyWithImpl<_$_WOInboxResponse>(this, _$identity);
+  _$$WOInboxResponseImplCopyWith<_$WOInboxResponseImpl> get copyWith =>
+      __$$WOInboxResponseImplCopyWithImpl<_$WOInboxResponseImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WOInboxResponseToJson(
+    return _$$WOInboxResponseImplToJson(
       this,
     );
   }
@@ -229,10 +230,10 @@ abstract class _WOInboxResponse implements WOInboxResponse {
           @JsonKey(name: 'nearingSlaCount') final int? nearingSlaCount,
           @JsonKey(name: 'statusMap') final List<StatusMap>? statusMap,
           @JsonKey(name: 'items') final List<WOItemData>? items}) =
-      _$_WOInboxResponse;
+      _$WOInboxResponseImpl;
 
   factory _WOInboxResponse.fromJson(Map<String, dynamic> json) =
-      _$_WOInboxResponse.fromJson;
+      _$WOInboxResponseImpl.fromJson;
 
   @override
   @JsonKey(name: 'totalCount')
@@ -248,7 +249,7 @@ abstract class _WOInboxResponse implements WOInboxResponse {
   List<WOItemData>? get items;
   @override
   @JsonKey(ignore: true)
-  _$$_WOInboxResponseCopyWith<_$_WOInboxResponse> get copyWith =>
+  _$$WOInboxResponseImplCopyWith<_$WOInboxResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -337,11 +338,11 @@ class _$WOItemDataCopyWithImpl<$Res, $Val extends WOItemData>
 }
 
 /// @nodoc
-abstract class _$$_WOItemDataCopyWith<$Res>
+abstract class _$$WOItemDataImplCopyWith<$Res>
     implements $WOItemDataCopyWith<$Res> {
-  factory _$$_WOItemDataCopyWith(
-          _$_WOItemData value, $Res Function(_$_WOItemData) then) =
-      __$$_WOItemDataCopyWithImpl<$Res>;
+  factory _$$WOItemDataImplCopyWith(
+          _$WOItemDataImpl value, $Res Function(_$WOItemDataImpl) then) =
+      __$$WOItemDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -355,11 +356,11 @@ abstract class _$$_WOItemDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WOItemDataCopyWithImpl<$Res>
-    extends _$WOItemDataCopyWithImpl<$Res, _$_WOItemData>
-    implements _$$_WOItemDataCopyWith<$Res> {
-  __$$_WOItemDataCopyWithImpl(
-      _$_WOItemData _value, $Res Function(_$_WOItemData) _then)
+class __$$WOItemDataImplCopyWithImpl<$Res>
+    extends _$WOItemDataCopyWithImpl<$Res, _$WOItemDataImpl>
+    implements _$$WOItemDataImplCopyWith<$Res> {
+  __$$WOItemDataImplCopyWithImpl(
+      _$WOItemDataImpl _value, $Res Function(_$WOItemDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -368,7 +369,7 @@ class __$$_WOItemDataCopyWithImpl<$Res>
     Object? processInstance = freezed,
     Object? woBusinessObject = freezed,
   }) {
-    return _then(_$_WOItemData(
+    return _then(_$WOItemDataImpl(
       processInstance: freezed == processInstance
           ? _value.processInstance
           : processInstance // ignore: cast_nullable_to_non_nullable
@@ -383,13 +384,13 @@ class __$$_WOItemDataCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WOItemData implements _WOItemData {
-  const _$_WOItemData(
+class _$WOItemDataImpl implements _WOItemData {
+  const _$WOItemDataImpl(
       {@JsonKey(name: 'ProcessInstance') this.processInstance,
       @JsonKey(name: 'businessObject') this.woBusinessObject});
 
-  factory _$_WOItemData.fromJson(Map<String, dynamic> json) =>
-      _$$_WOItemDataFromJson(json);
+  factory _$WOItemDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WOItemDataImplFromJson(json);
 
   @override
   @JsonKey(name: 'ProcessInstance')
@@ -404,10 +405,10 @@ class _$_WOItemData implements _WOItemData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WOItemData &&
+            other is _$WOItemDataImpl &&
             (identical(other.processInstance, processInstance) ||
                 other.processInstance == processInstance) &&
             (identical(other.woBusinessObject, woBusinessObject) ||
@@ -422,12 +423,12 @@ class _$_WOItemData implements _WOItemData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WOItemDataCopyWith<_$_WOItemData> get copyWith =>
-      __$$_WOItemDataCopyWithImpl<_$_WOItemData>(this, _$identity);
+  _$$WOItemDataImplCopyWith<_$WOItemDataImpl> get copyWith =>
+      __$$WOItemDataImplCopyWithImpl<_$WOItemDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WOItemDataToJson(
+    return _$$WOItemDataImplToJson(
       this,
     );
   }
@@ -438,10 +439,10 @@ abstract class _WOItemData implements WOItemData {
       {@JsonKey(name: 'ProcessInstance')
           final ProcessInstance? processInstance,
       @JsonKey(name: 'businessObject')
-          final WOBusinessObject? woBusinessObject}) = _$_WOItemData;
+          final WOBusinessObject? woBusinessObject}) = _$WOItemDataImpl;
 
   factory _WOItemData.fromJson(Map<String, dynamic> json) =
-      _$_WOItemData.fromJson;
+      _$WOItemDataImpl.fromJson;
 
   @override
   @JsonKey(name: 'ProcessInstance')
@@ -451,7 +452,7 @@ abstract class _WOItemData implements WOItemData {
   WOBusinessObject? get woBusinessObject;
   @override
   @JsonKey(ignore: true)
-  _$$_WOItemDataCopyWith<_$_WOItemData> get copyWith =>
+  _$$WOItemDataImplCopyWith<_$WOItemDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -580,11 +581,11 @@ class _$WOBusinessObjectCopyWithImpl<$Res, $Val extends WOBusinessObject>
 }
 
 /// @nodoc
-abstract class _$$_WOBusinessObjectCopyWith<$Res>
+abstract class _$$WOBusinessObjectImplCopyWith<$Res>
     implements $WOBusinessObjectCopyWith<$Res> {
-  factory _$$_WOBusinessObjectCopyWith(
-          _$_WOBusinessObject value, $Res Function(_$_WOBusinessObject) then) =
-      __$$_WOBusinessObjectCopyWithImpl<$Res>;
+  factory _$$WOBusinessObjectImplCopyWith(_$WOBusinessObjectImpl value,
+          $Res Function(_$WOBusinessObjectImpl) then) =
+      __$$WOBusinessObjectImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -608,11 +609,11 @@ abstract class _$$_WOBusinessObjectCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WOBusinessObjectCopyWithImpl<$Res>
-    extends _$WOBusinessObjectCopyWithImpl<$Res, _$_WOBusinessObject>
-    implements _$$_WOBusinessObjectCopyWith<$Res> {
-  __$$_WOBusinessObjectCopyWithImpl(
-      _$_WOBusinessObject _value, $Res Function(_$_WOBusinessObject) _then)
+class __$$WOBusinessObjectImplCopyWithImpl<$Res>
+    extends _$WOBusinessObjectCopyWithImpl<$Res, _$WOBusinessObjectImpl>
+    implements _$$WOBusinessObjectImplCopyWith<$Res> {
+  __$$WOBusinessObjectImplCopyWithImpl(_$WOBusinessObjectImpl _value,
+      $Res Function(_$WOBusinessObjectImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -625,7 +626,7 @@ class __$$_WOBusinessObjectCopyWithImpl<$Res>
     Object? woAdditionalDetails = freezed,
     Object? auditDetails = freezed,
   }) {
-    return _then(_$_WOBusinessObject(
+    return _then(_$WOBusinessObjectImpl(
       totalContractedAmount: freezed == totalContractedAmount
           ? _value.totalContractedAmount
           : totalContractedAmount // ignore: cast_nullable_to_non_nullable
@@ -656,8 +657,8 @@ class __$$_WOBusinessObjectCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WOBusinessObject implements _WOBusinessObject {
-  const _$_WOBusinessObject(
+class _$WOBusinessObjectImpl implements _WOBusinessObject {
+  const _$WOBusinessObjectImpl(
       {@JsonKey(name: 'totalContractedAmount') this.totalContractedAmount,
       @JsonKey(name: 'businessService') this.businessService,
       @JsonKey(name: 'contractNumber') this.contractNumber,
@@ -665,8 +666,8 @@ class _$_WOBusinessObject implements _WOBusinessObject {
       @JsonKey(name: 'additionalDetails') this.woAdditionalDetails,
       @JsonKey(name: 'auditDetails') this.auditDetails});
 
-  factory _$_WOBusinessObject.fromJson(Map<String, dynamic> json) =>
-      _$$_WOBusinessObjectFromJson(json);
+  factory _$WOBusinessObjectImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WOBusinessObjectImplFromJson(json);
 
   @override
   @JsonKey(name: 'totalContractedAmount')
@@ -693,10 +694,10 @@ class _$_WOBusinessObject implements _WOBusinessObject {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WOBusinessObject &&
+            other is _$WOBusinessObjectImpl &&
             (identical(other.totalContractedAmount, totalContractedAmount) ||
                 other.totalContractedAmount == totalContractedAmount) &&
             (identical(other.businessService, businessService) ||
@@ -725,12 +726,13 @@ class _$_WOBusinessObject implements _WOBusinessObject {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WOBusinessObjectCopyWith<_$_WOBusinessObject> get copyWith =>
-      __$$_WOBusinessObjectCopyWithImpl<_$_WOBusinessObject>(this, _$identity);
+  _$$WOBusinessObjectImplCopyWith<_$WOBusinessObjectImpl> get copyWith =>
+      __$$WOBusinessObjectImplCopyWithImpl<_$WOBusinessObjectImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WOBusinessObjectToJson(
+    return _$$WOBusinessObjectImplToJson(
       this,
     );
   }
@@ -749,10 +751,10 @@ abstract class _WOBusinessObject implements WOBusinessObject {
       @JsonKey(name: 'additionalDetails')
           final WOAdditionalDetails? woAdditionalDetails,
       @JsonKey(name: 'auditDetails')
-          final AuditDetails? auditDetails}) = _$_WOBusinessObject;
+          final AuditDetails? auditDetails}) = _$WOBusinessObjectImpl;
 
   factory _WOBusinessObject.fromJson(Map<String, dynamic> json) =
-      _$_WOBusinessObject.fromJson;
+      _$WOBusinessObjectImpl.fromJson;
 
   @override
   @JsonKey(name: 'totalContractedAmount')
@@ -774,7 +776,7 @@ abstract class _WOBusinessObject implements WOBusinessObject {
   AuditDetails? get auditDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_WOBusinessObjectCopyWith<_$_WOBusinessObject> get copyWith =>
+  _$$WOBusinessObjectImplCopyWith<_$WOBusinessObjectImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -844,11 +846,11 @@ class _$WOAdditionalDetailsCopyWithImpl<$Res, $Val extends WOAdditionalDetails>
 }
 
 /// @nodoc
-abstract class _$$_WOAdditionalDetailsCopyWith<$Res>
+abstract class _$$WOAdditionalDetailsImplCopyWith<$Res>
     implements $WOAdditionalDetailsCopyWith<$Res> {
-  factory _$$_WOAdditionalDetailsCopyWith(_$_WOAdditionalDetails value,
-          $Res Function(_$_WOAdditionalDetails) then) =
-      __$$_WOAdditionalDetailsCopyWithImpl<$Res>;
+  factory _$$WOAdditionalDetailsImplCopyWith(_$WOAdditionalDetailsImpl value,
+          $Res Function(_$WOAdditionalDetailsImpl) then) =
+      __$$WOAdditionalDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -858,11 +860,11 @@ abstract class _$$_WOAdditionalDetailsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WOAdditionalDetailsCopyWithImpl<$Res>
-    extends _$WOAdditionalDetailsCopyWithImpl<$Res, _$_WOAdditionalDetails>
-    implements _$$_WOAdditionalDetailsCopyWith<$Res> {
-  __$$_WOAdditionalDetailsCopyWithImpl(_$_WOAdditionalDetails _value,
-      $Res Function(_$_WOAdditionalDetails) _then)
+class __$$WOAdditionalDetailsImplCopyWithImpl<$Res>
+    extends _$WOAdditionalDetailsCopyWithImpl<$Res, _$WOAdditionalDetailsImpl>
+    implements _$$WOAdditionalDetailsImplCopyWith<$Res> {
+  __$$WOAdditionalDetailsImplCopyWithImpl(_$WOAdditionalDetailsImpl _value,
+      $Res Function(_$WOAdditionalDetailsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -872,7 +874,7 @@ class __$$_WOAdditionalDetailsCopyWithImpl<$Res>
     Object? projectId = freezed,
     Object? projectName = freezed,
   }) {
-    return _then(_$_WOAdditionalDetails(
+    return _then(_$WOAdditionalDetailsImpl(
       orgName: freezed == orgName
           ? _value.orgName
           : orgName // ignore: cast_nullable_to_non_nullable
@@ -891,14 +893,14 @@ class __$$_WOAdditionalDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WOAdditionalDetails implements _WOAdditionalDetails {
-  const _$_WOAdditionalDetails(
+class _$WOAdditionalDetailsImpl implements _WOAdditionalDetails {
+  const _$WOAdditionalDetailsImpl(
       {@JsonKey(name: 'orgName') this.orgName,
       @JsonKey(name: 'projectId') this.projectId,
       @JsonKey(name: 'projectName') this.projectName});
 
-  factory _$_WOAdditionalDetails.fromJson(Map<String, dynamic> json) =>
-      _$$_WOAdditionalDetailsFromJson(json);
+  factory _$WOAdditionalDetailsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WOAdditionalDetailsImplFromJson(json);
 
   @override
   @JsonKey(name: 'orgName')
@@ -916,10 +918,10 @@ class _$_WOAdditionalDetails implements _WOAdditionalDetails {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WOAdditionalDetails &&
+            other is _$WOAdditionalDetailsImpl &&
             (identical(other.orgName, orgName) || other.orgName == orgName) &&
             (identical(other.projectId, projectId) ||
                 other.projectId == projectId) &&
@@ -934,13 +936,13 @@ class _$_WOAdditionalDetails implements _WOAdditionalDetails {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WOAdditionalDetailsCopyWith<_$_WOAdditionalDetails> get copyWith =>
-      __$$_WOAdditionalDetailsCopyWithImpl<_$_WOAdditionalDetails>(
+  _$$WOAdditionalDetailsImplCopyWith<_$WOAdditionalDetailsImpl> get copyWith =>
+      __$$WOAdditionalDetailsImplCopyWithImpl<_$WOAdditionalDetailsImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WOAdditionalDetailsToJson(
+    return _$$WOAdditionalDetailsImplToJson(
       this,
     );
   }
@@ -951,10 +953,10 @@ abstract class _WOAdditionalDetails implements WOAdditionalDetails {
           {@JsonKey(name: 'orgName') final String? orgName,
           @JsonKey(name: 'projectId') final String? projectId,
           @JsonKey(name: 'projectName') final String? projectName}) =
-      _$_WOAdditionalDetails;
+      _$WOAdditionalDetailsImpl;
 
   factory _WOAdditionalDetails.fromJson(Map<String, dynamic> json) =
-      _$_WOAdditionalDetails.fromJson;
+      _$WOAdditionalDetailsImpl.fromJson;
 
   @override
   @JsonKey(name: 'orgName')
@@ -967,6 +969,6 @@ abstract class _WOAdditionalDetails implements WOAdditionalDetails {
   String? get projectName;
   @override
   @JsonKey(ignore: true)
-  _$$_WOAdditionalDetailsCopyWith<_$_WOAdditionalDetails> get copyWith =>
+  _$$WOAdditionalDetailsImplCopyWith<_$WOAdditionalDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

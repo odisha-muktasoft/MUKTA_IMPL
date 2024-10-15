@@ -46,7 +46,7 @@ class MusterGetWorkflowBloc
           musterWorkFlowModel: musterWorkFlowModel,
           isInWorkflow: !(musterWorkFlowModel.processInstances!.isNotEmpty &&
               state!.state == event.musterSentBackCode)));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const MusterGetWorkflowState.error());
     }
   }
@@ -75,7 +75,7 @@ class MusterGetWorkflowBloc
       emit(MusterGetWorkflowState.loaded(
           musterWorkFlowModel: musterWorkFlowModel,
           isInWorkflow: true));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const MusterGetWorkflowState.error());
     }
   }

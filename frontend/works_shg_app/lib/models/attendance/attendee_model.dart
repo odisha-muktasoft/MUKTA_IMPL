@@ -36,6 +36,7 @@ class AttendeeTrackListModel with _$AttendeeTrackListModel {
 @freezed
 class AttendeesTrackList with _$AttendeesTrackList {
   const factory AttendeesTrackList({
+    int? deenrollment,
     String? name,
     String? aadhaar,
     String? gender,

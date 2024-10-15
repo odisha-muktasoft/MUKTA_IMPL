@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -29,8 +30,8 @@ class Attachments extends StatelessWidget {
                   child: Text(
                     label,
                     style: labelStyle ??
-                        DigitTheme.instance.mobileTheme.textTheme.headlineLarge
-                            ?.apply(color: const DigitColors().black),
+                        Theme.of(context).digitTextTheme(context).headingL.copyWith(color: Colors.black),
+                            
                     textAlign: TextAlign.left,
                   ),
                 )

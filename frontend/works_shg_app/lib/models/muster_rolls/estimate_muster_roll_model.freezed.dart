@@ -12,7 +12,7 @@ part of 'estimate_muster_roll_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 EstimateMusterRollsModel _$EstimateMusterRollsModelFromJson(
     Map<String, dynamic> json) {
@@ -75,12 +75,12 @@ class _$EstimateMusterRollsModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_EstimateMusterRollsModelCopyWith<$Res>
+abstract class _$$EstimateMusterRollsModelImplCopyWith<$Res>
     implements $EstimateMusterRollsModelCopyWith<$Res> {
-  factory _$$_EstimateMusterRollsModelCopyWith(
-          _$_EstimateMusterRollsModel value,
-          $Res Function(_$_EstimateMusterRollsModel) then) =
-      __$$_EstimateMusterRollsModelCopyWithImpl<$Res>;
+  factory _$$EstimateMusterRollsModelImplCopyWith(
+          _$EstimateMusterRollsModelImpl value,
+          $Res Function(_$EstimateMusterRollsModelImpl) then) =
+      __$$EstimateMusterRollsModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -89,12 +89,13 @@ abstract class _$$_EstimateMusterRollsModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EstimateMusterRollsModelCopyWithImpl<$Res>
+class __$$EstimateMusterRollsModelImplCopyWithImpl<$Res>
     extends _$EstimateMusterRollsModelCopyWithImpl<$Res,
-        _$_EstimateMusterRollsModel>
-    implements _$$_EstimateMusterRollsModelCopyWith<$Res> {
-  __$$_EstimateMusterRollsModelCopyWithImpl(_$_EstimateMusterRollsModel _value,
-      $Res Function(_$_EstimateMusterRollsModel) _then)
+        _$EstimateMusterRollsModelImpl>
+    implements _$$EstimateMusterRollsModelImplCopyWith<$Res> {
+  __$$EstimateMusterRollsModelImplCopyWithImpl(
+      _$EstimateMusterRollsModelImpl _value,
+      $Res Function(_$EstimateMusterRollsModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +104,7 @@ class __$$_EstimateMusterRollsModelCopyWithImpl<$Res>
     Object? musterRoll = freezed,
     Object? count = freezed,
   }) {
-    return _then(_$_EstimateMusterRollsModel(
+    return _then(_$EstimateMusterRollsModelImpl(
       musterRoll: freezed == musterRoll
           ? _value._musterRoll
           : musterRoll // ignore: cast_nullable_to_non_nullable
@@ -118,14 +119,14 @@ class __$$_EstimateMusterRollsModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EstimateMusterRollsModel implements _EstimateMusterRollsModel {
-  const _$_EstimateMusterRollsModel(
+class _$EstimateMusterRollsModelImpl implements _EstimateMusterRollsModel {
+  const _$EstimateMusterRollsModelImpl(
       {@JsonKey(name: 'musterRolls') final List<EstimateMusterRoll>? musterRoll,
       @JsonKey(name: 'count') this.count})
       : _musterRoll = musterRoll;
 
-  factory _$_EstimateMusterRollsModel.fromJson(Map<String, dynamic> json) =>
-      _$$_EstimateMusterRollsModelFromJson(json);
+  factory _$EstimateMusterRollsModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EstimateMusterRollsModelImplFromJson(json);
 
   final List<EstimateMusterRoll>? _musterRoll;
   @override
@@ -148,10 +149,10 @@ class _$_EstimateMusterRollsModel implements _EstimateMusterRollsModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EstimateMusterRollsModel &&
+            other is _$EstimateMusterRollsModelImpl &&
             const DeepCollectionEquality()
                 .equals(other._musterRoll, _musterRoll) &&
             (identical(other.count, count) || other.count == count));
@@ -165,13 +166,13 @@ class _$_EstimateMusterRollsModel implements _EstimateMusterRollsModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EstimateMusterRollsModelCopyWith<_$_EstimateMusterRollsModel>
-      get copyWith => __$$_EstimateMusterRollsModelCopyWithImpl<
-          _$_EstimateMusterRollsModel>(this, _$identity);
+  _$$EstimateMusterRollsModelImplCopyWith<_$EstimateMusterRollsModelImpl>
+      get copyWith => __$$EstimateMusterRollsModelImplCopyWithImpl<
+          _$EstimateMusterRollsModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EstimateMusterRollsModelToJson(
+    return _$$EstimateMusterRollsModelImplToJson(
       this,
     );
   }
@@ -179,11 +180,13 @@ class _$_EstimateMusterRollsModel implements _EstimateMusterRollsModel {
 
 abstract class _EstimateMusterRollsModel implements EstimateMusterRollsModel {
   const factory _EstimateMusterRollsModel(
-      {@JsonKey(name: 'musterRolls') final List<EstimateMusterRoll>? musterRoll,
-      @JsonKey(name: 'count') final int? count}) = _$_EstimateMusterRollsModel;
+      {@JsonKey(name: 'musterRolls')
+          final List<EstimateMusterRoll>? musterRoll,
+      @JsonKey(name: 'count')
+          final int? count}) = _$EstimateMusterRollsModelImpl;
 
   factory _EstimateMusterRollsModel.fromJson(Map<String, dynamic> json) =
-      _$_EstimateMusterRollsModel.fromJson;
+      _$EstimateMusterRollsModelImpl.fromJson;
 
   @override
   @JsonKey(name: 'musterRolls')
@@ -193,7 +196,7 @@ abstract class _EstimateMusterRollsModel implements EstimateMusterRollsModel {
   int? get count;
   @override
   @JsonKey(ignore: true)
-  _$$_EstimateMusterRollsModelCopyWith<_$_EstimateMusterRollsModel>
+  _$$EstimateMusterRollsModelImplCopyWith<_$EstimateMusterRollsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -352,11 +355,11 @@ class _$EstimateMusterRollCopyWithImpl<$Res, $Val extends EstimateMusterRoll>
 }
 
 /// @nodoc
-abstract class _$$_EstimateMusterRollCopyWith<$Res>
+abstract class _$$EstimateMusterRollImplCopyWith<$Res>
     implements $EstimateMusterRollCopyWith<$Res> {
-  factory _$$_EstimateMusterRollCopyWith(_$_EstimateMusterRoll value,
-          $Res Function(_$_EstimateMusterRoll) then) =
-      __$$_EstimateMusterRollCopyWithImpl<$Res>;
+  factory _$$EstimateMusterRollImplCopyWith(_$EstimateMusterRollImpl value,
+          $Res Function(_$EstimateMusterRollImpl) then) =
+      __$$EstimateMusterRollImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -382,11 +385,11 @@ abstract class _$$_EstimateMusterRollCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EstimateMusterRollCopyWithImpl<$Res>
-    extends _$EstimateMusterRollCopyWithImpl<$Res, _$_EstimateMusterRoll>
-    implements _$$_EstimateMusterRollCopyWith<$Res> {
-  __$$_EstimateMusterRollCopyWithImpl(
-      _$_EstimateMusterRoll _value, $Res Function(_$_EstimateMusterRoll) _then)
+class __$$EstimateMusterRollImplCopyWithImpl<$Res>
+    extends _$EstimateMusterRollCopyWithImpl<$Res, _$EstimateMusterRollImpl>
+    implements _$$EstimateMusterRollImplCopyWith<$Res> {
+  __$$EstimateMusterRollImplCopyWithImpl(_$EstimateMusterRollImpl _value,
+      $Res Function(_$EstimateMusterRollImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -404,7 +407,7 @@ class __$$_EstimateMusterRollCopyWithImpl<$Res>
     Object? musterAdditionalDetails = freezed,
     Object? musterAuditDetails = freezed,
   }) {
-    return _then(_$_EstimateMusterRoll(
+    return _then(_$EstimateMusterRollImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -455,8 +458,8 @@ class __$$_EstimateMusterRollCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EstimateMusterRoll implements _EstimateMusterRoll {
-  const _$_EstimateMusterRoll(
+class _$EstimateMusterRollImpl implements _EstimateMusterRoll {
+  const _$EstimateMusterRollImpl(
       {this.id,
       required this.tenantId,
       this.musterRollNumber,
@@ -473,8 +476,8 @@ class _$_EstimateMusterRoll implements _EstimateMusterRoll {
           this.musterAuditDetails})
       : _individualEntries = individualEntries;
 
-  factory _$_EstimateMusterRoll.fromJson(Map<String, dynamic> json) =>
-      _$$_EstimateMusterRollFromJson(json);
+  factory _$EstimateMusterRollImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EstimateMusterRollImplFromJson(json);
 
   @override
   final String? id;
@@ -517,10 +520,10 @@ class _$_EstimateMusterRoll implements _EstimateMusterRoll {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EstimateMusterRoll &&
+            other is _$EstimateMusterRollImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
@@ -562,13 +565,13 @@ class _$_EstimateMusterRoll implements _EstimateMusterRoll {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EstimateMusterRollCopyWith<_$_EstimateMusterRoll> get copyWith =>
-      __$$_EstimateMusterRollCopyWithImpl<_$_EstimateMusterRoll>(
+  _$$EstimateMusterRollImplCopyWith<_$EstimateMusterRollImpl> get copyWith =>
+      __$$EstimateMusterRollImplCopyWithImpl<_$EstimateMusterRollImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EstimateMusterRollToJson(
+    return _$$EstimateMusterRollImplToJson(
       this,
     );
   }
@@ -589,10 +592,10 @@ abstract class _EstimateMusterRoll implements EstimateMusterRoll {
       @JsonKey(name: 'additionalDetails')
           final MusterAdditionalDetails? musterAdditionalDetails,
       @JsonKey(name: 'auditDetails')
-          final AuditDetails? musterAuditDetails}) = _$_EstimateMusterRoll;
+          final AuditDetails? musterAuditDetails}) = _$EstimateMusterRollImpl;
 
   factory _EstimateMusterRoll.fromJson(Map<String, dynamic> json) =
-      _$_EstimateMusterRoll.fromJson;
+      _$EstimateMusterRollImpl.fromJson;
 
   @override
   String? get id;
@@ -621,7 +624,7 @@ abstract class _EstimateMusterRoll implements EstimateMusterRoll {
   AuditDetails? get musterAuditDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_EstimateMusterRollCopyWith<_$_EstimateMusterRoll> get copyWith =>
+  _$$EstimateMusterRollImplCopyWith<_$EstimateMusterRollImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -731,12 +734,12 @@ class _$EstimateIndividualEntriesCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_EstimateIndividualEntriesCopyWith<$Res>
+abstract class _$$EstimateIndividualEntriesImplCopyWith<$Res>
     implements $EstimateIndividualEntriesCopyWith<$Res> {
-  factory _$$_EstimateIndividualEntriesCopyWith(
-          _$_EstimateIndividualEntries value,
-          $Res Function(_$_EstimateIndividualEntries) then) =
-      __$$_EstimateIndividualEntriesCopyWithImpl<$Res>;
+  factory _$$EstimateIndividualEntriesImplCopyWith(
+          _$EstimateIndividualEntriesImpl value,
+          $Res Function(_$EstimateIndividualEntriesImpl) then) =
+      __$$EstimateIndividualEntriesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -755,13 +758,13 @@ abstract class _$$_EstimateIndividualEntriesCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EstimateIndividualEntriesCopyWithImpl<$Res>
+class __$$EstimateIndividualEntriesImplCopyWithImpl<$Res>
     extends _$EstimateIndividualEntriesCopyWithImpl<$Res,
-        _$_EstimateIndividualEntries>
-    implements _$$_EstimateIndividualEntriesCopyWith<$Res> {
-  __$$_EstimateIndividualEntriesCopyWithImpl(
-      _$_EstimateIndividualEntries _value,
-      $Res Function(_$_EstimateIndividualEntries) _then)
+        _$EstimateIndividualEntriesImpl>
+    implements _$$EstimateIndividualEntriesImplCopyWith<$Res> {
+  __$$EstimateIndividualEntriesImplCopyWithImpl(
+      _$EstimateIndividualEntriesImpl _value,
+      $Res Function(_$EstimateIndividualEntriesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -773,7 +776,7 @@ class __$$_EstimateIndividualEntriesCopyWithImpl<$Res>
     Object? attendanceEntries = freezed,
     Object? musterIndividualAdditionalDetails = freezed,
   }) {
-    return _then(_$_EstimateIndividualEntries(
+    return _then(_$EstimateIndividualEntriesImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -801,8 +804,8 @@ class __$$_EstimateIndividualEntriesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EstimateIndividualEntries implements _EstimateIndividualEntries {
-  const _$_EstimateIndividualEntries(
+class _$EstimateIndividualEntriesImpl implements _EstimateIndividualEntries {
+  const _$EstimateIndividualEntriesImpl(
       {this.id,
       this.individualId,
       this.totalAttendance,
@@ -812,8 +815,8 @@ class _$_EstimateIndividualEntries implements _EstimateIndividualEntries {
           this.musterIndividualAdditionalDetails})
       : _attendanceEntries = attendanceEntries;
 
-  factory _$_EstimateIndividualEntries.fromJson(Map<String, dynamic> json) =>
-      _$$_EstimateIndividualEntriesFromJson(json);
+  factory _$EstimateIndividualEntriesImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EstimateIndividualEntriesImplFromJson(json);
 
   @override
   final String? id;
@@ -844,10 +847,10 @@ class _$_EstimateIndividualEntries implements _EstimateIndividualEntries {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EstimateIndividualEntries &&
+            other is _$EstimateIndividualEntriesImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.individualId, individualId) ||
                 other.individualId == individualId) &&
@@ -874,13 +877,13 @@ class _$_EstimateIndividualEntries implements _EstimateIndividualEntries {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EstimateIndividualEntriesCopyWith<_$_EstimateIndividualEntries>
-      get copyWith => __$$_EstimateIndividualEntriesCopyWithImpl<
-          _$_EstimateIndividualEntries>(this, _$identity);
+  _$$EstimateIndividualEntriesImplCopyWith<_$EstimateIndividualEntriesImpl>
+      get copyWith => __$$EstimateIndividualEntriesImplCopyWithImpl<
+          _$EstimateIndividualEntriesImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EstimateIndividualEntriesToJson(
+    return _$$EstimateIndividualEntriesImplToJson(
       this,
     );
   }
@@ -896,10 +899,10 @@ abstract class _EstimateIndividualEntries implements EstimateIndividualEntries {
           @JsonKey(name: 'additionalDetails')
               final EstimateMusterIndividualAdditionalDetails?
                   musterIndividualAdditionalDetails}) =
-      _$_EstimateIndividualEntries;
+      _$EstimateIndividualEntriesImpl;
 
   factory _EstimateIndividualEntries.fromJson(Map<String, dynamic> json) =
-      _$_EstimateIndividualEntries.fromJson;
+      _$EstimateIndividualEntriesImpl.fromJson;
 
   @override
   String? get id;
@@ -916,7 +919,7 @@ abstract class _EstimateIndividualEntries implements EstimateIndividualEntries {
       get musterIndividualAdditionalDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_EstimateIndividualEntriesCopyWith<_$_EstimateIndividualEntries>
+  _$$EstimateIndividualEntriesImplCopyWith<_$EstimateIndividualEntriesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1039,12 +1042,12 @@ class _$EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_EstimateMusterIndividualAdditionalDetailsCopyWith<$Res>
+abstract class _$$EstimateMusterIndividualAdditionalDetailsImplCopyWith<$Res>
     implements $EstimateMusterIndividualAdditionalDetailsCopyWith<$Res> {
-  factory _$$_EstimateMusterIndividualAdditionalDetailsCopyWith(
-          _$_EstimateMusterIndividualAdditionalDetails value,
-          $Res Function(_$_EstimateMusterIndividualAdditionalDetails) then) =
-      __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res>;
+  factory _$$EstimateMusterIndividualAdditionalDetailsImplCopyWith(
+          _$EstimateMusterIndividualAdditionalDetailsImpl value,
+          $Res Function(_$EstimateMusterIndividualAdditionalDetailsImpl) then) =
+      __$$EstimateMusterIndividualAdditionalDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1061,13 +1064,13 @@ abstract class _$$_EstimateMusterIndividualAdditionalDetailsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res>
+class __$$EstimateMusterIndividualAdditionalDetailsImplCopyWithImpl<$Res>
     extends _$EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res,
-        _$_EstimateMusterIndividualAdditionalDetails>
-    implements _$$_EstimateMusterIndividualAdditionalDetailsCopyWith<$Res> {
-  __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl(
-      _$_EstimateMusterIndividualAdditionalDetails _value,
-      $Res Function(_$_EstimateMusterIndividualAdditionalDetails) _then)
+        _$EstimateMusterIndividualAdditionalDetailsImpl>
+    implements _$$EstimateMusterIndividualAdditionalDetailsImplCopyWith<$Res> {
+  __$$EstimateMusterIndividualAdditionalDetailsImplCopyWithImpl(
+      _$EstimateMusterIndividualAdditionalDetailsImpl _value,
+      $Res Function(_$EstimateMusterIndividualAdditionalDetailsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1084,7 +1087,7 @@ class __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res>
     Object? accountType = freezed,
     Object? skillValue = freezed,
   }) {
-    return _then(_$_EstimateMusterIndividualAdditionalDetails(
+    return _then(_$EstimateMusterIndividualAdditionalDetailsImpl(
       userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
@@ -1131,9 +1134,9 @@ class __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EstimateMusterIndividualAdditionalDetails
+class _$EstimateMusterIndividualAdditionalDetailsImpl
     implements _EstimateMusterIndividualAdditionalDetails {
-  const _$_EstimateMusterIndividualAdditionalDetails(
+  const _$EstimateMusterIndividualAdditionalDetailsImpl(
       {this.userName,
       this.fatherName,
       this.gender,
@@ -1146,9 +1149,9 @@ class _$_EstimateMusterIndividualAdditionalDetails
       this.skillValue})
       : _skillCode = skillCode;
 
-  factory _$_EstimateMusterIndividualAdditionalDetails.fromJson(
+  factory _$EstimateMusterIndividualAdditionalDetailsImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$_EstimateMusterIndividualAdditionalDetailsFromJson(json);
+      _$$EstimateMusterIndividualAdditionalDetailsImplFromJson(json);
 
   @override
   final String? userName;
@@ -1185,10 +1188,10 @@ class _$_EstimateMusterIndividualAdditionalDetails
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EstimateMusterIndividualAdditionalDetails &&
+            other is _$EstimateMusterIndividualAdditionalDetailsImpl &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.fatherName, fatherName) ||
@@ -1227,15 +1230,16 @@ class _$_EstimateMusterIndividualAdditionalDetails
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EstimateMusterIndividualAdditionalDetailsCopyWith<
-          _$_EstimateMusterIndividualAdditionalDetails>
+  _$$EstimateMusterIndividualAdditionalDetailsImplCopyWith<
+          _$EstimateMusterIndividualAdditionalDetailsImpl>
       get copyWith =>
-          __$$_EstimateMusterIndividualAdditionalDetailsCopyWithImpl<
-              _$_EstimateMusterIndividualAdditionalDetails>(this, _$identity);
+          __$$EstimateMusterIndividualAdditionalDetailsImplCopyWithImpl<
+                  _$EstimateMusterIndividualAdditionalDetailsImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EstimateMusterIndividualAdditionalDetailsToJson(
+    return _$$EstimateMusterIndividualAdditionalDetailsImplToJson(
       this,
     );
   }
@@ -1244,20 +1248,21 @@ class _$_EstimateMusterIndividualAdditionalDetails
 abstract class _EstimateMusterIndividualAdditionalDetails
     implements EstimateMusterIndividualAdditionalDetails {
   const factory _EstimateMusterIndividualAdditionalDetails(
-      {final String? userName,
-      final String? fatherName,
-      final String? gender,
-      final String? aadharNumber,
-      final String? bankDetails,
-      final String? userId,
-      final List<String>? skillCode,
-      final String? accountHolderName,
-      final String? accountType,
-      final String? skillValue}) = _$_EstimateMusterIndividualAdditionalDetails;
+          {final String? userName,
+          final String? fatherName,
+          final String? gender,
+          final String? aadharNumber,
+          final String? bankDetails,
+          final String? userId,
+          final List<String>? skillCode,
+          final String? accountHolderName,
+          final String? accountType,
+          final String? skillValue}) =
+      _$EstimateMusterIndividualAdditionalDetailsImpl;
 
   factory _EstimateMusterIndividualAdditionalDetails.fromJson(
           Map<String, dynamic> json) =
-      _$_EstimateMusterIndividualAdditionalDetails.fromJson;
+      _$EstimateMusterIndividualAdditionalDetailsImpl.fromJson;
 
   @override
   String? get userName;
@@ -1281,7 +1286,7 @@ abstract class _EstimateMusterIndividualAdditionalDetails
   String? get skillValue;
   @override
   @JsonKey(ignore: true)
-  _$$_EstimateMusterIndividualAdditionalDetailsCopyWith<
-          _$_EstimateMusterIndividualAdditionalDetails>
+  _$$EstimateMusterIndividualAdditionalDetailsImplCopyWith<
+          _$EstimateMusterIndividualAdditionalDetailsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

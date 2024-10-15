@@ -1,8 +1,11 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
 import 'package:works_shg_app/blocs/employee/work_order/workorder_book.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
@@ -10,18 +13,17 @@ import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_locatio
 import 'package:works_shg_app/models/organisation/organisation_model.dart';
 
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/widgets/SideBar.dart';
-import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
-import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
-import '../../../widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class WOFilterPage extends StatefulWidget {
   const WOFilterPage({super.key});
 
@@ -39,7 +41,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
   bool workShow = true;
   bool project = true;
 
-  String orgNumberKey = 'gender';
+  String? orgNumberKey;
+  String wardNoKey = "wardNoKey";
   String genderController = '';
   @override
   void initState() {
@@ -88,7 +91,6 @@ class _WOFilterPageState extends State<WOFilterPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     woNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
     projectName.removeListener(projectNameUpload);
@@ -112,24 +114,19 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loaded: (organization) {
             return Scaffold(
-              appBar: AppBar(
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
+              backgroundColor: Theme.of(context).colorTheme.paper.primary,
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
               body: ReactiveFormBuilder(
                   form: detailBuildForm,
                   builder: (BuildContext context, FormGroup formGroup,
                       Widget? child) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:
+                          EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                       child: ScrollableContent(
+                        backgroundColor:
+                            Theme.of(context).colorTheme.paper.primary,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         footer: Padding(
@@ -138,8 +135,11 @@ class _WOFilterPageState extends State<WOFilterPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                flex: 2,
-                                child: DigitOutLineButton(
+                                flex: 10,
+                                child: Button(
+                                  mainAxisSize: MainAxisSize.max,
+                                  type: ButtonType.secondary,
+                                  size: ButtonSize.large,
                                   label: t.translate(i18.measurementBook.clear),
                                   onPressed: () {
                                     context.read<WorkOrderInboxBloc>().add(
@@ -151,40 +151,40 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             tenantId: GlobalVariables.tenantId!,
                                           ),
                                         );
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                 ),
                               ),
+                              const Expanded(flex: 1, child: SizedBox.shrink()),
                               Expanded(
-                                flex: 2,
-                                child: DigitElevatedButton(
-                                  child: Text(
-                                      t.translate(i18.measurementBook.filter)),
+                                flex: 10,
+                                child: Button(
+                                  mainAxisSize: MainAxisSize.max,
+                                  type: ButtonType.primary,
+                                  size: ButtonSize.large,
+                                  label:
+                                      t.translate(i18.measurementBook.filter),
                                   onPressed: () async {
                                     Map<String, dynamic> payload;
                                     String? selectedOrgId;
-                                    if (formGroup.value[orgNumberKey] != null) {
-                                      OrganisationModel data =
-                                          formGroup.value[orgNumberKey]!
-                                              as OrganisationModel;
-                                      selectedOrgId = data.id;
+                                    if (orgNumberKey != null) {
+                                      // OrganisationModel data =
+                                      //     formGroup.value[orgNumberKey]!
+                                      //         as OrganisationModel;
+                                      selectedOrgId = orgNumberKey;
                                     }
 
                                     payload = {
+                                      "status": "ACTIVE",
                                       "tenantId": GlobalVariables.tenantId ??
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,
                                       "contractNumber": woNumber.text,
-                                      // "orgIds": orgId != null
-                                      //     ? orgId!
-                                      //         .map((e) => e.orgNumber)
-                                      //         .toList()
-                                      //     : [],
                                       "ward": ward,
                                       "orgIds": selectedOrgId != null
                                           ? [selectedOrgId]
                                           : [],
-                                      "wfStatus": ["ACCEPTED","APPROVED"],
+                                      "wfStatus": ["ACCEPTED", "APPROVED"],
                                       "pagination": {
                                         "limit": "10",
                                         "offSet": 0,
@@ -198,7 +198,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             data: payload,
                                             limit: 10,
                                             offset: 0));
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                 ),
                               )
@@ -209,82 +209,148 @@ class _WOFilterPageState extends State<WOFilterPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    context.read<WorkOrderInboxBloc>().add(
-                                          WorkOrderInboxBlocCreateEvent(
-                                            businessService: "MB",
-                                            limit: 10,
-                                            moduleName: 'contract-service',
-                                            offset: 0,
-                                            tenantId: GlobalVariables.tenantId!,
-                                          ),
-                                        );
-                                    context.router.pop();
-                                  },
-                                  icon: const Icon(Icons.close)),
+                              Button(
+                                label: '',
+                                size: ButtonSize.large,
+                                type: ButtonType.tertiary,
+                                onPressed: () {
+                                  context.read<WorkOrderInboxBloc>().add(
+                                        WorkOrderInboxBlocCreateEvent(
+                                          businessService: "MB",
+                                          limit: 10,
+                                          moduleName: 'contract-service',
+                                          offset: 0,
+                                          tenantId: GlobalVariables.tenantId!,
+                                        ),
+                                      );
+                                  context.router.maybePopTop();
+                                },
+                                suffixIcon: Icons.close,
+                              ),
                             ],
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(Icons.filter_alt),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  t.translate(i18.measurementBook.filter),
-                                  style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineLarge,
+                              SizedBox(
+                                child: Icon(
+                                  Icons.filter_alt,
+                                  size: 35,
+                                  color: Theme.of(context)
+                                      .colorTheme
+                                      .primary
+                                      .primary1,
                                 ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.0),
+                                child: DigitTextBlock(
+                                    heading:
+                                        t.translate(i18.measurementBook.filter),
+                                    headingStyle: Theme.of(context)
+                                        .digitTextTheme(context)
+                                        .headingXl
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorTheme
+                                                .text
+                                                .primary)),
                               ),
                             ],
                           ),
-                          DigitTextField(
-                            label: t
-                                .translate(i18.measurementBook.workOrderNumber),
-                            controller: woNumber,
+
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: Theme.of(context).spacerTheme.spacer4),
+                            child: LabeledField(
+                              label: t.translate(
+                                  i18.measurementBook.workOrderNumber),
+                              child: DigitTextFormInput(
+                                controller: woNumber,
+                              ),
+                            ),
                           ),
-                          DigitSearchDropdown<OrganisationModel>(
-                            suggestionsCallback: (items, pattern) {
-                              return items
-                                  .where((obj) => obj.name!
-                                      .toLowerCase()
-                                      .contains(pattern.toLowerCase()))
-                                  .toList();
-                            },
-                            label: t.translate(i18.measurementBook.cboName),
-                            menuItems: organization!.organisations!
-                                .map((e) => e)
-                                .toList(),
-                            formControlName: orgNumberKey,
-                            valueMapper: (value) {
-                              return value.name!;
-                            },
+
+// new
+
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: Theme.of(context).spacerTheme.spacer4),
+                            child: LabeledField(
+                              label: t.translate(i18.measurementBook.cboName),
+                              child: DigitDropdown<OrganisationModel>(
+                                onSelect: (value) {
+                                  setState(() {
+                                    orgNumberKey = value.code;
+                                  });
+                                },
+                                // suggestionsCallback: (items, pattern) {
+                                //   return items
+                                //       .where((obj) => obj.name!
+                                //           .toLowerCase()
+                                //           .contains(pattern.toLowerCase()))
+                                //       .toList();
+                                // },
+                                //label: t.translate(i18.measurementBook.cboName),
+                                items: organization!.organisations!
+                                    .map((e) => DropdownItem(
+                                        name: e.name!, code: e.id!))
+                                    .toList(),
+                                // formControlName: orgNumberKey,
+                                // valueMapper: (value) {
+                                //   return value.name!;
+                                // },
+                              ),
+                            ),
                           ),
+
+//
                           BlocBuilder<WageSeekerLocationBloc,
                               WageSeekerLocationState>(
                             builder: (context, value) {
                               return value.maybeMap(
                                 orElse: () => const SizedBox.shrink(),
                                 loaded: (location) {
-                                  return DigitDropdown(
-                                    onChanged: (value) {
-                                      setState(() {
-                                        ward.add(value!);
-                                      });
-                                    },
-                                    value: ward.isNotEmpty ? ward.first : null,
-                                    label: t.translate(i18.common.ward),
-                                    menuItems: location.location!
-                                        .tenantBoundaryList!.first.boundaryList!
-                                        .map((e) => e.code.toString())
-                                        .toList(),
-                                    valueMapper: (value) {
-                                      return t.translate(
-                                          convertToWard(value.toString()));
-                                      // return value.toString();
-                                    },
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        top: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4),
+                                    child: LabeledField(
+                                      label: t.translate(i18.common.ward),
+                                      child: DigitDropdown<String>(
+                                        onSelect: (value) {
+                                          setState(() {
+                                            ward.add(value.code);
+                                          });
+                                        },
+                                        // onChanged: (value) {
+                                        // setState(() {
+                                        //   ward.add(value);
+                                        // });
+                                        // },
+                                        // initialValue:
+                                        //     ward.isNotEmpty ? ward.first : null,
+                                        // label: t.translate(i18.common.ward),
+                                        items: location
+                                            .location!
+                                            .tenantBoundaryList!
+                                            .first
+                                            .boundaryList!
+                                            .map((e) => DropdownItem(
+                                                name: t.translate(
+                                                    e.name.toString()),
+                                                code: e.code.toString()))
+                                            .toList()
+                                            .toList(),
+                                        // formControlName: wardNoKey,
+                                        // valueMapper: (value) {
+                                        //   return t.translate(
+                                        //       convertToWard(value.toString()));
+                                        // },
+                                      ),
+                                    ),
                                   );
                                 },
                                 loading: (value) {
@@ -301,19 +367,10 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loading: () {
             return Scaffold(
-              appBar: AppBar(
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
-              body: const Center(
-                child: CircularProgressIndicator.adaptive(),
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
+              body: Center(
+                child: shg_loader.Loaders.circularLoader(context),
               ),
             );
           },
@@ -323,7 +380,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
   }
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-        orgNumberKey: FormControl<OrganisationModel>(value: null),
+        // orgNumberKey: FormControl<OrganisationModel>(value: null),
+        wardNoKey: FormControl<String>(value: null),
       });
 
   String convertToWard(String input) {

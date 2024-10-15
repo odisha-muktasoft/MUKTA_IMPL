@@ -51,7 +51,7 @@ class IndividualWMSSearchBloc
   //           }
   //         });
   //     emit(IndividualWMSSearchState.loaded(individualListModel));
-  //   } on DioError catch (e) {
+  //   } on DioException catch (e) {
   //     emit(IndividualWMSSearchState.error(
   //         e.response?.data['Errors'][0]['code']));
   //   }
@@ -83,7 +83,7 @@ class IndividualWMSSearchBloc
             }
           });
       emit(IndividualWMSSearchState.loaded(individualListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(IndividualWMSSearchState.error(
           e.response?.data['Errors'][0]['code']));
     }
@@ -115,7 +115,7 @@ class IndividualWMSSearchBloc
             }
           });
       emit(IndividualWMSSearchState.loaded(individualListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(IndividualWMSSearchState.error(
           e.response?.data['Errors'][0]['code']));
     }

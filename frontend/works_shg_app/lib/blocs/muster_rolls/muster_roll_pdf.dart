@@ -41,7 +41,7 @@ class MusterRollPDFBloc extends Bloc<MusterRollPDFEvent, MusterRollPDFState> {
           HttpHeaders.contentTypeHeader: 'application/json',
         }, responseType: ResponseType.bytes),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MusterRollPDFState.error(e.response?.data['Errors'][0]['code']));
     }
   }
