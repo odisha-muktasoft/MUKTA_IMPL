@@ -59,7 +59,7 @@ config:
   - name: "builds/mukta_impl/backend/contracts"
     build:
       - work-dir: "backend/contracts"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "contracts"
       - work-dir: "backend/contracts/src/main/resources/db"
         image-name: "contracts-db"
@@ -67,7 +67,7 @@ config:
   - name: "builds/mukta_impl/backend/bankaccounts"
     build:
       - work-dir: "backend/bankaccounts"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "bankaccounts"
       - work-dir: "backend/bankaccounts/src/main/resources/db"
         image-name: "bankaccounts-db"
@@ -75,7 +75,7 @@ config:
   - name: "builds/mukta_impl/backend/expenses-billing"
     build:
       - work-dir: "backend/expenses-billing"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "expenses-billing"
       - work-dir: "backend/expenses-billing/src/main/resources/db"
         image-name: "expenses-billing-db"
@@ -83,7 +83,7 @@ config:
   - name: "builds/mukta_impl/backend/expense-calculator"
     build:
       - work-dir: "backend/expense-calculator"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "expense-calculator"
       - work-dir: "backend/expense-calculator/src/main/resources/db"
         image-name: "expense-calculator-db"
@@ -91,7 +91,7 @@ config:
   - name: "builds/mukta_impl/backend/expense"
     build:
       - work-dir: "backend/expense"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "expense"
       - work-dir: "backend/expense/src/main/resources/db"
         image-name: "expense-db"
@@ -230,7 +230,7 @@ config:
   - name: "builds/mukta_impl/reference-adapters/ifms-adapter"
     build:
       - work-dir: "reference-adapters/ifms-adapter"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "ifms-adapter"
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
         image-name: "ifms-adapter-db"
@@ -313,8 +313,6 @@ config:
     build:
       - work-dir: "backend/egov-notification-sms"
         image-name: "mukta-egov-notification-sms"
-        dockerfile: "build/maven-java17/Dockerfile"   
-
-        
+        dockerfile: "build/maven-java17/Dockerfile"     
 
         
