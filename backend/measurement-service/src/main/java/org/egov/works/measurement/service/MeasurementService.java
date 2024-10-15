@@ -143,6 +143,8 @@ public class MeasurementService {
         // Set the converted measurement services in the response
         measurementServiceResponse.setMeasurements(measurementServices);
 
+        // Set Pagination
+        measurementServiceResponse.setPagination(measurementResponse.getPagination());
         return measurementServiceResponse;
     }
 
