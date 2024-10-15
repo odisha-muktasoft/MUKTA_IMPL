@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:universal_html/html.dart' as html;
@@ -12,7 +12,7 @@ import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
-import '../../data/repositories/remote/getGlobalConfig_repo.dart';
+import '../../data/repositories/remote/get_global_config_repo.dart';
 import '../../data/repositories/remote/mdms.dart';
 import '../../models/init_mdms/global_config_model.dart';
 import '../../services/local_storage.dart';
@@ -128,7 +128,7 @@ class AppInitializationBloc
         stateInfoListModel =
             StateInfoListModel.fromJson(jsonDecode(localStateData));
         digitRowCardItems = jsonDecode(localLanguageData)
-            .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+            .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'].toString(), value: e['value'].toString(),isSelected: e['isSelected']))
             .toList();
       } else {}
 
@@ -136,7 +136,7 @@ class AppInitializationBloc
       localizationBloc.add(
         LocalizationEvent.onLoadLocalization(
           module:
-              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel.code}',
           tenantId: initMdmsModelData
               .commonMastersModel!.stateInfoListModel!.first.code
               .toString(),
@@ -198,7 +198,7 @@ class AppInitializationBloc
         stateInfoListModel =
             StateInfoListModel.fromJson(jsonDecode(localStateData));
         digitRowCardItems = jsonDecode(localLanguageData)
-            .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+            .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'], value: e['value'],isSelected: e['isSelected']))
             .toList();
       } else {}
 
@@ -206,7 +206,7 @@ class AppInitializationBloc
       localizationBloc.add(
         LocalizationEvent.onLoadLocalization(
           module:
-              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel.code}',
           tenantId: initMdmsModelData
               .commonMastersModel!.stateInfoListModel!.first.code
               .toString(),

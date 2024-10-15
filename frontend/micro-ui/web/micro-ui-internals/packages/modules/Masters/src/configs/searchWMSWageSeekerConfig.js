@@ -44,9 +44,9 @@ const searchWMSWageSeekerConfig = () => {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   "name": "ward",
                   "type": "ward",
                   "optionsKey": "i18nKey",
@@ -95,7 +95,7 @@ const searchWMSWageSeekerConfig = () => {
                 "populators": {
                   "name": "socialCategoryValue",
                   "optionsKey": "code",
-                  "optionsCustomStyle": { "top": "2.3rem" },
+                  // "optionsCustomStyle": { "top": "2.3rem" },
                   "mdmsConfig": {
                     "masterName": "SocialCategory",
                     "moduleName": "common-masters",

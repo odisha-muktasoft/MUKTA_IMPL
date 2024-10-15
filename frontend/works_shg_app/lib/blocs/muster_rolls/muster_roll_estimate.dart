@@ -46,7 +46,7 @@ class MusterRollEstimateBloc
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(MusterRollEstimateState.loaded(musterRollsModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(const MusterRollEstimateState.loaded(EstimateMusterRollsModel()));
     }
   }
@@ -79,7 +79,7 @@ class MusterRollEstimateBloc
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(MusterRollEstimateState.loaded(musterRollsModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MusterRollEstimateState.error(e.response?.data['Errors'][0]['code']));
     }
   }

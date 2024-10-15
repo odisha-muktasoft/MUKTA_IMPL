@@ -1,4 +1,4 @@
-export const CreateConfig = ({ defaultValue, measurement }) => {
+export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
   
   return {
     CreateConfig: [
@@ -10,6 +10,25 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
             head: "",
             subHead: "",
             body: [
+              ...(mbnumber
+                ? [
+                    {
+                      inline: true,
+                      label: "MB_MEASUREMENT_NUMBER",
+                      isMandatory: false,
+                      key: "mbNumber",
+                      type: "paragraph",
+                      disable: true,
+                      appendColon: false,
+                      labelClassName:"mb-create-label",
+                      populators: {
+                        name: "mbNumber",
+                        customStyle: { marginBottom: "-5px", marginTop: "10px" },
+                        customParaStyle: { marginBottom: "revert" },
+                      },
+                    },
+                  ]
+                : []),
               {
                 inline: true,
                 label: "MB_WORK_ORDER_NUMBER",
@@ -18,10 +37,11 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "contractNumber",
-                  customStyle :{marginBottom:"-5px", marginTop:"10px"},
-                  customParaStyle : {marginBottom:"revert"}
+                  customStyle :{marginBottom:"-5px"},
+                  customParaStyle : {marginBottom:"revert"},
                 },
               },
               {
@@ -32,6 +52,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   customStyle :{marginBottom:"-5px"},
                   customParaStyle : {marginBottom:"revert"},
@@ -47,6 +68,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "musterRollNo",
                   customClass: "",
@@ -62,6 +84,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "sanctionDate",
                   customStyle :{marginBottom:"-5px"},
@@ -77,6 +100,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "projectName",
                   customStyle :{marginBottom:"-5px"},
@@ -90,6 +114,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 isMandatory: false,
                 key: "projectDesc",
                 type: "paragraph",
+                labelClassName:"mb-create-label",
                 disable: true,
                 appendColon: false,
                 populators: {
@@ -104,6 +129,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 label: "ES_COMMON_LOCATION",
                 isMandatory: false,
                 key: "projectLocation",
+                labelClassName:"mb-create-label",
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
@@ -122,6 +148,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "measurementPeriod",
                   customStyle :{marginBottom:"-5px"},
@@ -134,6 +161,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
           {
             subHead: "",
             //forOnlyUpdate : "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -151,6 +179,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
           {
             head: "MB_SORS",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -165,6 +194,7 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
           {
             head: "MB_NONSOR",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -179,19 +209,29 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
           {
             head: "",
             subHead: "",
+            sectionClassName:"viewstatement-viewamount-wrapper-create",
             body: [
               {
                 type: "component",
                 component: "ViewOnlyCard",
                 withoutLabel: true,
                 key: "viewAmount",
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                }
               },
               {
                 "type": "component",
                 "component": "ViewAnalysisStatement",
                 "withoutLabel": true,
                 "key": "labourMaterialAnalysis",
-                
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                },
                 "formData" : {
              Measurement:measurement,
              }

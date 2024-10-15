@@ -50,9 +50,9 @@ export const CreatePAWMSConfig = {
                   "type": "ward",
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": false,
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  }
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // }
                 }
               },
               {
@@ -63,9 +63,9 @@ export const CreatePAWMSConfig = {
                 "populators": {
                   "name": "billType",
                   "optionsKey": "name",
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   "mdmsConfig": {
                     "masterName": "BusinessService",
                     "moduleName": "expense",
@@ -113,9 +113,9 @@ export const CreatePAWMSConfig = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   "name": "status",
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": false,

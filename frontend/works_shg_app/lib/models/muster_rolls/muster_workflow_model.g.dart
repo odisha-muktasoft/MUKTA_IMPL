@@ -6,22 +6,23 @@ part of 'muster_workflow_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_MusterWorkFlowModel _$$_MusterWorkFlowModelFromJson(
+_$MusterWorkFlowModelImpl _$$MusterWorkFlowModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$_MusterWorkFlowModel(
+    _$MusterWorkFlowModelImpl(
       processInstances: (json['ProcessInstances'] as List<dynamic>?)
           ?.map((e) => ProcessInstances.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_MusterWorkFlowModelToJson(
-        _$_MusterWorkFlowModel instance) =>
+Map<String, dynamic> _$$MusterWorkFlowModelImplToJson(
+        _$MusterWorkFlowModelImpl instance) =>
     <String, dynamic>{
       'ProcessInstances': instance.processInstances,
     };
 
-_$_ProcessInstances _$$_ProcessInstancesFromJson(Map<String, dynamic> json) =>
-    _$_ProcessInstances(
+_$ProcessInstancesImpl _$$ProcessInstancesImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ProcessInstancesImpl(
       tenantId: json['tenantId'] as String,
       businessService: json['businessService'] as String?,
       id: json['id'] as String?,
@@ -48,7 +49,8 @@ _$_ProcessInstances _$$_ProcessInstancesFromJson(Map<String, dynamic> json) =>
           : WorkflowState.fromJson(json['state'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ProcessInstancesToJson(_$_ProcessInstances instance) =>
+Map<String, dynamic> _$$ProcessInstancesImplToJson(
+        _$ProcessInstancesImpl instance) =>
     <String, dynamic>{
       'tenantId': instance.tenantId,
       'businessService': instance.businessService,
@@ -64,8 +66,8 @@ Map<String, dynamic> _$$_ProcessInstancesToJson(_$_ProcessInstances instance) =>
       'state': instance.workflowState,
     };
 
-_$_NextActions _$$_NextActionsFromJson(Map<String, dynamic> json) =>
-    _$_NextActions(
+_$NextActionsImpl _$$NextActionsImplFromJson(Map<String, dynamic> json) =>
+    _$NextActionsImpl(
       action: json['action'] as String?,
       uuid: json['uuid'] as String?,
       currentState: json['currentState'] as String?,
@@ -75,7 +77,7 @@ _$_NextActions _$$_NextActionsFromJson(Map<String, dynamic> json) =>
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$_NextActionsToJson(_$_NextActions instance) =>
+Map<String, dynamic> _$$NextActionsImplToJson(_$NextActionsImpl instance) =>
     <String, dynamic>{
       'action': instance.action,
       'uuid': instance.uuid,
@@ -85,8 +87,9 @@ Map<String, dynamic> _$$_NextActionsToJson(_$_NextActions instance) =>
       'roles': instance.roles,
     };
 
-_$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
-    _$_WorkflowDocument(
+_$WorkflowDocumentImpl _$$WorkflowDocumentImplFromJson(
+        Map<String, dynamic> json) =>
+    _$WorkflowDocumentImpl(
       documentType: json['documentType'] as String?,
       documentUid: json['documentUid'] as String?,
       fileStoreId: json['fileStoreId'] as String?,
@@ -94,14 +97,15 @@ _$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
       tenantId: json['tenantId'] as String?,
       fileStore: json['fileStore'] as String?,
       isActive: json['isActive'] as bool?,
-      indexing: json['indexing'] as int?,
+      indexing: (json['indexing'] as num?)?.toInt(),
       documentAdditionalDetails: json['additionalDetails'] == null
           ? null
           : DocumentAdditionalDetails.fromJson(
               json['additionalDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_WorkflowDocumentToJson(_$_WorkflowDocument instance) =>
+Map<String, dynamic> _$$WorkflowDocumentImplToJson(
+        _$WorkflowDocumentImpl instance) =>
     <String, dynamic>{
       'documentType': instance.documentType,
       'documentUid': instance.documentUid,
@@ -114,25 +118,26 @@ Map<String, dynamic> _$$_WorkflowDocumentToJson(_$_WorkflowDocument instance) =>
       'additionalDetails': instance.documentAdditionalDetails,
     };
 
-_$_DocumentAdditionalDetails _$$_DocumentAdditionalDetailsFromJson(
+_$DocumentAdditionalDetailsImpl _$$DocumentAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_DocumentAdditionalDetails(
+    _$DocumentAdditionalDetailsImpl(
       fileName: json['fileName'] as String?,
       fileType: json['fileType'] as String?,
       tenantId: json['tenantId'] as String?,
     );
 
-Map<String, dynamic> _$$_DocumentAdditionalDetailsToJson(
-        _$_DocumentAdditionalDetails instance) =>
+Map<String, dynamic> _$$DocumentAdditionalDetailsImplToJson(
+        _$DocumentAdditionalDetailsImpl instance) =>
     <String, dynamic>{
       'fileName': instance.fileName,
       'fileType': instance.fileType,
       'tenantId': instance.tenantId,
     };
 
-_$_Assignees _$$_AssigneesFromJson(Map<String, dynamic> json) => _$_Assignees(
+_$AssigneesImpl _$$AssigneesImplFromJson(Map<String, dynamic> json) =>
+    _$AssigneesImpl(
       emailId: json['emailId'] as String?,
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       mobileNumber: json['mobileNumber'] as String?,
       name: json['name'] as String?,
       tenantId: json['tenantId'] as String?,
@@ -140,7 +145,7 @@ _$_Assignees _$$_AssigneesFromJson(Map<String, dynamic> json) => _$_Assignees(
       userName: json['userName'] as String?,
     );
 
-Map<String, dynamic> _$$_AssigneesToJson(_$_Assignees instance) =>
+Map<String, dynamic> _$$AssigneesImplToJson(_$AssigneesImpl instance) =>
     <String, dynamic>{
       'emailId': instance.emailId,
       'id': instance.id,
@@ -151,8 +156,8 @@ Map<String, dynamic> _$$_AssigneesToJson(_$_Assignees instance) =>
       'userName': instance.userName,
     };
 
-_$_WorkflowState _$$_WorkflowStateFromJson(Map<String, dynamic> json) =>
-    _$_WorkflowState(
+_$WorkflowStateImpl _$$WorkflowStateImplFromJson(Map<String, dynamic> json) =>
+    _$WorkflowStateImpl(
       tenantId: json['tenantId'] as String,
       businessServiceId: json['businessServiceId'] as String?,
       applicationStatus: json['applicationStatus'] as String?,
@@ -165,7 +170,7 @@ _$_WorkflowState _$$_WorkflowStateFromJson(Map<String, dynamic> json) =>
       isStateUpdatable: json['isStateUpdatable'] as bool?,
     );
 
-Map<String, dynamic> _$$_WorkflowStateToJson(_$_WorkflowState instance) =>
+Map<String, dynamic> _$$WorkflowStateImplToJson(_$WorkflowStateImpl instance) =>
     <String, dynamic>{
       'tenantId': instance.tenantId,
       'businessServiceId': instance.businessServiceId,
@@ -177,20 +182,23 @@ Map<String, dynamic> _$$_WorkflowStateToJson(_$_WorkflowState instance) =>
       'isStateUpdatable': instance.isStateUpdatable,
     };
 
-_$_WorkflowActions _$$_WorkflowActionsFromJson(Map<String, dynamic> json) =>
-    _$_WorkflowActions(
+_$WorkflowActionsImpl _$$WorkflowActionsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$WorkflowActionsImpl(
       roles:
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$_WorkflowActionsToJson(_$_WorkflowActions instance) =>
+Map<String, dynamic> _$$WorkflowActionsImplToJson(
+        _$WorkflowActionsImpl instance) =>
     <String, dynamic>{
       'roles': instance.roles,
     };
 
-_$_Assigner _$$_AssignerFromJson(Map<String, dynamic> json) => _$_Assigner(
+_$AssignerImpl _$$AssignerImplFromJson(Map<String, dynamic> json) =>
+    _$AssignerImpl(
       emailId: json['emailId'] as String?,
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       mobileNumber: json['mobileNumber'] as String?,
       name: json['name'] as String?,
       tenantId: json['tenantId'] as String?,
@@ -198,7 +206,7 @@ _$_Assigner _$$_AssignerFromJson(Map<String, dynamic> json) => _$_Assigner(
       userName: json['userName'] as String?,
     );
 
-Map<String, dynamic> _$$_AssignerToJson(_$_Assigner instance) =>
+Map<String, dynamic> _$$AssignerImplToJson(_$AssignerImpl instance) =>
     <String, dynamic>{
       'emailId': instance.emailId,
       'id': instance.id,

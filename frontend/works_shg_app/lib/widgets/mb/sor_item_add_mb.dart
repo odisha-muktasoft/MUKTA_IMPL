@@ -1,14 +1,19 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/theme.dart';
 import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
 
-import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/employee/mb/filtered_measures.dart';
 import '../../utils/notifiers.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -74,7 +79,6 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
       listenWhen: (previous, current) =>
           ((previous != current) || (previous == current)),
       listener: (context, state) {
-        // TODO: implement listener
         state.maybeMap(
           orElse: () => null,
           loaded: (value) {
@@ -82,6 +86,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
               // SystemChannels.textInput.invokeMethod('TextInput.hide');
               Notifiers.getToastMessage(context,
                   t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
+              // Toast.showToast(context,
+              //     message: t.translate(i18.measurementBook.mbQtyErrMsg),
+              //     type: ToastType.error);
               context
                   .read<MeasurementDetailBloc>()
                   .add(const UpdateMsgCodeEvent(updateCode: 1));
@@ -131,38 +138,56 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               // context
                               //     .read<MeasurementDetailBloc>()
                               //     .add(const UpdateMsgCodeEvent(updateCode: 0));
-                              context.router.pop();
+                              context.router.maybePopTop();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
-                              color: const DigitColors().white,
+                              color: Colors.white,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.70,
+                        height: MediaQuery.sizeOf(context).height * 0.75,
                         child: PageView.builder(
                           controller: _scrollController,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: CardWidget(
-                                backward: () {
-                                  _scrollBackward();
-                                },
-                                forward: () {
-                                  _scrollForward();
-                                },
-                                filteredMeasurementsMeasure: lineItems![index],
-                                type: widget.type,
-                                viewMode: value.viewStatus,
-                                noOfUnit: widget.noOfUnit,
-                                cummulativePrevQty: widget.cummulativePrevQty,
-                                index: index,
-                              ),
+                            return AnimatedBuilder(
+                              animation: _scrollController,
+                              builder: (context, child) {
+                                double scale = 1.0;
+                                if (_scrollController.position.haveDimensions) {
+                                  double pageOffset =
+                                      _scrollController.page! - index;
+                                  scale = (1 - (pageOffset.abs() * 0.2))
+                                      .clamp(0.9, 1.0);
+                                }
+
+                                return Transform.scale(
+                                  scale: scale,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: CardWidget(
+                                      backward: () {
+                                        _scrollBackward();
+                                      },
+                                      forward: () {
+                                        _scrollForward();
+                                      },
+                                      filteredMeasurementsMeasure:
+                                          lineItems![index],
+                                      type: widget.type,
+                                      viewMode: value.viewStatus,
+                                      noOfUnit: widget.noOfUnit,
+                                      cummulativePrevQty:
+                                          widget.cummulativePrevQty,
+                                      index: index,
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                           itemCount: lineItems?.length,
@@ -180,7 +205,8 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: DigitOutLineButton(
+                                  child: ui_component.Button(
+                                    mainAxisSize: MainAxisSize.max,
                                     label: t.translate(i18.common.close),
                                     onPressed: () {
                                       context
@@ -191,15 +217,13 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             sorId: widget.sorId,
                                             type: widget.type,
                                           ));
-                                      context.router.pop();
-                                    },
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 10,
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(
+                                  child: ui_component.Button(
+                                    mainAxisSize: MainAxisSize.max,
                                     onPressed: () {
                                       //SubmitLineEvent
                                       context.read<MeasurementDetailBloc>().add(
@@ -211,7 +235,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                               type: widget.type));
                                       // Navigator.of(context).pop();
                                     },
-                                    child: Text(t.translate(i18.common.submit)),
+                                    label: t.translate(i18.common.submit),
+                                    type: ButtonType.primary,
+                                    size: ButtonSize.large,
                                   ),
                                 ),
                               ],
@@ -260,7 +286,6 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -275,11 +300,10 @@ class _CardWidgetState extends State<CardWidget> {
     return Container(
       // width: MediaQuery.sizeOf(context).width-200,
       decoration: BoxDecoration(
-        color: const DigitColors().white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      padding:
-          const EdgeInsets.only(left: 2.5, right: 2.5, bottom: 10.0, top: 16.0),
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8.0, top: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -294,90 +318,32 @@ class _CardWidgetState extends State<CardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.type.toUpperCase(),
-                  style: DigitTheme.instance.mobileTheme.textTheme.displayLarge,
+                //   DigitTextBlock(
+                //  caption:   widget.type.toUpperCase(),
+
+                //   ),
+                DigitTextBlock(
+                  heading:
+                      '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
                 ),
-                Text(
-                  '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
-                  style:
-                      DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: SizedBox(
-                    height: 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              t.translate(i18.measurementBook.isDeduction),
-                              style: theme.textTheme.displayMedium?.copyWith(),
-                            )),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            (widget
-                                            .filteredMeasurementsMeasure!
-                                            .contracts!
-                                            .first
-                                            .estimates!
-                                            .first
-                                            .isDeduction !=
-                                        null &&
-                                    widget
-                                        .filteredMeasurementsMeasure!
-                                        .contracts!
-                                        .first
-                                        .estimates!
-                                        .first
-                                        .isDeduction!)
-                                ? t.translate(i18.measurementBook.yes)
-                                : t.translate(i18.measurementBook.no),
-                            style: theme.textTheme.labelSmall?.copyWith(),
-                            maxLines: 1,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 3.0),
-                  child: SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            t.translate(
-                              i18.measurementBook.description,
-                            ),
-                            style: theme.textTheme.displayMedium?.copyWith(),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            widget.filteredMeasurementsMeasure!.contracts!.first
-                                    .estimates!.first.description ??
-                                "",
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                LabelValueList(maxLines: 2, labelFlex: 5, valueFlex: 5, items: [
+                  LabelValuePair(
+                      label: t.translate(i18.measurementBook.isDeduction),
+                      value: (widget.filteredMeasurementsMeasure!.contracts!
+                                      .first.estimates!.first.isDeduction !=
+                                  null &&
+                              widget.filteredMeasurementsMeasure!.contracts!
+                                  .first.estimates!.first.isDeduction!)
+                          ? t.translate(i18.measurementBook.yes)
+                          : t.translate(i18.measurementBook.no)),
+                  LabelValuePair(
+                      label: t.translate(
+                        i18.measurementBook.description,
+                      ),
+                      value: widget.filteredMeasurementsMeasure!.contracts!
+                              .first.estimates!.first.description ??
+                          "")
+                ]),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,
@@ -415,45 +381,98 @@ class _CardWidgetState extends State<CardWidget> {
                                   measurementIndex: 0,
                                   sorId: widget.filteredMeasurementsMeasure!
                                       .contracts!.first.estimates!.first.sorId!,
-                                  type: widget.type, totalCount: 1,
+                                  type: widget.type, totalCount: 1, measurementSummary: '',
                                 ),
                               ),
+                              // !widget.viewMode
+                              //     ? GestureDetector(
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.center,
+                              //           crossAxisAlignment:
+                              //               CrossAxisAlignment.center,
+                              //           children: [
+                              //             Icon(
+                              // Icons.add_circle,
+                              //               size: 30,
+                              //               color: const DigitColors()
+                              //                   .burningOrange,
+                              //             ),
+                              //             Padding(
+                              //               padding: const EdgeInsets.only(
+                              //                   left: 4.0),
+                              //               child: Text(
+                              // t.translate(
+                              //   i18.measurementBook
+                              //       .addMeasurement,
+                              // ),
+                              //                 style: DigitTheme
+                              //                     .instance
+                              //                     .mobileTheme
+                              //                     .textTheme
+                              //                     .bodyLarge!
+                              //                     .copyWith(
+                              //                   color: const DigitColors()
+                              //                       .burningOrange,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //         onTap: () {
+                              // context
+                              //     .read<MeasurementDetailBloc>()
+                              //     .add(
+                              //       AddToMeasurementLineEvent(
+                              //         sorId: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .contracts!
+                              //             .first
+                              //             .estimates!
+                              //             .first
+                              //             .sorId!,
+                              //         type: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .contracts!
+                              //             .first
+                              //             .estimates!
+                              //             .first
+                              //             .category!,
+                              //         index: 0,
+                              //         measurementLineIndex: widget
+                              //                 .filteredMeasurementsMeasure!
+                              //                 .measureLineItems!
+                              //                 .last
+                              //                 .measurelineitemNo +
+                              //             1,
+                              //         height: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.height,
+                              //         length: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.length,
+                              //         width: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.breath,
+                              //         number: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.numItems,
+                              //         quantity: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.height,
+                              //         filteredMeasurementMeasureId: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .id!,
+                              //         single: true,
+                              //       ),
+                              //     );
+                              //         },
+                              //       )
+                              //     : const SizedBox.shrink(),
                               !widget.viewMode
-                                  ? GestureDetector(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.add_circle,
-                                            size: 30,
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text(
-                                              t.translate(
-                                                i18.measurementBook
-                                                    .addMeasurement,
-                                              ),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme!
-                                                  .bodyLarge!
-                                                  .copyWith(
-                                                color: const DigitColors()
-                                                    .burningOrange,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
+                                  ? Button(
+                                      prefixIcon: Icons.add_circle,
+                                      onPressed: () {
                                         context
                                             .read<MeasurementDetailBloc>()
                                             .add(
@@ -501,8 +520,13 @@ class _CardWidgetState extends State<CardWidget> {
                                               ),
                                             );
                                       },
+                                      size: ButtonSize.large,
+                                      type: ButtonType.tertiary,
+                                      label: t.translate(
+                                        i18.measurementBook.addMeasurement,
+                                      ),
                                     )
-                                  : const SizedBox.shrink(),
+                                  : const SizedBox.shrink()
                             ],
                           )
                         : ListView.builder(
@@ -518,80 +542,132 @@ class _CardWidgetState extends State<CardWidget> {
                                     widget.filteredMeasurementsMeasure!
                                         .measureLineItems!.length) {
                                   // TO add line items
+                                  // return Padding(
+                                  // padding: const EdgeInsets.only(top: 1.0),
+                                  //   child: GestureDetector(
+                                  //     child: Row(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.center,
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.center,
+                                  //       children: [
+                                  //         Icon(
+                                  // Icons.add_circle,
+                                  //           size: 30,
+                                  //           color: const DigitColors()
+                                  //               .burningOrange,
+                                  //         ),
+                                  //         Padding(
+                                  //           padding: const EdgeInsets.only(
+                                  //               left: 4.0),
+                                  //           child: Text(
+                                  // t.translate(i18.measurementBook
+                                  //     .addMeasurement),
+                                  //             style: DigitTheme
+                                  //                 .instance
+                                  //                 .mobileTheme
+                                  //                 .textTheme
+                                  //                 .bodyLarge!
+                                  //                 .copyWith(
+                                  //                     color: const DigitColors()
+                                  //                         .burningOrange),
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     onTap: () {
+                                  // context
+                                  //     .read<MeasurementDetailBloc>()
+                                  //     .add(
+                                  //       AddToMeasurementLineEvent(
+                                  //         sorId: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .contracts!
+                                  //             .first
+                                  //             .estimates!
+                                  //             .first
+                                  //             .sorId!,
+                                  //         type: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .contracts!
+                                  //             .first
+                                  //             .estimates!
+                                  //             .first
+                                  //             .category!,
+                                  //         index: index,
+                                  //         measurementLineIndex: widget
+                                  //                 .filteredMeasurementsMeasure!
+                                  //                 .measureLineItems!
+                                  //                 .last
+                                  //                 .measurelineitemNo +
+                                  //             1,
+                                  //         // index: 0,
+                                  //         //         measurementLineIndex: 0,
+                                  //         height: 0,
+                                  //         length: 0,
+                                  //         width: 0,
+                                  //         number: 0,
+                                  //         quantity: 0,
+                                  //         filteredMeasurementMeasureId: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .id!,
+                                  //         single: false,
+                                  //       ),
+                                  //     );
+                                  //     },
+                                  //   ),
+                                  // );
+
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 1.0),
-                                    child: GestureDetector(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.add_circle,
-                                            size: 30,
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text(
-                                              t.translate(i18.measurementBook
-                                                  .addMeasurement),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme!
-                                                  .bodyLarge!
-                                                  .copyWith(
-                                                      color: const DigitColors()
-                                                          .burningOrange),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
-                                        context
-                                            .read<MeasurementDetailBloc>()
-                                            .add(
-                                              AddToMeasurementLineEvent(
-                                                sorId: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .contracts!
-                                                    .first
-                                                    .estimates!
-                                                    .first
-                                                    .sorId!,
-                                                type: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .contracts!
-                                                    .first
-                                                    .estimates!
-                                                    .first
-                                                    .category!,
-                                                index: index,
-                                                measurementLineIndex: widget
-                                                        .filteredMeasurementsMeasure!
-                                                        .measureLineItems!
-                                                        .last
-                                                        .measurelineitemNo +
-                                                    1,
-                                                // index: 0,
-                                                //         measurementLineIndex: 0,
-                                                height: 0,
-                                                length: 0,
-                                                width: 0,
-                                                number: 0,
-                                                quantity: 0,
-                                                filteredMeasurementMeasureId: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .id!,
-                                                single: false,
-                                              ),
-                                            );
-                                      },
-                                    ),
+                                    child: Button(
+                                        prefixIcon: Icons.add_circle,
+                                        label: t.translate(
+                                            i18.measurementBook.addMeasurement),
+                                        onPressed: () {
+                                          context
+                                              .read<MeasurementDetailBloc>()
+                                              .add(
+                                                AddToMeasurementLineEvent(
+                                                  measurementSummary: "",
+                                                  sorId: widget
+                                                      .filteredMeasurementsMeasure!
+                                                      .contracts!
+                                                      .first
+                                                      .estimates!
+                                                      .first
+                                                      .sorId!,
+                                                  type: widget
+                                                      .filteredMeasurementsMeasure!
+                                                      .contracts!
+                                                      .first
+                                                      .estimates!
+                                                      .first
+                                                      .category!,
+                                                  index: index,
+                                                  measurementLineIndex: widget
+                                                          .filteredMeasurementsMeasure!
+                                                          .measureLineItems!
+                                                          .last
+                                                          .measurelineitemNo +
+                                                      1,
+                                                  // index: 0,
+                                                  //         measurementLineIndex: 0,
+                                                  height: 0,
+                                                  length: 0,
+                                                  width: 0,
+                                                  number: 0,
+                                                  quantity: 0,
+                                                  filteredMeasurementMeasureId:
+                                                      widget
+                                                          .filteredMeasurementsMeasure!
+                                                          .id!,
+                                                  single: false,
+                                                ),
+                                              );
+                                        },
+                                        type: ButtonType.tertiary,
+                                        size: ButtonSize.large),
                                   );
                                 }
                               }
@@ -604,11 +680,12 @@ class _CardWidgetState extends State<CardWidget> {
                                 child: MultiLineItems(
                                   fieldValue: (p0, p1) {
                                     switch (p0) {
-                                      case "Number":
-                                        context
+                                      case "MeasurementSummary": 
+                                       context
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                measurementSummary: p1.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -625,12 +702,50 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
+                                                filteredMeasurementMeasureId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .id!,
+                                                cummulativePrevQty:
+                                                    widget.cummulativePrevQty,
+                                                noOfUnit: widget.noOfUnit,
+                                              ),
+                                            );
+                                        break;
+                                      case "Number":
+                                        context
+                                            .read<MeasurementDetailBloc>()
+                                            .add(
+                                              UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
+                                                sorId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .sorId!,
+                                                type: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .category!,
+                                                index: index,
+                                                measurementLineIndex:
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
+                                                quantity:
+                                                    data.quantity.toString(),
                                                 number: p1.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
@@ -647,6 +762,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -663,13 +779,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
                                                 length: p1.toString(),
-                                                width: data?.width.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -684,6 +800,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -700,13 +817,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
                                                 width: p1.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -721,6 +838,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -737,12 +855,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity: p1.toString(),
-                                                number: data?.number.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -757,6 +875,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -773,13 +892,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
+                                                    data.measurelineitemNo!,
                                                 height: p1.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -794,6 +913,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -810,12 +930,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
+                                                    data.quantity.toString(),
                                                 number: p1.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
@@ -831,27 +951,27 @@ class _CardWidgetState extends State<CardWidget> {
                                       ? widget
                                           .filteredMeasurementsMeasure?.height
                                           .toString()
-                                      : data?.height.toString(),
+                                      : data.height.toString(),
                                   width: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.breath
                                           .toString()
-                                      : data?.width.toString(),
+                                      : data.width.toString(),
                                   number: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.numItems
                                           .toString()
-                                      : data?.number.toString(),
+                                      : data.number.toString(),
                                   quantity: data == null
                                       ? widget.filteredMeasurementsMeasure
                                           ?.currentValue
                                           .toString()
-                                      : data?.quantity.toString(),
+                                      : data.quantity.toString(),
                                   length: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.length
                                           .toString()
-                                      : data?.length.toString(),
+                                      : data.length.toString(),
                                   viewMode: widget.viewMode,
                                   filteredMeasurementMeasureId:
                                       widget.filteredMeasurementsMeasure!.id!,
@@ -863,6 +983,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   totalCount: widget.filteredMeasurementsMeasure
                                           ?.measureLineItems?.length ??
                                       0,
+
+                                      measurementSummary: data.measurementSummary??"",
                                 ),
                               ); // Render your item here
                             },
@@ -883,13 +1005,14 @@ class _CardWidgetState extends State<CardWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(
-                          width: 2, color: const DigitColors().burningOrange)),
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary)),
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
-                        color: const DigitColors().burningOrange,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: widget.backward,
                     ),
@@ -899,13 +1022,14 @@ class _CardWidgetState extends State<CardWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(
-                          width: 2, color: const DigitColors().burningOrange)),
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary)),
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_forward,
-                        color: const DigitColors().burningOrange,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: widget.forward,
                     ),

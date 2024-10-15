@@ -52,9 +52,9 @@ export const SearchPIConfigNew = {
                       "populators": {
                         "name": "piType",
                         "optionsKey": "name",
-                        "optionsCustomStyle": {
-                          "top": "2.3rem"
-                        },
+                        // "optionsCustomStyle": {
+                        //   "top": "2.3rem"
+                        // },
                         "mdmsConfig": {
                           "masterName": "PaymentInstructionType",
                           "moduleName": "expense",
@@ -99,9 +99,9 @@ export const SearchPIConfigNew = {
                       "populators": {
                         "name": "status",
                         "optionsKey": "name",
-                        "optionsCustomStyle": {
-                          "top": "2.3rem"
-                        },
+                        // "optionsCustomStyle": {
+                        //   "top": "2.3rem"
+                        // },
                         "mdmsConfig": {
                           "masterName": "PaymentInstructionStatus",
                           "moduleName": "expense",
@@ -189,9 +189,9 @@ export const SearchPIConfigNew = {
                 "populators": {
                   "name": "piType",
                   "optionsKey": "name",
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   "mdmsConfig": {
                     "masterName": "PaymentInstructionType",
                     "moduleName": "expense",

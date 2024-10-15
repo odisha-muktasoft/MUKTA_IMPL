@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Button} from "@egovernments/digit-ui-components";
 
 export const statusBasedNavigation = ( status, contractOrProjectNumber, measurementOrEstimateNumber, tenantId, value, mode = "MEASUREMENT", businessId ) => {
     const { t } = useTranslation();
@@ -34,7 +35,15 @@ export const statusBasedNavigation = ( status, contractOrProjectNumber, measurem
 
     return (
         <Link to={linkTo}>
-            {value ? value : t("ES_COMMON_NA")}
+            <Button
+                className=""
+                iconFill=""
+                label={value ? value : t("ES_COMMON_NA")}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
         </Link>
     );
 };

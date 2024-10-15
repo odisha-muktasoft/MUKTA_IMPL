@@ -6,10 +6,11 @@ part of 'wo_inbox_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_WOInboxResponse _$$_WOInboxResponseFromJson(Map<String, dynamic> json) =>
-    _$_WOInboxResponse(
-      totalCount: json['totalCount'] as int?,
-      nearingSlaCount: json['nearingSlaCount'] as int?,
+_$WOInboxResponseImpl _$$WOInboxResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$WOInboxResponseImpl(
+      totalCount: (json['totalCount'] as num?)?.toInt(),
+      nearingSlaCount: (json['nearingSlaCount'] as num?)?.toInt(),
       statusMap: (json['statusMap'] as List<dynamic>?)
           ?.map((e) => StatusMap.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -18,7 +19,8 @@ _$_WOInboxResponse _$$_WOInboxResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_WOInboxResponseToJson(_$_WOInboxResponse instance) =>
+Map<String, dynamic> _$$WOInboxResponseImplToJson(
+        _$WOInboxResponseImpl instance) =>
     <String, dynamic>{
       'totalCount': instance.totalCount,
       'nearingSlaCount': instance.nearingSlaCount,
@@ -26,8 +28,8 @@ Map<String, dynamic> _$$_WOInboxResponseToJson(_$_WOInboxResponse instance) =>
       'items': instance.items,
     };
 
-_$_WOItemData _$$_WOItemDataFromJson(Map<String, dynamic> json) =>
-    _$_WOItemData(
+_$WOItemDataImpl _$$WOItemDataImplFromJson(Map<String, dynamic> json) =>
+    _$WOItemDataImpl(
       processInstance: json['ProcessInstance'] == null
           ? null
           : ProcessInstance.fromJson(
@@ -38,19 +40,20 @@ _$_WOItemData _$$_WOItemDataFromJson(Map<String, dynamic> json) =>
               json['businessObject'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_WOItemDataToJson(_$_WOItemData instance) =>
+Map<String, dynamic> _$$WOItemDataImplToJson(_$WOItemDataImpl instance) =>
     <String, dynamic>{
       'ProcessInstance': instance.processInstance,
       'businessObject': instance.woBusinessObject,
     };
 
-_$_WOBusinessObject _$$_WOBusinessObjectFromJson(Map<String, dynamic> json) =>
-    _$_WOBusinessObject(
+_$WOBusinessObjectImpl _$$WOBusinessObjectImplFromJson(
+        Map<String, dynamic> json) =>
+    _$WOBusinessObjectImpl(
       totalContractedAmount:
           (json['totalContractedAmount'] as num?)?.toDouble(),
       businessService: json['businessService'] as String?,
       contractNumber: json['contractNumber'] as String?,
-      serviceSla: json['serviceSla'] as int?,
+      serviceSla: (json['serviceSla'] as num?)?.toInt(),
       woAdditionalDetails: json['additionalDetails'] == null
           ? null
           : WOAdditionalDetails.fromJson(
@@ -60,7 +63,8 @@ _$_WOBusinessObject _$$_WOBusinessObjectFromJson(Map<String, dynamic> json) =>
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_WOBusinessObjectToJson(_$_WOBusinessObject instance) =>
+Map<String, dynamic> _$$WOBusinessObjectImplToJson(
+        _$WOBusinessObjectImpl instance) =>
     <String, dynamic>{
       'totalContractedAmount': instance.totalContractedAmount,
       'businessService': instance.businessService,
@@ -70,16 +74,16 @@ Map<String, dynamic> _$$_WOBusinessObjectToJson(_$_WOBusinessObject instance) =>
       'auditDetails': instance.auditDetails,
     };
 
-_$_WOAdditionalDetails _$$_WOAdditionalDetailsFromJson(
+_$WOAdditionalDetailsImpl _$$WOAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_WOAdditionalDetails(
+    _$WOAdditionalDetailsImpl(
       orgName: json['orgName'] as String?,
       projectId: json['projectId'] as String?,
       projectName: json['projectName'] as String?,
     );
 
-Map<String, dynamic> _$$_WOAdditionalDetailsToJson(
-        _$_WOAdditionalDetails instance) =>
+Map<String, dynamic> _$$WOAdditionalDetailsImplToJson(
+        _$WOAdditionalDetailsImpl instance) =>
     <String, dynamic>{
       'orgName': instance.orgName,
       'projectId': instance.projectId,

@@ -1,15 +1,14 @@
 //mb_detail_view
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/employee_repository/mdms.dart';
 import 'package:works_shg_app/models/employee/mb/mb_project_type.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../services/urls.dart';
@@ -35,7 +34,7 @@ class ProjectTypeBloc extends Bloc<ProjectTypeBlocEvent, ProjectTypeState> {
         url: Urls.initServices.mdms,
         body: {
           "MdmsCriteria": {
-            "tenantId": "od",
+            "tenantId": GlobalVariables.tenantId??"od",
             "moduleDetails": [
               {
                 "moduleName": "works",
@@ -52,7 +51,7 @@ class ProjectTypeBloc extends Bloc<ProjectTypeBlocEvent, ProjectTypeState> {
       emit(
         ProjectTypeState.loaded(res),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(ProjectTypeState.error(e.toString()));
     }

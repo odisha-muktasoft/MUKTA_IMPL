@@ -6,8 +6,9 @@ part of 'adhar_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_AdharCardResponse _$$_AdharCardResponseFromJson(Map<String, dynamic> json) =>
-    _$_AdharCardResponse(
+_$AdharCardResponseImpl _$$AdharCardResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AdharCardResponseImpl(
       status: json['status'] as String?,
       txn: json['txn'] as String?,
       ret: json['ret'] as String?,
@@ -19,8 +20,8 @@ _$_AdharCardResponse _$$_AdharCardResponseFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
     );
 
-Map<String, dynamic> _$$_AdharCardResponseToJson(
-        _$_AdharCardResponse instance) =>
+Map<String, dynamic> _$$AdharCardResponseImplToJson(
+        _$AdharCardResponseImpl instance) =>
     <String, dynamic>{
       'status': instance.status,
       'txn': instance.txn,

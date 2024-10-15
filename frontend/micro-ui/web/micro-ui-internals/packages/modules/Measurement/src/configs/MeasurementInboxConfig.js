@@ -165,16 +165,19 @@ const InboxMeasurementConfig = () => {
               disable: false,
               populators: {
                 name: "ward",
+                isDropdownWithChip:true,
                 type: "ward",
                 optionsKey: "i18nKey",
                 defaultText: "COMMON_SELECT_WARD",
                 selectedText: "COMMON_SELECTED",
-                allowMultiSelect: true
+                allowMultiSelect: true,
+                isDropdownWithChip:true,
               }
             },
             {
               label: "MB_WORKFLOW_STATUS",
               type: "workflowstatesfilter",
+              labelClassName:"checkbox-status-filter-label" ,
               isMandatory: false,
               disable: false,
               populators: {

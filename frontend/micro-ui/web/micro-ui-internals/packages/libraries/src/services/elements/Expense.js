@@ -57,6 +57,15 @@ export const ExpenseService = {
       auth: true,
       userService: false,
       data: data
+    }),
+    generateExcel: (data) =>
+    Request({
+      url: Urls.expense.generateExcel,
+      useCache: false,
+      method: "POST",
+      auth: true,
+      userService: false,
+      data: data
     })
 
 };

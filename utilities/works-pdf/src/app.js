@@ -14,6 +14,7 @@ const measurementBookRouter = require("./routes/measurementBook");
 const detailedEstimateRouter = require("./routes/detailedEstimate");
 const rateAnalysisStatement = require("./routes/analysisStatement");
 const rateAnalysisUtilization = require("./routes/utilizationStatement");
+const paymentTrackerRouter = require("./routes/paymentTracker");
 
 
 
@@ -44,6 +45,7 @@ app.use(config.app.contextPath + "/download/measurementBook", measurementBookRou
 app.use(config.app.contextPath + "/download/detailedEstimate", detailedEstimateRouter);
 app.use(config.app.contextPath + "/download/analysisStatement", rateAnalysisStatement);
 app.use(config.app.contextPath + "/download/utilizationStatement", rateAnalysisUtilization);
+app.use(config.app.contextPath + "/download/paymentTracker", paymentTrackerRouter);
 
 
 

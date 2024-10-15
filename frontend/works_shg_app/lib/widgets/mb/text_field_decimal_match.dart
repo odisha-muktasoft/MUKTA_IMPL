@@ -13,7 +13,6 @@ class DecimalTextInputFormatter extends TextInputFormatter {
       return newValue;
     }
 
-    final int newTextLength = newValue.text.length;
     final int selectionIndex = newValue.selection.end;
 
     String newText = newValue.text;

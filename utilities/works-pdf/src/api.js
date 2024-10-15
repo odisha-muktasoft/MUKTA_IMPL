@@ -630,6 +630,49 @@ async function search_projectDetails_by_ID(tenantId, requestinfo, projectId) {
   });
 }
 
+async function search_payment_instruction(tenantId, requestinfo, projectNum) {
+
+  const searchEndpoint = config.paths.payment_instruction_search;
+  const data = {
+    "inbox": {
+      "moduleSearchCriteria": {
+        "tenantId": tenantId,
+        "projectId": projectNum
+      },
+      "tenantId": tenantId,
+      "limit": 10,
+      "offset": 0
+    },
+    "RequestInfo": requestinfo
+  };
+  return await axios({
+      method: "post",
+      url: url.resolve(config.host.paymentTracker, searchEndpoint),
+      data: data
+  });
+}
+
+async function search_report_paymentTracker(tenantId, requestinfo, projectNum) {
+
+  const searchEndpoint = config.paths.report_paymentTracker_search;
+  const data = {
+    "searchCriteria": {
+      "moduleSearchCriteria": {
+        "projectId": projectNum
+      },
+      "tenantId": tenantId,
+      "limit": 10
+    },
+    "RequestInfo": requestinfo
+  };
+  return await axios({
+      method: "post",
+      url: url.resolve(config.host.paymentTracker, searchEndpoint),
+      data: data
+  });
+}
+
+
 module.exports = {
   pool,
   create_pdf,
@@ -661,5 +704,7 @@ module.exports = {
   search_mdmsV2,
   search_rateAnalysisStatementDetails,
   search_projectDetails_by_ID,
-  search_rateAnalysisUtilizationDetails
+  search_rateAnalysisUtilizationDetails,
+  search_payment_instruction,
+  search_report_paymentTracker
 };

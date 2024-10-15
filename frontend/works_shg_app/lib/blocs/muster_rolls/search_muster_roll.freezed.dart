@@ -12,7 +12,7 @@ part of 'search_muster_roll.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MusterRollSearchEvent {
@@ -77,27 +77,29 @@ class _$MusterRollSearchEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$SearchMusterRollEventCopyWith<$Res> {
-  factory _$$SearchMusterRollEventCopyWith(_$SearchMusterRollEvent value,
-          $Res Function(_$SearchMusterRollEvent) then) =
-      __$$SearchMusterRollEventCopyWithImpl<$Res>;
+abstract class _$$SearchMusterRollEventImplCopyWith<$Res> {
+  factory _$$SearchMusterRollEventImplCopyWith(
+          _$SearchMusterRollEventImpl value,
+          $Res Function(_$SearchMusterRollEventImpl) then) =
+      __$$SearchMusterRollEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SearchMusterRollEventCopyWithImpl<$Res>
-    extends _$MusterRollSearchEventCopyWithImpl<$Res, _$SearchMusterRollEvent>
-    implements _$$SearchMusterRollEventCopyWith<$Res> {
-  __$$SearchMusterRollEventCopyWithImpl(_$SearchMusterRollEvent _value,
-      $Res Function(_$SearchMusterRollEvent) _then)
+class __$$SearchMusterRollEventImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchEventCopyWithImpl<$Res,
+        _$SearchMusterRollEventImpl>
+    implements _$$SearchMusterRollEventImplCopyWith<$Res> {
+  __$$SearchMusterRollEventImplCopyWithImpl(_$SearchMusterRollEventImpl _value,
+      $Res Function(_$SearchMusterRollEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SearchMusterRollEvent
+class _$SearchMusterRollEventImpl
     with DiagnosticableTreeMixin
     implements SearchMusterRollEvent {
-  const _$SearchMusterRollEvent();
+  const _$SearchMusterRollEventImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -111,9 +113,10 @@ class _$SearchMusterRollEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SearchMusterRollEvent);
+        (other.runtimeType == runtimeType &&
+            other is _$SearchMusterRollEventImpl);
   }
 
   @override
@@ -184,7 +187,170 @@ class _$SearchMusterRollEvent
 }
 
 abstract class SearchMusterRollEvent implements MusterRollSearchEvent {
-  const factory SearchMusterRollEvent() = _$SearchMusterRollEvent;
+  const factory SearchMusterRollEvent() = _$SearchMusterRollEventImpl;
+}
+
+/// @nodoc
+abstract class _$$MbSearchMusterRollEventImplCopyWith<$Res> {
+  factory _$$MbSearchMusterRollEventImplCopyWith(
+          _$MbSearchMusterRollEventImpl value,
+          $Res Function(_$MbSearchMusterRollEventImpl) then) =
+      __$$MbSearchMusterRollEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String musterRollNumner, String tenantId});
+}
+
+/// @nodoc
+class __$$MbSearchMusterRollEventImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchEventCopyWithImpl<$Res,
+        _$MbSearchMusterRollEventImpl>
+    implements _$$MbSearchMusterRollEventImplCopyWith<$Res> {
+  __$$MbSearchMusterRollEventImplCopyWithImpl(
+      _$MbSearchMusterRollEventImpl _value,
+      $Res Function(_$MbSearchMusterRollEventImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? musterRollNumner = null,
+    Object? tenantId = null,
+  }) {
+    return _then(_$MbSearchMusterRollEventImpl(
+      musterRollNumner: null == musterRollNumner
+          ? _value.musterRollNumner
+          : musterRollNumner // ignore: cast_nullable_to_non_nullable
+              as String,
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MbSearchMusterRollEventImpl
+    with DiagnosticableTreeMixin
+    implements MbSearchMusterRollEvent {
+  const _$MbSearchMusterRollEventImpl(
+      {required this.musterRollNumner, required this.tenantId});
+
+  @override
+  final String musterRollNumner;
+  @override
+  final String tenantId;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MusterRollSearchEvent.mbMusterSearch(musterRollNumner: $musterRollNumner, tenantId: $tenantId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'MusterRollSearchEvent.mbMusterSearch'))
+      ..add(DiagnosticsProperty('musterRollNumner', musterRollNumner))
+      ..add(DiagnosticsProperty('tenantId', tenantId));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MbSearchMusterRollEventImpl &&
+            (identical(other.musterRollNumner, musterRollNumner) ||
+                other.musterRollNumner == musterRollNumner) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, musterRollNumner, tenantId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MbSearchMusterRollEventImplCopyWith<_$MbSearchMusterRollEventImpl>
+      get copyWith => __$$MbSearchMusterRollEventImplCopyWithImpl<
+          _$MbSearchMusterRollEventImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() search,
+    required TResult Function(String musterRollNumner, String tenantId)
+        mbMusterSearch,
+  }) {
+    return mbMusterSearch(musterRollNumner, tenantId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? search,
+    TResult? Function(String musterRollNumner, String tenantId)? mbMusterSearch,
+  }) {
+    return mbMusterSearch?.call(musterRollNumner, tenantId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? search,
+    TResult Function(String musterRollNumner, String tenantId)? mbMusterSearch,
+    required TResult orElse(),
+  }) {
+    if (mbMusterSearch != null) {
+      return mbMusterSearch(musterRollNumner, tenantId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SearchMusterRollEvent value) search,
+    required TResult Function(MbSearchMusterRollEvent value) mbMusterSearch,
+  }) {
+    return mbMusterSearch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SearchMusterRollEvent value)? search,
+    TResult? Function(MbSearchMusterRollEvent value)? mbMusterSearch,
+  }) {
+    return mbMusterSearch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SearchMusterRollEvent value)? search,
+    TResult Function(MbSearchMusterRollEvent value)? mbMusterSearch,
+    required TResult orElse(),
+  }) {
+    if (mbMusterSearch != null) {
+      return mbMusterSearch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MbSearchMusterRollEvent implements MusterRollSearchEvent {
+  const factory MbSearchMusterRollEvent(
+      {required final String musterRollNumner,
+      required final String tenantId}) = _$MbSearchMusterRollEventImpl;
+
+  String get musterRollNumner;
+  String get tenantId;
+  @JsonKey(ignore: true)
+  _$$MbSearchMusterRollEventImplCopyWith<_$MbSearchMusterRollEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -421,24 +587,25 @@ class _$MusterRollSearchStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial with DiagnosticableTreeMixin {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial with DiagnosticableTreeMixin {
+  const _$InitialImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -453,9 +620,9 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -537,29 +704,30 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
 }
 
 abstract class _Initial extends MusterRollSearchState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading with DiagnosticableTreeMixin {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading with DiagnosticableTreeMixin {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -574,9 +742,9 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -658,14 +826,15 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
 }
 
 abstract class _Loading extends MusterRollSearchState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({MusterRollsModel? musterRollsModel});
 
@@ -673,10 +842,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -684,7 +854,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? musterRollsModel = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == musterRollsModel
           ? _value.musterRollsModel
           : musterRollsModel // ignore: cast_nullable_to_non_nullable
@@ -707,8 +877,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  const _$_Loaded(this.musterRollsModel) : super._();
+class _$LoadedImpl extends _Loaded with DiagnosticableTreeMixin {
+  const _$LoadedImpl(this.musterRollsModel) : super._();
 
   @override
   final MusterRollsModel? musterRollsModel;
@@ -727,10 +897,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.musterRollsModel, musterRollsModel) ||
                 other.musterRollsModel == musterRollsModel));
   }
@@ -741,8 +911,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -820,28 +990,31 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 }
 
 abstract class _Loaded extends MusterRollSearchState {
-  const factory _Loaded(final MusterRollsModel? musterRollsModel) = _$_Loaded;
+  const factory _Loaded(final MusterRollsModel? musterRollsModel) =
+      _$LoadedImpl;
   const _Loaded._() : super._();
 
   MusterRollsModel? get musterRollsModel;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$MusterRollSearchStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -849,7 +1022,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -860,8 +1033,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error with DiagnosticableTreeMixin {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error with DiagnosticableTreeMixin {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -880,10 +1053,10 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -893,8 +1066,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -972,11 +1145,11 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
 }
 
 abstract class _Error extends MusterRollSearchState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

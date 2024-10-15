@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'dart:convert';
 
 import '../../../models/attendance/individual_list_model.dart';
 import '../../../utils/global_variables.dart';
@@ -28,7 +27,7 @@ class IndividualRepository {
 
       return IndividualListModelMapper.fromMap(
           response.data as Map<String, dynamic>);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -63,14 +62,14 @@ class IndividualRepository {
               item["businessObject"]["individualId"] != null &&
               item["businessObject"]["individualId"] != "null" &&
               item["businessObject"].containsKey("individualId")).toList();
-            print("filtered Items");
+           
           // Update the "items" key with the filtered items
           responseData["items"] = filteredItems;
         }
 
       return WMSIndividualListModelMapper.fromMap(
           responseData);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

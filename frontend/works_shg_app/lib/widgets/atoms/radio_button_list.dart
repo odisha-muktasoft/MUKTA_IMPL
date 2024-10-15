@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -49,12 +50,11 @@ class DigitRadioButtonList<T> extends StatelessWidget {
                         labelText,
                         textAlign: TextAlign.left,
                         style:
-                            DigitTheme.instance.mobileTheme.textTheme.bodyLarge,
+                           Theme.of(context).digitTextTheme(context).bodyL,
                       ),
                       Text(isRequired ? ' *' : '',
                           textAlign: TextAlign.left,
-                          style: DigitTheme
-                              .instance.mobileTheme.textTheme.bodyLarge),
+                          style:  Theme.of(context).digitTextTheme(context).bodyL),
                     ]))),
           ),
           Column(

@@ -36,7 +36,7 @@ class AttendanceLogCreateBloc
       if (attendanceRegistersModel != null) {
         emit(const AttendanceLogCreateState.loaded());
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(AttendanceLogCreateState.error(
           e.response?.data['Errors'][0]['code'],e.response?.data['Errors'][0]['message']));
     }
@@ -59,7 +59,7 @@ class AttendanceLogCreateBloc
       if (attendanceRegistersModel != null) {
         emit(const AttendanceLogCreateState.loaded());
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(AttendanceLogCreateState.error(
           e.response?.data['Errors'][0]['code'],e.response?.data['Errors'][0]['message']));
     }

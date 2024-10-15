@@ -8,12 +8,13 @@ import {
   Row,
   HorizontalNav,
   ViewDetailsCard,
-  Toast,
-  ActionBar,
   Menu,
   SubmitBar,
   CitizenInfoLabel,
 } from "@egovernments/digit-ui-react-components";
+import {
+  Toast,InfoCard, Button,ActionBar
+} from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewUtilConfig";
@@ -395,7 +396,7 @@ const ViewUtilization = () => {
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
-  const [toast, setToast] = useState({ show: false, label: "", error: false });
+  const [toast, setToast] = useState({ show: false, label: "", type:"" });
   const menuRef = useRef();
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
@@ -413,7 +414,7 @@ const ViewUtilization = () => {
   Digit.Hooks.useClickOutside(menuRef, closeMenu, showActions);
 
   const handleToastClose = () => {
-    setToast({ show: false, label: "", error: false });
+    setToast({ show: false, label: "", type:""});
   };
 
   const config = data(statement?.[0], statement,oldData);
@@ -439,29 +440,50 @@ const ViewUtilization = () => {
   };
   return (
     <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px", marginRight: "5px" }}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px", marginRight: "5px" }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_UTLIZATION")}
         </Header>
-        {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />}
+        {/* {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />} */}
+        {downloadStatus && (
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        )}
       </div>
       <div>
-      <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} />
+        <InfoCard
+          populators={{
+            name: "doc-banner-infoCard",
+          }}
+          variant="default"
+          text={t("STATEMENT_UTILIZATION_INFO_RATE")}
+          label={t("CS_INFO")}
+          style={{ margin: "0px", maxWidth: "100%", marginBottom: "1.5rem" }}
+        />
+        {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} /> */}
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && (
         <Toast
-          style={{ width: "100%", display: "flex", justifyContent: "space-between", whiteSpace: "nowrap" }}
+          // style={{ width: "100%", display: "flex", justifyContent: "space-between", whiteSpace: "nowrap" }}
           label={toast?.label}
-          error={toast?.error}
+          type={toast?.type}
           isDleteBtn={true}
           onClose={handleToastClose}
         ></Toast>
       )}
       <>
-        <ActionBar>
-          <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
-        </ActionBar>
+          <ActionBar
+            actionFields={[<Button type={"submit"} label={t("STATEMENT_GO_BACK")} variation={"primary"} onClick={() => history.goBack()}></Button>]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu

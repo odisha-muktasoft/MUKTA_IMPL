@@ -61,7 +61,7 @@ class WageSeekerBankCreateBloc
           bankingDetailsModel,
           bankingDetailsModel.bankAccounts?.first
               .copyWith(indID: event.indId)));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WageSeekerBankCreateState.error(
           e.response?.data['Errors'][0]['code']));
     }

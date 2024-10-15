@@ -8,7 +8,7 @@ const CitizenInfoLabel = (props) => {
   const showInfo = props?.showInfo ? props?.showInfo : true;
   
   return (
-    <div className={`info-banner-wrap ${props?.className ?? ""}`} style={props?.style}>
+    <div className={`info-banner-wrap ${props?.className ? props?.className : ""}`} style={props?.style}>
       {showInfo && (
         <div>
           <InfoBannerIcon fill={props?.fill} />

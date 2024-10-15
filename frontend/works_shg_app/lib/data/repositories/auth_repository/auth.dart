@@ -35,7 +35,7 @@ class AuthRepository {
       return UserDetailsModel.fromJson(
         json.decode(response.toString()),
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       rethrow;
       // Assuming there will be an errorMessage property in the JSON object
     }
@@ -49,7 +49,7 @@ class AuthRepository {
     try {
       await _client.post(url,
           queryParameters: queryParameters, data: body ?? {});
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -63,7 +63,7 @@ class AuthRepository {
     try {
       await _client.post(url,
           queryParameters: queryParameters, data: body ?? {}, options: options);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

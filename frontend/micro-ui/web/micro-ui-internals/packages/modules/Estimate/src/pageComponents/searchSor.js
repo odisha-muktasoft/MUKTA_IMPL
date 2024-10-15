@@ -1,16 +1,17 @@
-import { Button, Toast } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import EstimateDropdown from "./EstimateDropdown";
 import SearchBar from "./SearchBar";
+import { Toast,Button } from "@egovernments/digit-ui-components";
+
 
 const fetchData = async (sorid, state, setState, setShowToast) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   if(sorid == null)
-  {
-    setShowToast({show: true, error: true, label:"WORKS_CANNOT_ADD_EMPTY_DATA"});
-    return true;
-  }
+    {
+      setShowToast({show: true, type: "error", label:"WORKS_CANNOT_ADD_EMPTY_DATA"});
+      return true;
+    }
   let currentDateInMillis = new Date().getTime(); 
 
   const requestCriteria = {
@@ -43,6 +44,10 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
         return validFromInMillis <= currentDateInMillis
           && currentDateInMillis < validToInMillis;
       });
+      if(Rates && Rates?.length <= 0)
+      {
+        setShowToast({show: true, type: "error", label:"WORKS_RATE_NOT_FOUND_ERROR"});
+      }
       //if rates is not there then provide the error
       // state?.forEach((element) => {
       //   if (element?.sorId == sorid) {
@@ -55,7 +60,7 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
     }
     else
     {
-      setShowToast({show: true, error: true, label:"WORKS_RATE_NOT_FOUND_ERROR"});
+      setShowToast({show: true, type:"error", label:"WORKS_RATE_NOT_FOUND_ERROR"});
     }
   } catch (error) {
     // Handle any errors here
@@ -65,9 +70,9 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
 
 const searchSor = (props) => {
   const { t } = useTranslation();
-  const [stateData, setStateData] = useState({});
+  const [stateData, setStateData] = useState({SORType:"W"});
   const [selectedSOR, setSelectedSOR] = useState(null);
-  const [showToast, setShowToast] = useState({show : false, label : "", error : false});
+  const [showToast, setShowToast] = useState({show : false, label : "", type:""});
   const { register, setValue, watch } = props;
   let formData = watch("SOR");
 
@@ -109,7 +114,7 @@ const searchSor = (props) => {
       formData?.length > 0 &&
       formData?.find((ob) => ob?.sorCode && ob?.sorCode === stateData?.selectedSor?.id)
     ) {
-      setShowToast({ show: true, error: true, label: "WORKS_CANNOT_ADD_DUPLICATE_SOR" });
+      setShowToast({ show: true, type:"error", label: "WORKS_CANNOT_ADD_DUPLICATE_SOR" });
       return;
     }
     const sor = transformSOR(stateData?.selectedSor);
@@ -176,13 +181,14 @@ const searchSor = (props) => {
       <SearchBar stateData={stateData} selectedSOR={selectedSOR} setSelectedSOR={setSelectedSOR} />
       <Button
         label={t("ESTIMATE_ADD_LABEL")}
-        onButtonClick={buttonClick}
+        onClick={buttonClick}
         className={"add-sor-button"}
+        style={{marginTop:"24px"}}
       />
       </div>
       </div>
       {showToast?.show && (
-      <Toast  labelstyle={{width:"100%"}} error={showToast?.error} label={t(showToast?.label)} isDleteBtn={true} onClose={() => setShowToast({show : false, label : "", error : false})} />
+      <Toast  labelstyle={{width:"100%"}} type={showToast?.type} label={t(showToast?.label)} isDleteBtn={true} onClose={() => setShowToast({show : false, label : "", type : ""})} />
       )}
     </div>
   );

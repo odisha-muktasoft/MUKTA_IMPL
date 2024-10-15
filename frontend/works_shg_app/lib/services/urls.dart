@@ -9,8 +9,8 @@ class Urls {
   static WorkServices workServices = const WorkServices();
   static ORGServices orgServices = const ORGServices();
   static BillServices billServices = const BillServices();
-  static MeasurementService measurementService= const MeasurementService();
-  static EmpHrms empHrms =const EmpHrms();
+  static MeasurementService measurementService = const MeasurementService();
+  static EmpHrms empHrms = const EmpHrms();
   static EstimateService estimateService = const EstimateService();
 }
 
@@ -21,7 +21,8 @@ class CommonServices {
       'egov-workflow-v2/egov-wf/businessservice/_search';
   String get fileUpload => 'filestore/v1/files';
   String get fileFetch => 'filestore/v1/files/url';
-  String get fetchCities => 'egov-location/location/v11/boundarys/_search';
+  String get fetchCitiesold => 'egov-location/location/v11/boundarys/_search';
+  String get fetchCities => 'boundary-service/boundary-relationships/_search';
   String get bankDetails => 'https://ifsc.razorpay.com';
   String get pdfDownload => 'egov-pdf/download';
 }
@@ -82,6 +83,15 @@ class EmpHrms {
   
 }
 
+class EmpHrms {
+  const EmpHrms();
+  // uat-prod
+  // String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+
+  // unified-qa
+  String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
+}
+
 class MusterRollServices {
   const MusterRollServices();
   String get searchMusterRolls => 'muster-roll/v1/_search';
@@ -92,6 +102,18 @@ class MusterRollServices {
 
 class AttendanceRegisterServices {
   const AttendanceRegisterServices();
+
+  // uat-prod
+  // String get createAttendanceRegister => 'attendance/v1/_create';
+  // String get searchAttendanceRegister => 'attendance/v1/_search';
+  // String get createAttendee => 'attendance/attendee/v1/_create';
+  // String get createAttendanceLog => 'attendance/log/v1/_create';
+  // String get updateAttendanceLog => 'attendance/log/v1/_update';
+  // String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
+  // String get individualSearch => 'individual/v1/_search';
+  // String get wmsIndividualSearch => 'wms/individual/_search';
+
+  // // unified-qa
   String get createAttendanceRegister => 'attendance/v1/_create';
   String get searchAttendanceRegister => 'attendance/v1/_search';
   String get createAttendee => 'attendance/attendee/v1/_create';

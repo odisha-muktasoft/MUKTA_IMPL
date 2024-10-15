@@ -26,7 +26,7 @@ class EmpHRMSRepository {
 
       
       return HRMSResponse.fromJson(res.data);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

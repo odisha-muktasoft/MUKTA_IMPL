@@ -23,6 +23,7 @@
     "react-scripts": "^4.0.1"
   },
   "dependencies": {
+    "@egovernments/digit-ui-components": "0.0.2-beta.47",
     "axios": "1.4.0",
     "babel-preset-react": "6.24.1",
     "lodash": "^4.17.21",

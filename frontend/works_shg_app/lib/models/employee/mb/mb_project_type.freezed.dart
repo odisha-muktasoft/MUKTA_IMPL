@@ -12,7 +12,7 @@ part of 'mb_project_type.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MBProjectType _$MBProjectTypeFromJson(Map<String, dynamic> json) {
   return _MBProjectType.fromJson(json);
@@ -77,11 +77,11 @@ class _$MBProjectTypeCopyWithImpl<$Res, $Val extends MBProjectType>
 }
 
 /// @nodoc
-abstract class _$$_MBProjectTypeCopyWith<$Res>
+abstract class _$$MBProjectTypeImplCopyWith<$Res>
     implements $MBProjectTypeCopyWith<$Res> {
-  factory _$$_MBProjectTypeCopyWith(
-          _$_MBProjectType value, $Res Function(_$_MBProjectType) then) =
-      __$$_MBProjectTypeCopyWithImpl<$Res>;
+  factory _$$MBProjectTypeImplCopyWith(
+          _$MBProjectTypeImpl value, $Res Function(_$MBProjectTypeImpl) then) =
+      __$$MBProjectTypeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'MdmsRes') MdmsRes? mdmsRes});
@@ -91,11 +91,11 @@ abstract class _$$_MBProjectTypeCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MBProjectTypeCopyWithImpl<$Res>
-    extends _$MBProjectTypeCopyWithImpl<$Res, _$_MBProjectType>
-    implements _$$_MBProjectTypeCopyWith<$Res> {
-  __$$_MBProjectTypeCopyWithImpl(
-      _$_MBProjectType _value, $Res Function(_$_MBProjectType) _then)
+class __$$MBProjectTypeImplCopyWithImpl<$Res>
+    extends _$MBProjectTypeCopyWithImpl<$Res, _$MBProjectTypeImpl>
+    implements _$$MBProjectTypeImplCopyWith<$Res> {
+  __$$MBProjectTypeImplCopyWithImpl(
+      _$MBProjectTypeImpl _value, $Res Function(_$MBProjectTypeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +103,7 @@ class __$$_MBProjectTypeCopyWithImpl<$Res>
   $Res call({
     Object? mdmsRes = freezed,
   }) {
-    return _then(_$_MBProjectType(
+    return _then(_$MBProjectTypeImpl(
       mdmsRes: freezed == mdmsRes
           ? _value.mdmsRes
           : mdmsRes // ignore: cast_nullable_to_non_nullable
@@ -114,11 +114,11 @@ class __$$_MBProjectTypeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MBProjectType implements _MBProjectType {
-  const _$_MBProjectType({@JsonKey(name: 'MdmsRes') this.mdmsRes});
+class _$MBProjectTypeImpl implements _MBProjectType {
+  const _$MBProjectTypeImpl({@JsonKey(name: 'MdmsRes') this.mdmsRes});
 
-  factory _$_MBProjectType.fromJson(Map<String, dynamic> json) =>
-      _$$_MBProjectTypeFromJson(json);
+  factory _$MBProjectTypeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MBProjectTypeImplFromJson(json);
 
   @override
   @JsonKey(name: 'MdmsRes')
@@ -130,10 +130,10 @@ class _$_MBProjectType implements _MBProjectType {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MBProjectType &&
+            other is _$MBProjectTypeImpl &&
             (identical(other.mdmsRes, mdmsRes) || other.mdmsRes == mdmsRes));
   }
 
@@ -144,12 +144,12 @@ class _$_MBProjectType implements _MBProjectType {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MBProjectTypeCopyWith<_$_MBProjectType> get copyWith =>
-      __$$_MBProjectTypeCopyWithImpl<_$_MBProjectType>(this, _$identity);
+  _$$MBProjectTypeImplCopyWith<_$MBProjectTypeImpl> get copyWith =>
+      __$$MBProjectTypeImplCopyWithImpl<_$MBProjectTypeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MBProjectTypeToJson(
+    return _$$MBProjectTypeImplToJson(
       this,
     );
   }
@@ -157,17 +157,17 @@ class _$_MBProjectType implements _MBProjectType {
 
 abstract class _MBProjectType implements MBProjectType {
   const factory _MBProjectType(
-      {@JsonKey(name: 'MdmsRes') final MdmsRes? mdmsRes}) = _$_MBProjectType;
+      {@JsonKey(name: 'MdmsRes') final MdmsRes? mdmsRes}) = _$MBProjectTypeImpl;
 
   factory _MBProjectType.fromJson(Map<String, dynamic> json) =
-      _$_MBProjectType.fromJson;
+      _$MBProjectTypeImpl.fromJson;
 
   @override
   @JsonKey(name: 'MdmsRes')
   MdmsRes? get mdmsRes;
   @override
   @JsonKey(ignore: true)
-  _$$_MBProjectTypeCopyWith<_$_MBProjectType> get copyWith =>
+  _$$MBProjectTypeImplCopyWith<_$MBProjectTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -232,10 +232,10 @@ class _$MdmsResCopyWithImpl<$Res, $Val extends MdmsRes>
 }
 
 /// @nodoc
-abstract class _$$_MdmsResCopyWith<$Res> implements $MdmsResCopyWith<$Res> {
-  factory _$$_MdmsResCopyWith(
-          _$_MdmsRes value, $Res Function(_$_MdmsRes) then) =
-      __$$_MdmsResCopyWithImpl<$Res>;
+abstract class _$$MdmsResImplCopyWith<$Res> implements $MdmsResCopyWith<$Res> {
+  factory _$$MdmsResImplCopyWith(
+          _$MdmsResImpl value, $Res Function(_$MdmsResImpl) then) =
+      __$$MdmsResImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'works') MBWorks? mbWorks});
@@ -245,10 +245,11 @@ abstract class _$$_MdmsResCopyWith<$Res> implements $MdmsResCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_MdmsResCopyWithImpl<$Res>
-    extends _$MdmsResCopyWithImpl<$Res, _$_MdmsRes>
-    implements _$$_MdmsResCopyWith<$Res> {
-  __$$_MdmsResCopyWithImpl(_$_MdmsRes _value, $Res Function(_$_MdmsRes) _then)
+class __$$MdmsResImplCopyWithImpl<$Res>
+    extends _$MdmsResCopyWithImpl<$Res, _$MdmsResImpl>
+    implements _$$MdmsResImplCopyWith<$Res> {
+  __$$MdmsResImplCopyWithImpl(
+      _$MdmsResImpl _value, $Res Function(_$MdmsResImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -256,7 +257,7 @@ class __$$_MdmsResCopyWithImpl<$Res>
   $Res call({
     Object? mbWorks = freezed,
   }) {
-    return _then(_$_MdmsRes(
+    return _then(_$MdmsResImpl(
       mbWorks: freezed == mbWorks
           ? _value.mbWorks
           : mbWorks // ignore: cast_nullable_to_non_nullable
@@ -267,11 +268,11 @@ class __$$_MdmsResCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MdmsRes implements _MdmsRes {
-  const _$_MdmsRes({@JsonKey(name: 'works') this.mbWorks});
+class _$MdmsResImpl implements _MdmsRes {
+  const _$MdmsResImpl({@JsonKey(name: 'works') this.mbWorks});
 
-  factory _$_MdmsRes.fromJson(Map<String, dynamic> json) =>
-      _$$_MdmsResFromJson(json);
+  factory _$MdmsResImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MdmsResImplFromJson(json);
 
   @override
   @JsonKey(name: 'works')
@@ -283,10 +284,10 @@ class _$_MdmsRes implements _MdmsRes {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MdmsRes &&
+            other is _$MdmsResImpl &&
             (identical(other.mbWorks, mbWorks) || other.mbWorks == mbWorks));
   }
 
@@ -297,12 +298,12 @@ class _$_MdmsRes implements _MdmsRes {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MdmsResCopyWith<_$_MdmsRes> get copyWith =>
-      __$$_MdmsResCopyWithImpl<_$_MdmsRes>(this, _$identity);
+  _$$MdmsResImplCopyWith<_$MdmsResImpl> get copyWith =>
+      __$$MdmsResImplCopyWithImpl<_$MdmsResImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MdmsResToJson(
+    return _$$MdmsResImplToJson(
       this,
     );
   }
@@ -310,16 +311,16 @@ class _$_MdmsRes implements _MdmsRes {
 
 abstract class _MdmsRes implements MdmsRes {
   const factory _MdmsRes({@JsonKey(name: 'works') final MBWorks? mbWorks}) =
-      _$_MdmsRes;
+      _$MdmsResImpl;
 
-  factory _MdmsRes.fromJson(Map<String, dynamic> json) = _$_MdmsRes.fromJson;
+  factory _MdmsRes.fromJson(Map<String, dynamic> json) = _$MdmsResImpl.fromJson;
 
   @override
   @JsonKey(name: 'works')
   MBWorks? get mbWorks;
   @override
   @JsonKey(ignore: true)
-  _$$_MdmsResCopyWith<_$_MdmsRes> get copyWith =>
+  _$$MdmsResImplCopyWith<_$MdmsResImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -370,20 +371,21 @@ class _$MBWorksCopyWithImpl<$Res, $Val extends MBWorks>
 }
 
 /// @nodoc
-abstract class _$$_MBWorksCopyWith<$Res> implements $MBWorksCopyWith<$Res> {
-  factory _$$_MBWorksCopyWith(
-          _$_MBWorks value, $Res Function(_$_MBWorks) then) =
-      __$$_MBWorksCopyWithImpl<$Res>;
+abstract class _$$MBWorksImplCopyWith<$Res> implements $MBWorksCopyWith<$Res> {
+  factory _$$MBWorksImplCopyWith(
+          _$MBWorksImpl value, $Res Function(_$MBWorksImpl) then) =
+      __$$MBWorksImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'ProjectType') List<ProjectType>? projectType});
 }
 
 /// @nodoc
-class __$$_MBWorksCopyWithImpl<$Res>
-    extends _$MBWorksCopyWithImpl<$Res, _$_MBWorks>
-    implements _$$_MBWorksCopyWith<$Res> {
-  __$$_MBWorksCopyWithImpl(_$_MBWorks _value, $Res Function(_$_MBWorks) _then)
+class __$$MBWorksImplCopyWithImpl<$Res>
+    extends _$MBWorksCopyWithImpl<$Res, _$MBWorksImpl>
+    implements _$$MBWorksImplCopyWith<$Res> {
+  __$$MBWorksImplCopyWithImpl(
+      _$MBWorksImpl _value, $Res Function(_$MBWorksImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -391,7 +393,7 @@ class __$$_MBWorksCopyWithImpl<$Res>
   $Res call({
     Object? projectType = freezed,
   }) {
-    return _then(_$_MBWorks(
+    return _then(_$MBWorksImpl(
       projectType: freezed == projectType
           ? _value._projectType
           : projectType // ignore: cast_nullable_to_non_nullable
@@ -402,13 +404,13 @@ class __$$_MBWorksCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MBWorks implements _MBWorks {
-  const _$_MBWorks(
+class _$MBWorksImpl implements _MBWorks {
+  const _$MBWorksImpl(
       {@JsonKey(name: 'ProjectType') final List<ProjectType>? projectType})
       : _projectType = projectType;
 
-  factory _$_MBWorks.fromJson(Map<String, dynamic> json) =>
-      _$$_MBWorksFromJson(json);
+  factory _$MBWorksImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MBWorksImplFromJson(json);
 
   final List<ProjectType>? _projectType;
   @override
@@ -427,10 +429,10 @@ class _$_MBWorks implements _MBWorks {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MBWorks &&
+            other is _$MBWorksImpl &&
             const DeepCollectionEquality()
                 .equals(other._projectType, _projectType));
   }
@@ -443,12 +445,12 @@ class _$_MBWorks implements _MBWorks {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MBWorksCopyWith<_$_MBWorks> get copyWith =>
-      __$$_MBWorksCopyWithImpl<_$_MBWorks>(this, _$identity);
+  _$$MBWorksImplCopyWith<_$MBWorksImpl> get copyWith =>
+      __$$MBWorksImplCopyWithImpl<_$MBWorksImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MBWorksToJson(
+    return _$$MBWorksImplToJson(
       this,
     );
   }
@@ -457,16 +459,16 @@ class _$_MBWorks implements _MBWorks {
 abstract class _MBWorks implements MBWorks {
   const factory _MBWorks(
       {@JsonKey(name: 'ProjectType')
-          final List<ProjectType>? projectType}) = _$_MBWorks;
+          final List<ProjectType>? projectType}) = _$MBWorksImpl;
 
-  factory _MBWorks.fromJson(Map<String, dynamic> json) = _$_MBWorks.fromJson;
+  factory _MBWorks.fromJson(Map<String, dynamic> json) = _$MBWorksImpl.fromJson;
 
   @override
   @JsonKey(name: 'ProjectType')
   List<ProjectType>? get projectType;
   @override
   @JsonKey(ignore: true)
-  _$$_MBWorksCopyWith<_$_MBWorks> get copyWith =>
+  _$$MBWorksImplCopyWith<_$MBWorksImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -544,11 +546,11 @@ class _$ProjectTypeCopyWithImpl<$Res, $Val extends ProjectType>
 }
 
 /// @nodoc
-abstract class _$$_ProjectTypeCopyWith<$Res>
+abstract class _$$ProjectTypeImplCopyWith<$Res>
     implements $ProjectTypeCopyWith<$Res> {
-  factory _$$_ProjectTypeCopyWith(
-          _$_ProjectType value, $Res Function(_$_ProjectType) then) =
-      __$$_ProjectTypeCopyWithImpl<$Res>;
+  factory _$$ProjectTypeImplCopyWith(
+          _$ProjectTypeImpl value, $Res Function(_$ProjectTypeImpl) then) =
+      __$$ProjectTypeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -559,11 +561,11 @@ abstract class _$$_ProjectTypeCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ProjectTypeCopyWithImpl<$Res>
-    extends _$ProjectTypeCopyWithImpl<$Res, _$_ProjectType>
-    implements _$$_ProjectTypeCopyWith<$Res> {
-  __$$_ProjectTypeCopyWithImpl(
-      _$_ProjectType _value, $Res Function(_$_ProjectType) _then)
+class __$$ProjectTypeImplCopyWithImpl<$Res>
+    extends _$ProjectTypeCopyWithImpl<$Res, _$ProjectTypeImpl>
+    implements _$$ProjectTypeImplCopyWith<$Res> {
+  __$$ProjectTypeImplCopyWithImpl(
+      _$ProjectTypeImpl _value, $Res Function(_$ProjectTypeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -574,7 +576,7 @@ class __$$_ProjectTypeCopyWithImpl<$Res>
     Object? code = freezed,
     Object? active = freezed,
   }) {
-    return _then(_$_ProjectType(
+    return _then(_$ProjectTypeImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -597,15 +599,15 @@ class __$$_ProjectTypeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ProjectType implements _ProjectType {
-  const _$_ProjectType(
+class _$ProjectTypeImpl implements _ProjectType {
+  const _$ProjectTypeImpl(
       {@JsonKey(name: 'id') this.id,
       @JsonKey(name: 'name') this.name,
       @JsonKey(name: 'code') this.code,
       @JsonKey(name: 'active') this.active});
 
-  factory _$_ProjectType.fromJson(Map<String, dynamic> json) =>
-      _$$_ProjectTypeFromJson(json);
+  factory _$ProjectTypeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProjectTypeImplFromJson(json);
 
   @override
   @JsonKey(name: 'id')
@@ -626,10 +628,10 @@ class _$_ProjectType implements _ProjectType {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProjectType &&
+            other is _$ProjectTypeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.code, code) || other.code == code) &&
@@ -643,12 +645,12 @@ class _$_ProjectType implements _ProjectType {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProjectTypeCopyWith<_$_ProjectType> get copyWith =>
-      __$$_ProjectTypeCopyWithImpl<_$_ProjectType>(this, _$identity);
+  _$$ProjectTypeImplCopyWith<_$ProjectTypeImpl> get copyWith =>
+      __$$ProjectTypeImplCopyWithImpl<_$ProjectTypeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProjectTypeToJson(
+    return _$$ProjectTypeImplToJson(
       this,
     );
   }
@@ -659,10 +661,10 @@ abstract class _ProjectType implements ProjectType {
       {@JsonKey(name: 'id') final int? id,
       @JsonKey(name: 'name') final String? name,
       @JsonKey(name: 'code') final String? code,
-      @JsonKey(name: 'active') final bool? active}) = _$_ProjectType;
+      @JsonKey(name: 'active') final bool? active}) = _$ProjectTypeImpl;
 
   factory _ProjectType.fromJson(Map<String, dynamic> json) =
-      _$_ProjectType.fromJson;
+      _$ProjectTypeImpl.fromJson;
 
   @override
   @JsonKey(name: 'id')
@@ -678,6 +680,6 @@ abstract class _ProjectType implements ProjectType {
   bool? get active;
   @override
   @JsonKey(ignore: true)
-  _$$_ProjectTypeCopyWith<_$_ProjectType> get copyWith =>
+  _$$ProjectTypeImplCopyWith<_$ProjectTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

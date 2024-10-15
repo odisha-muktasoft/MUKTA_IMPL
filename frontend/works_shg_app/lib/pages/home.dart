@@ -1,34 +1,44 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
+import 'package:digit_ui_components/widgets/scrollable_content.dart'
+    as ui_scroll;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/models/app_config/app_config_model.dart';
-import 'package:works_shg_app/models/employee/homeconfig/homeConfigModel.dart';
+import 'package:works_shg_app/models/employee/homeconfig/home_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/ButtonLink.dart';
-import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_search_bloc.dart';
-import '../models/app_config/app_config_model.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
 import '../utils/global_variables.dart';
-import '../widgets/SideBar.dart';
-import '../widgets/drawer_wrapper.dart';
+// import '../widgets/side_bar.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -61,172 +71,144 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          title:GlobalVariables.roleType == RoleType.cbo? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                  orElse: () => Container(),
-                  loaded: (OrganisationListModel? organisationListModel) {
-                    return const AppBarLogo();
-                  });
-            },
-          ):const AppBarLogo(),
-        ),
-        drawer: DrawerWrapper(
-          Drawer(
-              child: GlobalVariables.roleType == RoleType.cbo
-                  ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                      builder: (context, state) {
-                        return state.maybeMap(
-                          orElse: () {
-                            return const SideBar();
-                          },
-                          loaded: (value) {
-                            return SideBar(
-                              module: CommonMethods.getLocaleModules(),
-                            );
-                          },
-                          error: (value) {
-                            return const SideBar();
-                          },
-                        );
-                      },
-                    )
-                  : SideBar(
-                      module: CommonMethods.getLocaleModules(),
-                    )),
-        ),
-        body: BlocBuilder<LocalizationBloc, LocalizationState>(
-            builder: (context, localState) {
-          return localState.maybeMap(
-            orElse: () => const SizedBox.shrink(),
-            loaded: (value) {
-              Languages selectedLan =
-                  value.languages!.firstWhere((element) => element.isSelected);
-              return BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  return state.maybeMap(
-                    loaded: (value) {
-                      if (value.roleType == RoleType.cbo) {
-                        return BlocListener<ORGSearchBloc, ORGSearchState>(
-                            listener: (context, orgState) {
-                          orgState.maybeWhen(
-                              orElse: () => false,
-                              error: (String? error) {
+    return BlocBuilder<LocalizationBloc, LocalizationState>(
+      builder: (context, localState) {
+        return localState.maybeMap(
+          orElse: () => const SizedBox.shrink(),
+          loaded: (value) {
+            Languages selectedLan =
+                value.languages!.firstWhere((element) => element.isSelected);
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                return state.maybeMap(
+                  loaded: (value) {
+                    if (value.roleType == RoleType.cbo) {
+                      return BlocListener<ORGSearchBloc, ORGSearchState>(
+                          listener: (context, orgState) {
+                        orgState.maybeWhen(
+                            orElse: () => false,
+                            error: (String? error) {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  t.translate(i18.common.noOrgLinkedWithMob),
+                                  'ERROR');
+// new
+                              // Toast.showToast(
+                              //   context,
+                              //   message: t
+                              //       .translate(i18.common.noOrgLinkedWithMob),
+                              //   type: ToastType.error,
+                              // );
+                              context
+                                  .read<AuthBloc>()
+                                  .add(const AuthLogoutEvent());
+                            },
+                            loaded: (OrganisationListModel?
+                                organisationListModel) async {
+                              if ((organisationListModel?.organisations ?? [])
+                                  .isEmpty) {
                                 Notifiers.getToastMessage(
                                     context,
-                                    t.translate(i18.common.noOrgLinkedWithMob),
+                                    t.translate(
+                                        i18.common.noOrgLinkedWithMob),
                                     'ERROR');
+                                    //new
+                                // Toast.showToast(
+                                //   context,
+                                //   message: t
+                                //       .translate(i18.common.noOrgLinkedWithMob),
+                                //   type: ToastType.error,
+                                // );
                                 context
                                     .read<AuthBloc>()
                                     .add(const AuthLogoutEvent());
-                              },
-                              loaded: (OrganisationListModel?
-                                  organisationListModel) async {
-                                if ((organisationListModel?.organisations ?? [])
-                                    .isEmpty) {
-                                  Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
-                                          i18.common.noOrgLinkedWithMob),
-                                      'ERROR');
-                                  context
-                                      .read<AuthBloc>()
-                                      .add(const AuthLogoutEvent());
-                                } else {}
-                              });
-                        }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                                builder: (context, state) {
-                          return state.maybeWhen(
-                              orElse: () => Container(),
-                              loading: () =>
-                                  shg_loader.Loaders.circularLoader(context),
-                              loaded: (OrganisationListModel?
-                                  organisationListModel) {
-                                return BlocBuilder<HomeScreenBloc,
-                                    HomeScreenBlocState>(
-                                  builder: (context, config) {
-                                    return config.maybeWhen(
-                                        orElse: () => Container(),
-                                        loading: () =>
-                                            shg_loader.Loaders.circularLoader(
-                                                context),
-                                        loaded: (List<CBOHomeScreenConfigModel>?
-                                                cboHomeScreenConfig,
-                                            HomeConfigModel? homeConfigModel) {
-                                          // role based config
-                                          // if (value.roleType == RoleType.cbo) {
-                                          return cboBasedLayout(
-                                            cboHomeScreenConfig,
-                                            t,
-                                            context,
-                                            selectedLan,
-                                          );
-                                          // } else {
-                                          //   return empBasedLayout(
-                                          //       context, homeConfigModel!,t);
-                                          // }
-                                        });
-                                  },
+                              } else {}
+                            });
+                      }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                              builder: (context, state) {
+                        return state.maybeWhen(
+                            orElse: () => Container(),
+                            loading: () =>
+                                shg_loader.Loaders.circularLoader(context),
+                            loaded:
+                                (OrganisationListModel? organisationListModel) {
+                              return BlocBuilder<HomeScreenBloc,
+                                  HomeScreenBlocState>(
+                                builder: (context, config) {
+                                  return config.maybeWhen(
+                                      orElse: () => const SizedBox.shrink(),
+                                      loading: () =>
+                                          shg_loader.Loaders.circularLoader(
+                                              context),
+                                      loaded: (List<CBOHomeScreenConfigModel>?
+                                              cboHomeScreenConfig,
+                                          HomeConfigModel? homeConfigModel) {
+                                        return cboBasedLayout(
+                                          cboHomeScreenConfig,
+                                          t,
+                                          context,
+                                          selectedLan,
+                                        );
+                                      });
+                                },
+                              );
+                            });
+                      }));
+                    } else {
+                      return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
+                        builder: (context, config) {
+                          return config.maybeWhen(
+                            orElse: () => const SizedBox.shrink(),
+                            loading: () =>
+                                shg_loader.Loaders.circularLoader(context),
+                            loaded: (List<CBOHomeScreenConfigModel>?
+                                    cboHomeScreenConfig,
+                                HomeConfigModel? homeConfigModel) {
+                              // role based config
+                              if (value.roleType == RoleType.cbo) {
+                                return cboBasedLayout(
+                                  cboHomeScreenConfig,
+                                  t,
+                                  context,
+                                  selectedLan,
                                 );
-                              });
-                        }));
-                      } else {
-                        return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
-                          builder: (context, config) {
-                            return config.maybeWhen(
-                                orElse: () => Container(),
-                                loading: () =>
-                                    shg_loader.Loaders.circularLoader(context),
-                                loaded: (List<CBOHomeScreenConfigModel>?
-                                        cboHomeScreenConfig,
-                                    HomeConfigModel? homeConfigModel) {
-                                  // role based config
-                                  if (value.roleType == RoleType.cbo) {
-                                    return cboBasedLayout(
-                                      cboHomeScreenConfig,
-                                      t,
-                                      context,
-                                      selectedLan,
-                                    );
-                                  } else {
-                                    return empBasedLayout(
-                                        context, homeConfigModel!, t);
-                                  }
-                                });
-                          },
-                        );
-                      }
-                    },
-                    orElse: () {
-                      return const SizedBox.shrink();
-                    },
-                  );
-                },
-              );
-            },
-          );
-        }));
+                              } else {
+                                return empBasedLayout(
+                                    context, homeConfigModel!, t);
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                  orElse: () {
+                    return const SizedBox.shrink();
+                  },
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+    //);
   }
 
   Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
       AppLocalizations t) {
     final List<Widget> cards = _getItems(context, homeConfigModel);
     if (cards.isNotEmpty) {
-      return ScrollableContent(
+      return ui_scroll.ScrollableContent(
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         slivers: [
           SliverGrid(
             delegate: SliverChildBuilderDelegate((context, index) {
-              // return _getItems(context, homeConfigModel).elementAt(index);
               return cards.elementAt(index);
-            }, childCount: cards.length
-                // childCount: _getItems(context, homeConfigModel).length,
-                ),
+            }, childCount: cards.length),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 170,
-              childAspectRatio: 105 / 129,
+              maxCrossAxisExtent: 145,
+              childAspectRatio: 104 / 128,
             ),
           ),
         ],
@@ -256,7 +238,6 @@ class _HomePage extends State<HomePage> {
           context.router.push(
             const MeasurementBookInboxRoute(),
           );
-          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
         },
       ),
       i18.measurementBook.mbWorkOrderLabel: HomeItemCard(
@@ -270,14 +251,13 @@ class _HomePage extends State<HomePage> {
       )
     };
 
-    // mukta
     final homeItemsLabel = <String>[
       i18.measurementBook.mbMeasurementNumber,
       i18.measurementBook.mbWorkOrderLabel,
     ];
 
     final List<String> filteredLabels = homeItemsLabel
-        .where((element) => homeConfigModel.homeActions
+        .where((element) => homeConfigModel.actions
             .map((e) {
               if (e.parentModule == "cards") {
                 return e.displayName;
@@ -293,63 +273,77 @@ class _HomePage extends State<HomePage> {
     return widgetList;
   }
 
-//
-  ScrollableContent cboBasedLayout(
+  ui_scroll.ScrollableContent cboBasedLayout(
     List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
     AppLocalizations t,
     BuildContext context,
     Languages selectedLan,
   ) {
-    return ScrollableContent(
+    return ui_scroll.ScrollableContent(
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
-          child: PoweredByDigit(),
+          child: PoweredByDigit(
+            version: Constants.appVersion,
+          ),
         ),
         children: [
-          DigitCard(
-            onPressed: null,
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: cboHomeScreenConfig?.map((e) {
-                        if (e.order == 1) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+          ui_card.DigitCard(
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+              cardType: CardType.primary,
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: cboHomeScreenConfig?.map((e) {
+                            if (e.order == 1) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    t.translate(i18.home.mukta),
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.headlineLarge,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DigitTextBlock(
+                                        heading: t.translate(i18.home.mukta),
+                                        // style: DigitTheme.instance.mobileTheme
+                                        //      .textTheme.headlineLarge,
+                                      ),
+                                      SvgPicture.asset(Constants.muktaIcon)
+                                    ],
                                   ),
-                                  SvgPicture.asset(Constants.muktaIcon)
+                                  Button(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      type: ButtonType.tertiary,
+                                      size: ButtonSize.large,
+                                      label: t.translate(e.label ?? ''),
+                                      onPressed: () => getRoute(
+                                          e.key.toString(),
+                                          context,
+                                          selectedLan)),
                                 ],
-                              ),
-                              ButtonLink(
-                                  t.translate(e.label ?? ''),
-                                  getRoute(
-                                      e.key.toString(), context, selectedLan))
-                            ],
-                          );
-                        } else {
-                          return ButtonLink(t.translate(e.label ?? ''),
-                              getRoute(e.key.toString(), context, selectedLan));
-                        }
-                      }).toList() ??
-                      []),
-            ),
-          ),
+                              );
+                            } else {
+                              return Button(
+                                  type: ButtonType.tertiary,
+                                  size: ButtonSize.large,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  label: t.translate(e.label ?? ''),
+                                  onPressed: () => getRoute(
+                                      e.key.toString(), context, selectedLan));
+                            }
+                          }).toList() ??
+                          []),
+                ),
+              ]),
         ]);
   }
 
   Future<void> localeLoad(Languages data) async {
-    var currentLocale = await GlobalVariables.selectedLocale();
     context.read<LocalizationBloc>().add(
           LocalizationEvent.onSpecificLoadLocalization(
               module: CommonMethods.getLocaleModules(),
@@ -360,40 +354,34 @@ class _HomePage extends State<HomePage> {
         );
   }
 
-  void Function()? getRoute(String key, BuildContext context, Languages data) {
+  void getRoute(String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
-        return () {
-          localeLoad(data);
-          context.router.push(const WorkOrderRoute());
-        };
+        localeLoad(data);
+        context.router.push(const WorkOrderRoute());
+
       case Constants.homeTrackAttendance:
-        return () {
-          localeLoad(data);
-          context.router.push(const TrackAttendanceInboxRoute());
-        };
+        localeLoad(data);
+        context.router.push(const TrackAttendanceInboxRoute());
+
       case Constants.homeMusterRolls:
-        return () {
-          localeLoad(data);
-          context.router.push(const ViewMusterRollsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const ViewMusterRollsRoute());
+
       case Constants.homeMyBills:
-        return () {
-          localeLoad(data);
-          context.router.push(const MyBillsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const MyBillsRoute());
+
       case Constants.homeRegisterWageSeeker:
-        return () {
-          localeLoad(data);
-          context.router.push(const RegisterIndividualRoute());
-        };
+        localeLoad(data);
+        context.router.push(const RegisterIndividualRoute());
+
       case Constants.homeMyServiceRequests:
-        return () {
-          localeLoad(data);
-          context.router.push(const MyServiceRequestsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const MyServiceRequestsRoute());
+
       default:
-        return null;
+        null;
     }
   }
 }
@@ -414,35 +402,31 @@ class HomeItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DigitCard(
-      onPressed: onPressed,
-      padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            icon,
-            // Icon(
-            //   icon,
-            //   color: onPressed == null
-            //       ? theme.disabledColor
-            //       : theme.colorScheme.secondary,
-            //   size: 30,
-            // ),
-            const SizedBox(height: 20),
-            Text(
-              AppLocalizations.of(context).translate(
-                label,
-              ),
-              style: theme.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
+    return ui_card.DigitCard(
+        margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+        cardType: CardType.primary,
+        onPressed: onPressed,
+        // padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(height: 20),
+                Text(
+                  AppLocalizations.of(context).translate(
+                    label,
+                  ),
+                  style: theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ]);
   }
 }

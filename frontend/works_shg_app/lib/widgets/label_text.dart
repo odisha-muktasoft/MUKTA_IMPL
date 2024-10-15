@@ -1,8 +1,9 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 
 class LabelText extends StatelessWidget {
-  final input;
+  final String input;
   final EdgeInsets? padding;
   const LabelText(this.input, {super.key, this.padding});
   @override
@@ -17,8 +18,7 @@ class LabelText extends StatelessWidget {
                     : const EdgeInsets.all(8.0)),
             child: Text(
               input,
-              style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
-                  ?.apply(color: const DigitColors().black),
+              style: Theme.of(context).digitTextTheme(context).headingM,
               textAlign: TextAlign.left,
             ),
           ));

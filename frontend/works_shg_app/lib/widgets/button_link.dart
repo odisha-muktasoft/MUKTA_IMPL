@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 
 class ButtonLink extends StatelessWidget {
@@ -31,8 +31,7 @@ class ButtonLink extends StatelessWidget {
                     TextStyle(
                         fontSize: fontSize,
                         fontWeight: FontWeight.w400,
-                        color: DigitTheme
-                            .instance.mobileTheme.colorScheme.secondary),
+                        color: Theme.of(context).colorScheme.secondary),
               ))),
     );
   }

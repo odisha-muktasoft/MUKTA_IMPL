@@ -146,11 +146,12 @@ const measurement= {
   // update the additional details
   measurement.additionalDetails={
     ...measurement.additionalDetails,
-    ...{sorAmount : sumSor, nonSorAmount : sumNonSor,totalAmount : sumSor + sumNonSor}
+    ...{sorAmount : sumSor, nonSorAmount : sumNonSor,totalAmount : sumSor + sumNonSor},
+    source: "Web"
   }
 
   /* added as a temporary fix that sends entrydate */
-  measurement.entryDate=new Date().getTime();
+  measurement.entryDate = data?.entryDate ? data?.entryDate : new Date().getTime();
   const transformedData = {
     measurements: [
      measurement

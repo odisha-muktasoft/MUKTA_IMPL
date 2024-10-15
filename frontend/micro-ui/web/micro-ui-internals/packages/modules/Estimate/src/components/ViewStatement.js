@@ -74,7 +74,7 @@ const ViewStatement = (props) => {
           textAlign: col?.textAlign,
           padding: "10px",
           backgroundColor: "#EFEFEF",
-          fontSize: "12px",
+          fontSize: "16px",
           lineHeight: "14.06px",
           fontFamily: "Roboto",
           fontWeight: "700",
@@ -89,7 +89,7 @@ const ViewStatement = (props) => {
 
   const renderSubBody = (subRows) => {
     return subRows.map((subRow, subIndex) => (
-      <tr key={subIndex} style={{backgroundColor: subIndex%2==0?"transparent":"#EEEEEE", }}>
+      <tr key={subIndex} style={{backgroundColor: subIndex%2==0?"#FAFAFA":"#EEEEEE", }}>
         <td style={{ width: "5%",border: "1px solid #A6A6A6" }}>{subIndex + 1}</td>
         <td style={{ width: "5.28%",border: "1px solid #A6A6A6" }}>{subRow.code}</td>
         <td style={{ width: "30%",border: "1px solid #A6A6A6" }}>{subRow.name}</td>

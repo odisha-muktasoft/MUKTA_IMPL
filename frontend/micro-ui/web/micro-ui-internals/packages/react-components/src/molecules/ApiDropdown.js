@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
-import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
-import Dropdown from "../atoms/Dropdown";
+import {MultiSelectDropdown} from "@egovernments/digit-ui-components";
+import {Dropdown} from "@egovernments/digit-ui-components";
 import { Loader } from "../atoms/Loader";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
@@ -80,8 +80,8 @@ const ApiDropdown = ({ populators, formData, props, inputRef, errors }) => {
           select={(e) => {
             props.onChange([e], populators.name);
           }}
-          selected={props.value?.[0] || props?.value || populators.defaultValue}
-          defaultValue={props.value?.[0] || props?.value || populators.defaultValue}
+          selected={props?.value?.[0] || props?.value || populators?.defaultValue}
+          defaultValue={props?.value?.[0] || props?.value || populators?.defaultValue}
           t={t}
           errorStyle={errors?.[populators.name]}
           optionCardStyles={populators?.optionsCustomStyle}
