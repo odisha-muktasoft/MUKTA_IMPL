@@ -6,7 +6,7 @@ const searchWageSeekerConfig = () => {
     actionRole: "INDIVIDUAL_CREATOR",
     actionLink: "masters/create-wageseeker",
     apiDetails: {
-      serviceName: "/mukta-individual/v1/_search",
+      serviceName: "/individual/v1/_search",
       requestParam: {},
       requestBody: {
         apiOperation: "SEARCH",

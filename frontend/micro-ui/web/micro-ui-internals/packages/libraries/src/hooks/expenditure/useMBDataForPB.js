@@ -3,7 +3,7 @@ import { transformEstimateData } from "../../../../modules/Measurement/src/utils
 const useMBDataForPB=({workOrderNumber, tenantId})=>{
 
     const requestCriteriaForMeasurement = {
-        url : "/mukta-mukta-services/measurement/_search",
+        url : "/mukta-services/measurement/_search",
     
         body: {
           "contractNumber" : workOrderNumber,

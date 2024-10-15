@@ -4,7 +4,7 @@ return  {
   "label": "WORKS_SEARCH_CONTRACT",
   "type": "search",
   "apiDetails": {
-    "serviceName": "/wms/mukta-contract/_search",
+    "serviceName": "/wms/contract/_search",
     "requestParam": {},
     "requestBody": {
       "inbox": {

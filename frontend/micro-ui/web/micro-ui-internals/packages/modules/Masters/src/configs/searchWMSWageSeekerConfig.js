@@ -6,7 +6,7 @@ const searchWMSWageSeekerConfig = () => {
       "actionRole": "INDIVIDUAL_CREATOR",
       "actionLink": "masters/create-wageseeker",
       "apiDetails": {
-        "serviceName": "/wms/mukta-individual/_search",
+        "serviceName": "/wms/individual/_search",
         "requestParam": {},
         "requestBody": {
           "inbox": {
