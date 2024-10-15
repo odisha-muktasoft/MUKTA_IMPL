@@ -45,7 +45,7 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
           HttpHeaders.contentTypeHeader: 'application/json',
         }, responseType: ResponseType.bytes),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderPDFState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -85,11 +85,10 @@ String convertString(String input) {
           HttpHeaders.contentTypeHeader: 'application/json',
         }, responseType: ResponseType.bytes),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
 
       if (e.response != null) {
       final responseData = e.response?.data;
-      final statusCode = e.response?.statusCode;
 
       // Logging the error for debugging purposes
      

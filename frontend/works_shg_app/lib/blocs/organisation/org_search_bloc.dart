@@ -28,20 +28,26 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
       OrganisationListModel organisationListModel =
           await ORGRepository(client.init())
               .searchORG(url: Urls.orgServices.orgSearch, body: {
-        "SearchCriteria": {"contactMobileNumber": event.mobileNumber},
+        "SearchCriteria": {
+          "contactMobileNumber": event.mobileNumber,
+          "tenantId": GlobalVariables.tenantId
+           //"tenantId": "pg.citya"
+        },
         "Pagination": {"offSet": 0, "limit": 10}
       });
       GlobalVariables.organisationListModel = organisationListModel;
-      GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
+      GlobalVariables.tenantId =
+          organisationListModel.organisations?.first.tenantId ??
+              GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
     }
   }
 
-
-  FutureOr<void> mbOrgSearch(SearchMbORGEvent event, ORGSearchEmitter emit) async {
+  FutureOr<void> mbOrgSearch(
+      SearchMbORGEvent event, ORGSearchEmitter emit) async {
     Client client = Client();
     try {
       emit(const ORGSearchState.loading());
@@ -52,10 +58,12 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
         "Pagination": {"offSet": 0, "limit": 1000}
       });
       GlobalVariables.organisationListModel = organisationListModel;
-      GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
+      GlobalVariables.tenantId =
+          organisationListModel.organisations?.first.tenantId ??
+              GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -64,7 +72,8 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
 @freezed
 class ORGSearchEvent with _$ORGSearchEvent {
   const factory ORGSearchEvent.search(String mobileNumber) = SearchORGEvent;
-   const factory ORGSearchEvent.mbOrgsearch({ required String tenantId}) = SearchMbORGEvent;
+  const factory ORGSearchEvent.mbOrgsearch({required String tenantId}) =
+      SearchMbORGEvent;
 }
 
 @freezed

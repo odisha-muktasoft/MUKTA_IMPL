@@ -12,7 +12,7 @@ part of 'valid_time_extension.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ValidTimeExtCreationsSearchEvent {
@@ -121,12 +121,12 @@ class _$ValidTimeExtCreationsSearchEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$SearchValidTimeExtCreationsEventCopyWith<$Res>
+abstract class _$$SearchValidTimeExtCreationsEventImplCopyWith<$Res>
     implements $ValidTimeExtCreationsSearchEventCopyWith<$Res> {
-  factory _$$SearchValidTimeExtCreationsEventCopyWith(
-          _$SearchValidTimeExtCreationsEvent value,
-          $Res Function(_$SearchValidTimeExtCreationsEvent) then) =
-      __$$SearchValidTimeExtCreationsEventCopyWithImpl<$Res>;
+  factory _$$SearchValidTimeExtCreationsEventImplCopyWith(
+          _$SearchValidTimeExtCreationsEventImpl value,
+          $Res Function(_$SearchValidTimeExtCreationsEventImpl) then) =
+      __$$SearchValidTimeExtCreationsEventImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -137,13 +137,13 @@ abstract class _$$SearchValidTimeExtCreationsEventCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SearchValidTimeExtCreationsEventCopyWithImpl<$Res>
+class __$$SearchValidTimeExtCreationsEventImplCopyWithImpl<$Res>
     extends _$ValidTimeExtCreationsSearchEventCopyWithImpl<$Res,
-        _$SearchValidTimeExtCreationsEvent>
-    implements _$$SearchValidTimeExtCreationsEventCopyWith<$Res> {
-  __$$SearchValidTimeExtCreationsEventCopyWithImpl(
-      _$SearchValidTimeExtCreationsEvent _value,
-      $Res Function(_$SearchValidTimeExtCreationsEvent) _then)
+        _$SearchValidTimeExtCreationsEventImpl>
+    implements _$$SearchValidTimeExtCreationsEventImplCopyWith<$Res> {
+  __$$SearchValidTimeExtCreationsEventImplCopyWithImpl(
+      _$SearchValidTimeExtCreationsEventImpl _value,
+      $Res Function(_$SearchValidTimeExtCreationsEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -154,7 +154,7 @@ class __$$SearchValidTimeExtCreationsEventCopyWithImpl<$Res>
     Object? status = freezed,
     Object? contract = freezed,
   }) {
-    return _then(_$SearchValidTimeExtCreationsEvent(
+    return _then(_$SearchValidTimeExtCreationsEventImpl(
       contractNo: null == contractNo
           ? _value.contractNo
           : contractNo // ignore: cast_nullable_to_non_nullable
@@ -177,10 +177,10 @@ class __$$SearchValidTimeExtCreationsEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SearchValidTimeExtCreationsEvent
+class _$SearchValidTimeExtCreationsEventImpl
     with DiagnosticableTreeMixin
     implements SearchValidTimeExtCreationsEvent {
-  const _$SearchValidTimeExtCreationsEvent(
+  const _$SearchValidTimeExtCreationsEventImpl(
       {this.contractNo = '', this.tenantId = '', this.status, this.contract});
 
   @override
@@ -212,10 +212,10 @@ class _$SearchValidTimeExtCreationsEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchValidTimeExtCreationsEvent &&
+            other is _$SearchValidTimeExtCreationsEventImpl &&
             (identical(other.contractNo, contractNo) ||
                 other.contractNo == contractNo) &&
             (identical(other.tenantId, tenantId) ||
@@ -232,10 +232,10 @@ class _$SearchValidTimeExtCreationsEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchValidTimeExtCreationsEventCopyWith<
-          _$SearchValidTimeExtCreationsEvent>
-      get copyWith => __$$SearchValidTimeExtCreationsEventCopyWithImpl<
-          _$SearchValidTimeExtCreationsEvent>(this, _$identity);
+  _$$SearchValidTimeExtCreationsEventImplCopyWith<
+          _$SearchValidTimeExtCreationsEventImpl>
+      get copyWith => __$$SearchValidTimeExtCreationsEventImplCopyWithImpl<
+          _$SearchValidTimeExtCreationsEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -307,7 +307,7 @@ abstract class SearchValidTimeExtCreationsEvent
       {final String contractNo,
       final String tenantId,
       final String? status,
-      final Contracts? contract}) = _$SearchValidTimeExtCreationsEvent;
+      final Contracts? contract}) = _$SearchValidTimeExtCreationsEventImpl;
 
   @override
   String get contractNo;
@@ -319,8 +319,8 @@ abstract class SearchValidTimeExtCreationsEvent
   Contracts? get contract;
   @override
   @JsonKey(ignore: true)
-  _$$SearchValidTimeExtCreationsEventCopyWith<
-          _$SearchValidTimeExtCreationsEvent>
+  _$$SearchValidTimeExtCreationsEventImplCopyWith<
+          _$SearchValidTimeExtCreationsEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -400,24 +400,25 @@ class _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial with DiagnosticableTreeMixin {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial with DiagnosticableTreeMixin {
+  const _$InitialImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -432,9 +433,9 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -516,29 +517,30 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
 }
 
 abstract class _Initial extends ValidTimeExtCreationsSearchState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading with DiagnosticableTreeMixin {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading with DiagnosticableTreeMixin {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -553,9 +555,9 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -637,23 +639,25 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
 }
 
 abstract class _Loading extends ValidTimeExtCreationsSearchState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Contracts? contracts});
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -661,7 +665,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? contracts = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == contracts
           ? _value.contracts
           : contracts // ignore: cast_nullable_to_non_nullable
@@ -672,8 +676,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  const _$_Loaded(this.contracts) : super._();
+class _$LoadedImpl extends _Loaded with DiagnosticableTreeMixin {
+  const _$LoadedImpl(this.contracts) : super._();
 
   @override
   final Contracts? contracts;
@@ -693,10 +697,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.contracts, contracts) ||
                 other.contracts == contracts));
   }
@@ -707,8 +711,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -786,28 +790,30 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 }
 
 abstract class _Loaded extends ValidTimeExtCreationsSearchState {
-  const factory _Loaded(final Contracts? contracts) = _$_Loaded;
+  const factory _Loaded(final Contracts? contracts) = _$LoadedImpl;
   const _Loaded._() : super._();
 
   Contracts? get contracts;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$ValidTimeExtCreationsSearchStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -815,7 +821,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -826,8 +832,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error with DiagnosticableTreeMixin {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error with DiagnosticableTreeMixin {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -847,10 +853,10 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -860,8 +866,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -939,11 +945,11 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
 }
 
 abstract class _Error extends ValidTimeExtCreationsSearchState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

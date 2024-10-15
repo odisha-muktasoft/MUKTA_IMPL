@@ -194,6 +194,9 @@ export const UICustomizations = {
     if(businessService === businessServiceMap?.["revisedWO"]){
       return action.action.includes("VERIFY_AND_FORWARD")
     }
+    if(businessService === businessServiceMap?.measurement){
+      return action.action.includes("VERIFY_AND_FORWARD") || action.action.includes("SEND_BACK_TO_ORIGINATOR")
+    }
 
     return false;
   },
@@ -648,8 +651,6 @@ export const UICustomizations = {
 
   SearchMeasurementConfig: {
     preProcess: (data) => {
-
-      // console.log(data);
     const mbNumber=data?.body?.Individual?.MBNumber || null;
     const refId= data?.body?.Individual?.MBReference || null;
 
@@ -670,7 +671,6 @@ export const UICustomizations = {
       
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      // console.log(key,value);
       //here we can add multiple conditions
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result
@@ -786,7 +786,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || ( createdFrom!== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -800,9 +800,6 @@ export const UICustomizations = {
       
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      // console.log(key,value);
-      // console.log(row,"qwertyuiop");
-    
       //here we can add multiple conditions
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result

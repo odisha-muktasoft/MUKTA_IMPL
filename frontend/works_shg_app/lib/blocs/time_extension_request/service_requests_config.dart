@@ -47,7 +47,7 @@ class ServiceRequestsConfigBloc extends Bloc<ServiceRequestsConfigBlocEvent,
 
       emit(ServiceRequestsConfigBlocState.loaded(
           configModel.commonUiConfig?.cboMyServiceRequestsConfig?.first));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ServiceRequestsConfigBlocState.error(
           e.response?.data['Errors'][0]['code']));
     }

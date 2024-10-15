@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Switch, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PrivateRoute, AppContainer, BreadCrumb } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, AppContainer} from "@egovernments/digit-ui-react-components";
+import { BreadCrumb } from "@egovernments/digit-ui-components";
 import WorkflowCompTest from "./WorkflowCompTest";
 import SampleComp from "./SampleComp";
+
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
   const search = useLocation().search;
@@ -39,7 +41,7 @@ const ProjectBreadCrumb = ({ location }) => {
       isBack: fromScreen && true,
     }
   ];
-  return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
+  return <BreadCrumb crumbs={crumbs}/>;
 };
 
 const App = ({ path }) => {
@@ -71,15 +73,15 @@ const App = ({ path }) => {
 
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer>
         <React.Fragment>
           <ProjectBreadCrumb location={location} />
         </React.Fragment>
-        <PrivateRoute path={`${path}/create-project`} component={() => <CreateProjectComponent parentRoute={path}/>} />
-        <PrivateRoute path={`${path}/project-details`} component={() => <ProjectDetailsComponent parentRoute={path}/>} />
-        <PrivateRoute path={`${path}/search-project`} component={() => <ProjectSearchComponent parentRoute={path}/>} />
-        <PrivateRoute path={`${path}/inbox`} component={() => <ProjectSearchAndInboxComponent parentRoute={path}/>} />
-        <PrivateRoute path={`${path}/create-project-response`} component={() => <CreateProjectResponseComponent parentRoute={path}/>} />
+        <PrivateRoute path={`${path}/create-project`} component={() => <CreateProjectComponent parentRoute={path} />} />
+        <PrivateRoute path={`${path}/project-details`} component={() => <ProjectDetailsComponent parentRoute={path} />} />
+        <PrivateRoute path={`${path}/search-project`} component={() => <ProjectSearchComponent parentRoute={path} />} />
+        <PrivateRoute path={`${path}/inbox`} component={() => <ProjectSearchAndInboxComponent parentRoute={path} />} />
+        <PrivateRoute path={`${path}/create-project-response`} component={() => <CreateProjectResponseComponent parentRoute={path} />} />
         <PrivateRoute path={`${path}/workflow`} component={() => <WorkflowCompTest parentRoute={path} />} />
         <PrivateRoute path={`${path}/sample`} component={() => <SampleComp parentRoute={path} />} />
       </AppContainer>

@@ -1,6 +1,6 @@
 import { transformEstimateObjects } from "../../../../../util/estimateConversion"
 
-export const editEstimateUtil = (estimate,uom,overheads,RatesData, allEstimates) => {
+export const editEstimateUtil = (estimate,uom,overheads,RatesData, allEstimates, sessionFormData) => {
     let SORtable = transformEstimateObjects(estimate, "SOR",RatesData, allEstimates)
     let NONSORtable = transformEstimateObjects(estimate, "NON-SOR",RatesData, allEstimates)
 
@@ -86,8 +86,12 @@ export const editEstimateUtil = (estimate,uom,overheads,RatesData, allEstimates)
     })
     formData["editOverheadDetailes"] = overHeadItems
     formData["overheadDetails"] = overHeadItems
-
-
-    
+    const savedFormData = sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE");
+    if (savedFormData) {
+        let parsedData = JSON.parse(savedFormData);
+        if(parsedData?.value) parsedData = parsedData?.value;
+        if(parsedData?.SORtable && parsedData?.SORtable?.length > 0) formData.SORtable = parsedData?.SORtable;
+        if(parsedData?.NONSORtable && parsedData?.NONSORtable?.length > 0) formData.NONSORtable = parsedData?.NONSORtable;
+    }
     return formData
 }

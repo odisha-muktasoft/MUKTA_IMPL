@@ -1,9 +1,11 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Toast, ActionBar, Menu, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Menu, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewStatementConfig";
+import { InfoCard } from "@egovernments/digit-ui-components";
 import { useHistory, useLocation } from 'react-router-dom';
+import { Toast ,Button,ActionBar} from "@egovernments/digit-ui-components";
 
 const ViewAnalysisStatement = () => {
 
@@ -290,7 +292,7 @@ const ViewAnalysisStatement = () => {
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
-  const [toast, setToast] = useState({ show: false, label: "", error: false });
+  const [toast, setToast] = useState({ show: false, label: "", type: "" });
   const menuRef = useRef();
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
@@ -395,13 +397,13 @@ const ViewAnalysisStatement = () => {
 //   }, [detailedEstimate, isStateChanged, contracts]);
 
   const handleToastClose = () => {
-    setToast({ show: false, label: "", error: false });
+    setToast({ show: false, label: "", type: "" });
 }
 
   const handleActionBar = (option) => {
     if(validationData && Object.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.name))
     {
-      setToast({error: validationData?.error, label: validationData?.label, show:true})
+      setToast({type: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
     if (option?.name === "CREATE_CONTRACT") {
@@ -460,22 +462,43 @@ const ViewAnalysisStatement = () => {
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 
   return (
-    <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+    <div className={`employee-main-application-details ${"analysis-details"}`}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px", alignItems: "center" }}>
+        <Header className="works-header-view" styles={{ margin: "0px" }}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
-        { downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
+        {downloadStatus && (
+          // <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        )}
       </div>
       <div>
-      <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_ANALYSIS_INFO_RATE")}  />
+        <InfoCard
+          populators={{
+            name: "doc-banner-infoCard",
+          }}
+          variant="default"
+          text={t("STATEMENT_ANALYSIS_INFO_RATE")}
+          label={t("CS_INFO")}
+          style={{ margin: "0px", maxWidth: "100%", marginBottom: "1.5rem" }}
+        />
+        {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_ANALYSIS_INFO_RATE")}  /> */}
       </div>
       <ViewComposer data={config} isLoading={false} />
-      {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
-      <ActionBar >
-      <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
-      </ActionBar>
+        <ActionBar
+          actionFields={[<Button type={"button"} label={t("STATEMENT_GO_BACK")} variation={"primary"} onClick={() => history.goBack()}></Button>]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu

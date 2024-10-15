@@ -51,9 +51,9 @@ const searchSORConfig = {
                   name: "sorType",
                   optionsKey: "description",
                   required: true,
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   options: [
                     {
                       active: true,
@@ -74,9 +74,9 @@ const searchSORConfig = {
                   name: "sorSubType",
                   optionsKey: "description",
                   required: true,
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   mdmsv2: {
                     schemaCode: "WORKS-SOR.SubType",
                   },
@@ -92,9 +92,9 @@ const searchSORConfig = {
                   name: "sorVariant",
                   optionsKey: "description",
                   required: true,
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
+                  // "optionsCustomStyle": {
+                  //   "top": "2.3rem"
+                  // },
                   mdmsv2: {
                     schemaCode: "WORKS-SOR.Variant",
                   },

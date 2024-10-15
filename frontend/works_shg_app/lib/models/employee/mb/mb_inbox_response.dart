@@ -256,6 +256,7 @@ class MeasureLineItem with _$MeasureLineItem {
     @JsonKey(name:'number') dynamic number,
     @JsonKey(name: 'quantity') dynamic quantity,
     @JsonKey(name:'measurelineitemNo') dynamic measurelineitemNo,
+    @JsonKey(name:'measurementSummary') dynamic measurementSummary,
   }) = _MeasureLineItem;
 
   factory MeasureLineItem.fromJson(
@@ -323,7 +324,7 @@ class ContractAdditionalDetails with _$ContractAdditionalDetails {
           {@JsonKey(name: 'orgName')
               String? orgName,
           @JsonKey(name: 'totalEstimatedAmount')
-              double? totalEstimatedAmount,
+              dynamic totalEstimatedAmount,
           @JsonKey(name: 'attendanceRegisterNumber')
               String? attendanceRegisterNumber,
           @JsonKey(name: 'officerInChargeId')

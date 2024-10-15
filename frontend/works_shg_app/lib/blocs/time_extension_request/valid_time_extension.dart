@@ -61,7 +61,7 @@ class ValidTimeExtCreationsSearchBloc extends Bloc<
         emit(ValidTimeExtCreationsSearchState.loaded(contractsModel.contracts
             ?.firstWhere((c) => c.status != Constants.inActive)));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(ValidTimeExtCreationsSearchState.error(
           e.response?.data['Errors'][0]['code']));
     }

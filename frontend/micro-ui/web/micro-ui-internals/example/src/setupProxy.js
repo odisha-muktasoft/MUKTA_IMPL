@@ -42,6 +42,7 @@ module.exports = function (app) {
     "/egov-searcher/bill-genie/waterbills/_get",
     "/egov-searcher/bill-genie/seweragebills/_get",
     "/egov-pdf/download/UC/mcollect-challan",
+    "/egov-pdf/",
     "/egov-hrms/employees/_count",
     "/tl-services/v1/_create",
     "/tl-services/v1/_search",
@@ -94,8 +95,9 @@ module.exports = function (app) {
     "/mdms-v2/",
     "/egov-idgen/",
     "/rate-analysis/v1/_calculate",
-    "mukta-ifix-adapter",
+    "/mukta-ifix-adapter",
     "/ifms-adapter",
+    "/boundary-service",
     
     //look here
     "/statements/v1/analysis/_create",

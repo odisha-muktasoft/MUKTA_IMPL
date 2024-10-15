@@ -171,6 +171,10 @@ class Common {
       "ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS";
   String get slaDaysRemaining => "COMMON_SLA_DAYS";
   String get issuedDate => "WORKS_CONTRACT_ISSUE_DATE";
+  String get loading=>"ES_COMMON_LOADING";
+  String get uploading=>"ES_COMMON_UPLOADING";
+
+  
 }
 
 class Home {
@@ -372,10 +376,11 @@ class AttendanceMgmt {
   String get absent => 'ATM_ABSENT';
   String get toMarkAttendance => 'ATM_INFO_TO_MARK_ATTENDANCE';
 
-   String get individualID=>"ATM_INDIVIDUAL_ID";
+  String get individualID=>"ATM_INDIVIDUAL_ID";
   String get name=>"ATM_NAME";
   String get attendanceAlert=>"ES_COMMON_ALERT";
   String get sameDayAttendanceError=>"ATM_SAME_DAY_ATTENDANCE_ERROR";
+  
 }
 
 class MyServiceRequests {
@@ -480,5 +485,7 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbNotFound=>"MB_NUMBER_NOT_FOUND";
  String get imageLimit=>"MB_IMGAE_LIMIT";
  String get imageSize=>"MB_FILE_SIZE";
+
+ String get measurementSummaryLabel=>"MB_SUMMARY_LABEL";
 
 }

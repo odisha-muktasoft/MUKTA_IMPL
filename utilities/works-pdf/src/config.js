@@ -41,6 +41,7 @@ module.exports = {
     deviationStatement_template: process.env.MEASUREMENT_TEMPLATE || "deviation-statement",
     measurement_template: process.env.MEASUREMENT_TEMPLATE || "measurement-book",
     detailedEstimate_template: process.env.DETAILED_ESTIMATE_TEMPLATE || "detailed-estimate",
+    paymentTracker_template: process.env.PAYMENT_TRACKER_TEMPLATE || "payment-tracker",
 
     rateAnalysisStatement_template: process.env.RATE_ANALYSIS_TEMPLATE || "analysis-statement",
     rateAnalysisUtilization_template: process.env.RATE_ANALYSIS_TEMPLATE || "utilization-statement",
@@ -69,7 +70,8 @@ module.exports = {
     hrms: process.env.EGOV_HRMS_HOST || 'http://localhost:8095',
     measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8099',
     mdmsV2: process.env.EGOV_MDMS_V2_HOST || 'http://localhost:8088',
-    statements: process.env.RATE_ANALYSIS_STATEMENTS_HOST || 'http://localhost:8089'
+    statements: process.env.RATE_ANALYSIS_STATEMENTS_HOST || 'http://localhost:8089',
+    paymentTracker: process.env.EGOV_PAYMENT_TRACKER_HOST || 'http://localhost:8096',
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -93,7 +95,9 @@ module.exports = {
     measurement_book_search: "/mukta-services/measurement/_search",
     mdmsV2_search: "/mdms-v2/v1/_search",
     analysis_statement_search: "/statements/v1/analysis/_search",
-    analysis_utilization_search: "/statements/v1/utilization/_search"
+    analysis_utilization_search: "/statements/v1/utilization/_search",
+    payment_instruction_search: "/wms/mukta-pi/_search",
+    report_paymentTracker_search: "/wms/report/payment_tracker"
   },
   constraints: {
     "beneficiaryIdByHeadCode": "Deduction_{tanentId}_{headcode}"

@@ -77,7 +77,7 @@ export const mustorRollDetailsTableColumns = (t) => [
   //       return <span style={{ "color":"#00703C"}}>{t(`BILL_STATUS_${value}`)}</span>
   //     } 
   //     else if(value==="PAYMENT_PENDING"){
-  //       return <span style={{ "color": "#F47738" }}>{t(`BILL_STATUS_${value}`)}</span>
+  //       return <span style={{ "color": "#C84C0E" }}>{t(`BILL_STATUS_${value}`)}</span>
   //     }
   //     else {
   //       return <span style={{ "color":"#ff0000"}}>{t(`BILL_STATUS_${value}`)}</span>

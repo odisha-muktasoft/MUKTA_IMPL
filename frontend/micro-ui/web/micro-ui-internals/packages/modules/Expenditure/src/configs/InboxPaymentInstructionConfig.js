@@ -194,6 +194,7 @@ export const InboxPaymentInstructionConfig = {
               },
               {
                 "type": "workflowstatesfilter",
+                "labelClassName":"checkbox-status-filter-label" ,
                 "isMandatory": false,
                 "disable": false,
                 "populators": {

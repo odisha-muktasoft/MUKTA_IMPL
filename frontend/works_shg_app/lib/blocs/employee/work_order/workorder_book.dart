@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:works_shg_app/data/repositories/employee_repository/work_order.dart';
 import 'package:works_shg_app/models/employee/work_order/wo_inbox_response.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -58,7 +57,7 @@ class WorkOrderInboxBloc
                     GlobalVariables
                         .organisationListModel!.organisations!.first.tenantId,
                 "orgIds": [],
-                "wfStatus": ["ACCEPTED","APPROVED"],
+                "wfStatus": ["ACCEPTED", "APPROVED"],
                 "pagination": {
                   "limit": "10",
                   "offSet": event.offset.toString(),
@@ -96,12 +95,12 @@ class WorkOrderInboxBloc
 
             emit(
               WorkOrderInboxState.loaded(
-                  null, data!.length < 10 ? false : true, data, false, {}),
+                  null, data.length < 10 ? false : true, data, false, {}),
             );
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -138,7 +137,7 @@ class WorkOrderInboxBloc
               itemList.sort((a, b) => a.additionalDetails!.cboName!
                   .compareTo(b.additionalDetails!.cboName!));
               break;
-               case 5:
+            case 5:
               itemList.sort((a, b) =>
                   a.totalContractedAmount!.compareTo(b.totalContractedAmount!));
               break;
@@ -148,7 +147,7 @@ class WorkOrderInboxBloc
           emit(value.copyWith(contracts: itemList));
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -164,20 +163,6 @@ class WorkOrderInboxBloc
       if (event.offset == 0) {
         emit(const WorkOrderInboxState.loading());
       }
-      final s = {
-        "tenantId": GlobalVariables.tenantId ??
-            GlobalVariables
-                .organisationListModel!.organisations!.first.tenantId,
-        "contractNumber": event.contractNumber,
-        "orgIds": [],
-        "wfStatus": ["ACCEPTED","APPROVED"],
-        "pagination": {
-          "limit": "10",
-          "offSet": event.offset.toString(),
-          "sortBy": "lastModifiedTime",
-          "order": "desc"
-        }
-      };
 
       ContractsModel contractsModel =
           await MyWorksRepository(client.init()).searchMyWorks(
@@ -196,7 +181,7 @@ class WorkOrderInboxBloc
           contractsModel.contracts!
                       .where((e) => e.status != Constants.inActive)
                       .toList()
-                      .length! <
+                      .length <
                   10
               ? false
               : true,
@@ -221,7 +206,7 @@ class WorkOrderInboxBloc
             emit(
               WorkOrderInboxState.loaded(
                 null,
-                data!.length < 10 ? false : true,
+                data.length < 10 ? false : true,
                 data,
                 true,
                 event.data,
@@ -230,7 +215,7 @@ class WorkOrderInboxBloc
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -248,54 +233,36 @@ class WorkOrderInboxBloc
           return null;
         },
         loaded: (value) async {
-          // final s = {
-          //   "inbox": {
-          //     "tenantId": "od.testing",
-          //     "moduleSearchCriteria": {
-          //       "tenantId": "od.testing",
-          //       "status": value.status,
-          //       "ward": value.ward,
-          //     },
-          //     "processSearchCriteria": {
-          //       "businessService": ["MB"],
-          //       "moduleName": "measurement-service"
-          //     },
-          //     "limit": 10,
-          //     "offset": event.offset
-          //   }
-          // };
-          value!.searchData['pagination']!['offset'] = event.offset;
+          value.searchData['pagination']!['offset'] = event.offset;
           ContractsModel contractsModel =
-          await MyWorksRepository(client.init()).searchMyWorks(
-              url: Urls.workServices.myWorks,
-              body: value.searchData,
-              options: Options(extra: {
-                "userInfo": GlobalVariables.userRequestModel,
-                "accessToken": GlobalVariables.authToken,
-                "apiId": "asset-services",
-                "msgId": "search with from and to values"
-              }));
+              await MyWorksRepository(client.init()).searchMyWorks(
+                  url: Urls.workServices.myWorks,
+                  body: value.searchData,
+                  options: Options(extra: {
+                    "userInfo": GlobalVariables.userRequestModel,
+                    "accessToken": GlobalVariables.authToken,
+                    "apiId": "asset-services",
+                    "msgId": "search with from and to values"
+                  }));
           List<Contracts> data = [];
           data.addAll(value.contracts ?? []);
           data.addAll(contractsModel.contracts!);
 
           emit(
             WorkOrderInboxState.loaded(
-             null,
-             contractsModel.contracts!.length<10?false:true,
-             data,
-             true,
-             value.searchData,
-
+              null,
+              contractsModel.contracts!.length < 10 ? false : true,
+              data,
+              true,
+              value.searchData,
             ),
           );
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
-
 }
 
 @freezed
@@ -324,7 +291,7 @@ class WorkOrderInboxBlocEvent with _$WorkOrderInboxBlocEvent {
       required int offset,
       required Map<String, dynamic> data}) = WorkOrderInboxSearchBlocEvent;
 
-      const factory WorkOrderInboxBlocEvent.searchRepeat({
+  const factory WorkOrderInboxBlocEvent.searchRepeat({
     required String tenantId,
     required String businessService,
     required String moduleName,

@@ -1,26 +1,30 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 
 import '../../blocs/attendance/search_projects/search_projects.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../models/attendance/attendance_registry_model.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/empty_image.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class TrackAttendanceInboxPage extends StatefulWidget {
-  const TrackAttendanceInboxPage({Key? key}) : super(key: key);
+  const TrackAttendanceInboxPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,14 +54,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-          appBar: AppBar(
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(Drawer(
-              child: SideBar(
-            module: CommonMethods.getLocaleModules(),
-          ))),
+          // appBar: customAppBar(),
+          backgroundColor: Theme.of(context).colorTheme.generic.background,
+          // drawer: const MySideBar(),
           bottomNavigationBar: BlocBuilder<AttendanceProjectsSearchBloc,
               AttendanceProjectsSearchState>(builder: (context, state) {
             return state.maybeWhen(
@@ -66,10 +65,12 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                 loaded: (AttendanceRegistersModel? attendanceModel) {
                   return projectList.isEmpty || projectList.length == 1
                       ? const SizedBox(
-                          height: 30,
+                          height: 50,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: PoweredByDigit(),
+                            child: PoweredByDigit(
+                              version: Constants.appVersion,
+                            ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -141,18 +142,57 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Back(
-                              backLabel: AppLocalizations.of(context)
-                                  .translate(i18.common.back),
-                            ),
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .displayMedium
-                                    ?.apply(color: const DigitColors().black),
-                                textAlign: TextAlign.left,
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    Theme.of(context).spacerTheme.spacer4,
+                                vertical: Theme.of(context).spacerTheme.spacer4,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  BackNavigationButton(
+                                    backNavigationButtonThemeData:
+                                        const BackNavigationButtonThemeData()
+                                            .copyWith(
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons
+                                                      .arrow_circle_left_outlined,
+                                                  size: MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          500
+                                                      ? Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer5
+                                                      : Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer6,
+                                                  color: Theme.of(context)
+                                                      .colorTheme
+                                                      .primary
+                                                      .primary2,
+                                                )),
+                                    backButtonText: AppLocalizations.of(context)
+                                        .translate(i18.common.back),
+                                    handleBack: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                           
+
+                            Padding(
+                              padding: EdgeInsets.only(
+                                 left: Theme.of(context).spacerTheme.spacer4,bottom: Theme.of(context).spacerTheme.spacer4),
+                              child: DigitTextBlock(
+                                heading:
+                                    '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
+                                
                               ),
                             ),
                             projectList.isEmpty
@@ -172,13 +212,15 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                     attendanceRegistersModel:
                                         attendanceRegisters,
                                   ),
-                            const SizedBox(
-                              height: 16.0,
+                            SizedBox(
+                              height: Theme.of(context).spacerTheme.spacer4,
                             ),
                             projectList.isNotEmpty && projectList.length > 1
                                 ? const Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: PoweredByDigit(),
+                                    child: PoweredByDigit(
+                                      version: Constants.appVersion,
+                                    ),
                                   )
                                 : const SizedBox.shrink()
                           ]);

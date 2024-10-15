@@ -84,9 +84,9 @@ export const InboxBillConfig = {
                   "populators": {
                     "name": "billType",
                     "optionsKey": "name",
-                    "optionsCustomStyle": {
-                      "top": "2.3rem"
-                    },
+                    // "optionsCustomStyle": {
+                    //   "top": "2.3rem"
+                    // },
                     "mdmsConfig": {
                       "masterName": "BusinessService",
                       "moduleName": "expense",
@@ -197,6 +197,7 @@ export const InboxBillConfig = {
                 {
                   "label": "COMMON_WORKFLOW_STATES",
                   "type": "workflowstatesfilter",
+                  "labelClassName":"checkbox-status-filter-label" ,
                   "isMandatory": false,
                   "disable": false,
                   "populators": {

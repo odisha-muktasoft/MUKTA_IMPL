@@ -141,12 +141,13 @@ export const CreateConfig = ({t, defaultValue, isUpdate, measurement }) => {
                   "isMandatory": true,
                   "key": "effective_from_date",
                   "type": "date",
-                  "disable": isUpdate ? true : false,
+                  "disable":false,
                   // "preProcess" : {
                   //   "updateDependent" : ["populators.validation.max"]
                   // },
                   "populators": {
                     "name": "effective_from_date",
+                    "nonEditable": isUpdate ? true : false,
                     "validation":{
                       "min":isUpdate ? null : defaultValue?.currentDate
                     }

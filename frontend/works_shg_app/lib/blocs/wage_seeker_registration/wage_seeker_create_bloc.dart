@@ -67,7 +67,7 @@ class WageSeekerCreateBloc
       CreateWageSeekerEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
     try {
-      print(event.individualDetails?.adharCardResponse?.toJson());
+      
       emit(const WageSeekerCreateState.loading());
       SingleIndividualModel individualListModel =
           await WageSeekerRepository(client.init()).createIndividual(
@@ -150,7 +150,7 @@ class WageSeekerCreateBloc
           });
       await Future.delayed(const Duration(seconds: 1));
       emit(WageSeekerCreateState.loaded(individualListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WageSeekerCreateState.error(e.response?.data['Errors'][0]['code']));
     }
   }

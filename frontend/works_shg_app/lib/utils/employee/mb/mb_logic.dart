@@ -2,9 +2,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
-import 'dart:async';
-import 'dart:convert';
-import '../../../models/employee/mb/filtered_Measures.dart';
+import '../../../models/employee/mb/filtered_measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/employee/mb/mb_inbox_response.dart';
 
@@ -15,22 +13,24 @@ class MBLogic {
 
   static List<FilteredMeasurements> formContract(
       {required MBDetailResponse mbDetailResponse}) {
-    List<FilteredMeasurementsContract> s =
-        mbDetailResponse.contract!.lineItems!.map((e) {
-      FilteredMeasurementsContract filteredMeasurementsContract =
-          FilteredMeasurementsContract(
-              contractAdditionalDetails:
-                  mbDetailResponse.contract?.additionalDetails,
-              estimateId: e.estimateId,
-              estimateLineItemId: e.estimateLineItemId,
-              contractLineItemRef: e.contractLineItemRef,
-              unitRate: e.unitRate,
-              status: e.status,
-              estimates: getEstimate(e.estimateLineItemId!, mbDetailResponse));
+        //TODO:[temporay commented for testing flutter upgrade]
+    // List<FilteredMeasurementsContract> s =
+    //     mbDetailResponse.contract!.lineItems!.map((e) {
+    //   FilteredMeasurementsContract filteredMeasurementsContract =
+    //       FilteredMeasurementsContract(
+    //           contractAdditionalDetails:
+    //               mbDetailResponse.contract?.additionalDetails,
+    //           estimateId: e.estimateId,
+    //           estimateLineItemId: e.estimateLineItemId,
+    //           contractLineItemRef: e.contractLineItemRef,
+    //           unitRate: e.unitRate,
+    //           status: e.status,
+    //           estimates: getEstimate(e.estimateLineItemId!, mbDetailResponse));
 
-      return filteredMeasurementsContract;
-    }).toList();
+    //   return filteredMeasurementsContract;
+    // }).toList();
 
+// end
     FilteredMeasurements sata = FilteredMeasurements(
         totalAmount: 0.0,
         totalNorSorAmount: 0.0,
@@ -38,11 +38,11 @@ class MBLogic {
         musterRollNumber: null,
         mbNumber: null,
         wfStatus: null,
-        tenantId: mbDetailResponse!.contract!.tenantId,
+        tenantId: mbDetailResponse.contract!.tenantId,
         endDate: mbDetailResponse.period?.endDate ?? 0,
         startDate: mbDetailResponse.period?.startDate ?? 0,
         entryDate: DateTime.now().millisecondsSinceEpoch,
-        referenceId: mbDetailResponse!.contract!.contractNumber,
+        referenceId: mbDetailResponse.contract!.contractNumber,
         id: null,
         physicalRefNumber: null,
         measures: mbDetailResponse.contract!.lineItems!.mapIndexed((index, e) {
@@ -57,7 +57,7 @@ class MBLogic {
                   cumulativeValue: 0.0,
                   currentValue: 0.0,
                   tenantId:
-                      mbDetailResponse!.contract!.lineItems!.first.tenantId!,
+                      mbDetailResponse.contract!.lineItems!.first.tenantId!,
                   mbAmount: 0.0,
                   targetId: e.contractLineItemRef,
                   isActive: null,
@@ -253,7 +253,7 @@ class MBLogic {
         return filteredMeasurementsContract;
       }
     }).toList();
-    return alldata!.whereNotNull().toList() ?? [];
+    return alldata?.whereNotNull().toList() ?? [];
   }
 
   // estimate
@@ -286,7 +286,7 @@ class MBLogic {
           height: e.height != null ? e.height!.toInt() : 0,
           quantity: e.quantity != null
               ? e.quantity!.toDouble()
-              : e.noOfunit!.toDouble(),
+              : 0.0,
           isDeduction: e.isDeduction,
           status: mb.estimate?.status,
           wfStatus: mb.estimate?.wfStatus,
@@ -296,7 +296,7 @@ class MBLogic {
       }
     }).toList();
 
-    return alldata!.whereNotNull().toList() ?? [];
+    return alldata?.whereNotNull().toList() ?? [];
   }
 
   static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
@@ -449,7 +449,7 @@ class MBLogic {
 
 // to map
 
-  static Map<String, dynamic> measurementToMap(Measurement measurement) {
+  static Map<String, dynamic> measurementToMap(Measurement measurement, MBScreen mbScreen) {
     Map<String, dynamic> data = {
       "documents": measurement.documents != null
           ? measurement.documents!.map((e) {
@@ -496,6 +496,7 @@ class MBLogic {
         }).toList()
       },
       'additionalDetails': {
+        'source':mbScreen==MBScreen.update?measurement.additionalDetail?.source:"Mobile",
         'endDate': measurement.additionalDetail?.endDate,
         'sorAmount': measurement.additionalDetail?.sorAmount,
         'startDate': measurement.additionalDetail?.startDate,
@@ -508,12 +509,7 @@ class MBLogic {
           'description': measure.description,
           'comments': measure.comments,
           'targetId': measure.targetId,
-          //TODO:[if the numItems is o.o then breath and height and length should be 0.0 and if numItems morethan 0.0 then length,breath and height should be 1]
-          // start of old code clean working
-          // 'breadth': measure.breadth,
-          // 'length': measure.length,
-          // 'height':measure.height,
-          // end of old code clean working
+          
           'breadth':
               (measure.numItems == 0.0 || measure.numItems! < 0.0) ? 0.0 : 1.0,
           'length':
@@ -788,13 +784,14 @@ class MBLogic {
                   'number': item.number,
                   'quantity': item.quantity,
                   'measurelineitemNo': item.measurelineitemNo,
+                  'measurementSummary':item.measurementSummary
                 };
               }
               return null;
             })
             .where((element) => element != null)
             .toList()
-            ?.cast<Map<String, dynamic>>();
+            .cast<Map<String, dynamic>>();
 
     if (data == null || data.isEmpty) {
       return [];

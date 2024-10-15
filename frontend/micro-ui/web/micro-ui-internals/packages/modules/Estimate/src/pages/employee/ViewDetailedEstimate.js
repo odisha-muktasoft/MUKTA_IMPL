@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Toast, ActionBar, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewConfig";
 import { useHistory } from 'react-router-dom';
+import { Toast ,Button,ActionBar} from "@egovernments/digit-ui-components";
 
 const ViewDetailedEstimate = () => {
   const history = useHistory();
@@ -12,8 +13,9 @@ const ViewDetailedEstimate = () => {
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
-  const [toast, setToast] = useState({ show: false, label: "", error: false });
+  const [toast, setToast] = useState({ show: false, label: "", type: "" });
   const menuRef = useRef();
+  sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE") ? sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE") : "";
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
@@ -85,7 +87,8 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "CREATE_CONTRACT",
+          name:"CREATE_CONTRACT",
+          displayName:"EST_VIEW_ACTIONS_CREATE_CONTRACT",
         },
       ]);
     }
@@ -96,7 +99,8 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "VIEW_CONTRACT",
+          name:"VIEW_CONTRACT",
+          displayName: "EST_VIEW_ACTIONS_VIEW_CONTRACT",
         },
       ]);
     }
@@ -110,6 +114,7 @@ const ViewDetailedEstimate = () => {
         ...prevState,
         {
           name: "CREATE_REVISION_ESTIMATE",
+          displayName: "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE",
         },
       ]);
     }
@@ -117,13 +122,13 @@ const ViewDetailedEstimate = () => {
   }, [detailedEstimate, isStateChanged, contracts]);
 
   const handleToastClose = () => {
-    setToast({ show: false, label: "", error: false });
+    setToast({ show: false, label: "", type: "" });
 }
 
   const handleActionBar = (option) => {
     if(validationData && Object.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.name))
     {
-      setToast({error: validationData?.error, label: validationData?.label, show:true})
+      setToast({type: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
     if (option?.name === "CREATE_CONTRACT") {
@@ -174,27 +179,48 @@ const ViewDetailedEstimate = () => {
   if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 
   return (
-    <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+    <div className={`employee-main-application-details ${"estimate-details"}`}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px" ,alignItems:"center"}}>
+        <Header className="works-header-view" styles={{ margin: "0px" }}>
           {revisionNumber ? t("ESTIMATE_VIEW_REVISED_ESTIMATE") : t("ESTIMATE_VIEW_ESTIMATE")}
         </Header>
-        <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
+        {
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        }
       </div>
       <ViewComposer data={config} isLoading={false} />
-      {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
-        {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
-          <ActionBar>
-          {showActions ? <Menu
-              localeKeyPrefix={`EST_VIEW_ACTIONS`}
-              options={actionsMenu}
-              optionKey={"name"}
-              t={t}
-              onSelect={handleActionBar}
-          />:null} 
-          <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-      </ActionBar>
+        {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" &&
+        !isLoadingContracts &&
+        actionsMenu?.length > 0 ? (
+        <ActionBar
+        actionFields={[
+          <Button
+            t={t}
+            type={"actionButton"}
+            options={actionsMenu}
+            label={t("WORKS_ACTIONS")}
+            variation={"primary"}
+            optionsKey={"displayName"}
+            isSearchable={false}
+            onOptionSelect={(option) => {
+              handleActionBar(option);
+            }}
+          ></Button>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
+      />
+
         ) : null}
       </>
     </div>

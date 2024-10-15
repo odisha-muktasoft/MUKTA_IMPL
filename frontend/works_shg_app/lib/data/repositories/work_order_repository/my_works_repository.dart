@@ -24,7 +24,7 @@ class MyWorksRepository {
 
       return ContractsModelMapper.fromMap(
           response.data as Map<String, dynamic>);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -43,7 +43,7 @@ class MyWorksRepository {
 
       return ContractsModelMapper.fromMap(
           response.data as Map<String, dynamic>);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -65,7 +65,7 @@ class MyWorksRepository {
       return MyWorksSearchCriteriaModel.fromJson(
         json.decode(response.toString())['MdmsRes'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

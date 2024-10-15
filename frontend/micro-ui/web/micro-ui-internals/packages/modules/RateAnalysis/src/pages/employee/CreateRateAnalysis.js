@@ -1,4 +1,4 @@
-import { Loader, FormComposerV2, Header, Toast, ActionBar, Menu, SubmitBar, WorkflowModal, AlertPopUp } from "@egovernments/digit-ui-react-components";
+import { Loader, FormComposerV2, Header, ActionBar, Menu, SubmitBar, WorkflowModal, AlertPopUp } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import { CreateConfig } from "../../configs/RateAnalysisCreateConfig";
 import { getDefaultValues, transformRequestBody } from "../../utils/transformData";
 import getModalConfig from "../../../../Measurement/src/pages/employee/config";
 import { deepCompare } from "../../utils/transformData";
+import { Toast } from "@egovernments/digit-ui-components";
 
 const CreateRateAnalysis = ({ props }) => {
   
@@ -19,7 +20,7 @@ const CreateRateAnalysis = ({ props }) => {
   const [createState, setState] = useState({ SORDetails:[], extraCharges:[], accessors: undefined, period: {} });
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [defaultState, setDefaultState] = useState({ SORDetails:[], extraCharges:[] });
-  const [showToast, setShowToast] = useState({display: false, error: false});
+  const [showToast, setShowToast] = useState({display: false, type:""});
   const [errorMessage, setErrorMessage] = useState("");
   const [config, setConfig] = useState({});
   const [approvers, setApprovers] = useState([]);
@@ -156,7 +157,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
         createState?.accessors?.setValue?.("sordata", data?.mdms?.[0]);
         if (data?.period?.type == "error") {
           setErrorMessage(data?.period?.message);
-          setShowToast({display:true, error:true});
+          setShowToast({display:true, type:"error"});
         }
       }
     };
@@ -182,7 +183,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if(createState?.SORType !== "Works")
     {
       setErrorMessage(t("RA_ONLY_FOR_WORKS"));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
       setIsPopupOpen(false);
       setIsButtonDisabled(false);
       return;
@@ -190,7 +191,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if(createState?.SORDetails?.length <= 0)
     {
       setErrorMessage(t("RA_SOR_DETAILS_MANDATORY"));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
       setIsPopupOpen(false);
       setIsButtonDisabled(false);
       return;
@@ -198,7 +199,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if(createState?.SORDetails?.filter((ob) => ob?.quantity === null || ob?.quantity === "")?.length > 0)
     {
       setErrorMessage(t("RA_SOR_DETAILS_QUANTITY_MANDATORY"));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
       setIsPopupOpen(false);
       setIsButtonDisabled(false);
       return;
@@ -207,7 +208,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if(!isUpdate && allcompositionData?.mdms?.length > 0 && Digit.Utils.date.convertDateToEpoch(createState?.effective_from_date) <= allcompositionData?.mdms?.sort((a, b) => b.data.effectiveFrom - a.data.effectiveFrom)[0].data.effectiveFrom)
     {
       setErrorMessage(t("RA_NOT_ADDED_SAME_RECORD_EXIST"));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true,type:"error"});
       setIsButtonDisabled(false);
       return;
     }
@@ -227,13 +228,13 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     const onError = (resp) => {
       setIsButtonDisabled(false);
       setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
     };
     const onSuccess = (resp) => {
       setIsButtonDisabled(false);
         // if(isUpdate) setErrorMessage(`${t("RA_SUCCESS_UPDATE_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_UPDATE_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
         // else setErrorMessage(`${t("RA_SUCCESS_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
-        // setShowToast({display:true, error:false});
+        // setShowToast({display:true, type:"error"});
         // setTimeout(() => {history.push(`/${window.contextPath}/employee/rateAnalysis/view-rate-analysis?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${resp?.mdms?.[0]?.data?.effectiveFrom}`)}, 3000);;
         history.push(`/${window.contextPath}/employee/rateAnalysis/response?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${parseInt(resp?.mdms?.[0]?.data?.effectiveFrom)}&compositionId=${resp?.mdms[0]?.uniqueIdentifier}&isUpdate=${isUpdate}`)
     };
@@ -253,7 +254,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   };
 
   const closeToast = () => {
-    setShowToast({display:false, error:false});;
+    setShowToast({display:false, type:""});;
   };
   //remove Toast after 3s
   useEffect(() => {
@@ -279,7 +280,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if(!(deepCompare(createState?.SORDetails,compositionData?.mdms?.[0]?.data.basicSorDetails)))
     {
       setErrorMessage(t("RA_NO_CHANGE_IN_SOR"));
-      setShowToast({display:true, error:false});
+      setShowToast({display:true, type:""});
     }
     else
     {
@@ -314,7 +315,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
       />
-      {showToast?.display && <Toast error={showToast?.error} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
+      {showToast?.display && <Toast type={showToast?.type} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
     </div>
   );
 };

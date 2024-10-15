@@ -3,13 +3,14 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:digit_components/theme/digit_theme.dart';
+// import 'package:digit_components/theme/digit_theme.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:works_shg_app/blocs/app_initilization/home_screen_bloc.dart';
@@ -31,7 +32,6 @@ import 'package:works_shg_app/blocs/work_orders/decline_work_order.dart';
 import 'package:works_shg_app/data/init_client.dart';
 import 'package:works_shg_app/data/repositories/attendance_mdms.dart';
 import 'package:works_shg_app/data/repositories/common_repository/common_repository.dart';
-import 'package:works_shg_app/data/schema/localization.dart';
 import 'package:works_shg_app/router/app_navigator_observer.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
@@ -246,11 +246,7 @@ class _MainApplicationState extends State<MainApplication> {
         BlocProvider(
           create: (_) => UserSearchBloc()..add(const SearchUserEvent()),
         ),
-        //TODO:[old code]
-        // BlocProvider(
-        //   create: (_) =>
-        //       MusterRollSearchBloc()..add(const SearchMusterRollEvent()),
-        // ),
+        
          BlocProvider(
           create: (_) =>
               MusterRollSearchBloc(),
@@ -327,6 +323,7 @@ class _MainApplicationState extends State<MainApplication> {
           return BlocBuilder<AuthBloc, AuthState>(
             builder: (context, authState) {
               return MaterialApp.router(
+                debugShowCheckedModeBanner: false,
                 title: 'MUKTASoft App',
                 supportedLocales: appInitState.initMdmsModel != null
                     ? appInitState.digitRowCardItems!.map((e) {
@@ -344,8 +341,8 @@ class _MainApplicationState extends State<MainApplication> {
                   GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
                 ],
-               
-                theme: DigitTheme.instance.mobileTheme,
+                //theme: DigitTheme.instance.mobileTheme,
+                theme: DigitExtendedTheme.instance.getTheme(context),
                 scaffoldMessengerKey: scaffoldMessengerKey,
                 routeInformationParser: appRouter.defaultRouteParser(),
                 routerDelegate: AutoRouterDelegate.declarative(
@@ -353,11 +350,11 @@ class _MainApplicationState extends State<MainApplication> {
                   navigatorObservers: () => [AppRouterObserver()],
                   routes: (handler) => [
                     authState.maybeWhen(
-                        initial: () => const UnauthenticatedRouteWrapper(),
+                        initial: () => const UnauthenticatedWrapperRoute(),
                         loaded: (UserDetailsModel? userDetailsModel,
                                 String? accessToken, RoleType? roleType) =>
-                            const AuthenticatedRouteWrapper(),
-                        orElse: () => const UnauthenticatedRouteWrapper())
+                            const AuthenticatedWrapperRoute(),
+                        orElse: () => const UnauthenticatedWrapperRoute())
                   ],
                 ),
               );
