@@ -1,6 +1,7 @@
 package org.egov.service;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.contract.response.ResponseInfo;
 import org.egov.config.Configuration;
 import org.egov.helper.OrganisationRequestTestBuilder;
 import org.egov.util.IdgenUtil;
