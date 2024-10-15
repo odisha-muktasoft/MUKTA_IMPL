@@ -254,7 +254,7 @@ public class CalculationService {
         return absentees;
     }
 
-    private void getAllAttendees(MusterRoll musterRoll,AttendanceRegister register,Set<String> attendeesWithLogs,List<IndividualEntry> absentees) {
+    private void getAllAttendees(MusterRoll musterRoll, AttendanceRegister register, Set<String> attendeesWithLogs, List<IndividualEntry> absentees) {
         List<IndividualEntry> entries = register.getAttendees();
         Set<String> allAttendees = null;
 
@@ -371,7 +371,7 @@ public class CalculationService {
      * @param musterRollRequest
      * @return List<AttendanceLog>
      */
-    private List<AttendanceLog> fetchAttendanceLogsAndHours(MusterRollRequest musterRollRequest,Object mdmsData) {
+    private List<AttendanceLog> fetchAttendanceLogsAndHours(MusterRollRequest musterRollRequest, Object mdmsData) {
 
         //fetch the attendance log
         List<AttendanceLog> attendanceLogList = getAttendanceLogs(musterRollRequest.getMusterRoll(),musterRollRequest.getRequestInfo());
@@ -423,7 +423,7 @@ public class CalculationService {
                 .queryParam("registerId",musterRoll.getRegisterId())
                 .queryParam("fromTime",fromTime)
                 .queryParam("toTime",toTime)
-                .queryParam("status",Status.ACTIVE);
+                .queryParam("status", Status.ACTIVE);
         RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(requestInfo).build();
         AttendanceLogResponse attendanceLogResponse = null;
 

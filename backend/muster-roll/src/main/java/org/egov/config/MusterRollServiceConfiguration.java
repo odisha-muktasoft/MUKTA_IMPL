@@ -26,6 +26,10 @@ public class MusterRollServiceConfiguration {
     private String mdmsHost;
     @Value("${egov.mdms.search.endpoint}")
     private String mdmsEndPoint;
+    @Value("${egov.mdms.v2.host}")
+    private String mdmsV2Host;
+    @Value("${egov.mdms.v2.search.endpoint}")
+    private String mdmsV2EndPoint;
 
     //Idgen Config
     @Value("${egov.idgen.host}")
@@ -132,10 +136,6 @@ public class MusterRollServiceConfiguration {
     @Value("${notification.sms.enabled}")
     private boolean isSMSEnabled;
 
-    @Value("${egov.mdms.v2.host}")
-    private String mdmsV2Host;
-    @Value("${egov.mdms.v2.search.endpoint}")
-    private String mdmsV2EndPoint;
 
     @PostConstruct
     public void initialize() {
