@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment, useRef }from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { Menu, Header, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
+import { Menu, Header, SubmitBar,ViewDetailsCard, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
 import { isWorkEndInPreviousWeek } from '../../../utils';
-import {Toast,Button,ActionBar} from '@egovernments/digit-ui-components'
+import {Toast,Button,ActionBar,Tab} from '@egovernments/digit-ui-components'
 
 const ViewContractDetails = () => {
     const { t } = useTranslation();
@@ -261,12 +261,17 @@ const ViewContractDetails = () => {
           {project && <ViewDetailsCard cardState={cardState} t={t} />}
           {!data?.isNoDataFound && (
             <>
-              <HorizontalNav
+              <Tab
                 showNav={true}
                 configNavItems={configNavItems}
                 activeLink={activeLink}
                 setActiveLink={setActiveLink}
                 inFormComposer={false}
+                configItemKey="name"
+                configDisplayKey={"code"}
+                itemStyle={{width:"unset !important"}}
+                navStyles={{}}
+                style={{}}
               >
                 {activeLink === "Work_Order" && !showTimeExtension && !(queryStrings?.isTimeExtension === "true") && (
                   <ContractDetails
@@ -290,7 +295,7 @@ const ViewContractDetails = () => {
                   />
                 )}
                 {activeLink === "Terms_and_Conditions" && <TermsAndConditions data={data?.applicationData?.additionalDetails?.termsAndConditions} />}
-              </HorizontalNav>
+              </Tab>
               {!editTimeExtension && !(queryStrings?.isEditTimeExtension === "true") && (
                 <WorkflowActions
                   forcedActionPrefix={`WF_${businessService}_ACTION`}

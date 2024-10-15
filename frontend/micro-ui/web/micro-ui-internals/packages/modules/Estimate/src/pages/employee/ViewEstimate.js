@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard } from '@egovernments/digit-ui-react-components';
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from '../../../../templates/ApplicationDetails';
-import { Toast, Button } from '@egovernments/digit-ui-components';
+import { Toast, Button,Tab } from '@egovernments/digit-ui-components';
 
 const ViewEstimate = (props) => {
 
@@ -103,12 +103,23 @@ const ViewEstimate = (props) => {
         </div>
         {(project || estimate) && <ViewDetailsCard cardState={cardState} t={t} />}
         {estimate && (
-          <HorizontalNav showNav={true} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
+          <Tab 
+          showNav={true}
+          configNavItems={configNavItems}
+          activeLink={activeLink}
+          setActiveLink={setActiveLink}
+          inFormComposer={false}
+          configItemKey="name"
+          configDisplayKey={"code"}
+          itemStyle={{width:"unset !important"}}
+          navStyles={{}}
+          style={{}}
+          >
             {activeLink === "Project_Details" && (
               <ViewProject fromUrl={false} tenantId={tenantId} projectNumber={project?.projectNumber} module="estimate" />
             )}
             {activeLink === "Estimate_Details" && <ViewEstimate editApplicationNumber={project?.projectNumber} />}
-          </HorizontalNav>
+          </Tab>
         )}
         {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       </div>

@@ -253,6 +253,7 @@ const inboxConfigMukta = () => {
             {
               label: "COMMON_WORKFLOW_STATES",
               type: "workflowstatesfilter",
+              labelClassName:"checkbox-status-filter-label" ,
               isMandatory: false,
               disable: false,
               populators: {

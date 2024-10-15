@@ -20,6 +20,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                       type: "paragraph",
                       disable: true,
                       appendColon: false,
+                      labelClassName:"mb-create-label",
                       populators: {
                         name: "mbNumber",
                         customStyle: { marginBottom: "-5px", marginTop: "10px" },
@@ -36,6 +37,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "contractNumber",
                   customStyle :{marginBottom:"-5px"},
@@ -50,6 +52,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   customStyle :{marginBottom:"-5px"},
                   customParaStyle : {marginBottom:"revert"},
@@ -65,6 +68,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "musterRollNo",
                   customClass: "",
@@ -80,6 +84,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "sanctionDate",
                   customStyle :{marginBottom:"-5px"},
@@ -95,6 +100,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "projectName",
                   customStyle :{marginBottom:"-5px"},
@@ -108,6 +114,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 isMandatory: false,
                 key: "projectDesc",
                 type: "paragraph",
+                labelClassName:"mb-create-label",
                 disable: true,
                 appendColon: false,
                 populators: {
@@ -122,6 +129,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 label: "ES_COMMON_LOCATION",
                 isMandatory: false,
                 key: "projectLocation",
+                labelClassName:"mb-create-label",
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
@@ -140,6 +148,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 type: "paragraph",
                 disable: true,
                 appendColon: false,
+                labelClassName:"mb-create-label",
                 populators: {
                   name: "measurementPeriod",
                   customStyle :{marginBottom:"-5px"},

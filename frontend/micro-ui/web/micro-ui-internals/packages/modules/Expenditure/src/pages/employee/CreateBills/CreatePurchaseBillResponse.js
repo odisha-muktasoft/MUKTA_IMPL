@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PanelCard, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, Button,ActionBar } from "@egovernments/digit-ui-components";
 
 const CreatePurchaseBillResponse = () => {
   const { t } = useTranslation();
@@ -39,14 +39,18 @@ const CreatePurchaseBillResponse = () => {
       <PanelCard
         type={isResponseSuccess ? "success" : "error"}
         message={t(state?.message)}
-        footerChildren={[
-          <Link to={`/${window.contextPath}/employee`}>
-            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
-          </Link>,
-        ]}
         children={children}
         info={`${state?.showID ? t("EXP_PB_ID") : ""}`}
         multipleResponses={billNumberList}
+      />
+      <ActionBar
+        actionFields={[
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+          </Link>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

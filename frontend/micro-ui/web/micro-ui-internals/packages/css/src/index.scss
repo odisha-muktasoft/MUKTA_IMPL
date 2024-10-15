@@ -966,10 +966,9 @@ input[type="number"] {
   max-width: 760px;
   margin-top: 20px;
   display: flex;
-  justify-content: space-between;
 
   .skill-details {
-    width: 50%;
+    width: 60%;
   }
 }
 
@@ -1143,5 +1142,5 @@ input[type=“date”]::-webkit-calendar-picker-indicator {
 }
 
 .mb-history-header{
-  color:#0b0c0c !important;
+  color:#363636 !important;
 }

@@ -2,6 +2,9 @@ import { EditIcon, DownloadImgIcon, InfoBannerIcon, Modal, Row, StatusTable } fr
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, Link } from "react-router-dom";
+import {
+  Button
+} from "@egovernments/digit-ui-components";
 
 const SubWorkTableDetails = ({ data }) => {
   const tableStyles = data?.tableStyles;
@@ -49,7 +52,18 @@ const SubWorkTableDetails = ({ data }) => {
               return (
                 <td>
                   <div className="link">
-                    <Link to={lineItem?.path}>{String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))}</Link>
+                    {/* <Link to={lineItem?.path}>{String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))}</Link> */}
+                    <Link to={lineItem?.path}>
+                      <Button
+                        className=""
+                        iconFill=""
+                        label={String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))}
+                        size="medium"
+                        style={{ padding: "0px" }}
+                        title=""
+                        variation="link"
+                      />
+                    </Link>
                   </div>
                 </td>
               );
@@ -59,7 +73,7 @@ const SubWorkTableDetails = ({ data }) => {
                   <div class="tooltip">
                     <span class="textoverflow" style={{ display: "flex", ...lineItem?.styles, alignItems: "center" }}>
                       <p>{String(lineItem.value)}</p>
-                      {lineItem?.hoverIcon && <InfoBannerIcon styles={{ "margin-left": "10px" }} fill={"#ff0000"} />}
+                      {lineItem?.hoverIcon && <InfoBannerIcon styles={{ "margin-left": "10px" }} fill={"#B91900"} />}
                     </span>
                     {lineItem?.iconHoverTooltipText && (
                       <span class="tooltiptext" style={{ whiteSpace: "nowrap", ...lineItem?.toolTipStyles }}>
@@ -73,7 +87,16 @@ const SubWorkTableDetails = ({ data }) => {
               return (
                 <td>
                   <div className="link" onClick={() => setShowModal(lineItem)}>
-                    {String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))}
+                    {/* {String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))} */}
+                    <Button
+                        className=""
+                        iconFill=""
+                        label={String(lineItem.label ? lineItem.label : t("ES_COMMON_NA"))}
+                        size="medium"
+                        style={{ padding: "0px" }}
+                        title=""
+                        variation="link"
+                      />
                   </div>
                 </td>
               );

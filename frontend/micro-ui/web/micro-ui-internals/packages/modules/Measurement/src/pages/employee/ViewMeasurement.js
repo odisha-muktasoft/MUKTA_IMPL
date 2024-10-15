@@ -71,7 +71,7 @@ const ViewMeasurement = () => {
   return (
     <React.Fragment>
       <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+        <Header className="works-header-view" styles={{ marginLeft: "0px", marginBottom:"0px" }}>
           {t("MB_VIEW_MEASUREMENT_BOOK")}
         </Header>
         {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}

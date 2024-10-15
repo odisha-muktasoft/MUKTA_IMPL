@@ -51,7 +51,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
       {
         title: "CORE_COMMON_STATUS",
         value: t(`EXP_PI_STATUS_${status}`),
-        tab: { type: "statusColor", style: status === "SUCCESSFUL" ? { color: "green" } : status === "FAILED" ? { color: "red" } : {} },
+        tab: { type: "statusColor", style: status === "SUCCESSFUL" ? { color: "#00703C" } : status === "FAILED" ? { color: "#B91900" } : {} },
       },
     ],
   };
@@ -90,7 +90,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
     return {
       value:t(Digit.Utils.locale.getTransformedLocale(`EXP_PI_STATUS_${paymentStatus}`)),
       type:"paymentStatus",
-      styles:paymentStatus==="SUCCESSFUL"?{color:"green"}:(paymentStatus==="FAILED"?{color:"red"}:{}),
+      styles:paymentStatus==="SUCCESSFUL"?{color:"#00703C"}:(paymentStatus==="FAILED"?{color:"#B91900"}:{}),
       hoverIcon: paymentStatus==="FAILED"?"infoIcon":"",
       iconHoverTooltipText: paymentStatus==="FAILED" ? pi?.piErrorResp ? t(pi?.piErrorResp) :  (pi?.piStatusLogs?.[0] ? t(pi?.piStatusLogs?.[0]?.status) :  t("ES_COMMON_NA")):"",
       toolTipStyles:{maxWidth:"30ch", maxHeight:"unset"}
@@ -251,7 +251,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
     return {
       value:t(Digit.Utils.locale.getTransformedLocale(`BILL_STATUS_${paymentStatus}`)),
       type:"paymentStatus",
-      styles:paymentStatus==="Payment Successful"?{color:"green"}:(paymentStatus==="Payment Failed"?{color:"red"}:{}),
+      styles:paymentStatus==="Payment Successful"?{color:"#00703C"}:(paymentStatus==="Payment Failed"?{color:"#B91900"}:{}),
       hoverIcon: paymentStatus==="Payment Failed"?"infoIcon":"",
       iconHoverTooltipText: paymentStatus==="Payment Failed" ? t(bene?.paymentStatusMessage):"",
       toolTipStyles:{}

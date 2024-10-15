@@ -349,10 +349,9 @@ const RenderFormFields = ({data,...props}) => {
                   {item?.isMandatory ? " * " : null}
                 </CardLabel>
               )} */}
-
               {
                 item.label && (
-                  <Header className={`label`} styles={{width:"100%"}}>
+                  <Header className={`label ${item?.labelClassName}`} styles={{width:"100%"}}>
                   <div className={`label-container`}>
                     <div className={`label-styles`}>
                       {StringManipulator(

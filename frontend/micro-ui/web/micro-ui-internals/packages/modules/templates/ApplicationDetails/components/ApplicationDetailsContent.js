@@ -16,7 +16,8 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import {
   Card,
-  TextBlock
+  TextBlock,
+  Button
 } from "@egovernments/digit-ui-components";
 import { values } from "lodash";
 import React, { Fragment, useCallback, useReducer, useState } from "react";
@@ -234,7 +235,7 @@ function ApplicationDetailsContent({
     if (value?.skip) return value.value;
     else if (value?.isUnit) return value?.value ? `${getTranslatedValues(value?.value, value?.isNotTranslated)} ${t(value?.isUnit)}` : t("N/A");
     else if (value?.value === "Approved") return <span style={{"color":"#0B6623"}}>{ `${getTranslatedValues(value?.value, value?.isNotTranslated)}`}</span>
-    else if (value?.value === "Rejected") return <span style={{"color":"#FF0000"}}>{t(value?.value)}</span>
+    else if (value?.value === "Rejected") return <span style={{"color":"#B91900"}}>{t(value?.value)}</span>
     else return value?.value ? getTranslatedValues(value?.value, value?.isNotTranslated) : t("N/A");
   };
 
@@ -350,7 +351,7 @@ function ApplicationDetailsContent({
                   <CitizenInfoLabel
                     info={detail?.infoHeader}
                     text={detail?.infoText}
-                    fill={detail?.infoIconFill}
+                    fill={detail?.infoIconFill}zxx
                     className={"doc-banner"}
                     style={detail?.style}
                     textStyle={detail?.textStyle}
@@ -388,9 +389,15 @@ function ApplicationDetailsContent({
                             text={
                               <div>
                                 <Link to={value?.to}>
-                                  <span className="link" style={{ color: "#C84C0E" }}>
-                                    {value?.value}
-                                  </span>
+                                  <Button
+                                    className=""
+                                    iconFill=""
+                                    label={value?.value}
+                                    size="medium"
+                                    style={{ padding: "0px" }}
+                                    title=""
+                                    variation="link"
+                                  />
                                 </Link>
                               </div>
                             }

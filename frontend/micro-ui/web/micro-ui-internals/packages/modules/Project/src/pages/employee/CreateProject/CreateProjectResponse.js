@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PanelCard, SubmitBar, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, SubmitBar, Button,ActionBar } from "@egovernments/digit-ui-components";
 
 const CreateProjectResponse = () => {
   const { t } = useTranslation();
@@ -62,11 +62,7 @@ const CreateProjectResponse = () => {
     </div>,
   ];
 
-  const footerChildren = [
-    <Link to={`/${window.contextPath}/employee`}>
-      <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
-    </Link>,
-  ];
+
   return (
     <>
       <PanelCard
@@ -74,8 +70,16 @@ const CreateProjectResponse = () => {
         message={t(state?.message)}
         multipleResponses={projectIDsList}
         info={`${state?.showProjectID ? t("WORKS_PROJECT_ID") : ""}`}
-        footerChildren={footerChildren}
         children={children}
+      />
+      <ActionBar
+        actionFields={[
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+          </Link>,
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

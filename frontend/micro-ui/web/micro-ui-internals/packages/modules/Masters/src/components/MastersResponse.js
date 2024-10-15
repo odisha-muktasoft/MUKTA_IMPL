@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PanelCard, Button } from "@egovernments/digit-ui-components";
+import { PanelCard, Button,ActionBar } from "@egovernments/digit-ui-components";
 
 const MastersResponse = () => {
   const { t } = useTranslation();
@@ -44,22 +44,24 @@ const MastersResponse = () => {
     </div>,
   ];
 
-  const footerChildren = [
-    <Link to={`/${window.contextPath}/employee`}>
-      <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
-    </Link>
-  ];
-
   return (
     <>
       <PanelCard
         type={state?.isSuccess ? "success" : "error"}
         message={t(state?.message)}
         description={!state?.isWageSeeker ? t(state?.otherMessage) : undefined}
-        footerChildren={footerChildren}
         children={children}
         info={`${state?.showId ? (state?.isWageSeeker ? t("MASTERS_WAGESEEKER_ID") : t("MASTERS_ORGANISATION_ID")) : ""}`}
         response={state?.isWageSeeker ? queryParams?.individualId : queryParams?.orgId}
+      />
+      <ActionBar
+        actionFields={[
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+          </Link>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
       />
     </>
   );

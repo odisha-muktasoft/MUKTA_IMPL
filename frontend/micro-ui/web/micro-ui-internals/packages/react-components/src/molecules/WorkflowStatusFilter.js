@@ -29,13 +29,13 @@ const WorkflowStatusFilter = ({ props, t, populators, formData,inboxResponse }) 
 
   return (
     <>
-
-{ statusMap&&statusMap.length>0&&populators?.componentLabel && (
-                  <CardLabel style={{...props.labelStyle,marginBottom:"0.4rem"}}>
-                    {t(populators?.componentLabel)}{ populators?.isMandatory ? " * " : null }
-                  </CardLabel>) 
-                }
-        {statusMap?.map((row) => {
+      {statusMap && statusMap.length > 0 && populators?.componentLabel && (
+        <CardLabel className={`checkbox-status-filter-label`} style={{ ...props.labelStyle, marginBottom: "0.4rem" }}>
+          {t(populators?.componentLabel)}
+          {populators?.isMandatory ? " * " : null}
+        </CardLabel>
+      )}
+      {statusMap?.map((row) => {
         return (
           <CheckBox
             onChange={(e) => {
@@ -52,7 +52,7 @@ const WorkflowStatusFilter = ({ props, t, populators, formData,inboxResponse }) 
         );
       })}
     </>
-  )
+  );
 };
 
 export default WorkflowStatusFilter;
