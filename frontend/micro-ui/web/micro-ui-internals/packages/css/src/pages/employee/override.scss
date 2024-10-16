@@ -343,3 +343,26 @@ th {
 .digit-infobanner-wrap{
   max-width: 100%;
 }
+
+.employeeForgotPassword {
+  .digit-dropdown-select {
+    margin-bottom: 0rem;
+  }
+}
+
+
+.loginCardClassName{
+  .digit-dropdown-employee-select-wrap {
+    .digit-dropdown-options-card{
+      max-height: 10vmax;
+    }
+  }
+}
+
+.employeeForgotPassword{
+  .digit-dropdown-employee-select-wrap {
+    .digit-dropdown-options-card{
+      max-height: 10vmax;
+    }
+  }
+}
