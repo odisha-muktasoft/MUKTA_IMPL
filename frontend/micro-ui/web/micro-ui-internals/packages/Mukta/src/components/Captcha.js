@@ -11,7 +11,7 @@ const Captcha = (props) => {
         props.setValue("captcha",value);
     }
     return(
-        <div style={{marginBottom:"20px"}}>
+        <div>
         <ReCAPTCHA
             sitekey={key}
             onChange={onChange}
