@@ -4,6 +4,7 @@ package org.egov.util;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.AuditDetails;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.repository.OrganisationRepository;
 import org.egov.service.OrganisationService;
 import org.egov.web.models.Function;
 import org.egov.web.models.OrgSearchCriteria;
@@ -19,7 +20,7 @@ import java.util.List;
 public class OrganisationUtil {
 
     @Autowired
-    private OrganisationService organisationService;
+    private OrganisationRepository organisationRepository;
     /**
      * Method to set auditDetails for create/update flows of organisations
      *
@@ -64,7 +65,7 @@ public class OrganisationUtil {
         log.info("Inside searchExistingOrganisation method");
         OrgSearchCriteria orgSearchCriteria = OrgSearchCriteria.builder().tenantId(requestInfo.getUserInfo().getTenantId()).orgNumber(organisation.getOrgNumber()).build();
         OrgSearchRequest orgSearchRequest = OrgSearchRequest.builder().requestInfo(requestInfo).searchCriteria(orgSearchCriteria).build();
-        return organisationService.searchOrganisation(orgSearchRequest);
+        return organisationRepository.getOrganisations(orgSearchRequest);
 
     }
 }
