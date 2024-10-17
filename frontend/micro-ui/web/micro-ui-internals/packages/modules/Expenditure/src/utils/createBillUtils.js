@@ -87,7 +87,7 @@ export const createBillPayload = (data, contract,  docConfigData,workflowDetails
                 "payee": {
                   "tenantId": tenantId,
                   "type": "ORG", 
-                  "identifier": data?.invoiceDetails_vendorId,
+                  "identifier": data?.invoiceDetails_vendor?.code,
                   "status": "ACTIVE"
                 },
                 "lineItems": [
