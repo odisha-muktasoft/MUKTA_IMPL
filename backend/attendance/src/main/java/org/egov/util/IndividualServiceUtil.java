@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,7 +91,8 @@ public class IndividualServiceUtil {
 
     public List<Individual> getIndividualDetailsFromUserId(Long userId, RequestInfo requestInfo, String tenantId) {
         String uri = getSearchURLWithParams(multiStateInstanceUtil.getStateLevelTenant(tenantId)).toUriString();
-        IndividualSearch individualSearch = IndividualSearch.builder().userId(userId).build();
+        List<Long> userIds = Collections.singletonList(userId);
+        IndividualSearch individualSearch = IndividualSearch.builder().userId(userIds).build();
         IndividualSearchRequest individualSearchRequest = IndividualSearchRequest.builder()
                 .requestInfo(requestInfo).individual(individualSearch).build();
 
