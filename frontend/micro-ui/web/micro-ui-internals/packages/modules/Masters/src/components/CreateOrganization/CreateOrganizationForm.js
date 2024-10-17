@@ -18,7 +18,7 @@ const CreateOrganizationForm = ({setCreateOrgStatus, sessionFormData, setSession
             select: (data) => {
                 const wards = []
                 const localities = {}
-                data?.TenantBoundary[0]?.boundary.forEach((item) => {
+                data?.TenantBoundary[0]?.boundary.sort((a, b) => a.code.localeCompare(b.code)).forEach((item) => {
                     localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` }))
                     wards.push({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
                 });

@@ -21,7 +21,7 @@ const ConfigWageSeekerRegistrationForm =  ({selectFile, uploadedFile, setUploade
       tenantId, 'Ward', 
       {
           select: (data) => {
-              return data?.TenantBoundary[0]?.boundary.map((item) => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` }));
+              return data?.TenantBoundary[0]?.boundary.sort((a, b) => a.code.localeCompare(b.code)).map((item) => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` }));
           },
       })
 
