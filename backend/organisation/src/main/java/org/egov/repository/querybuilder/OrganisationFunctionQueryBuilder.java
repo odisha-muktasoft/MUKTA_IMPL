@@ -65,7 +65,7 @@ public class OrganisationFunctionQueryBuilder {
             addToPreparedStatement(preparedStmtList, orgIds);
         }
 
-        if (StringUtils.isNotBlank(searchCriteria.getTenantId())) {
+        if (StringUtils.isNotBlank(searchCriteria.getTenantId()) && searchCriteria.getTenantId().contains(config.getStateLevelTenantId()+".")) {
             addClauseIfRequired(preparedStmtList, queryBuilder);
             queryBuilder.append(" org.tenant_id=? ");
             preparedStmtList.add(searchCriteria.getTenantId());
@@ -73,7 +73,7 @@ public class OrganisationFunctionQueryBuilder {
 
         if (StringUtils.isNotBlank(searchCriteria.getName())) {
             addClauseIfRequired(preparedStmtList, queryBuilder);
-            queryBuilder.append(" LOWER(org.name) LIKE  LOWER(?"+")");
+            queryBuilder.append(" org.name LIKE ? ");
             preparedStmtList.add('%' + searchCriteria.getName() + '%');
         }
 

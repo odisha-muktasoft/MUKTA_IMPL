@@ -1,11 +1,9 @@
 package org.egov.util;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.AuditDetails;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.repository.OrganisationRepository;
-import org.egov.service.OrganisationService;
 import org.egov.web.models.Function;
 import org.egov.web.models.OrgSearchCriteria;
 import org.egov.web.models.OrgSearchRequest;
