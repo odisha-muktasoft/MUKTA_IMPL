@@ -83,7 +83,7 @@ const CreatePurchaseBillForm = ({
             }
 
             if (formData?.invoiceDetails_organisationType?.code === "CBO") {
-                setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
+                setValue("invoiceDetails_vendor", {code: contract.additionalDetails?.cboCode, name: contract.additionalDetails?.cboName, orgNumber: contract.additionalDetails?.cboOrgNumber});
                 setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
             
                 let organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
@@ -94,7 +94,7 @@ const CreatePurchaseBillForm = ({
                     if (vendorField) {
                         // Disabling and converting the field to text input
                         vendorField.disable = true;
-                        vendorField.type = "text";
+                        // vendorField.type = "text";
                         vendorField.populators.customClass = "disabled-text-field";
                     }
                 }
