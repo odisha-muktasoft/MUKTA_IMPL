@@ -39,6 +39,7 @@ const enabledModules = [
   // "WS",
   // "Reports",
   // "Bills",
+  "Workbench",
   "HRMS",
   "Works",
   "AttendenceMgmt",
