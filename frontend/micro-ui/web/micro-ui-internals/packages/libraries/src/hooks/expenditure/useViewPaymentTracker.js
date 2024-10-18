@@ -23,7 +23,7 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
 
     body: {
       "searchCriteria": {
-        "tenantId": "pg.citya",
+        "tenantId": tenantId,
         "moduleSearchCriteria": {
           "projectId": projectId
         },
@@ -38,9 +38,9 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
 
     body: {
       inbox: {
-        "tenantId": "pg.citya",
+        "tenantId": tenantId,
         "moduleSearchCriteria": {
-          "tenantId": "pg.citya",
+          "tenantId": tenantId,
           "projectId": projectId
         },
         "limit": 10,

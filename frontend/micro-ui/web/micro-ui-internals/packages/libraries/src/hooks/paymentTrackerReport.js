@@ -37,7 +37,7 @@ export const paymentTrackerReport = (props) => {
                     "tenantId": Digit.ULBService.getCurrentTenantId(),
                     "projectNumber": data?.aggsResponse?.projects.map((ob) => ob?.projectNumber) /* ["PJ/2023-24/11/000085"] */
                 },
-                "tenantId": "pg.citya",
+                "tenantId": Digit.ULBService.getCurrentTenantId(),
                 "limit": 10,
                 "offset": 0
         }},
