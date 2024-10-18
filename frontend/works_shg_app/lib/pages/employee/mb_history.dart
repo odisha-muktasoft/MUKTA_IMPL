@@ -85,78 +85,89 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           SliverPersistentHeader(
                             pinned: true,
                             delegate: MyHeaderDelegate(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: Theme.of(context)
-                                              .spacerTheme
-                                              .spacer4,
-                                          vertical: Theme.of(context)
-                                              .spacerTheme
-                                              .spacer4,
+                              child: Container(
+                                color: Theme.of(context)
+                                    .colorTheme
+                                    .generic
+                                    .background,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                            vertical: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                          ),
+                                          child: BackNavigationButton(
+                                            backNavigationButtonThemeData:
+                                                const BackNavigationButtonThemeData()
+                                                    .copyWith(
+                                                        textColor:
+                                                            Theme.of(context)
+                                                                .colorTheme
+                                                                .primary
+                                                                .primary2,
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        context: context,
+                                                        backButtonIcon: Icon(
+                                                          Icons
+                                                              .arrow_circle_left_outlined,
+                                                          size: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width <
+                                                                  500
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer5
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer6,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                        )),
+                                            backButtonText:
+                                                AppLocalizations.of(context)
+                                                        .translate(
+                                                            i18.common.back) ??
+                                                    'Back',
+                                            handleBack: () {
+                                              context.router.maybePopTop();
+                                            },
+                                          ),
                                         ),
-                                        child: BackNavigationButton(
-                                          backNavigationButtonThemeData:
-                                              const BackNavigationButtonThemeData()
-                                                  .copyWith(
-                                                      textColor:
-                                                          Theme.of(context)
-                                                              .colorTheme
-                                                              .primary
-                                                              .primary2,
-                                                      contentPadding:
-                                                          EdgeInsets.zero,
-                                                      context: context,
-                                                      backButtonIcon: Icon(
-                                                        Icons
-                                                            .arrow_circle_left_outlined,
-                                                        size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width <
-                                                                500
-                                                            ? Theme.of(context)
-                                                                .spacerTheme
-                                                                .spacer5
-                                                            : Theme.of(context)
-                                                                .spacerTheme
-                                                                .spacer6,
-                                                        color: Theme.of(context)
-                                                            .colorTheme
-                                                            .primary
-                                                            .primary2,
-                                                      )),
-                                          backButtonText: AppLocalizations.of(
-                                                      context)
-                                                  .translate(i18.common.back) ??
-                                              'Back',
-                                          handleBack: () {
-                                            context.router.maybePopTop();
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: Theme.of(context)
-                                            .spacerTheme
-                                            .spacer4,
-                                        top: 0.0),
-                                    child: DigitTextBlock(
-                                      heading: t.translate(
-                                          i18.measurementBook.mbHistory),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: Theme.of(context)
+                                              .spacerTheme
+                                              .spacer4,
+                                          top: 0.0),
+                                      child: DigitTextBlock(
+                                        heading: t.translate(
+                                            i18.measurementBook.mbHistory),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               height: kIsWeb ? 120 : 120,
                             ),
@@ -405,6 +416,18 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   : k.length,
                             ),
                           ),
+                         
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return const Center(
+                                    child: SizedBox(
+                                  height: 250,
+                                ));
+                              },
+                              childCount: 1,
+                            ),
+                          )
                         ],
                       ),
 
