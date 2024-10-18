@@ -44,6 +44,7 @@ const enabledModules = [
   "Sample",
   "Measurement",
   "RateAnalysis",
+  "Workbench"
   // "Engagement"
 ];
 

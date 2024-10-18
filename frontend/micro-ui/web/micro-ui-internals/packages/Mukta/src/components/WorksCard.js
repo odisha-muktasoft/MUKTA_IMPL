@@ -219,11 +219,6 @@ const WorksCard = () => {
       roles: ROLES.MASTERS,
     },
     {
-      label: t("ACTION_TEST_9WORKBENCH"),
-      link: `/workbench-ui/employee/workbench/manage-master-data`,
-      roles: ROLES.WORKBENCH,
-    },
-    {
       label: t("ACTION_TEST_10REVISIONOFRATES"),
       link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
       roles: ROLES.REVISIONOFRATES,

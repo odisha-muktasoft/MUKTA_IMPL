@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const ROLES = {
   MUKTADASHBOARD: ["DASHBOARD_VIEWER"],
-  PAYMENT: ["EMPLOYEE_COMMON"],
+  PAYMENT: ["BILL_ACCOUNTANT"],
 };
 
 const DSSCard = () => {
