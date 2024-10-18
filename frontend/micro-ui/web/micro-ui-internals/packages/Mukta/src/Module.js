@@ -8,6 +8,7 @@ import { UICustomizations } from "./configs/UICustomizations";
 import HRMSCard from "./components/HRMSCard";
 import Captcha from "./components/Captcha";
 import DSSCard from "./components/DSSCard";
+import WorkbenchCard from "./components/WorkbenchCard";
 
 const MuktaModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["Mukta"];
@@ -34,7 +35,8 @@ const componentsToRegister = {
   AttendenceMgmtCard:null , // TO HIDE THE Attendance Mgmt CARD IN HOME SCREEN as per MUKTA
   HRMSCard, // Overridden the HRMS card as per MUKTA
   MeasurementCard:null,
-  DSSCard
+  DSSCard,
+  WorkbenchCard
 };
 
 const overrideHooks = () => {
