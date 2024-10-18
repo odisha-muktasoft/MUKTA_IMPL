@@ -269,7 +269,7 @@ class _SideBar extends State<SideBar> {
         orElse: () => const SizedBox.shrink(),
         loaded: (value) {
           return ScrollableContent(
-            footer: const PoweredByDigit(),
+            footer: const PoweredByDigit(version: Constants.appVersion,),
             children: [
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {

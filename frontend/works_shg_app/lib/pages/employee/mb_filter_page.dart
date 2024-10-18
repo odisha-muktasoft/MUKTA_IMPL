@@ -1128,9 +1128,10 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   items: location!
                                                       .tenantBoundaryList!
                                                       .first
-                                                      .boundaryList!
+                                                      .boundaryList!.reversed
                                                       .map((e) => DropdownItem(
-                                                          name: e.name!,
+                                                          name: t.translate(
+                                                              '${GlobalVariables.tenantId!.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.code.toString()}'),
                                                           code: e.code
                                                               .toString()))
                                                       .toList(),

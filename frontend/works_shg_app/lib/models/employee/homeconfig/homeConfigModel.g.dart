@@ -6,21 +6,23 @@ part of 'homeConfigModel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_HomeConfigModel _$$_HomeConfigModelFromJson(Map<String, dynamic> json) =>
-    _$_HomeConfigModel(
+_$HomeConfigModelImpl _$$HomeConfigModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$HomeConfigModelImpl(
       homeActions: (json['actions'] as List<dynamic>)
           .map((e) => HomeAction.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_HomeConfigModelToJson(_$_HomeConfigModel instance) =>
+Map<String, dynamic> _$$HomeConfigModelImplToJson(
+        _$HomeConfigModelImpl instance) =>
     <String, dynamic>{
       'actions': instance.homeActions,
     };
 
-_$_HomeAction _$$_HomeActionFromJson(Map<String, dynamic> json) =>
-    _$_HomeAction(
-      id: json['id'] as int,
+_$HomeActionImpl _$$HomeActionImplFromJson(Map<String, dynamic> json) =>
+    _$HomeActionImpl(
+      id: (json['id'] as num).toInt(),
       displayName: json['displayName'] as String,
       parentModule: json['parentModule'] as String,
       enabled: json['enabled'] as bool,
@@ -28,7 +30,7 @@ _$_HomeAction _$$_HomeActionFromJson(Map<String, dynamic> json) =>
       url: json['url'] as String,
     );
 
-Map<String, dynamic> _$$_HomeActionToJson(_$_HomeAction instance) =>
+Map<String, dynamic> _$$HomeActionImplToJson(_$HomeActionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'displayName': instance.displayName,

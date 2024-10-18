@@ -325,30 +325,17 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             ward.add(value.code);
                                           });
                                         },
-                                        // onChanged: (value) {
-                                        // setState(() {
-                                        //   ward.add(value);
-                                        // });
-                                        // },
-                                        // initialValue:
-                                        //     ward.isNotEmpty ? ward.first : null,
-                                        // label: t.translate(i18.common.ward),
                                         items: location
                                             .location!
                                             .tenantBoundaryList!
                                             .first
-                                            .boundaryList!
+                                            .boundaryList!.reversed
                                             .map((e) => DropdownItem(
                                                 name: t.translate(
-                                                    e.name.toString()),
+                                                    '${GlobalVariables.tenantId!.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.code.toString()}'),
                                                 code: e.code.toString()))
                                             .toList()
                                             .toList(),
-                                        // formControlName: wardNoKey,
-                                        // valueMapper: (value) {
-                                        //   return t.translate(
-                                        //       convertToWard(value.toString()));
-                                        // },
                                       ),
                                     ),
                                   );

@@ -52,7 +52,7 @@ class WageSeekerServices {
 
 class InitServices {
   const InitServices();
-  String get mdms => 'egov-mdms-service/v1/_search';
+  String get mdms => 'mdms-v2/v1/_search';
     String get mdmsSkill=>"mdms-v2/v1/_search";
   String get localizationSearch => 'localization/messages/v1/_search';
   String get empHomeConfig=>'access/v1/actions/mdms/_get';
@@ -77,11 +77,7 @@ class WorkServices {
   String get createWorkOrder => 'contract/v1/_create';
 }
 
-class EmpHrms {
-  const EmpHrms();
-  String get leadHrmsEmployee => 'egov-hrms/employees/_search';
-  
-}
+
 
 class EmpHrms {
   const EmpHrms();

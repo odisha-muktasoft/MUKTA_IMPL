@@ -94,41 +94,7 @@ class CommonRepository {
       rethrow;
     }
   }
-  // emp mb home screen
-
-  Future<HomeConfigModel> getEmpHomeConfig({
-    required String apiEndPoint,
-    required String tenantId,
-    required List<String> roleCodes,
-    required String actionMaster,
-    required bool enabled,
-  }) async {
-    try {
-      Dio client = Dio();
-
-      client.options.baseUrl =
-          kIsWeb && !kDebugMode ? apiBaseUrl : envConfig.variables.baseUrl;
-      var response = await client.post(apiEndPoint, data: {
-        "roleCodes": roleCodes,
-        "tenantId": tenantId,
-        "actionMaster": actionMaster,
-        "enabled": enabled,
-        "RequestInfo": {
-          "apiId": 'Rainmaker',
-          "ts": DateTime.now().millisecondsSinceEpoch,
-          "action": "_search",
-          "msgId": "",
-          "authToken": GlobalVariables.authToken,
-          "userInfo": null
-        },
-      });
-
-      return HomeConfigModel.fromJson(response.data);
-    } on DioError catch (ex) {
-      // Assuming there will be an errorMessage property in the JSON object
-      rethrow;
-    }
-  }
+  
 
   Future<AppVersionModel> getAppVersion({
     required String apiEndPoint,
