@@ -78,24 +78,5 @@ class WageSeekerRepository {
     }
   }
 
-// verify adhar
 
-  Future<AdharCardResponse> verifyingAdharCard({
-    dynamic body,
-    required String url,
-  }) async {
-    final Dio dio = Dio();
-    try {
-      final response = await dio.post(
-        url,
-        data: body,
-      );
-      dio.close();
-      return AdharCardResponse.fromJson(jsonDecode(response.data));
-    } on DioError catch (ex) {
-      dio.close();
-      // Assuming there will be an errorMessage property in the JSON object
-      rethrow;
-    }
-  }
 }
