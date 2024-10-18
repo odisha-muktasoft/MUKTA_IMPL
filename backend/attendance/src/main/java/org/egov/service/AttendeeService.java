@@ -4,8 +4,9 @@ import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.AttendeeEnrichmentService;
-import org.egov.kafka.Producer;
+import org.egov.common.producer.Producer;
 import org.egov.repository.AttendeeRepository;
+import org.egov.tracer.model.CustomException;
 import org.egov.util.ResponseInfoFactory;
 import org.egov.validator.AttendanceServiceValidator;
 import org.egov.validator.AttendeeServiceValidator;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class AttendeeService {
     private final AttendeeServiceValidator attendeeServiceValidator;
 
+    private final ResponseInfoFactory responseInfoFactory;
+
     private final AttendeeRepository attendeeRepository;
 
     private final AttendanceRegisterService attendanceRegisterService;
@@ -36,8 +39,9 @@ public class AttendeeService {
     private final Producer producer;
 
     @Autowired
-    public AttendeeService(AttendeeServiceValidator attendeeServiceValidator, AttendeeRepository attendeeRepository, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator, AttendeeEnrichmentService attendeeEnrichmentService, AttendanceServiceConfiguration attendanceServiceConfiguration, Producer producer) {
+    public AttendeeService(AttendeeServiceValidator attendeeServiceValidator, ResponseInfoFactory responseInfoFactory, AttendeeRepository attendeeRepository, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator, AttendeeEnrichmentService attendeeEnrichmentService, AttendanceServiceConfiguration attendanceServiceConfiguration, Producer producer) {
         this.attendeeServiceValidator = attendeeServiceValidator;
+        this.responseInfoFactory = responseInfoFactory;
         this.attendeeRepository = attendeeRepository;
         this.attendanceRegisterService = attendanceRegisterService;
         this.attendanceServiceValidator = attendanceServiceValidator;
@@ -57,6 +61,18 @@ public class AttendeeService {
         //incoming createRequest validation
         log.info("validating create attendee request parameters");
         attendeeServiceValidator.validateAttendeeCreateRequestParameters(attendeeCreateRequest);
+
+        // Check if the configuration for "Register First Staff Insert" is disabled
+        if (!attendanceServiceConfiguration.getRegisterFirstStaffInsertEnabled()) {
+            // Validate whether the attendees are project staff and whether they have the correct reporting staff
+            attendeeServiceValidator.validateAttendeeDetails(attendeeCreateRequest);
+
+            // Check if the attendee list is empty after validation
+            if (attendeeCreateRequest.getAttendees().isEmpty()) {
+                // Throw a custom exception if no valid attendees are found in the request
+                throw new CustomException("NO_VALID_ATTENDEES", "No valid attendees provided in this request.");
+            }
+        }
 
         //extract registerIds and attendee IndividualIds from client request
         String tenantId = attendeeCreateRequest.getAttendees().get(0).getTenantId();

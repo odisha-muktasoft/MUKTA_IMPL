@@ -11,7 +11,9 @@ import org.egov.web.models.AttendanceLogSearchCriteria;
 import org.egov.web.models.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +21,12 @@ import java.util.UUID;
 @Slf4j
 public class AttendanceLogEnrichment {
     private final AttendanceServiceUtil attendanceServiceUtil;
+    private final AttendanceServiceConfiguration config;
 
     @Autowired
-    public AttendanceLogEnrichment(AttendanceServiceUtil attendanceServiceUtil) {
+    public AttendanceLogEnrichment(AttendanceServiceUtil attendanceServiceUtil, AttendanceServiceConfiguration config) {
         this.attendanceServiceUtil = attendanceServiceUtil;
+        this.config = config;
     }
 
     public void enrichAttendanceLogCreateRequest(AttendanceLogRequest attendanceLogRequest) {
@@ -36,8 +40,10 @@ public class AttendanceLogEnrichment {
             String attendanceLogId = String.valueOf(UUID.randomUUID());
             attendanceLog.setId(attendanceLogId);
             List<Document> documentIds = attendanceLog.getDocumentIds();
-            for (Document documentId : documentIds) {
-                documentId.setId(String.valueOf(UUID.randomUUID()));
+            if(!CollectionUtils.isEmpty(documentIds)) {
+                for (Document documentId : documentIds) {
+                    documentId.setId(String.valueOf(UUID.randomUUID()));
+                }
             }
         }
         log.info("Enriched attendance log create request for register ["+registerId+"]");

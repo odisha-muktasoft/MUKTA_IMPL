@@ -7,6 +7,7 @@ import org.egov.tracer.model.CustomException;
 import org.egov.web.models.IndividualEntry;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class AttendeeRowMapper implements ResultSetExtractor<List<IndividualEntr
     private final ObjectMapper mapper;
 
     @Autowired
-    public AttendeeRowMapper(ObjectMapper mapper) {
+    public AttendeeRowMapper(@Qualifier("objectMapper") ObjectMapper mapper) {
         this.mapper = mapper;
     }
 

@@ -446,7 +446,7 @@ public class AttendanceLogServiceValidator {
                             log.info("Logging Attendance for " + "[" + individualId + "] " +
                                     "on this day :" + day + "with this as exit time " + entryAndExitTime.get(requestAttendanceRegisterID));
                         } else {
-                           Individual individual= individualDetailMap.get(individualId);
+                            Individual individual= individualDetailMap.get(individualId);
                             log.error("Attedance is already marked for " + "[" + individual.getIndividualId() + " ::" +individual.getName()+ "] " +
                                     "on this day : " + day + " with this as exit time" + entryMap.get(registerId));
 
