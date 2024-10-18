@@ -219,6 +219,11 @@ const WorksCard = () => {
       roles: ROLES.MASTERS,
     },
     {
+      label: t("ACTION_TEST_9PROJECTTYPEMDMS"),
+      link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=works&masterName=ProjectType`,
+      roles: ROLES.WORKBENCH,
+    },
+    {
       label: t("ACTION_TEST_10REVISIONOFRATES"),
       link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
       roles: ROLES.REVISIONOFRATES,
