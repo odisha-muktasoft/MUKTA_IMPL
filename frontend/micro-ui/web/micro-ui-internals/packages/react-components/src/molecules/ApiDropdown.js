@@ -21,7 +21,7 @@ const ApiDropdown = ({ populators, formData, props, inputRef, errors }) => {
   if(populators?.masterName && populators?.moduleName && populators?.customfn)
       reqCriteria = Digit?.Customizations?.[populators?.masterName]?.[populators?.moduleName]?.[populators?.customfn]()
   else if (populators?.url){
-    if(populators?.selectFun)  selectFunction = new Function("data","headerLocale", populators?.selectFun) 
+    if(populators?.selectFun)  selectFunction = new Function("data","headerLocale","t", populators?.selectFun) 
       reqCriteria = {
                 url: populators?.url,
                 params: {...populators?.params, tenantId},
@@ -29,7 +29,7 @@ const ApiDropdown = ({ populators, formData, props, inputRef, errors }) => {
                 config: {
                   enabled: true,
                   select: (data) => {
-                    return selectFunction(data,headerLocale);
+                    return selectFunction(data,headerLocale,t);
                   },
                 },
               };
