@@ -22,7 +22,7 @@
     "@egovernments/digit-ui-module-masters": "0.4.20",
     "@egovernments/digit-ui-module-project": "0.4.16",
     "@egovernments/digit-ui-module-expenditure": "0.4.17",
-    "@egovernments/digit-ui-customisation-mukta": "0.2.11",
+    "@egovernments/digit-ui-customisation-mukta": "0.2.12",
     "@egovernments/digit-ui-module-rate-analysis": "0.4.14",
     "http-proxy-middleware": "^1.0.5",
     "react": "17.0.2",
