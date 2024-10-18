@@ -77,9 +77,13 @@ const searchSORConfig = {
                   // "optionsCustomStyle": {
                   //   "top": "2.3rem"
                   // },
-                  mdmsv2: {
-                    schemaCode: "WORKS-SOR.SubType",
+                  mdmsConfig: {
+                    masterName: "SubType",
+                    moduleName: "WORKS-SOR",
                   },
+                  // mdmsv2: {
+                  //   schemaCode: "WORKS-SOR.SubType",
+                  // },
                 },
               },
               {
@@ -95,9 +99,13 @@ const searchSORConfig = {
                   // "optionsCustomStyle": {
                   //   "top": "2.3rem"
                   // },
-                  mdmsv2: {
-                    schemaCode: "WORKS-SOR.Variant",
+                  mdmsConfig: {
+                    masterName: "Variant",
+                    moduleName: "WORKS-SOR",
                   },
+                  // mdmsv2: {
+                  //   schemaCode: "WORKS-SOR.Variant",
+                  // },
                 },
               },
               {
