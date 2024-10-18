@@ -90,7 +90,7 @@ public class IndividualServiceUtil {
         StringBuilder uri = new StringBuilder();
         uri.append(config.getIndividualHost()).append(config.getIndividualSearchEndpoint());
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(uri.toString())
-                .queryParam("limit", 100)
+                .queryParam("limit", config.getAttendanceRegisterMaxLimit())
                 .queryParam("offset", 0)
                 .queryParam("tenantId", tenantId);
 
