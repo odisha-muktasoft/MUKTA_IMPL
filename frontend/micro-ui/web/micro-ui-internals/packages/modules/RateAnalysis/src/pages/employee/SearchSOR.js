@@ -116,7 +116,7 @@ const SearchSOR = () => {
         <Button
           label={t(configs?.actionLabel)}
           variation="secondary"
-          onButtonClick={() => {
+          onClick={() => {
             history.push(`/${window?.contextPath}/employee/${configs?.actionLink}`);
           }}
           type="button"

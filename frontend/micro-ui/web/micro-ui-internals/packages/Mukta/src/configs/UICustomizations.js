@@ -2882,13 +2882,13 @@ export const UICustomizations = {
   },
   ViewScheduledJobsConfig: {
     preProcess: (data) => {
-      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.reportSearchCriteria?.scheduledFrom);
-      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.reportSearchCriteria?.scheduledTo);
-      const status = data.body.reportSearchCriteria?.status?.code;
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.SearchCriteria?.scheduledFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledTo);
+      const status = data.body.SearchCriteria?.status?.code;
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
-      data.body.reportSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
-      data.body.reportSearchCriteria = {
-        ...data.body.reportSearchCriteria,
+      data.body.SearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.SearchCriteria = {
+        ...data.body.SearchCriteria,
         tenantId: Digit.ULBService.getCurrentTenantId(),
         status,
         scheduledFrom:scheduledFrom,
