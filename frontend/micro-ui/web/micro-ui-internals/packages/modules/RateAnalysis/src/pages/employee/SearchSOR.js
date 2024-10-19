@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, createContext, Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Loader, Button, ActionBar, SubmitBar, TextInput, Modal, CardText } from "@egovernments/digit-ui-react-components";
+import { Header, Loader, ActionBar, SubmitBar, TextInput, Modal, CardText } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import searchSORConfig from "../../configs/searchSORConfig";
-import {Toast} from "@egovernments/digit-ui-components";
+import {Toast,Button} from "@egovernments/digit-ui-components";
 
 const Heading = (props) => {
   return <h1 className="heading-m">{props.t(props.heading)}</h1>;
@@ -174,7 +174,7 @@ const SearchSOR = () => {
           <Button
             label={t("SUBMIT_EFFECTIVE_DATE")}
             variation="primary"
-            onButtonClick={() => {
+            onClick={() => {
               setPopup(false);
               handleSchedulerCreate();
             }}
