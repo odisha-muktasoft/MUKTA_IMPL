@@ -12,14 +12,14 @@ const ViewScheduledJobsExcelConfig = {
           serviceName: "/wms/report/payment-tracker/_search",
           requestParam: {},
           requestBody: {
-            reportSearchCriteria: {},
+            SearchCriteria: {},
           },
           minParametersForSearchForm: 1,
           masterName: "commonUiConfig",
           moduleName: "ViewScheduledJobsConfig",
           tableFormJsonPath: "requestBody.pagination",
-          filterFormJsonPath: "requestBody.reportSearchCriteria",
-          searchFormJsonPath: "requestBody.reportSearchCriteria",
+          filterFormJsonPath: "requestBody.SearchCriteria",
+          searchFormJsonPath: "requestBody.SearchCriteria",
         },
         sections: {
           search: {
