@@ -328,6 +328,10 @@ const getRoleBasedHomeCard = () => {
   return window?.globalConfigs?.getConfig("ROLE_BASED_HOMECARD") || false;
 };
 
+const getOTPBasedLogin = () => {
+  return window?.globalConfigs?.getConfig("OTP_BASED_LOGIN") || false;
+};
+
 export default {
   pdf: PDFUtil,
   downloadWorksPDF,
@@ -379,5 +383,6 @@ export default {
   getThumbnails,
   debouncing,
   getMultiRootTenant,
-  getRoleBasedHomeCard
+  getRoleBasedHomeCard,
+  getOTPBasedLogin
 };
