@@ -717,12 +717,17 @@ export const FormComposer = (props) => {
                 {!field.withoutLabel && (
                   <Header className={`label ${props?.labelBold ? "bolderLabel" : ""} ${field?.labelClassName || ""}`}>
                     <div className={`label-container`}>
-                      <div className={`label-styles`}>
+                      {/* <div className={`label-styles`}>
                         {convertToSentenceCase(
                           StringManipulator("TRUNCATESTRING", t(field.label), {
                             maxLength: 64,
                           })
                         )}
+                      </div> */}
+                      <div className={`label-styles`}>
+                        {StringManipulator("TRUNCATESTRING", t(field.label), {
+                          maxLength: 64,
+                        })}
                       </div>
                       <div>{field.appendColon ? " : " : null}</div>
                       <div style={{ color: "#B91900" }}>{field.isMandatory ? " * " : null}</div>
