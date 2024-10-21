@@ -31,7 +31,7 @@ export const paymentTrackerSearchConfig = {
                   "primaryLabel": "ES_COMMON_SEARCH",
                   "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
                   "minReqFields": 1,
-                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH_AND_ONLY_FIRST_300_RECORDS_WILL_BE_DISPLAYED",
+                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH_AND_FIRST_300_DISPLAYED",
                   "formClassName": "",
                   "defaultValues": {
                     "ward": "",
