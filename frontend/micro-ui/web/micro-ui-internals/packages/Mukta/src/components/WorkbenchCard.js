@@ -9,6 +9,7 @@ const ROLES = {
   SOR: ["MDMS_STATE_ADMIN","MDMS_STATE_VIEW_ADMIN"],
   OVERHEAD: ["MDMS_STATE_ADMIN","MDMS_STATE_VIEW_ADMIN"],
   RATE: ["MDMS_CITY_ADMIN","MDMS_STATE_VIEW_ADMIN","MDMS_CITY_VIEW_ADMIN"],
+  RATEANALYSIS: ["MDMS_STATE_ADMIN","MDMS_CITY_VIEW_ADMIN"],
 };
 
 const WorkbenchCard = () => {
@@ -37,38 +38,37 @@ const WorkbenchCard = () => {
       {
         label: t("MDMS_SOR_TYPE"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=Type`,
-        roles: ROLES.TYPE,
-        target: "_blank"
+        roles: ROLES.TYPE
       },
       {
         label: t("MDMS_SOR_SUBTYPE"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=SubType`,
-        roles: ROLES.SUBTYPE,
-        target: "_blank"
+        roles: ROLES.SUBTYPE
       },
       {
         label: t("MDMS_SOR_VARIENT"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=Variant`,
-        roles: ROLES.VARIENT,
-        target: "_blank"
+        roles: ROLES.VARIENT
       },
       {
         label: t("MDMS_SOR_SOR"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=SOR`,
-        roles: ROLES.SOR,
-        target: "_blank"
+        roles: ROLES.SOR
       },
       {
         label: t("MDMS_SOR_OVERHEAD"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=Overhead`,
-        roles: ROLES.OVERHEAD,
-        target: "_blank"
+        roles: ROLES.OVERHEAD
       },
       {
         label: t("MDMS_SOR_RATES"),
         link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=Rates`,
-        roles: ROLES.RATE,
-        target: "_blank"
+        roles: ROLES.RATE
+      },
+      {
+        label: t("MDMS_SOR_RATES_AANALYSIS"),
+        link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=Composition`,
+        roles: ROLES.RATEANALYSIS
       }
     ],
   };

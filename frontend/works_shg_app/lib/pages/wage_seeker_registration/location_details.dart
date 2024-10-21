@@ -207,7 +207,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                             // form1.setErrors();
                           },
                           errorMessage: field.errorText,
-                          items: ward
+                          items: ward.reversed
                               .map((e) => DropdownItem(
                                   name: t.translate(
                                       '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.toString()}'),

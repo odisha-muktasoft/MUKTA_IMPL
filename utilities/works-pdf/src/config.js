@@ -71,7 +71,7 @@ module.exports = {
     measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8099',
     mdmsV2: process.env.EGOV_MDMS_V2_HOST || 'http://localhost:8088',
     statements: process.env.RATE_ANALYSIS_STATEMENTS_HOST || 'http://localhost:8089',
-    paymentTracker: process.env.EGOV_PAYMENT_TRACKER_HOST || 'http://localhost:8096',
+    paymentTracker: process.env.EGOV_WMS_HOST || 'http://localhost:8096',
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",

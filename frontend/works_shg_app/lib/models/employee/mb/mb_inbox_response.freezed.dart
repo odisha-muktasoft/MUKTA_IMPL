@@ -4097,7 +4097,7 @@ mixin _$MeasureLineItem {
   dynamic get quantity => throw _privateConstructorUsedError;
   @JsonKey(name: 'measurelineitemNo')
   dynamic get measurelineitemNo => throw _privateConstructorUsedError;
-  @JsonKey(name: 'measurementSummary')
+  @JsonKey(name: 'measureSummary')
   dynamic get measurementSummary => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -4119,7 +4119,7 @@ abstract class $MeasureLineItemCopyWith<$Res> {
       @JsonKey(name: 'number') dynamic number,
       @JsonKey(name: 'quantity') dynamic quantity,
       @JsonKey(name: 'measurelineitemNo') dynamic measurelineitemNo,
-      @JsonKey(name: 'measurementSummary') dynamic measurementSummary});
+      @JsonKey(name: 'measureSummary') dynamic measurementSummary});
 }
 
 /// @nodoc
@@ -4191,7 +4191,7 @@ abstract class _$$MeasureLineItemImplCopyWith<$Res>
       @JsonKey(name: 'number') dynamic number,
       @JsonKey(name: 'quantity') dynamic quantity,
       @JsonKey(name: 'measurelineitemNo') dynamic measurelineitemNo,
-      @JsonKey(name: 'measurementSummary') dynamic measurementSummary});
+      @JsonKey(name: 'measureSummary') dynamic measurementSummary});
 }
 
 /// @nodoc
@@ -4256,7 +4256,7 @@ class _$MeasureLineItemImpl implements _MeasureLineItem {
       @JsonKey(name: 'number') this.number,
       @JsonKey(name: 'quantity') this.quantity,
       @JsonKey(name: 'measurelineitemNo') this.measurelineitemNo,
-      @JsonKey(name: 'measurementSummary') this.measurementSummary});
+      @JsonKey(name: 'measureSummary') this.measurementSummary});
 
   factory _$MeasureLineItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$MeasureLineItemImplFromJson(json);
@@ -4280,7 +4280,7 @@ class _$MeasureLineItemImpl implements _MeasureLineItem {
   @JsonKey(name: 'measurelineitemNo')
   final dynamic measurelineitemNo;
   @override
-  @JsonKey(name: 'measurementSummary')
+  @JsonKey(name: 'measureSummary')
   final dynamic measurementSummary;
 
   @override
@@ -4333,20 +4333,14 @@ class _$MeasureLineItemImpl implements _MeasureLineItem {
 
 abstract class _MeasureLineItem implements MeasureLineItem {
   const factory _MeasureLineItem(
-      {@JsonKey(name: 'width')
-          final dynamic width,
-      @JsonKey(name: 'height')
-          final dynamic height,
-      @JsonKey(name: "length")
-          final dynamic length,
-      @JsonKey(name: 'number')
-          final dynamic number,
-      @JsonKey(name: 'quantity')
-          final dynamic quantity,
-      @JsonKey(name: 'measurelineitemNo')
-          final dynamic measurelineitemNo,
-      @JsonKey(name: 'measurementSummary')
-          final dynamic measurementSummary}) = _$MeasureLineItemImpl;
+          {@JsonKey(name: 'width') final dynamic width,
+          @JsonKey(name: 'height') final dynamic height,
+          @JsonKey(name: "length") final dynamic length,
+          @JsonKey(name: 'number') final dynamic number,
+          @JsonKey(name: 'quantity') final dynamic quantity,
+          @JsonKey(name: 'measurelineitemNo') final dynamic measurelineitemNo,
+          @JsonKey(name: 'measureSummary') final dynamic measurementSummary}) =
+      _$MeasureLineItemImpl;
 
   factory _MeasureLineItem.fromJson(Map<String, dynamic> json) =
       _$MeasureLineItemImpl.fromJson;
@@ -4370,7 +4364,7 @@ abstract class _MeasureLineItem implements MeasureLineItem {
   @JsonKey(name: 'measurelineitemNo')
   dynamic get measurelineitemNo;
   @override
-  @JsonKey(name: 'measurementSummary')
+  @JsonKey(name: 'measureSummary')
   dynamic get measurementSummary;
   @override
   @JsonKey(ignore: true)

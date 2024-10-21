@@ -88,7 +88,7 @@ const requestCriteria = {
               const wards = []
               const localities = {}
               data?.TenantBoundary[0]?.boundary.sort((a, b) => a.code.localeCompare(b.code)).forEach((item) => {
-                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : item?.label }))
+                  localities[item?.code] = item?.children.map(item => ({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label : t(`${headerLocale}_ADMIN_${item?.code}`)}))
                   wards.push({ code: item.code, name: t(`${headerLocale}_ADMIN_${item?.code}`), i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
               });
              return {
@@ -96,7 +96,11 @@ const requestCriteria = {
              }
           }
       },true);
-    const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
+    // const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
+    let filteredLocalities = []
+    wardsAndLocalities ? Object.values(wardsAndLocalities?.localities).forEach(localities => {
+        filteredLocalities = filteredLocalities.concat(localities)
+    }) : []
 
     //wage seeker form config
     const config = useMemo(
@@ -120,7 +124,7 @@ const requestCriteria = {
         },
         {
             key : 'locDetails_locality',
-            value : [filteredLocalities]
+            value : [filteredLocalities.sort((a, b) => a.code.localeCompare(b.code))]
         },
         {
             key : "basicDetails_wageSeekerId",

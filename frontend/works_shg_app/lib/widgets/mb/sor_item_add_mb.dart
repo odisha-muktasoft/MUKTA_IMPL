@@ -206,6 +206,8 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               children: [
                                 Expanded(
                                   child: ui_component.Button(
+                                    size: ButtonSize.large,
+                                    type: ButtonType.secondary,
                                     mainAxisSize: MainAxisSize.max,
                                     label: t.translate(i18.common.close),
                                     onPressed: () {
@@ -217,6 +219,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             sorId: widget.sorId,
                                             type: widget.type,
                                           ));
+                                           context.router.maybePopTop();
+                                          }
+                                          
                                   ),
                                 ),
                                 const SizedBox(
