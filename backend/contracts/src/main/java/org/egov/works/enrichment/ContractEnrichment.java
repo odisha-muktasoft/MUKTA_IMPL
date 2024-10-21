@@ -451,8 +451,14 @@ public class ContractEnrichment {
                 || contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_REVISION_ESTIMATE))) {
             // Fetch previous contract and create estimateDetailId to contractLineItemRef map
             Contract previousActiveContract = contractRepository.getActiveContractsFromDB(contractRequest).get(0);
+            // Using set to filter out the duplicate contractLineItem from previousContract object
+            Set<String> collectedIds = new HashSet<>();
             Map<String, String> estimateDetailIdToContractLineItemRefMap = previousActiveContract.getLineItems()
-                    .stream().collect(Collectors.toMap(LineItems::getEstimateLineItemId, LineItems::getContractLineItemRef));
+                    .stream()
+                    .filter(lineItem -> collectedIds.add(lineItem.getEstimateLineItemId()))
+                    .collect(Collectors.toMap(LineItems::getEstimateLineItemId, LineItems::getContractLineItemRef));
+            /*Map<String, String> estimateDetailIdToContractLineItemRefMap = previousActiveContract.getLineItems()
+                    .stream().collect(Collectors.toMap(LineItems::getEstimateLineItemId, LineItems::getContractLineItemRef));*/
             // Create map of estimateDetailId and prevEstimateDetailId
             Map<String, String> estimateDetailIdToPreviousEstimateDetailIdMap = estimate.getEstimateDetails()
                     .stream()
