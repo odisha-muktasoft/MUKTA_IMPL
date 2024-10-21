@@ -16,7 +16,7 @@ const ViewScheduledJobsExcelConfig = {
           },
           minParametersForSearchForm: 1,
           masterName: "commonUiConfig",
-          moduleName: "ViewScheduledJobsConfig",
+          moduleName: "ViewScheduledJobsExcelConfig",
           tableFormJsonPath: "requestBody.pagination",
           filterFormJsonPath: "requestBody.reportSearchCriteria",
           searchFormJsonPath: "requestBody.reportSearchCriteria",
