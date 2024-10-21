@@ -31,7 +31,7 @@ export const paymentTrackerSearchConfig = {
                   "primaryLabel": "ES_COMMON_SEARCH",
                   "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
                   "minReqFields": 1,
-                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH",
+                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH_AND_ONLY_FIRST_300_RECORDS_WILL_BE_DISPLAYED",
                   "formClassName": "",
                   "defaultValues": {
                     "ward": "",
@@ -221,8 +221,8 @@ export const paymentTrackerSearchConfig = {
                   "resultsJsonPath": "aggsResponse.projects",
                   "showCheckBox": false,
                   "checkBoxActionLabel": "ES_COMMON_GENERATE_PAYMENT_ADVICE",
-                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION",
-                  "stickyFooter": true
+                  "stickyFooter": true,
+                  "paginationValues": [10, 20, 30, 40, 50, 100, 200, 300],
                 },
                 "children": {},
                 "show": true
