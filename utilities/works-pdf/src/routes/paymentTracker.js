@@ -203,13 +203,13 @@ router.post(
                     project["Projects"] = project.Project;
                     project["Projects"][0]["date"] = getCurrentDate(); 
                     project["Projects"][0]["bills"] = bills;
-                    project["Projects"][0]["estimatedAmount"] = estimatedAmount;
-                    project["Projects"][0]["wageAmountPaid"] = wageAmountPaid;
-                    project["Projects"][0]["purchaseAmountPaid"] = purchaseAmountPaid;
-                    project["Projects"][0]["supervisionAmountPaid"] = supervisionAmountPaid;
-                    project["Projects"][0]["failedPaymentAmount"] = failedPaymentAmount;
+                    project["Projects"][0]["estimatedAmount"] = estimatedAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    project["Projects"][0]["wageAmountPaid"] = wageAmountPaid.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    project["Projects"][0]["purchaseAmountPaid"] = purchaseAmountPaid.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    project["Projects"][0]["supervisionAmountPaid"] = supervisionAmountPaid.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    project["Projects"][0]["failedPaymentAmount"] = failedPaymentAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-                    project["Projects"][0]["total"] = total;
+                    project["Projects"][0]["total"] = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                     try {
                         pdfResponse = await create_pdf(
