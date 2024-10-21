@@ -218,7 +218,10 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             filteredMeasurementsMeasureId: null,
                                             sorId: widget.sorId,
                                             type: widget.type,
-                                          ));}
+                                          ));
+                                           context.router.maybePopTop();
+                                          }
+                                          
                                   ),
                                 ),
                                 const SizedBox(
