@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-const Amount = ({t,roundOff=true,...props}) => {
-    const value=roundOff?Math.round(props?.value):props?.value;
+const Amount = ({t,...props}) => {
+    const value = props?.decimalPlaces ? props?.value?.toFixed(props?.decimalPlaces) : props?.value;
     return `${props?.rupeeSymbol ? "₹" : ""}${value !== undefined && value !== null ? (props?.sameDisplay ? value : `${Digit?.Utils?.dss?.formatterWithoutRound(value, "number")}`) : t("ES_COMMON_NA")}`;
 }
 
@@ -81,7 +81,7 @@ export const paymentTrackerReport = (props) => {
             })
         })
         for (let i = 2; i < data.stickyFooterRow.length; i++) {
-            data.stickyFooterRow[i].value = Amount({ value: data.stickyFooterRow[i].value, rupeeSymbol: true, t: t });
+            data.stickyFooterRow[i].value = Amount({ value: data.stickyFooterRow[i].value, rupeeSymbol: true, decimalPlaces: 2, sameDisplay: true, customStyle: { textAlign: "right" } }, { t: t });
         }
     }
 

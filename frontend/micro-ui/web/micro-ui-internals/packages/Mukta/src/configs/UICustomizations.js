@@ -2896,8 +2896,8 @@ export const UICustomizations = {
       };
 
       data.body.pagination = {
-        "limit": 10,
-        "offSet": 0,
+        "limit": data.body.pagination?.limit,
+        "offSet": data.body.pagination?.offset,
         "order": null,
         "sortBy": "createdTime"
       };
@@ -3141,6 +3141,14 @@ export const UICustomizations = {
     postProcess: (responseArray, uiConfig) => {
       return responseArray;
     },
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { createdFrom, createdTo } = data;
+      if (createdTo !== "" && createdFrom === "") return {type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (createdTo === "" && createdFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+      return false;
+    },
     additionalValidations: (type, data, keys) => {
       if (type === "date") {
         return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
@@ -3180,25 +3188,32 @@ export const UICustomizations = {
           );
       }
       if (key === "EXP_ESTIMATED_AMT") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
   }
   }
