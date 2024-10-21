@@ -172,6 +172,10 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
   if(isEnableLoader){
     return <Loader />
   }
+
+  actions?.forEach(action => {
+    action.displayname = `WF_${businessService.toUpperCase()?.replaceAll("-","_")}_ACTION_${action?.action?.replaceAll("-","_")}`;
+  });
   return (
     <React.Fragment>
       {!workflowDetails?.isLoading && isMenuBotton && !isSingleButton && (
@@ -198,7 +202,7 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
               options={actions}
               label={t("WORKS_ACTIONS")}
               variation={"primary"}
-              optionsKey={"action"}
+              optionsKey={"displayname"}
               isSearchable={false}
               onOptionSelect={(option) => {
                 onActionSelect(option);

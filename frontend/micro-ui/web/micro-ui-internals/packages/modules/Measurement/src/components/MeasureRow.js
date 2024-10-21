@@ -54,7 +54,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
           let findMeasureIndex = updatedMeasureLineItems?.findIndex((ob) => ob?.measurelineitemNo === measurelineitemNo);
-          updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value === "" ? 0 : newValue?.target?.value;
+          updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value === "" ? (fieldKey === "measureSummary" ? "" : 0) : newValue?.target?.value;
         }
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
@@ -129,7 +129,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                         measureLineItems: [
                           ...value?.additionalDetails?.measureLineItems,
                           {
-                          measureSummary: null,
+                          measureSummary: "",
                           number : 0,
                           length: 0,
                           width: 0,
@@ -172,7 +172,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
           />
         </>
       )}
-      {(mode === "CREATE" || mode === "VIEW") && <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"measureSummary"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["measureSummary"] : rowState?.["measureSummary"]} mode={mode} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />}
+      {(mode === "CREATE" || mode === "VIEW") && <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"measureSummary"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 && firstMeasurelineitem?.["measureSummary"] ? firstMeasurelineitem?.["measureSummary"] : rowState?.["measureSummary"]} mode={mode} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />}
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["number"] : rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["length"] : rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}}/>
       <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["width"] : rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
@@ -222,7 +222,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                         measureLineItems: [
                           ...value?.additionalDetails?.measureLineItems,
                           {
-                          measureSummary:null,
+                          measureSummary:"",
                           number : 0,
                           length: 0,
                           width: 0,

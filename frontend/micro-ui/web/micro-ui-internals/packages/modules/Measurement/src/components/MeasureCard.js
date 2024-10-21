@@ -90,6 +90,8 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         //added condition for measurement create that for multimeasure l,b,h will be 0 and num of items is equal to total of multi measure
         if(mode === "CREATE"){
           state[findIndex][type] = 0;
+          if(type === "measureSummary")
+          state[findIndex][type] = "";
           state[findIndex]["additionalDetails"] = additionalDetails;
         }
 
@@ -115,6 +117,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
           state[findIndex].length = 0;
           state[findIndex].width = 0;
           state[findIndex].height = 0;
+          state[findIndex].measureSummary = "";
         } 
 
         let allHaveZeroProperties = element?.additionalDetails?.measureLineItems?.every(obj => obj.width === 0 && obj.height === 0 && obj.length === 0 && obj.number === 0); 
@@ -124,6 +127,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
           state[findIndex].length = 0;
           state[findIndex].width = 0;
           state[findIndex].height = 0;
+          state[findIndex].measureSummary = "";
         }
 
         return [...state];
@@ -274,6 +278,8 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                           setError({message:"MB_APPROVED_QTY_VALIDATION",enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => !obj.description || obj.description.length < 2 || obj?.description?.length > 64) !== -1)
                           setError({message:`${t("ERR_DESCRIPTION_IS_MANDATORY_AND_LENGTH")} ${state.findIndex(obj => !obj.description|| obj.description.length < 2 || obj?.description?.length > 64 )+1}`,enable:true});
+                        else if((mode === "CREATE") && state?.[0]?.additionalDetails?.measureLineItems.findIndex(obj => obj?.measureSummary &&  obj.measureSummary.length < 2 || obj?.measureSummary?.length > 31) !== -1)
+                          setError({message:`${t("ERR_MEASURE_SUMMARY_IS_MANDATORY_AND_LENGTH")} ${state?.[0]?.additionalDetails?.measureLineItems.findIndex(obj =>  obj.measureSummary && obj.measureSummary.length < 2 || obj?.measureSummary?.length > 31)+1}`,enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (mode === "CREATERE" ? !obj?.number : !obj.noOfunit) && !obj.length && !obj.width && !obj.height) !== -1)
                           setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit)+1}`,enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (obj.noOfunit && obj.noOfunit > 1e10)) !== -1)
