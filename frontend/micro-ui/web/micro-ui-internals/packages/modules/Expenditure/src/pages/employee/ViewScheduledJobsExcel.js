@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer, Loader, Button, AddFilled } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
+//import ViewScheduledJobsConfig from "../../../../RateAnalysis/src/configs/ViewScheduledJobsConfig";
 import ViewScheduledJobsExcelConfig from "../../configs/ViewScheduledJobsExcelConfig";
 
 const ViewScheduledJobsExcel = () => {

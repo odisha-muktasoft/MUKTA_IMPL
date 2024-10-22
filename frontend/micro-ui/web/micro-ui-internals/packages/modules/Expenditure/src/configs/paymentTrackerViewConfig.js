@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getBreakupDetails, transformBillData } from "../utils/paymentTrackerUtils";
-import { useTranslation } from "react-i18next";
 
 export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBillData, projectId) => {
 
-  const { t } = useTranslation();
   const [excludeFailed, setExcludeFailed] = useState(false);
 
   const breakupDetails = getBreakupDetails({projectBillPaidData});
@@ -32,7 +30,7 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
               },
               {
                 key: "PROJECT_LOCATION",
-                value: `${project?.address?.locality || t("ES_COMMON_NA")}, ${(project?.address?.boundaryType && project?.address?.boundary) ? `${project?.address?.boundaryType} ${project?.address?.boundary}` : t("ES_COMMON_NA")}, ${project?.address?.city || t("ES_COMMON_NA")}`,
+                value: project?.address?.city,
               },
               {
                 key: "PROJECT_DESCRIPTION",
@@ -54,19 +52,19 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
               },
               {
                 key: "WAGE_AMOUNT_PAID",
-                value: amountFormatter(breakupDetails?.wageAmountPaid || 0),
+                value: amountFormatter(breakupDetails?.wageAmountPaid),
               },
               {
                 key: "PURCHASE_AMOUNT_PAID",
-                value: amountFormatter(breakupDetails?.purchaseAmountPaid || 0),
+                value: amountFormatter(breakupDetails?.purchaseAmountPaid),
               },
               {
                 key: "SUPERVISION_AMOUNT_PAID",
-                value: amountFormatter(breakupDetails?.supervisionAmountPaid || 0),
+                value: amountFormatter(breakupDetails?.supervisionAmountPaid),
               },
               {
                 key: "FAILED_PAYMENT_AMOUNT",
-                value: amountFormatter(breakupDetails?.failedPaymentAmount || 0),
+                value: amountFormatter(breakupDetails?.failedPaymentAmount),
               },
             ],
           },
