@@ -38,7 +38,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {parseFloat(value || 0).toFixed(2)}
+              {Digit.Utils.dss.formatterWithoutRound(parseFloat(value || 0).toFixed(2),"number",undefined,true,undefined,2)}
             </div>
           );
         }
@@ -102,7 +102,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {parseFloat(value || 0).toFixed(2)}
+              {Digit.Utils.dss.formatterWithoutRound(parseFloat(value || 0).toFixed(2),"number",undefined,true,undefined,2)}
             </div>
           );
         }
@@ -139,7 +139,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {parseFloat(value || 0).toFixed(2)}
+              {Digit.Utils.dss.formatterWithoutRound(parseFloat(value || 0).toFixed(2),"number",undefined,true,undefined,2)}
             </div>
           );
         }
@@ -154,7 +154,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {parseFloat(value || 0).toFixed(2)}
+              {Digit.Utils.dss.formatterWithoutRound(parseFloat(value || 0).toFixed(2),"number",undefined,true,undefined,2)}
             </div>
           );
         }

@@ -11,6 +11,10 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
 
   const tableRows = transformBillData({projectBillData});
 
+  const amountFormatter = (amount) => {
+    return Digit.Utils.dss.formatterWithoutRound(parseFloat(amount).toFixed(2),"number",undefined,true,undefined,2);
+  }
+
   return {
     cards: [
       {
@@ -46,23 +50,23 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
             values: [
               {
                 key: "ESTMATED_AMOUNT",
-                value: (projectBillPaidData?.estimatedAmount || 0).toFixed(2),
+                value: amountFormatter(projectBillPaidData?.estimatedAmount || 0),
               },
               {
                 key: "WAGE_AMOUNT_PAID",
-                value: (breakupDetails?.wageAmountPaid || 0).toFixed(2),
+                value: amountFormatter(breakupDetails?.wageAmountPaid || 0),
               },
               {
                 key: "PURCHASE_AMOUNT_PAID",
-                value: (breakupDetails?.purchaseAmountPaid || 0).toFixed(2),
+                value: amountFormatter(breakupDetails?.purchaseAmountPaid || 0),
               },
               {
                 key: "SUPERVISION_AMOUNT_PAID",
-                value: (breakupDetails?.supervisionAmountPaid || 0).toFixed(2),
+                value: amountFormatter(breakupDetails?.supervisionAmountPaid || 0),
               },
               {
                 key: "FAILED_PAYMENT_AMOUNT",
-                value: (breakupDetails?.failedPaymentAmount || 0).toFixed(2),
+                value: amountFormatter(breakupDetails?.failedPaymentAmount || 0),
               },
             ],
           },

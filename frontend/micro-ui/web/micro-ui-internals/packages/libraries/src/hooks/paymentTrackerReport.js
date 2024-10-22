@@ -76,7 +76,7 @@ export const paymentTrackerReport = (props) => {
             })
         })
         for (let i = 2; i < data.stickyFooterRow.length; i++) {
-            data.stickyFooterRow[i].value = "₹" + data.stickyFooterRow[i].value?.toFixed(2);
+            data.stickyFooterRow[i].value = "₹" + Digit.Utils.dss.formatterWithoutRound(parseFloat(data.stickyFooterRow[i].value || 0).toFixed(2),"number",undefined,true,undefined,2);
         }
     }
 
