@@ -9,10 +9,6 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const history = useHistory();
 
   const [tableRows, setTableRows] = useState(props?.tableRows);
-
-  const amountFormatter = (amount) => {
-    return Digit.Utils.dss.formatterWithoutRound(parseFloat(amount).toFixed(2),"number",undefined,true,undefined,2);
-  }
   
   const tableColumns = useMemo(()=>{
     return [
@@ -42,7 +38,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {amountFormatter(value)}
+              {parseFloat(value || 0).toFixed(2)}
             </div>
           );
         }
@@ -106,7 +102,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {amountFormatter(value)}
+              {parseFloat(value || 0).toFixed(2)}
             </div>
           );
         }
@@ -143,7 +139,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {amountFormatter(value)}
+              {parseFloat(value || 0).toFixed(2)}
             </div>
           );
         }
@@ -158,7 +154,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {amountFormatter(value)}
+              {parseFloat(value || 0).toFixed(2)}
             </div>
           );
         }
