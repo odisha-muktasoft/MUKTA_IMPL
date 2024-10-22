@@ -11,7 +11,7 @@ import org.egov.common.contract.request.RequestInfo;
 @NoArgsConstructor
 @Setter
 public class OtpRequest {
-    @JsonProperty("requestInfo")
+    @JsonProperty("RequestInfo")
     private RequestInfo requestInfo;
     private Otp otp;
 

@@ -15,7 +15,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @NoArgsConstructor
 public class OtpRequest {
 
-	@JsonProperty("requestInfo")
+	@JsonProperty("RequestInfo")
 	private RequestInfo requestInfo;
 	@Setter
     private String mobileNumber;
