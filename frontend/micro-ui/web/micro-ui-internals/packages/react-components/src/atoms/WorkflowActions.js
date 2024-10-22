@@ -174,7 +174,7 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
   }
 
   actions?.forEach(action => {
-    action.displayname = `WF_${businessService.toUpperCase()?.replaceAll("-","_")}_ACTION_${action?.action?.replaceAll("-","_")}`;
+    action.displayname = `WF_${businessService.toUpperCase()?.replaceAll(/[./-]/g,"_")}_ACTION_${action?.action?.replaceAll(/[./-]/g, "_")}`;
   });
   return (
     <React.Fragment>
