@@ -187,7 +187,7 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
                 globalSearch={config?.enableGlobalSearch ? filterValue : undefined}
                 onSearch={config?.enableGlobalSearch ? searchQuery : undefined}
                 data={searchResult}
-                totalRecords={data?.count || data?.TotalCount || data?.totalCount || searchResult?.length}
+                totalRecords={data?.count || data?.TotalCount || data?.totalCount || data?.pagination?.totalCount || searchResult?.length}
                 columns={tableColumns}
                 isPaginationRequired={true}
                 onPageSizeChange={onPageSizeChange}
@@ -208,6 +208,7 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
                     };
                 }}
                 stickyFooter={config?.stickyFooter ? data?.stickyFooterRow : undefined}
+                paginationValues={config?.paginationValues}
             />}
         </div>
     )

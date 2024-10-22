@@ -2882,8 +2882,8 @@ export const UICustomizations = {
   },
   ViewScheduledJobsConfig: {
     preProcess: (data) => {
-      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.SearchCriteria?.scheduledFrom);
-      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledTo);
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.SearchCriteria?.scheduleFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduleTo);
       const status = data.body.SearchCriteria?.status?.code;
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
       data.body.SearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
@@ -2891,13 +2891,91 @@ export const UICustomizations = {
         ...data.body.SearchCriteria,
         tenantId: Digit.ULBService.getCurrentTenantId(),
         status,
+        scheduleFrom:scheduledFrom,
+        scheduleTo:scheduledTo,
+      };
+      return data;
+    },
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { scheduledFrom, scheduledTo } = data;
+      if (scheduledTo !== "" && scheduledFrom === "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (scheduledTo === "" && scheduledFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+      return false;
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      //here we can add multiple conditions
+      //like if a cell is link then we return link
+      //first we can identify which column it belongs to then we can return relevant result
+      switch (key) {
+        case "RA_JOB_ID":
+          return value;
+
+        case "RA_SCHEDULED_ON":
+          return Digit.DateUtils.ConvertEpochToDate(value);
+
+        case "RA_RATE_EFFECTIVE_FROM": {
+          return Digit.DateUtils.ConvertEpochToDate(value);
+        }
+
+        case "RA_NO_OF_SOR_SCHEDULED":
+          return { value };
+
+        case "RA_SUCCESSFUL": {
+          let successfulCount = 0;
+          row.sorDetails.forEach((detail) => {
+            if (detail.status === "SUCCESSFUL") {
+              successfulCount++;
+            }
+          });
+          return successfulCount;
+        }
+        case "RA_FAILED": {
+          let failedCount = 0;
+          value.forEach((detail) => {
+            if (detail.status === "FAILED") {
+              failedCount++;
+            }
+          });
+          return failedCount;
+        }
+
+        case "RA_STATUS":
+          return (
+            <div style={{ color: value === "FAILED" ? "#D4351C" : value === "COMPLETED" ? "#27AE60" : "#F47738" }}>
+              {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "IN_PROGRESS" ? "In Progress" : "Scheduled"}
+            </div>
+          );
+
+        default:
+          return t("ES_COMMON_NA");
+      }
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    },
+  },
+  ViewScheduledJobsExcelConfig: {
+    preProcess: (data) => {
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.reportSearchCriteria?.scheduledFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.reportSearchCriteria?.scheduledTo);
+      const status = data.body.reportSearchCriteria?.status?.code;
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
+      data.body.reportSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.reportSearchCriteria = {
+        ...data.body.reportSearchCriteria,
+        tenantId: Digit.ULBService.getCurrentTenantId(),
+        status,
         scheduledFrom:scheduledFrom,
         scheduledTo:scheduledTo,
       };
 
       data.body.pagination = {
-        "limit": 10,
-        "offSet": 0,
+        "limit": data.body.pagination?.limit,
+        "offSet": data.body.pagination?.offset,
         "order": null,
         "sortBy": "createdTime"
       };
@@ -3141,6 +3219,14 @@ export const UICustomizations = {
     postProcess: (responseArray, uiConfig) => {
       return responseArray;
     },
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { createdFrom, createdTo } = data;
+      if (createdTo !== "" && createdFrom === "") return {type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (createdTo === "" && createdFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+      return false;
+    },
     additionalValidations: (type, data, keys) => {
       if (type === "date") {
         return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
@@ -3180,25 +3266,32 @@ export const UICustomizations = {
           );
       }
       if (key === "EXP_ESTIMATED_AMT") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value || 0} rupeeSymbol={true} t={t}></Amount>;
+        value = value || 0;
+        return <Amount customStyle={{ textAlign: "right", minWidth: "120px" }} value={value?.toFixed(2)} roundOff={false} sameDisplay={true} rupeeSymbol={true} t={t}></Amount>;
       }
   }
   }
