@@ -2,20 +2,17 @@ package org.egov.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.repository.ServiceRequestRepository;
-import org.egov.web.models.Contract;
 import org.egov.web.models.Estimate;
 
 
+import org.egov.works.services.common.models.contract.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

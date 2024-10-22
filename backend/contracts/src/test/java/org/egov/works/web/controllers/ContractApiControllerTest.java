@@ -16,6 +16,7 @@ import org.egov.works.service.ContractService;
 import org.egov.works.web.models.ContractRequest;
 import org.egov.works.web.models.ContractResponse;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,7 +76,7 @@ public class ContractApiControllerTest {
         ContractResponse contractResponse = ContractResponse.builder()
                 .responseInfo(ResponseInfo.builder().apiId("some-apiId").ver("").ts(System.currentTimeMillis()).status("success").build())
                 .contracts(Collections.singletonList(ContractTestBuilder.builder().withValidContract().build())).build();
-        lenient().when(contractService.createContract(any(ContractRequest.class))).thenReturn(contractResponse);
+        lenient().when(contractService.createContract(ArgumentMatchers.any(ContractRequest.class))).thenReturn(contractResponse);
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(contractRequest);
         MvcResult result = mockMvc.perform(post("/v1/_create").contentType(MediaType.APPLICATION_JSON_UTF8).content(content)).andExpect(status().isOk()).andReturn();
@@ -89,7 +90,7 @@ public class ContractApiControllerTest {
     public void contractV1CreatePostFaileds() throws Exception {
         ContractRequest contractRequest = ContractRequestTestBuilder.builder().withRequestInfo().withContract().withWorkflow().build();
         contractRequest.getRequestInfo().setUserInfo(null);
-        lenient().when(contractService.createContract(any(ContractRequest.class))).thenThrow(new CustomException("USERINFO", "UserInfo is mandatory"));
+        lenient().when(contractService.createContract(ArgumentMatchers.any(ContractRequest.class))).thenThrow(new CustomException("USERINFO", "UserInfo is mandatory"));
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(contractRequest);
         MvcResult result = mockMvc.perform(post("/v1/_create").contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -106,7 +107,7 @@ public class ContractApiControllerTest {
         ContractResponse contractResponse = ContractResponse.builder()
                 .responseInfo(ResponseInfo.builder().apiId("some-apiId").ver("").ts(System.currentTimeMillis()).status("success").build())
                 .contracts(Collections.singletonList(ContractTestBuilder.builder().withValidContract().build())).build();
-        lenient().when(contractService.updateContract(any(ContractRequest.class))).thenReturn(contractResponse);
+        lenient().when(contractService.updateContract(ArgumentMatchers.any(ContractRequest.class))).thenReturn(contractResponse);
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(contractRequest);
         MvcResult result = mockMvc.perform(post("/v1/_update").contentType(MediaType.APPLICATION_JSON_UTF8).content(content)).andExpect(status().isOk()).andReturn();

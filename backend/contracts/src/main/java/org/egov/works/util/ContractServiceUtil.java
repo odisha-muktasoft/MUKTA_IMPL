@@ -2,8 +2,8 @@ package org.egov.works.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.contract.models.AuditDetails;
 import org.egov.tracer.model.ServiceCallException;
 import org.egov.works.config.ContractServiceConfiguration;
 import org.egov.works.repository.ServiceRequestRepository;
@@ -59,28 +59,5 @@ public class ContractServiceUtil {
     public ContractResponse fetchContractResponse(ContractRequest contractRequest) {
         StringBuilder url = getURLWithParams();
         return fetchResult(url, contractRequest);
-    }
-
-    public AuditDetails getAuditDetails(String by, AuditDetails auditDetails, Boolean isCreate) {
-        Long time = System.currentTimeMillis();
-        if (Boolean.TRUE.equals(isCreate))
-            return AuditDetails.builder().createdBy(by).lastModifiedBy(by).createdTime(time).lastModifiedTime(time).build();
-        else
-            return AuditDetails.builder().createdBy(auditDetails.getCreatedBy()).lastModifiedBy(by)
-                    .createdTime(auditDetails.getCreatedTime()).lastModifiedTime(time).build();
-    }
-    public List<Contract> getActiveContractsFromDB(ContractRequest contractRequest) {
-        Pagination pagination = Pagination.builder()
-                .limit(config.getContractMaxLimit())
-                .offSet(config.getContractDefaultOffset())
-                .build();
-        ContractCriteria contractCriteria = ContractCriteria.builder()
-                .contractNumber(contractRequest.getContract().getContractNumber())
-                .status(Status.ACTIVE.toString())
-                .tenantId(contractRequest.getContract().getTenantId())
-                .requestInfo(contractRequest.getRequestInfo())
-                .pagination(pagination)
-                .build();
-        return contractService.getContracts(contractCriteria);
     }
 }

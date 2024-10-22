@@ -3,12 +3,13 @@ package org.egov.validator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BitField;
+
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.egov.common.contract.models.RequestInfoWrapper;
+import org.egov.common.contract.models.Workflow;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.repository.EstimateRepository;
@@ -16,6 +17,8 @@ import org.egov.tracer.model.CustomException;
 import org.egov.util.*;
 import org.egov.web.models.*;
 
+import org.egov.works.services.common.models.contract.Contract;
+import org.egov.works.services.common.models.contract.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -286,7 +289,7 @@ public class EstimateServiceValidator {
         }
         for(Object value:cummulativeValue){
             if(value instanceof  Integer){
-                measurementCumulativeValue.add(new Double(value.toString()));
+                measurementCumulativeValue.add(Double.valueOf(value.toString()));
             }else{
                 measurementCumulativeValue.add((Double) value);
             }
@@ -336,7 +339,7 @@ public class EstimateServiceValidator {
 
         for(Object value:currentValue){
             if(value instanceof  Integer){
-                measurementCurrentValue.add(new Double(value.toString()));
+                measurementCurrentValue.add( Double.valueOf(value.toString()));
             }else{
                 measurementCurrentValue.add((Double) value);
             }

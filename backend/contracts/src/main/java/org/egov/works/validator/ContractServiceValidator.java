@@ -9,7 +9,8 @@ import org.egov.tracer.model.CustomException;
 import org.egov.works.config.ContractServiceConfiguration;
 import org.egov.works.repository.LineItemsRepository;
 import org.egov.works.repository.ServiceRequestRepository;
-import org.egov.works.service.ContractService;
+import org.egov.works.services.common.models.estimate.Estimate;
+import org.egov.works.services.common.models.estimate.EstimateDetail;
 import org.egov.works.util.*;
 import org.egov.works.repository.ContractRepository;
 import org.egov.works.web.models.*;
@@ -48,9 +49,6 @@ public class ContractServiceValidator {
     private LineItemsRepository lineItemsRepository;
 
     @Autowired
-    private ContractService contractService;
-
-    @Autowired
     private ObjectMapper mapper;
 
     @Autowired
@@ -70,9 +68,6 @@ public class ContractServiceValidator {
 
     @Autowired
     private MeasurementUtil measurementUtil;
-
-    @Autowired
-    private ContractServiceUtil contractServiceUtil;
 
     public void validateCreateContractRequest(ContractRequest contractRequest) {
         log.info("Validate contract create request");
@@ -679,7 +674,7 @@ public class ContractServiceValidator {
         // Validate if contract number is present
         validateContractNumber(contractRequest);
 
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
 
         // Validate if contract is present in DB
         validateContractNumber(contractsFromDB);
@@ -712,7 +707,7 @@ public class ContractServiceValidator {
         // Validate if contract number is present
         validateContractNumber(contractRequest);
 
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
 
         // Validate if contract is present in DB
         validateContractNumber(contractsFromDB);
@@ -807,7 +802,7 @@ public class ContractServiceValidator {
 
 
     public void validateLineItemRef(ContractRequest contractRequest) {
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
         Set<String> contractLineItemRef = contractRequest.getContract().getLineItems().stream().map(LineItems::getContractLineItemRef).collect(Collectors.toSet());
         for (LineItems lineItems : contractsFromDB.get(0).getLineItems()) {
             if (!contractLineItemRef.contains(lineItems.getContractLineItemRef())) {
@@ -967,7 +962,7 @@ private void validateRevisionLimit(List<Contract> contractFromDB) {
         if (measurementValue != null) {
             for (Object value : measurementValue) {
                 if (value instanceof Integer) {
-                    convertedValue.add(new Double(value.toString()));
+                    convertedValue.add(Double.valueOf(value.toString()));
                 } else {
                     convertedValue.add((Double) value);
                 }

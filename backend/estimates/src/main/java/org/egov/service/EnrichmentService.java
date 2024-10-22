@@ -1,12 +1,13 @@
 package org.egov.service;
 
-import digit.models.coremodels.AuditDetails;
-import digit.models.coremodels.IdGenerationResponse;
-import digit.models.coremodels.IdResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.egov.common.contract.idgen.IdGenerationResponse;
+import org.egov.common.contract.idgen.IdResponse;
+import org.egov.common.contract.models.AuditDetails;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.User;
+import org.egov.works.services.common.models.common.Address;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.repository.EstimateRepository;
 import org.egov.repository.IdGenRepository;

@@ -42,7 +42,7 @@ public class MdmsUtil {
     public Object mDMSCall(MusterRollRequest request, String tenantId) {
         RequestInfo requestInfo = request.getRequestInfo();
         MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequest(requestInfo, tenantId);
-        return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
+        return serviceRequestRepository.fetchResult(getMdmsV2SearchUrl(), mdmsCriteriaReq);
     }
 
     /**
@@ -55,9 +55,8 @@ public class MdmsUtil {
     public Object mDMSCallMuster(MusterRollRequest request, String tenantId) {
         RequestInfo requestInfo = request.getRequestInfo();
         MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequestMuster(requestInfo, tenantId);
-        return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
+        return serviceRequestRepository.fetchResult(getMdmsV2SearchUrl(), mdmsCriteriaReq);
     }
-
 
     public Object mDMSV2CallMuster(MusterRollRequest request, String tenantId) {
         RequestInfo requestInfo = request.getRequestInfo();
@@ -82,7 +81,7 @@ public class MdmsUtil {
      *
      * @param requestInfo
      * @param tenantId
-     * @param
+     * @param request
      * @return
      */
     public MdmsCriteriaReq getMDMSRequest(RequestInfo requestInfo, String tenantId) {
@@ -104,7 +103,7 @@ public class MdmsUtil {
      *
      * @param requestInfo
      * @param tenantId
-     * @param
+     * @param request
      * @return
      */
     public MdmsCriteriaReq getMDMSRequestMuster(RequestInfo requestInfo, String tenantId) {
@@ -155,6 +154,7 @@ public class MdmsUtil {
         return ModuleDetail.builder().masterDetails(musterRollMasterDetails)
                 .moduleName("WORKS-SOR").build();
     }
+
     /**
      * Returns the url for mdms search endpoint
      *
@@ -163,7 +163,6 @@ public class MdmsUtil {
     public StringBuilder getMdmsSearchUrl() {
         return new StringBuilder().append(config.getMdmsHost()).append(config.getMdmsEndPoint());
     }
-
     public StringBuilder getMdmsV2SearchUrl() {
         return new StringBuilder().append(config.getMdmsV2Host()).append(config.getMdmsV2EndPoint());
     }

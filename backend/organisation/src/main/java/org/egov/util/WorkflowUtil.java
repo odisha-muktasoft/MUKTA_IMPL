@@ -7,27 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.egov.common.contract.models.RequestInfoWrapper;
+import org.egov.common.contract.models.Workflow;
+import org.egov.common.contract.workflow.*;
 import org.egov.config.Configuration;
 import org.egov.repository.ServiceRequestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.User;
 import org.egov.tracer.model.CustomException;
-import org.egov.web.models.ProcessInstance;
-import org.egov.web.models.ProcessInstanceRequest;
-import org.egov.web.models.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import digit.models.coremodels.BusinessService;
-import digit.models.coremodels.BusinessServiceResponse;
-import digit.models.coremodels.ProcessInstanceResponse;
-import digit.models.coremodels.RequestInfoWrapper;
-import digit.models.coremodels.State;
-//import digit.models.coremodels.Workflow;
 
 @Service
 @Slf4j
@@ -87,7 +80,7 @@ public class WorkflowUtil {
 	 * @return
 	 */
 	public String updateWorkflowStatus(RequestInfo requestInfo, String tenantId, String businessId,
-			String businessServiceCode, Workflow workflow, String wfModuleName) {
+									   String businessServiceCode, Workflow workflow, String wfModuleName) {
 		ProcessInstance processInstance = getProcessInstanceForWorkflow(requestInfo, tenantId, businessId,
 				businessServiceCode, workflow, wfModuleName);
 		ProcessInstanceRequest workflowRequest = new ProcessInstanceRequest(requestInfo,
@@ -126,7 +119,7 @@ public class WorkflowUtil {
 	 * @return
 	 */
 	private ProcessInstance getProcessInstanceForWorkflow(RequestInfo requestInfo, String tenantId, String businessId,
-														  String businessServiceCode, Workflow workflow, String wfModuleName) {
+			String businessServiceCode, Workflow workflow, String wfModuleName) {
 
 		ProcessInstance processInstance = new ProcessInstance();
 		processInstance.setBusinessId(businessId);
@@ -135,7 +128,7 @@ public class WorkflowUtil {
 		processInstance.setTenantId(tenantId);
 		processInstance.setBusinessService(
 				getBusinessService(requestInfo, tenantId, businessServiceCode).getBusinessService());
-		processInstance.setDocuments(workflow.getVerificationDocuments());
+		processInstance.setDocuments(workflow.getDocuments());
 		processInstance.setComment(workflow.getComments());
 
 		if (!CollectionUtils.isEmpty(workflow.getAssignes())) {
@@ -171,7 +164,7 @@ public class WorkflowUtil {
 			}
 
 			Workflow workflow = Workflow.builder().action(processInstance.getAction()).assignes(userIds)
-					.comments(processInstance.getComment()).verificationDocuments(processInstance.getDocuments())
+					.comments(processInstance.getComment()).documents(processInstance.getDocuments())
 					.build();
 
 			businessIdToWorkflow.put(processInstance.getBusinessId(), workflow);

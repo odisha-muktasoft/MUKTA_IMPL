@@ -1,16 +1,19 @@
 package org.egov.service;
 
+import ch.qos.logback.core.BasicStatusManager;
 import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
+import org.egov.common.models.project.Project;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.RegisterEnrichment;
 import org.egov.enrichment.StaffEnrichmentService;
-import org.egov.kafka.Producer;
+import org.egov.common.producer.Producer;
 import org.egov.repository.AttendeeRepository;
 import org.egov.repository.RegisterRepository;
+import org.egov.repository.StaffRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.IndividualServiceUtil;
 import org.egov.util.ResponseInfoFactory;
@@ -18,6 +21,7 @@ import org.egov.validator.AttendanceServiceValidator;
 import org.egov.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,35 +30,39 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class AttendanceRegisterService {
-    @Autowired
-    private AttendanceServiceValidator attendanceServiceValidator;
+    private final AttendanceServiceValidator attendanceServiceValidator;
 
-    @Autowired
-    private ResponseInfoFactory responseInfoFactory;
+    private final ResponseInfoFactory responseInfoFactory;
 
-    @Autowired
-    private Producer producer;
+    private final Producer producer;
 
-    @Autowired
-    private AttendanceServiceConfiguration attendanceServiceConfiguration;
+    private final AttendanceServiceConfiguration attendanceServiceConfiguration;
 
-    @Autowired
-    private RegisterEnrichment registerEnrichment;
+    private final RegisterEnrichment registerEnrichment;
 
 
-    @Autowired
-    private StaffService staffService;
+    private final StaffRepository staffRepository;
+
+    private final RegisterRepository registerRepository;
+
+    private final AttendeeRepository attendeeRepository;
+
+    private final StaffEnrichmentService staffEnrichmentService;
+    private final IndividualServiceUtil individualServiceUtil;
 
     @Autowired
-    private RegisterRepository registerRepository;
-
-    @Autowired
-    private AttendeeRepository attendeeRepository;
-
-    @Autowired
-    private StaffEnrichmentService staffEnrichmentService;
-    @Autowired
-    private IndividualServiceUtil individualServiceUtil;
+    public AttendanceRegisterService(AttendanceServiceValidator attendanceServiceValidator, ResponseInfoFactory responseInfoFactory, Producer producer, AttendanceServiceConfiguration attendanceServiceConfiguration, RegisterEnrichment registerEnrichment, StaffRepository staffRepository, RegisterRepository registerRepository, AttendeeRepository attendeeRepository, StaffEnrichmentService staffEnrichmentService, IndividualServiceUtil individualServiceUtil) {
+        this.attendanceServiceValidator = attendanceServiceValidator;
+        this.responseInfoFactory = responseInfoFactory;
+        this.producer = producer;
+        this.attendanceServiceConfiguration = attendanceServiceConfiguration;
+        this.registerEnrichment = registerEnrichment;
+        this.staffRepository = staffRepository;
+        this.registerRepository = registerRepository;
+        this.attendeeRepository = attendeeRepository;
+        this.staffEnrichmentService = staffEnrichmentService;
+        this.individualServiceUtil = individualServiceUtil;
+    }
 
     /**
      * Create Attendance register
@@ -238,7 +246,7 @@ public class AttendanceRegisterService {
         } else {
             staffSearchCriteria = StaffSearchCriteria.builder().registerIds(registerIdsToSearch).build();
         }
-        return staffService.getAllStaff(staffSearchCriteria);
+        return staffRepository.getAllStaff(staffSearchCriteria);
     }
 
     /* Returns list of user roles */
@@ -255,7 +263,7 @@ public class AttendanceRegisterService {
         List<String> individualIds = new ArrayList<>();
         individualIds.add(uuid);
         StaffSearchCriteria staffSearchCriteria = StaffSearchCriteria.builder().individualIds(individualIds).build();
-        List<StaffPermission> staffMembers = staffService.getAllStaff(staffSearchCriteria);
+        List<StaffPermission> staffMembers = staffRepository.getAllStaff(staffSearchCriteria);
         return staffMembers.stream().map(e -> e.getRegisterId()).collect(Collectors.toSet());
     }
 
@@ -285,7 +293,7 @@ public class AttendanceRegisterService {
         log.info("Fetched attendance registers for update request");
 
         //Validate Update attendance register request against attendance registers fetched from database
-        attendanceServiceValidator.validateUpdateAgainstDB(attendanceRegisterRequest, attendanceRegistersFromDB);
+        attendanceServiceValidator.validateUpdateAgainstDB(attendanceRegisterRequest, attendanceRegistersFromDB, attendanceServiceConfiguration.getRegisterFirstStaffInsertEnabled());
 
         registerEnrichment.enrichRegisterOnUpdate(attendanceRegisterRequest, attendanceRegistersFromDB);
         log.info("Enriched with register Number, Ids and AuditDetails");
@@ -293,6 +301,42 @@ public class AttendanceRegisterService {
         log.info("Pushed update attendance register request to kafka");
 
         return attendanceRegisterRequest;
+    }
+
+    public void updateAttendanceRegister(RequestInfoWrapper requestInfoWrapper, List<Project> projects) {
+        if(!CollectionUtils.isEmpty(projects)) {
+            List<AttendanceRegister> updatedRegisters = new ArrayList<>();
+            projects.forEach(project -> {
+                BigDecimal projectStartDate = BigDecimal.valueOf(project.getStartDate());
+                BigDecimal projectEndDate = BigDecimal.valueOf(project.getEndDate());
+                log.info("Fetching register from db for project : " + project.getId());
+                List<AttendanceRegister> registers = searchAttendanceRegister(
+                        requestInfoWrapper,
+                        AttendanceRegisterSearchCriteria.builder().referenceId(project.getId()).tenantId(project.getTenantId()).build()
+                );
+                if(CollectionUtils.isEmpty(registers)) return;
+
+                registers.forEach(attendanceRegister -> {
+                    Boolean isUpdated = false;
+                    if(attendanceRegister.getEndDate().compareTo(projectEndDate) < 0) {
+                        // update register end date to project end date
+                        attendanceRegister.setEndDate(projectEndDate);
+                        isUpdated = true;
+                    }
+                    if(isUpdated) updatedRegisters.add(attendanceRegister);
+                });
+                if(!updatedRegisters.isEmpty()) {
+                    AttendanceRegisterRequest attendanceRegisterRequest = AttendanceRegisterRequest.builder()
+                            .attendanceRegister(updatedRegisters)
+                            .requestInfo(requestInfoWrapper.getRequestInfo())
+                            .build();
+                    registerEnrichment.enrichRegisterOnUpdate(attendanceRegisterRequest, updatedRegisters);
+                    log.info("Pushing update attendance register request to kafka");
+                    producer.push(attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
+                    log.info("Pushed update attendance register request to kafka");
+                }
+            });
+        }
     }
 
     public List<AttendanceRegister> getAttendanceRegisters(RequestInfoWrapper requestInfoWrapper, List<String> registerIds, String tenantId) {

@@ -11,6 +11,10 @@ import org.egov.digit.expense.calculator.config.ExpenseCalculatorConfiguration;
 import org.egov.digit.expense.calculator.util.*;
 import org.egov.digit.expense.calculator.web.models.*;
 import org.egov.tracer.model.CustomException;
+import org.egov.works.services.common.models.contract.Contract;
+import org.egov.works.services.common.models.contract.ContractResponse;
+import org.egov.works.services.common.models.expense.calculator.IndividualEntry;
+import org.egov.works.services.common.models.musterroll.MusterRoll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -55,7 +59,7 @@ public class WageSeekerBillGeneratorService {
 	}
 
 	public Calculation calculateEstimates(RequestInfo requestInfo, String tenantId, List<MusterRoll> musterRolls,
-										  List<SorDetail> sorDetails) {
+			List<SorDetail> sorDetails) {
 		// Calculate estimate for each muster roll
 		List<CalcEstimate> calcEstimates = createEstimatesForMusterRolls(requestInfo, musterRolls, sorDetails);
 		// Create Calculation
@@ -64,7 +68,7 @@ public class WageSeekerBillGeneratorService {
 	}
 
 	public List<Bill> createWageSeekerBills(RequestInfo requestInfo, List<MusterRoll> musterRolls,
-											List<SorDetail> sorDetails, Map<String, String> metaInfo) {
+			List<SorDetail> sorDetails, Map<String, String> metaInfo) {
 		// Create bills for muster rolls
 		return createBillForMusterRolls(requestInfo, musterRolls, sorDetails, metaInfo);
 	}
@@ -80,16 +84,16 @@ public class WageSeekerBillGeneratorService {
 		}
 		return mdmsData;
 	}
-
+	
 	private List<Bill> createBillForMusterRolls(RequestInfo requestInfo, List<MusterRoll> musterRolls,
-												List<SorDetail> sorDetails, Map<String, String> metaInfo) {
-
+			List<SorDetail> sorDetails, Map<String, String> metaInfo) {
+		
 		List<Bill> bills = new ArrayList<>();
 		List<String> musterRollNumbers = new ArrayList<>();
-
+		
 		//Returns works.wages. This is used everywhere in the masters in the service field
 		String wagesMasterCategory = configs.getWagesMasterCategory();
-
+		
 		// For each muster-roll create one wage bill
 		for (MusterRoll musterRoll : musterRolls) {
 			String musterRollNumber = musterRoll.getMusterRollNumber();
@@ -105,7 +109,7 @@ public class WageSeekerBillGeneratorService {
 			List<ApplicableCharge> applicableCharges = expenseCalculatorUtil
 					.fetchApplicableChargesFromMDMSForService(requestInfo, tenantId,
 							wagesMasterCategory);
-			//Fetch all master data. We should do away with previous two statements
+			//Fetch all master data. We should do away with previous two statements 
 			Map<String, Map<String, JSONArray>> mdmsData = getMasterDataForCalculator(requestInfo, tenantId);
 			Long musterRollCreatedTime = musterRoll.getAuditDetails().getCreatedTime();
 
@@ -142,7 +146,7 @@ public class WageSeekerBillGeneratorService {
 				double cessRate = Double.parseDouble((String) rates.get(0));
 				BigDecimal labourCessRate = BigDecimal.valueOf(cessRate);
 				BigDecimal labourCess = actualAmountToPay.multiply(labourCessRate.divide(BigDecimal.valueOf(100.0)));
-
+				
 				// Add to the wage amount
 				actualAmountToPay = actualAmountToPay.add(labourCess);
 
@@ -226,7 +230,7 @@ public class WageSeekerBillGeneratorService {
 	}
 
 	private List<CalcEstimate> createEstimatesForMusterRolls(RequestInfo requestInfo, List<MusterRoll> musterRolls,
-															 List<SorDetail> sorDetails) {
+			List<SorDetail> sorDetails) {
 		List<CalcEstimate> calcEstimates = new ArrayList<>();
 		for (MusterRoll musterRoll : musterRolls) {
 			String musterRollNumber = musterRoll.getMusterRollNumber();
@@ -249,10 +253,10 @@ public class WageSeekerBillGeneratorService {
 				String individualId = individualEntry.getIndividualId();
 				// Calculate net amount to pay to wage seeker
 				Double skillAmount = getWageSeekerSkillAmountFromV2(individualEntry, sorDetails,musterRollCreatedTime);
-
+				
 				//Round off
 				BigDecimal actualAmountToPay = calculateAmount(individualEntry, BigDecimal.valueOf(skillAmount)).setScale(0, RoundingMode.HALF_UP);
-
+				
 				// Calculate net payable amount. We are not adding the LC deduction here. That happens only during bill generation
 				netPayableAmount = netPayableAmount.add(actualAmountToPay);
 				// Build lineItem
@@ -283,7 +287,7 @@ public class WageSeekerBillGeneratorService {
 	}
 
 	private List<LineItem> calculateAndSetPayableLineItems(String tenantId, List<LineItem> lineItems,
-														   List<HeadCode> headCodes, List<ApplicableCharge> applicableCharges) {
+			List<HeadCode> headCodes, List<ApplicableCharge> applicableCharges) {
 
 		List<LineItem> payables = new ArrayList<>();
 
@@ -467,7 +471,7 @@ public class WageSeekerBillGeneratorService {
 	/**
 	 * Generates the referenceId to be set on the tanentId object. This referenceId
 	 * is a wage bill reference Example: WR_123
-	 *
+	 * 
 	 * @param tenantId
 	 * @return
 	 */
