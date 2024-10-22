@@ -16,7 +16,7 @@ export const paymentTrackerSearchConfig = {
                 "searchCriteria": {
                     "moduleSearchCriteria": {}
                 }
-            },
+              },
               "minParametersForSearchForm": 1,
               "masterName": "commonUiConfig",
               "moduleName": "paymentTrackerSearchConfig",
@@ -31,13 +31,13 @@ export const paymentTrackerSearchConfig = {
                   "primaryLabel": "ES_COMMON_SEARCH",
                   "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
                   "minReqFields": 1,
-                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH",
+                  "showFormInstruction": "BILL_SELECT_ONE_PARAM_TO_SEARCH_AND_FIRST_300_DISPLAYED",
                   "formClassName": "",
                   "defaultValues": {
                     "ward": "",
                     "projectType": "",
-                    "name": "",
-                    "projectNumber": "",
+                    "projectName": "",
+                    "projectId": "",
                     "createdFrom": "",
                     "createdTo": ""
                   },
@@ -107,7 +107,7 @@ export const paymentTrackerSearchConfig = {
                         "name": "projectId",
                         "error": "PROJECT_PATTERN_ERR_MSG",
                         "validation": {
-                          "pattern": "PJ\\/[0-9]+-[0-9]+\\/[0-9]+\\/[0-9]+",
+                          "pattern": /^[a-z0-9\/-]*$/i,
                           "minlength": 2
                         }
                       }
@@ -221,8 +221,8 @@ export const paymentTrackerSearchConfig = {
                   "resultsJsonPath": "aggsResponse.projects",
                   "showCheckBox": false,
                   "checkBoxActionLabel": "ES_COMMON_GENERATE_PAYMENT_ADVICE",
-                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION",
-                  "stickyFooter": true
+                  "stickyFooter": true,
+                  "paginationValues": [10, 20, 30, 40, 50, 100, 200, 300],
                 },
                 "children": {},
                 "show": true
