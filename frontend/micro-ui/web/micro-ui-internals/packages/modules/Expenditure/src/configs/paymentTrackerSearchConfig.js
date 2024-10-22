@@ -16,7 +16,7 @@ export const paymentTrackerSearchConfig = {
                 "searchCriteria": {
                     "moduleSearchCriteria": {}
                 }
-            },
+              },
               "minParametersForSearchForm": 1,
               "masterName": "commonUiConfig",
               "moduleName": "paymentTrackerSearchConfig",
@@ -36,8 +36,8 @@ export const paymentTrackerSearchConfig = {
                   "defaultValues": {
                     "ward": "",
                     "projectType": "",
-                    "name": "",
-                    "projectNumber": "",
+                    "projectName": "",
+                    "projectId": "",
                     "createdFrom": "",
                     "createdTo": ""
                   },
@@ -107,7 +107,7 @@ export const paymentTrackerSearchConfig = {
                         "name": "projectId",
                         "error": "PROJECT_PATTERN_ERR_MSG",
                         "validation": {
-                          "pattern": "PJ\\/[0-9]+-[0-9]+\\/[0-9]+\\/[0-9]+",
+                          "pattern": /^[a-z0-9\/-]*$/i,
                           "minlength": 2
                         }
                       }

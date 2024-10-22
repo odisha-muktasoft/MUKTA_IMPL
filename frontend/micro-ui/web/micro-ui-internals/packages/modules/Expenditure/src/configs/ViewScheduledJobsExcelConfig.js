@@ -32,8 +32,8 @@ const ViewScheduledJobsExcelConfig = {
               showFormInstruction: "",
               defaultValues: {
                 status: "",
-                scheduleFrom: "",
-                scheduleTo: "",
+                scheduledFrom: "",
+                scheduledTo: "",
               },
               fields: [
                 {
@@ -86,8 +86,8 @@ const ViewScheduledJobsExcelConfig = {
                   additionalValidation: {
                     type: "date",
                     keys: {
-                      start: "scheduleFrom",
-                      end: "scheduleTo",
+                      start: "scheduledFrom",
+                      end: "scheduledTo",
                     },
                   },
                 },
