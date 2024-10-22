@@ -1,5 +1,6 @@
 package org.egov.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.domain.exception.InvalidOtpRequestException;
@@ -14,6 +15,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @NoArgsConstructor
 public class OtpRequest {
 
+	@JsonProperty("requestInfo")
 	private RequestInfo requestInfo;
 	@Setter
     private String mobileNumber;
