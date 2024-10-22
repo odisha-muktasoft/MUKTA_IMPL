@@ -1,8 +1,9 @@
 package org.egov.domain.model;
 
 import lombok.*;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.domain.exception.InvalidOtpRequestException;
-import org.egov.web.contract.RequestInfo;
+
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 

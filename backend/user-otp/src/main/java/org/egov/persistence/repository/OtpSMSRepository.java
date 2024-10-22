@@ -2,6 +2,7 @@ package org.egov.persistence.repository;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.domain.model.Category;
 import org.egov.domain.model.OtpRequest;
@@ -9,7 +10,6 @@ import org.egov.domain.service.LocalizationService;
 import org.egov.persistence.contract.SMSRequest;
 import org.egov.persistence.contract.WorksSmsRequest;
 import org.egov.tracer.kafka.CustomKafkaTemplate;
-import org.egov.web.contract.RequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;

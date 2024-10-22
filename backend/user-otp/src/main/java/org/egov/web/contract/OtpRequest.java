@@ -2,6 +2,7 @@ package org.egov.web.contract;
 
 import lombok.*;
 import org.egov.domain.model.OtpRequestType;
+import org.egov.common.contract.request.RequestInfo;
 
 @Getter
 @ToString
