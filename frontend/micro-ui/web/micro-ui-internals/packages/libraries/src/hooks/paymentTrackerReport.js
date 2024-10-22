@@ -1,10 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-const Amount = ({t,roundOff=true,...props}) => {
-    const value=roundOff?Math.round(props?.value):props?.value;
-    return `${props?.rupeeSymbol ? "₹" : ""}${value !== undefined && value !== null ? (props?.sameDisplay ? value : `${Digit?.Utils?.dss?.formatterWithoutRound(value, "number")}`) : t("ES_COMMON_NA")}`;
-}
-
 const cyrb53 = (str, seed = 0) => {
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
     for(let i = 0, ch; i < str.length; i++) {
@@ -81,7 +76,7 @@ export const paymentTrackerReport = (props) => {
             })
         })
         for (let i = 2; i < data.stickyFooterRow.length; i++) {
-            data.stickyFooterRow[i].value = Amount({ value: data.stickyFooterRow[i].value, rupeeSymbol: true, t: t });
+            data.stickyFooterRow[i].value = "₹" + data.stickyFooterRow[i].value?.toFixed(2);
         }
     }
 
