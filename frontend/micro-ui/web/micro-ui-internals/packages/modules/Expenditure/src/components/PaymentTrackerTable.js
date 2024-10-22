@@ -11,7 +11,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const [tableRows, setTableRows] = useState(props?.tableRows);
 
   const amountFormatter = (amount) => {
-    return Digit.Utils.dss.formatterWithoutRound(parseFloat(amount).toFixed(2),"number",undefined,true,undefined,2);
+    return Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(amount)).toFixed(2),"number",undefined,true,undefined,2);
   }
   
   const tableColumns = useMemo(()=>{

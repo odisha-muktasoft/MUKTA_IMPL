@@ -12,14 +12,14 @@ const ViewScheduledJobsExcelConfig = {
           serviceName: "/wms/report/payment-tracker/_search",
           requestParam: {},
           requestBody: {
-            reportSearchCriteria: {},
+            SearchCriteria: {},
           },
           minParametersForSearchForm: 1,
           masterName: "commonUiConfig",
-          moduleName: "ViewScheduledJobsExcelConfig",
+          moduleName: "ViewScheduledJobsConfig",
           tableFormJsonPath: "requestBody.pagination",
-          filterFormJsonPath: "requestBody.reportSearchCriteria",
-          searchFormJsonPath: "requestBody.reportSearchCriteria",
+          filterFormJsonPath: "requestBody.SearchCriteria",
+          searchFormJsonPath: "requestBody.SearchCriteria",
         },
         sections: {
           search: {
@@ -32,8 +32,8 @@ const ViewScheduledJobsExcelConfig = {
               showFormInstruction: "",
               defaultValues: {
                 status: "",
-                scheduledFrom: "",
-                scheduledTo: "",
+                scheduleFrom: "",
+                scheduleTo: "",
               },
               fields: [
                 {
@@ -86,8 +86,8 @@ const ViewScheduledJobsExcelConfig = {
                   additionalValidation: {
                     type: "date",
                     keys: {
-                      start: "scheduledFrom",
-                      end: "scheduledTo",
+                      start: "scheduleFrom",
+                      end: "scheduleTo",
                     },
                   },
                 },

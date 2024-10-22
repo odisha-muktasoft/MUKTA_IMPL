@@ -60,8 +60,7 @@ const Table = ({
   showCheckBox = false,
   actionLabel = 'CS_COMMON_DOWNLOAD',
   tableSelectionHandler = () => {},
-  stickyFooter,
-  paginationValues
+  stickyFooter
 }) => {
   const {
     getTableProps,
@@ -234,7 +233,7 @@ const Table = ({
             style={{ marginRight: "15px" }}
             onChange={manualPagination ? onPageSizeChange : (e) => setPageSize(Number(e.target.value))}
           >
-            {(paginationValues ? paginationValues : [10, 20, 30, 40, 50]).map((pageSize) => (
+            {[10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>
