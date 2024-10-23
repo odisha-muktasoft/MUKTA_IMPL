@@ -49,7 +49,7 @@ const MBDetailes = ({ formdata }) => {
   let rowStyle = window?.location.href.includes("create-purchase-bill") ? {marginRight:"9%"} : {}
  
   return (
-    <div style={{ marginBottom: "2rem" }}>
+    <div>
       {/* {!isMeasurementLoading && allMeasurementsIds && !(allMeasurementsIds?.length > 0) && <CitizenInfoLabel textStyle={{color:"#505A5F"}} fill={"#D4351C"} style={{marginBottom:"2rem", maxWidth:"40%",backgroundColor:"#EFC7C1"}} info={t("WORKS_PB_INFO")} text={t("WORKS_INFO_MB_NOT_CREATED")} />} */}
       {!isMeasurementLoading && allMeasurementsIds && !(allMeasurementsIds?.length > 0) && (
         <InfoCard
