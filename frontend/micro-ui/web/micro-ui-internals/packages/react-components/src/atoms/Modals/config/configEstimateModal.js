@@ -491,7 +491,7 @@ const configEstimateModal = (
                             name: "acceptTerms",
                             title: "MUSTOR_APPROVAL_CHECKBOX",
                             isMandatory: false,
-                            labelStyles: {marginLeft:"40px"},
+                            labelStyles: {},
                             customLabelMarkup: true,
                             hideInForm: !fetchIsShow("acceptTerms")
                         }
