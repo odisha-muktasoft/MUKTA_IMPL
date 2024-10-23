@@ -100,16 +100,6 @@ class AttendanceRegisterServices {
   const AttendanceRegisterServices();
 
   // uat-prod
-  // String get createAttendanceRegister => 'attendance/v1/_create';
-  // String get searchAttendanceRegister => 'attendance/v1/_search';
-  // String get createAttendee => 'attendance/attendee/v1/_create';
-  // String get createAttendanceLog => 'attendance/log/v1/_create';
-  // String get updateAttendanceLog => 'attendance/log/v1/_update';
-  // String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
-  // String get individualSearch => 'individual/v1/_search';
-  // String get wmsIndividualSearch => 'wms/individual/_search';
-
-  // // unified-qa
   String get createAttendanceRegister => 'attendance/v1/_create';
   String get searchAttendanceRegister => 'attendance/v1/_search';
   String get createAttendee => 'attendance/attendee/v1/_create';
@@ -118,6 +108,16 @@ class AttendanceRegisterServices {
   String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
   String get individualSearch => 'individual/v1/_search';
   String get wmsIndividualSearch => 'wms/individual/_search';
+
+  // // unified-qa
+  // String get createAttendanceRegister => 'attendance/v1/_create';
+  // String get searchAttendanceRegister => 'attendance/v1/_search';
+  // String get createAttendee => 'attendance/attendee/v1/_create';
+  // String get createAttendanceLog => 'attendance/log/v1/_create';
+  // String get updateAttendanceLog => 'attendance/log/v1/_update';
+  // String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
+  // String get individualSearch => 'individual/v1/_search';
+  // String get wmsIndividualSearch => 'wms/individual/_search';
 }
 
 
