@@ -1,7 +1,7 @@
-import { Table, CheckBox, LinkLabel } from '@egovernments/digit-ui-react-components'
+import { Table, CheckBox } from '@egovernments/digit-ui-react-components'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const { t } = useTranslation();
@@ -16,8 +16,19 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("BILL_NUMBER"),
         accessor: "billNumber",
         Cell: ({ value, column, row }) => {
-          return (
-            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`)}>{String(t(value))}</LinkLabel>
+          return ( 
+            <div>
+              {value ? (
+                <span className={"link"}>
+                  <Link
+                    to={`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`}>
+                    {value || t("ES_COMMON_NA")}
+                  </Link>
+                </span> 
+              ) : (
+                <span>{t("ES_COMMON_NA")}</span>
+              )}
+            </div>
           )
         }
       },
@@ -25,7 +36,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("BILL_TYPE"),
         accessor: "billType",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
@@ -54,8 +65,19 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
           if (value === "NA") {
             return String(t("NA"));
           }
-          return (
-            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row.original.paymentNumber}`)}>{String(t(value))}</LinkLabel>
+          return ( 
+            <div>
+              {value ? (
+                <span className={"link"}>
+                  <Link
+                    to={`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row.original.paymentNumber}`}>
+                    {value || t("ES_COMMON_NA")}
+                  </Link>
+                </span> 
+              ) : (
+                <span>{t("ES_COMMON_NA")}</span>
+              )}
+            </div>
           )
         }
       },
@@ -67,7 +89,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         ),
         accessor: "parentPi",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
@@ -78,7 +100,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         ),
         accessor: "piType",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
@@ -89,7 +111,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         ),
         accessor: "piCreationDate",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
@@ -115,7 +137,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         ),
         accessor: "piDate",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
@@ -126,7 +148,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         ),
         accessor: "piStatus",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return String(t(value || "ES_COMMON_NA"));
         }
       },
       {
