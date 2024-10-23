@@ -14,7 +14,7 @@ const PaymentTrackerView = () => {
     Digit.Utils.downloadEgovPDF("paymentTracker/payment-tracker", { projectId : projectId, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
-  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.[0], billData?.items, projectId);
+  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.filter((ob) => ob?.projectNumber === projectId)?.[0], billData?.items, projectId);
 
   if (isProjectLoading || isBillPaidLoading || isBillLoading) {
     return <Loader />;

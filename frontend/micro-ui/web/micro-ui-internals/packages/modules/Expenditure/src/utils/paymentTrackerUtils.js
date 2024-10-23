@@ -5,7 +5,7 @@ export const getBreakupDetails = ({projectBillPaidData}) => {
 
   if (projectBillPaidData) {
     projectBillPaidData?.paymentDetails?.map(bill => {
-      if (bill?.billType === "EXPENSE.WAGE") {
+      if (bill?.billType === "EXPENSE.WAGES") {
         wageAmountPaid += bill?.paidAmount;
       } else if (bill?.billType === "EXPENSE.PURCHASE") {
         purchaseAmountPaid += bill?.paidAmount;
