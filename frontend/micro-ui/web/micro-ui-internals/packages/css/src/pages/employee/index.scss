@@ -354,7 +354,8 @@
 }
 
 .link {
-  @apply text-primary-main cursor-pointer;
+  @apply cursor-pointer;
+  color: #C84C0E !important;
 
   :hover {
     @apply text-primary-dark;
