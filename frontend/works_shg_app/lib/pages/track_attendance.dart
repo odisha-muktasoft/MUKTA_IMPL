@@ -527,10 +527,6 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                               ),
                                                             ),
 
-// old search
-
-// end of search
-
                                                             DigitSearchBar(
                                                               // suffixIcon: Icons
                                                               //     .search_sharp,
@@ -1347,7 +1343,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                     // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                                                   } else {
                                                                                                                                     createMusterLoaded = false;
-                                                                                                                                    context.read<MusterCreateBloc>().add(UpdateMusterEvent(tenantId: widget.tenantId, id: musterRollsSearch.musterRoll!.first.id.toString(), orgName: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.orgName ?? 'NA', reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action, contractId: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.contractId ?? 'NA', registerNo: individualAttendanceRegisterModel.attendanceRegister?.first.registerNumber ?? 'NA', registerName: individualAttendanceRegisterModel.attendanceRegister?.first.name ?? 'NA', skillsList: skillsPayLoad));
+                                                                                                                                    context.read<MusterCreateBloc>().add(UpdateMusterEvent(tenantId: widget.tenantId, id: musterRollsSearch.musterRoll!.first.id.toString(), orgName: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.orgName ?? 'NA', reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action, contractId: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.contractId ?? 'NA', registerNo: individualAttendanceRegisterModel.attendanceRegister?.first.registerNumber ?? 'NA', registerName: individualAttendanceRegisterModel.attendanceRegister?.first.name ?? 'NA', skillsList: skillsPayLoad, startDate: individualAttendanceRegisterModel.attendanceRegister!.first.startDate!, registerId: individualAttendanceRegisterModel.attendanceRegister!.first.id!));
                                                                                                                                   }
                                                                                                                                 });
                                                                                                                               }
@@ -2105,7 +2101,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                     morning),
                 widget.tenantId));
           }
-        };
+        }
+        ;
       });
     }
   }

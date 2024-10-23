@@ -83,6 +83,8 @@ class MusterCreateBloc extends Bloc<MusterCreateEvent, MusterCreateState> {
               }),
               body: {
             "musterRoll": {
+              "startDate":event.startDate,
+              "registerId":event.registerId,
               "tenantId": event.tenantId,
               "id": event.id,
               "additionalDetails": {"computeAttendance": "true"},
@@ -133,6 +135,8 @@ class MusterCreateEvent with _$MusterCreateEvent {
       required String contractId,
       required String registerNo,
       required String registerName,
+      required int startDate,
+      required String registerId,
       String? reSubmitAction,
       List<Map<String, dynamic>>? skillsList}) = UpdateMusterEvent;
 }
