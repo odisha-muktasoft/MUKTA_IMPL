@@ -41,70 +41,69 @@ class DateRangePicker extends StatelessWidget {
     this.maxDate,
     this.format,
   });
+  Widget datePicker(BuildContext dialogContext) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+              child: SfDateRangePicker(
+                  viewSpacing: 30,
+                  onSelectionChanged: onChangeOfDate,
+                  controller: rangePickerController,
+                  selectionMode: selectionMode,
+                  selectionRadius: 30,
+                  onViewChanged: onViewChange,
+                  minDate: minDate,
+                  maxDate: maxDate,
+                  startRangeSelectionColor:
+                      Theme.of(dialogContext).colorScheme.primary,
+                  endRangeSelectionColor:
+                      Theme.of(dialogContext).colorScheme.primary,
+                  selectionColor: Theme.of(dialogContext).hintColor,
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: false,
+                      firstDayOfWeek: 1,
+                      dayFormat: 'EEE'))),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ui_button.Button(
+                type: ButtonType.tertiary,
+                size: ButtonSize.large,
+                mainAxisSize: MainAxisSize.min,
+                onPressed: () {
+                  onCancel!();
+                  Navigator.pop(dialogContext);
+                },
+                label: cancelLabel ?? '',
+              ),
+              SizedBox(
+                width: Theme.of(dialogContext).spacerTheme.spacer6,
+              ),
+              ui_button.Button(
+                size: ButtonSize.large,
+                type: ButtonType.primary,
+                mainAxisSize: MainAxisSize.min,
+                onPressed: () {
+                  onSubmit!();
+                  Navigator.pop(dialogContext);
+                },
+                label: applyLabel ?? 'Apply',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getDateRangePicker(BuildContext dialogContext) {
+    return SizedBox(height: 250, child: datePicker(dialogContext));
+  }
 
   @override
   Widget build(BuildContext context) {
-    Widget datePicker(BuildContext dialogContext) {
-      return SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-                child: SfDateRangePicker(
-                    viewSpacing: 30,
-                    onSelectionChanged: onChangeOfDate,
-                    controller: rangePickerController,
-                    selectionMode: selectionMode,
-                    selectionRadius: 30,
-                    onViewChanged: onViewChange,
-                    minDate: minDate,
-                    maxDate: maxDate,
-                    startRangeSelectionColor:
-                        Theme.of(context).colorScheme.primary,
-                    endRangeSelectionColor:
-                        Theme.of(context).colorScheme.primary,
-                    selectionColor: Theme.of(context).hintColor,
-                    monthViewSettings: const DateRangePickerMonthViewSettings(
-                        enableSwipeSelection: false,
-                        firstDayOfWeek: 1,
-                        dayFormat: 'EEE'))),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ui_button.Button(
-                  type: ButtonType.tertiary,
-                  size: ButtonSize.large,
-                  mainAxisSize: MainAxisSize.min,
-                  onPressed: () {
-                    onCancel!();
-                    Navigator.pop(dialogContext);
-                  },
-                  label: cancelLabel ?? '',
-                ),
-                SizedBox(
-                  width: Theme.of(context).spacerTheme.spacer6,
-                ),
-                ui_button.Button(
-                  size: ButtonSize.large,
-                  type: ButtonType.primary,
-                  mainAxisSize: MainAxisSize.min,
-                  onPressed: () {
-                    onSubmit!();
-                    Navigator.pop(dialogContext);
-                  },
-                  label: applyLabel ?? 'Apply',
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget getDateRangePicker(BuildContext dialogContext) {
-      return SizedBox(height: 250, child: datePicker(dialogContext));
-    }
-
     if (MediaQuery.of(context).size.width < 760) {
       return Container(
           margin: const EdgeInsets.only(top: 5.0, bottom: 5, right: 8, left: 8),
@@ -165,25 +164,46 @@ class DateRangePicker extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2,
                 child: LabeledField(
                   label: label,
-                  child: DigitTextFormInput(
-                    onSuffixTap: (val) {
+                  child: GestureDetector(
+                    onTap: () {
                       showDialog(
                           context: context,
-                          builder: (BuildContext dialogContext) {
+                          builder: (BuildContext context) {
                             return Dialog(
                                 child: SizedBox(
                               height: 350,
                               child: Column(
                                 children: <Widget>[
-                                  getDateRangePicker(dialogContext),
+                                  getDateRangePicker(context),
                                 ],
                               ),
                             ));
                           });
                     },
-                    readOnly: true,
-                    controller: controller,
-                    suffixIcon: Icons.date_range,
+                    child: AbsorbPointer(
+                      absorbing: true,
+                      child: DigitTextFormInput(
+                        onSuffixTap: (val) {
+                          // showDialog(
+                          //     context: context,
+                          //     builder: (BuildContext context) {
+                          //       return Dialog(
+                          //           child: SizedBox(
+                          //         height: 350,
+                          //         child: Column(
+                          //           children: <Widget>[
+                          //            // getDateRangePicker(dialogContext),
+                          //            Text("data")
+                          //           ],
+                          //         ),
+                          //       ));
+                          //     });
+                        },
+                        readOnly: true,
+                        controller: controller,
+                        suffixIcon: Icons.date_range,
+                      ),
+                    ),
                   ),
                 )),
           ]));
