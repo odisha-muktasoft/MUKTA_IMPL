@@ -82,10 +82,10 @@ class WorkServices {
 class EmpHrms {
   const EmpHrms();
   // uat-prod
-  // String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+   String get leadHrmsEmployee => 'egov-hrms/employees/_search';
 
   // unified-qa
-  String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
+ // String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
 }
 
 class MusterRollServices {
