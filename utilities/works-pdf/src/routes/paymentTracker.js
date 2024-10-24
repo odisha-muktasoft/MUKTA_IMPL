@@ -191,6 +191,12 @@ router.post(
                 }
             }
 
+            for (var i = 0; i < bills.length; i++) {
+                var piStatus = bills[i].businessObject.piStatus.toLowerCase();
+                piStatus = piStatus.charAt(0).toUpperCase() + piStatus.slice(1);
+                bills[i].businessObject.piStatus = piStatus;
+            }
+
 
             var project = resProject.data;
             if (project && project.Project && project.Project.length > 0) {
