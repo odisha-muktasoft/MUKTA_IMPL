@@ -59,15 +59,21 @@ export const transformBillData = ({projectBillData}) => {
       const piCreationDate = new Date(bill?.businessObject?.auditDetails?.createdTime);
       const piDate = new Date(bill?.businessObject?.auditDetails?.lastModifiedTime);
 
-      // Payment successful needs changes
       let paymentFailed = 0, paymentSuccessful = 0;
-      bill?.businessObject?.beneficiaryDetails?.map(subBill => {
-        if (subBill?.paymentStatus === "Payment Failed") {
-          paymentFailed += subBill?.amount;
-        } else if (subBill?.paymentStatus === "Payment Successful") {
-          paymentSuccessful += subBill?.amount;
-        }
-      })
+      
+      if (bill?.businessObject?.piStatus === "FAILED") {
+        paymentFailed += bill?.businessObject?.netAmount;
+      } else if (bill?.businessObject?.piStatus === "SUCCESSFUL") {
+        paymentSuccessful += bill?.businessObject?.netAmount;
+      } else if (bill?.businessObject?.piStatus === "PARTIAL" || bill?.businessObject?.piStatus === "COMPLETED") {
+        bill?.businessObject?.beneficiaryDetails?.map(subBill => {
+          if (subBill?.paymentStatus === "Payment Failed") {
+            paymentFailed += subBill?.amount;
+          } else if (subBill?.paymentStatus === "Payment Successful") {
+            paymentSuccessful += subBill?.amount;
+          }
+        })
+      }
 
       billData.push({
         billNumber: bill?.businessObject?.additionalDetails?.billNumber?.[0],
