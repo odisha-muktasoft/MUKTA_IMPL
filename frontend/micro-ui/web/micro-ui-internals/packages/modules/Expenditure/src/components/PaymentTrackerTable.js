@@ -1,12 +1,12 @@
 import { Table, CheckBox } from '@egovernments/digit-ui-react-components'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory, Link } from "react-router-dom";
+import { Button } from '@egovernments/digit-ui-components'
+import { Link } from "react-router-dom";
 
 const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const history = useHistory();
 
   const [tableRows, setTableRows] = useState(props?.tableRows);
   
@@ -16,20 +16,29 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("BILL_NUMBER"),
         accessor: "billNumber",
         Cell: ({ value, column, row }) => {
-          return ( 
+          return (
             <div>
               {value ? (
                 <span className={"link"}>
                   <Link
-                    to={`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`}>
-                    {value || t("ES_COMMON_NA")}
+                    to={`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`}
+                  >
+                    <Button
+                      className=""
+                      iconFill=""
+                      label={String(value ? value : t("ES_COMMON_NA"))}
+                      size="medium"
+                      style={{ padding: "0px" }}
+                      title=""
+                      variation="link"
+                    />
                   </Link>
-                </span> 
+                </span>
               ) : (
                 <span>{t("ES_COMMON_NA")}</span>
               )}
             </div>
-          )
+          );
         }
       },
       {
@@ -65,20 +74,29 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
           if (value === "NA") {
             return String(t("NA"));
           }
-          return ( 
+          return (
             <div>
               {value ? (
                 <span className={"link"}>
                   <Link
-                    to={`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row.original.paymentNumber}`}>
-                    {value || t("ES_COMMON_NA")}
+                    to={`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row.original.paymentNumber}`}
+                  >
+                    <Button
+                      className=""
+                      iconFill=""
+                      label={String(value ? value : t("ES_COMMON_NA"))}
+                      size="medium"
+                      style={{ padding: "0px" }}
+                      title=""
+                      variation="link"
+                    />
                   </Link>
-                </span> 
+                </span>
               ) : (
                 <span>{t("ES_COMMON_NA")}</span>
               )}
             </div>
-          )
+          );
         }
       },
       {
@@ -191,7 +209,6 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
       setTableRows(props?.tableRows);
     }
   }, [excludeFailed])
-
   return (
     <div>
       <CheckBox 
@@ -206,10 +223,9 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
           customTableWrapperClassName={"dss-table-wrapper"}
           t={t}
           data={tableRows}
-          // totalRecords={tableRows.length}
+          totalRecords={tableRows.length}
           columns={tableColumns}
           manualPagination={false}
-          isPaginationRequired={false}
           getCellProps={(cellInfo) => {
             return {
               style: {

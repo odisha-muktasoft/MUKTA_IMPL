@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getBreakupDetails, transformBillData } from "../utils/paymentTrackerUtils";
 import { useTranslation } from "react-i18next";
 
-export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBillData, projectId) => {
+export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBillData, projectId, headerLocale) => {
 
   const { t } = useTranslation();
   const [excludeFailed, setExcludeFailed] = useState(false);
@@ -32,7 +32,7 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
               },
               {
                 key: "PROJECT_LOCATION",
-                value: `${project?.address?.locality || t("ES_COMMON_NA")}, ${(project?.address?.boundaryType && project?.address?.boundary) ? `${project?.address?.boundaryType} ${project?.address?.boundary}` : t("ES_COMMON_NA")}, ${project?.address?.city || t("ES_COMMON_NA")}`,
+                value: `${(project?.additionalDetails?.locality ? t(`${headerLocale}_ADMIN_${project?.additionalDetails?.locality}`) : t("ES_COMMON_NA"))}, ${(project?.address?.boundary ? t(`${headerLocale}_ADMIN_${project?.address?.boundary}`) : t("ES_COMMON_NA"))}, ${(headerLocale ? t(`TENANT_TENANTS_${headerLocale}`) : t("ES_COMMON_NA"))}`,
               },
               {
                 key: "PROJECT_DESCRIPTION",

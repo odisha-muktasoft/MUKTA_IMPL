@@ -64,7 +64,7 @@ export const transformBillData = ({projectBillData}) => {
       bill?.businessObject?.beneficiaryDetails?.map(subBill => {
         if (subBill?.paymentStatus === "Payment Failed") {
           paymentFailed += subBill?.amount;
-        } else if (subBill?.paymentStatus === "Payment Successful" || subBill?.paymentStatus === "Payment In Process" || subBill?.paymentStatus === "Payment Initiated") {
+        } else if (subBill?.paymentStatus === "Payment Successful") {
           paymentSuccessful += subBill?.amount;
         }
       })
@@ -88,5 +88,12 @@ export const transformBillData = ({projectBillData}) => {
     })
   }
 
-  return billData;
+  const sortedBillData = billData.sort((a, b) => {
+    const dateA = new Date(a.piDate.split('-').reverse().join('-'));
+    const dateB = new Date(b.piDate.split('-').reverse().join('-'));
+    
+    return dateA - dateB;
+  });
+
+  return sortedBillData;
 }
