@@ -3049,7 +3049,6 @@ export const UICustomizations = {
                             const todayDate = new Date();
                             const date = `${todayDate.getDate()}-${todayDate.getMonth() + 1}-${todayDate.getFullYear()}`;
                             downloadExcel(excelLink, `Payment-Summary_${date}.xlsx`);
-                            {console.log("excel", row)}
                           } catch (error) {
                             console.error(error, "downloaderror");
                           }
