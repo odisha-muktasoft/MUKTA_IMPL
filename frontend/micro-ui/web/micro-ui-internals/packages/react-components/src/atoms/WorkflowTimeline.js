@@ -151,86 +151,40 @@ const WorkflowTimeline = ({
           ) : null}
           {!workflowDetails?.isLoading && (
             <Fragment>
-              {/* <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
-                                {t("WORKS_WORKFLOW_TIMELINE")}
-                            </CardSectionHeader> */}
               <TextBlock
                 subHeaderClassName={`view-composer-subheader ${workflowDetails?.data?.timeline?.headerclassName}`}
                 subHeader={t("WORKS_WORKFLOW_TIMELINE")}
-              ></TextBlock>
-              {/* {workflowDetails?.data?.timeline && 
-                                <ConnectingCheckPoints>
-                                    {workflowDetails?.data?.timeline &&
-                                        workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
-                                            return (
-                                                <React.Fragment key={index}>
-                                                    {
-                                                        index === 0 && !checkpoint?.isTerminateState &&
-                                                            <React.Fragment>
-                                                                <CheckPoint
-                                                                    keyValue={index}
-                                                                    isCompleted={index === 0}
-                                                                    label={t(
-                                                                        Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATE_${checkpoint?.["state"]}`)
-                                                                    )}
-                                                                    // customChild={getTimelineCaptions(checkpoint, -1)}
-                                                                    customClassName="checkpoint-connect-wrap"
-                                                                />
-                                                            </React.Fragment>
-                                                    }   
-                                                    <CheckPoint
-                                                        keyValue={index}
-                                                        isCompleted={checkpoint?.isTerminateState && index === 0}
-                                                        label={t(
-                                                            Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATUS_${checkpoint?.performedAction === "EDIT" ? `${checkpoint?.performedAction}` :   `${checkpoint?.performedAction}`
-                                                            }`)
-                                                        )}
-                                                        customChild={getTimelineCaptions(checkpoint, index)}
-                                                    />
-                                                </React.Fragment>
-                                            );  
-                                        })}
-                                </ConnectingCheckPoints>
-                            } */}
-              {/* {workflowDetails?.data?.timeline && (
-                <TimelineMolecule>
-                  <Timeline
-                    key={0}
-                    label={t(Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATE_${checkpoint?.["state"]}`))}
-                    subElements={index === 0 && !checkpoint?.isTerminateState ? [] : getTimelineCaptions(checkpoint, index)}
-                    variant={"inprogress"}
-                    showConnector={true}
-                  />
-                </TimelineMolecule>
-              )} */}
-
+              />
               {workflowDetails?.data?.timeline && (
-                <TimelineMolecule initialVisibleCount={5} hideFutureLabel ={true} hidePastLabel ={workflowDetails?.data?.timeline.length < 5 ? true : false}>
-                  {workflowDetails.data.timeline.map((checkpoint, index) => (
+                <TimelineMolecule initialVisibleCount={5} hideFutureLabel={true}>
+                  {!workflowDetails?.data?.timeline?.[0]?.isTerminateState && (
                     <Timeline
-                      key={index}
-                      label={
-                        index === 0 && !checkpoint?.isTerminateState
-                          ? t(Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATE_${checkpoint?.["state"]}`))
-                          : t(
-                              Digit.Utils.locale.getTransformedLocale(
-                                `${timelineStatusPrefix}STATUS_${
-                                  checkpoint?.performedAction === "EDIT" ? `${checkpoint?.performedAction}` : `${checkpoint?.performedAction}`
-                                }`
-                              )
-                            )
-                      }
-                      subElements={index === 0 && !checkpoint?.isTerminateState ? [] : getTimelineCaptions(checkpoint, index)}
-                      variant={
-                        ((index === 0 && !checkpoint?.isTerminateState) || checkpoint?.variant === "inprogress")
-                          ? "inprogress"
-                          : ((checkpoint?.isTerminateState && index === 0) || (checkpoint?.variant === "inprogress"))
-                          ? "inprogress"
-                          : (checkpoint?.variant==="upcoming") ? "upcoming": "completed"
-                      }
+                      key={0}
+                      variant="inprogress"
+                      label={t(
+                        Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATE_${workflowDetails?.data?.timeline?.[0]?.["state"]}`)
+                      )}
                       showConnector={true}
+                      customClassName="checkpoint-connect-wrap"
                     />
-                  ))}
+                  )}
+                  {workflowDetails?.data?.timeline.map((checkpoint, index) => {
+                    return (
+                      <Timeline
+                        key={index}
+                        variant={checkpoint?.isTerminateState && index === 0 ? "inprogress" : "completed"}
+                        label={t(
+                          Digit.Utils.locale.getTransformedLocale(
+                            `${timelineStatusPrefix}STATUS_${
+                              checkpoint?.performedAction === "EDIT" ? checkpoint?.performedAction : checkpoint?.performedAction
+                            }`
+                          )
+                        )}
+                        showConnector={true}
+                        subElements={getTimelineCaptions(checkpoint, index)}
+                      />
+                    );
+                  })}
                 </TimelineMolecule>
               )}
             </Fragment>
