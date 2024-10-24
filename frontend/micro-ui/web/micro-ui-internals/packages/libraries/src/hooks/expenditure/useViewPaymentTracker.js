@@ -3,7 +3,7 @@ import React from 'react'
 const useViewPaymentTracker = ({projectId, tenantId}) => {
 
   const projectSearchCriteria = {
-    url: `/project/v1/_search?limit=10&offset=0&tenantId=${tenantId}`,
+    url: `/project/v1/_search?limit=10&offset=0&tenantId=${tenantId}&includeAncestors=true&includeDescendants=true`,
 
     body: {
       Projects: [
@@ -43,7 +43,7 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
           "tenantId": tenantId,
           "projectId": projectId
         },
-        "limit": 10,
+        "limit": 100,
         "offset": 0,
       }
     }

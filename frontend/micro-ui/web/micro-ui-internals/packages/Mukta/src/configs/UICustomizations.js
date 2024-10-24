@@ -3046,7 +3046,9 @@ export const UICustomizations = {
                           try {
                             excel = row.fileStoreId && (await Digit.UploadServices.Filefetch([row.fileStoreId], Digit.ULBService.getCurrentTenantId()));
                             const excelLink = excel?.data?.fileStoreIds?.[0]?.url;
-                            downloadPdf(excelLink);
+                            const todayDate = new Date();
+                            const date = `${todayDate.getDate()}-${todayDate.getMonth() + 1}-${todayDate.getFullYear()}`;
+                            downloadExcel(excelLink, `Payment-Summary_${date}.xlsx`);
                           } catch (error) {
                             console.error(error, "downloaderror");
                           }
@@ -3295,6 +3297,22 @@ export const UICustomizations = {
       }
   }
   }
+};
+
+const downloadExcel = (link, fileName = "downloaded-file.xlsx") => {
+  fetch(link)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;  // Specify the custom file name
+      document.body.appendChild(a);
+      a.click();  // Trigger the download
+      document.body.removeChild(a);  // Clean up
+      window.URL.revokeObjectURL(url);  // Release the object URL
+    })
+    .catch(error => console.error('Error downloading the file:', error));
 };
 
 const downloadPdf = (link, openIn = "_blank") => {

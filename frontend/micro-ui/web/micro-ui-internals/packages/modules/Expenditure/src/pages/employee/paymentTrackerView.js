@@ -6,6 +6,7 @@ import { paymentTrackerViewConfig } from '../../configs/paymentTrackerViewConfig
 const PaymentTrackerView = () => {
   const {t} = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const headerLocale = Digit.Utils.locale.getTransformedLocale(tenantId);
   const { projectId } = Digit.Hooks.useQueryParams();
 
   const {projectData, billPaidData, billData, isProjectLoading, isBillPaidLoading, isBillLoading} = Digit.Hooks.paymentInstruction.useViewPaymentTracker({projectId, tenantId});
@@ -14,7 +15,7 @@ const PaymentTrackerView = () => {
     Digit.Utils.downloadEgovPDF("paymentTracker/payment-tracker", { projectId : projectId, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
-  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.filter((ob) => ob?.projectNumber === projectId)?.[0], billData?.items, projectId);
+  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.filter((ob) => ob?.projectNumber === projectId)?.[0], billData?.items, projectId, headerLocale);
 
   if (isProjectLoading || isBillPaidLoading || isBillLoading) {
     return <Loader />;
