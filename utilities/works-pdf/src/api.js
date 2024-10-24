@@ -640,7 +640,7 @@ async function search_payment_instruction(tenantId, requestinfo, projectNum) {
         "projectId": projectNum
       },
       "tenantId": tenantId,
-      "limit": 10,
+      "limit": 100,
       "offset": 0
     },
     "RequestInfo": requestinfo
