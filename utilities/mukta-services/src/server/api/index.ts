@@ -100,7 +100,7 @@ const search_mdms = async (tenantId: string, module: string, master: string, req
     },
   };
   return await httpRequest(
-    url.resolve(config.host.mdms, config.paths.mdms_search),
+    url.resolve(config.host.mdmsV2, config.paths.mdmsV2_search),
     requestBody,
     null,
     "post",
@@ -252,6 +252,33 @@ const searchRates = async (tenantId: string, module: string, master: string, req
   ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
 }
 
+const mdmsv2_v1Search = async (tenantId: string, module: string, master: string, filter: string, requestInfo:any) => {
+  const requestBody = {
+    RequestInfo: requestInfo.RequestInfo,
+    MdmsCriteria: {
+      tenantId: tenantId,
+      moduleDetails: [
+        {
+          moduleName: module,
+          masterDetails: [
+            {
+              name: master
+            },
+          ]
+        },
+      ],
+    },
+  };
+  return await httpRequest(
+    url.resolve(config.host.mdmsV2, config.paths.mdmsV2_search),
+    requestBody,
+    null,
+    "post",
+    "",
+    { cachekey: `${tenantId}-${module}-${master}` }
+  ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
+}
+
 export {
   create_pdf,
   create_pdf_and_upload,
@@ -265,5 +292,6 @@ export {
   search_estimate,
   search_measurement,
   calculate_expense,
-  searchRates
+  searchRates,
+  mdmsv2_v1Search
 };
