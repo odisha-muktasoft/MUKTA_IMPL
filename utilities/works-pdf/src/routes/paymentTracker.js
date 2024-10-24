@@ -193,7 +193,7 @@ router.post(
 
             for (var i = 0; i < bills.length; i++) {
                 var piStatus = bills[i].businessObject.piStatus.toLowerCase();
-                piStatus = piStatus.charAt(0).toUpperCase() + piStatus.slice(1);
+                piStatus = piStatus.charAt(0).toUpperCase() + piStatus.slice(1); 
                 bills[i].businessObject.piStatus = piStatus;
             }
 
