@@ -7,6 +7,7 @@ import org.egov.enrichment.AttendeeEnrichmentService;
 import org.egov.common.producer.Producer;
 import org.egov.repository.AttendeeRepository;
 import org.egov.tracer.model.CustomException;
+import org.egov.util.AttendanceServiceUtil;
 import org.egov.util.ResponseInfoFactory;
 import org.egov.validator.AttendanceServiceValidator;
 import org.egov.validator.AttendeeServiceValidator;
@@ -37,6 +38,9 @@ public class AttendeeService {
     private final AttendanceServiceConfiguration attendanceServiceConfiguration;
 
     private final Producer producer;
+
+    @Autowired
+    private AttendanceServiceUtil attendanceServiceUtil;
 
     @Autowired
     public AttendeeService(AttendeeServiceValidator attendeeServiceValidator, ResponseInfoFactory responseInfoFactory, AttendeeRepository attendeeRepository, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator, AttendeeEnrichmentService attendeeEnrichmentService, AttendanceServiceConfiguration attendanceServiceConfiguration, Producer producer) {
@@ -162,6 +166,8 @@ public class AttendeeService {
         log.info("enriching delete attendee request");
         attendeeEnrichmentService.enrichAttendeeOnDelete(attendeeDeleteRequest, attendeeListFromDB);
 
+        //Check if attendance logs are present for the individual for the provided de-ernollement date period or not
+        attendanceServiceUtil. checkAttendanceLogsForIndividual(attendeeDeleteRequest);
         //push to producer
         log.info("attendee objects updated via producer");
         producer.push(attendanceServiceConfiguration.getUpdateAttendeeTopic(), attendeeDeleteRequest);
