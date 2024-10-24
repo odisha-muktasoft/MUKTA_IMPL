@@ -34,36 +34,10 @@ class MdmsV1GetController {
     tenantId: string,
     moduleName: string,
     masterName: string,
-    filter: string
+    filter: string,
+    RequestInfo: any
   ) => {
 
-  const requestInfo = {
-    RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: "b080e281-cb96-47b4-b8ea-b0d196465242",
-        userInfo: {
-            id: 271,
-            uuid: "81b1ce2d-262d-4632-b2a3-3e8227769a11",
-            userName: "MUKTAUAT",
-            name: "MUKTAUAT",
-            mobileNumber: "9036146615",
-            emailId: "a@gmail.com",
-            locale: null,
-            type: "EMPLOYEE",
-            roles: [
-                { name: "MB_VERIFIER", code: "MB_VERIFIER", tenantId: "od.testing" },
-                { name: "Organization viewer", code: "ORG_VIEWER", tenantId: "od.testing" },
-                { name: "MDMS Admin", code: "MDMS_ADMIN", tenantId: "od.testing" },
-                // Add other roles as necessary
-            ],
-            active: true,
-            tenantId: "od.testing",
-            permanentCity: "Testing",
-        },
-        msgId: "1729510552715|en_IN",
-        plainAccessRequest: {}
-    }
-  };
   
     // Define an array of promises for parallel execution
     const promises = [ 
@@ -72,7 +46,7 @@ class MdmsV1GetController {
         tenantId,
         "works",
         "MdmsV1GetConfig",
-        requestInfo 
+        RequestInfo 
       ),
 
       mdmsv2_v1Search(
@@ -80,7 +54,7 @@ class MdmsV1GetController {
         moduleName,
         masterName,
         filter,
-        requestInfo
+        RequestInfo
       
       ),
     ];
@@ -108,9 +82,9 @@ class MdmsV1GetController {
     try {
      
       const { moduleName, masterName, tenantId, filter } = request.query;
-      const{requestInfo} = request.body;
+      const{RequestInfo} = request.body;
 
-      console.log("Request Info fetched from the request",requestInfo);
+      console.log("Request Info fetched from the request",RequestInfo);
   
       const tenantIdStr = tenantId as string;
       const moduleNameStr = moduleName as string;
@@ -122,7 +96,8 @@ class MdmsV1GetController {
           tenantIdStr,
           moduleNameStr,
           masterNameStr,
-          filterStr
+          filterStr,
+          RequestInfo
         );
 
       if (mdmsResponse !== null && !mdmsResponse?.notFound) {   
