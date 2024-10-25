@@ -181,6 +181,38 @@ const convertObjectForMeasurment = (obj: any, config: any) => {
   return resultBody;
 };
 
+// Convert the object to the format required for MdmsResponse
+const convertObjectForMdmsResponse = (obj: any, config: any) => {
+  const resultBody: Record<string, any> = {};
+
+  const assignValueAtPath = (obj: any, path: string, value: any) => {
+    const pathSegments = path.split(".");
+    let current = obj;
+    for (let i = 0; i < pathSegments.length - 1; i++) {
+      const segment = pathSegments[i];
+      if (!current[segment]) {
+        current[segment] = {};
+      }
+      current = current[segment];
+    }
+    current[pathSegments[pathSegments.length - 1]] = value;
+  };
+
+  
+  config.forEach((configObj: any) => {
+    const { path, jsonPath } = configObj;
+    let jsonPathValue = jp.query(obj, jsonPath);
+    if (jsonPathValue.length === 1) {
+      jsonPathValue = jsonPathValue[0];
+    }
+    // Assign jsonPathValue to the corresponding property in resultBody
+    assignValueAtPath(resultBody, path, jsonPathValue);
+  });
+
+
+  return resultBody;
+};
+
 // Extract estimateIds from all contracts
 const extractEstimateIds = (contract: any): any[] => {
   const allEstimateIds = new Set();
@@ -206,4 +238,5 @@ export {
   extractEstimateIds,
   cacheResponse,
   getCachedResponse,
+  convertObjectForMdmsResponse
 };
