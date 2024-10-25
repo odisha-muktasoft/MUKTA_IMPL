@@ -199,6 +199,9 @@ router.post(
 
 
             var project = resProject.data;
+            project.Project[0].address.city = project.Project[0].address.city
+                .replace("od.", "") // Remove the "od." prefix
+                .replace(/^\w/, c => c.toUpperCase()); // Capitalize the first letter
             if (project && project.Project && project.Project.length > 0) {
                     var pdfResponse;
                     var pdfkey = config.pdf.paymentTracker_template;
