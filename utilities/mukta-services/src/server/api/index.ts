@@ -262,7 +262,8 @@ const mdmsv2_v1Search = async (tenantId: string, module: string, master: string,
           moduleName: module,
           masterDetails: [
             {
-              name: master
+              name: master,
+              filter: filter
             },
           ]
         },
