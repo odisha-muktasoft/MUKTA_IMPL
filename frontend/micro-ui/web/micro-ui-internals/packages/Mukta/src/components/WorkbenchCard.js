@@ -73,6 +73,9 @@ const WorkbenchCard = () => {
     ],
   };
 
+  propsForModuleCard.links = propsForModuleCard?.links.filter((link) => (link?.roles && link?.roles?.length > 0 ? Digit.Utils.didEmployeeHasAtleastOneRole(link?.roles) : true));
+
+
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
 
