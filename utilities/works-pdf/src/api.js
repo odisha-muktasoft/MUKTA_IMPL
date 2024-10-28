@@ -76,7 +76,7 @@ async function search_organisation(tenantId, requestinfo, orgId) {
     offset: 0
   };
   var data = {
-    "apiOperation": "SEARCH",
+    // "apiOperation": "SEARCH",
     "SearchCriteria": {
       "tenantId": tenantId,
       "id": [orgId]
@@ -512,7 +512,7 @@ async function search_hrms(tenantId, requestinfo) {
   });
 }
 
-async function search_mdms_terms_and_conditions(tenantId, requestinfo) {
+async function search_mdms_terms_and_conditions(tenantId, requestinfo) { 
   var params = {
     tenantId: tenantId.split(".")[0],
     moduleName: "tenant",
