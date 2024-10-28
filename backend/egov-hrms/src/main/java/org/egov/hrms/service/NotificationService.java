@@ -14,6 +14,7 @@ import org.egov.hrms.repository.RestCallRepository;
 import org.egov.hrms.utils.HRMSConstants;
 import org.egov.hrms.web.contract.EmployeeRequest;
 import org.egov.hrms.web.contract.RequestInfoWrapper;
+import org.egov.hrms.web.contract.WorksSmsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,10 @@ public class NotificationService {
 	private String envHost;
 
 
+	@Value("${kafka.topics.works.notification.sms.name}")
+	private String muktaNotificationTopic;
+	@Value("${sms.isAdditonalFieldRequired}")
+	private boolean isAdditonalFieldRequired;
 
 	/**
 	 * Sends notification by putting the sms content onto the core-sms topic
@@ -69,8 +74,8 @@ public class NotificationService {
 	 * @param pwdMap
 	 */
 	public void sendNotification(EmployeeRequest request, Map<String, String> pwdMap) {
-		
-		String message = getMessage(request,HRMSConstants.HRMS_EMP_CREATE_LOCLZN_CODE);
+		Map<String,Object> addtionalFields= new HashMap<>();
+		String message = getMessage(request,HRMSConstants.HRMS_EMP_CREATE_LOCLZN_CODE,addtionalFields);
 		String tenantId = request.getEmployees().get(0).getTenantId(); 
 				
 		if(StringUtils.isEmpty(message)) {
@@ -78,16 +83,14 @@ public class NotificationService {
 			return;
 		}
 		for(Employee employee: request.getEmployees()) {
-			
 			message = buildMessage(employee, message, pwdMap);
-			SMSRequest smsRequest = SMSRequest.builder().mobileNumber(employee.getUser().getMobileNumber()).message(message).build();
-			producer.push(tenantId, smsTopic, smsRequest);
+			checkAdditionalFieldAndPushONSmsTopic(tenantId,message,addtionalFields,employee.getUser().getMobileNumber());
 		}
 	}
 
 	public void sendReactivationNotification(EmployeeRequest request){
-		
-		String message = getMessage(request,HRMSConstants.HRMS_EMP_REACTIVATE_LOCLZN_CODE);
+		Map<String,Object> addtionalFields= new HashMap<>();
+		String message = getMessage(request,HRMSConstants.HRMS_EMP_REACTIVATE_LOCLZN_CODE,addtionalFields);
 		String tenantId = request.getEmployees().get(0).getTenantId(); 
 		if(StringUtils.isEmpty(message)) {
 			log.info("SMS content has not been configured for this case");
@@ -143,11 +146,18 @@ public class NotificationService {
 	 * @param request
 	 * @return
 	 */
-	public String getMessage(EmployeeRequest request,String msgCode) {
+	public String getMessage(EmployeeRequest request,String msgCode,Map<String,Object> addtionalFields) {
 		String tenantId = request.getEmployees().get(0).getTenantId().split("\\.")[0];
-		Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), tenantId, 
-				HRMSConstants.HRMS_LOCALIZATION_ENG_LOCALE_CODE, HRMSConstants.HRMS_LOCALIZATION_MODULE_CODE);
-		return localizedMessageMap.get(HRMSConstants.HRMS_LOCALIZATION_ENG_LOCALE_CODE +"|"+tenantId).get(msgCode);
+		RequestInfo requestInfo=request.getRequestInfo();
+		String locale = "en_IN";
+		if(requestInfo.getMsgId().split("\\|").length > 1)
+			locale = requestInfo.getMsgId().split("\\|")[1];
+		Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), tenantId,
+				locale, HRMSConstants.HRMS_LOCALIZATION_MODULE_CODE);
+		if(isAdditonalFieldRequired){
+			setAdditionalFields(requestInfo,tenantId,msgCode,addtionalFields);
+		}
+		return localizedMessageMap.get(locale +"|"+tenantId).get(msgCode);
 	}
 	
 	/**
@@ -160,7 +170,8 @@ public class NotificationService {
 	 */
 	public String buildMessage(Employee employee, String message, Map<String, String> pwdMap) {
 		message = message.replace("$username", employee.getCode()).replace("$password", pwdMap.get(employee.getUuid()))
-				.replace("$employeename", employee.getUser().getName());
+				.replace("$employeename", employee.getUser().getName())
+				.replace("{username}", employee.getCode()).replace("{password}", pwdMap.get(employee.getUuid()));
 		message = message.replace("$applink", appLink);
 		return message;
 	}
@@ -175,7 +186,6 @@ public class NotificationService {
 	 * @return
 	 */
 	public Map<String, Map<String, String>> getLocalisedMessages(RequestInfo requestInfo, String tenantId, String locale, String module) {
-		
 		Map<String, Map<String, String>> localizedMessageMap = new HashMap<>();
 		Map<String, String> mapOfCodesAndMessages = new HashMap<>();
 		StringBuilder uri = new StringBuilder();
@@ -202,6 +212,27 @@ public class NotificationService {
 		}
 		
 		return localizedMessageMap;
+	}
+
+	private void setAdditionalFields(RequestInfo requestInfo,String tenantId, String localizationCode, Map<String,Object> addtionalFields){
+		addtionalFields.put("templateCode",localizationCode);
+		addtionalFields.put("requestInfo",requestInfo);
+		addtionalFields.put("tenantId",tenantId);
+	}
+
+
+	private void checkAdditionalFieldAndPushONSmsTopic(String tenantId, String customizedMessage , Map<String, Object> addtionalFields,String mobileNumber){
+		if(!addtionalFields.isEmpty()){
+			WorksSmsRequest smsRequest= WorksSmsRequest.builder().message(customizedMessage).additionalFields(addtionalFields)
+					.mobileNumber(mobileNumber).build();
+			log.info("SMS message with additonal Fields:::::" + smsRequest.toString());
+			producer.push(tenantId,muktaNotificationTopic, smsRequest);
+
+		}else{
+			SMSRequest smsRequest = SMSRequest.builder().mobileNumber(mobileNumber).message(customizedMessage).build();
+			log.info("SMS message without additonalFields:::::" + smsRequest.toString());
+			producer.push(tenantId, smsTopic, smsRequest);
+		}
 	}
 
 }

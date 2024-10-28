@@ -13,6 +13,7 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.hrms.config.PropertiesManager;
 import org.egov.hrms.model.*;
+import org.egov.hrms.repository.RestCallRepository;
 import org.egov.hrms.service.EmployeeService;
 import org.egov.hrms.service.MDMSService;
 import org.egov.hrms.service.UserService;
@@ -22,6 +23,7 @@ import org.egov.hrms.web.contract.EmployeeRequest;
 import org.egov.hrms.web.contract.EmployeeResponse;
 import org.egov.hrms.web.contract.EmployeeSearchCriteria;
 import org.egov.hrms.web.contract.UserResponse;
+import org.egov.hrms.web.models.boundary.BoundaryResponse;
 import org.egov.mdms.model.MdmsResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ import static org.egov.hrms.utils.ErrorConstants.CITIZEN_TYPE_CODE;
 @Service
 @Slf4j
 public class EmployeeValidator {
-	
+
 	@Autowired
 	private MDMSService mdmsService;
 
@@ -44,15 +46,18 @@ public class EmployeeValidator {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PropertiesManager propertiesManager;
+
+	@Autowired
+	private RestCallRepository restCallRepository;
 
 	/**
 	 * Validates employee request for create. Validations include:
 	 * 1. Validating MDMS codes
 	 * 2. Performing data sanity checks
-	 * 
+	 *
 	 * @param request
 	 */
 	public void validateCreateEmployee(EmployeeRequest request) {
@@ -69,41 +74,60 @@ public class EmployeeValidator {
 			throw new CustomException(errorMap);
 	}
 
-	public Map<String, List<String>> getBoundaryList(RequestInfo requestInfo,Employee employee){
+	public Map<String, List<String>> getBoundaryList(RequestInfo requestInfo,Employee employee) {
 		List<String> boundarytList = new ArrayList<>();
 		Map<String, List<String>> eachMasterMap = new HashMap<>();
 		Map<String, List<String>> masterData = new HashMap<>();
-		if(!CollectionUtils.isEmpty(employee.getJurisdictions())){
-			for(Jurisdiction jurisdiction: employee.getJurisdictions()){
-				if(!boundarytList.contains(jurisdiction.getBoundary()))
+		if (!CollectionUtils.isEmpty(employee.getJurisdictions())) {
+			for (Jurisdiction jurisdiction : employee.getJurisdictions()) {
+				if (!boundarytList.contains(jurisdiction.getBoundary()))
 					boundarytList.add(jurisdiction.getBoundary());
 			}
-			if(CollectionUtils.isEmpty(boundarytList))
+			if (CollectionUtils.isEmpty(boundarytList))
 				boundarytList.add(employee.getTenantId());
 		}
 
 		List<MdmsResponse> boundaryResponseList = new ArrayList<>();
-		for(String boundary: boundarytList){
-			MdmsResponse responseLoc = mdmsService.fetchMDMSDataLoc(requestInfo, boundary);
-			if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes()))
-				boundaryResponseList.add(responseLoc);
-		}
+//		for(String boundary: boundarytList){
+//			MdmsResponse responseLoc = mdmsService.fetchMDMSDataLoc(requestInfo, boundary);
+//			BoundaryResponse boundarySearchResponse = serviceRequestClient.fetchResult(
+//					new StringBuilder(propertiesManager.getBoundaryServiceHost()
+//							+ propertiesManager.getBoundarySearchUrl()
+//							+"?limit=" + boundaries.size()
+//							+ "&offset=0&tenantId=" + tenantId
+//							+ "&codes=" + String.join(",", boundaries)),
+//					request.getRequestInfo(),
+//					BoundaryResponse.class
+//			);
+//			if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes()))
+//				boundaryResponseList.add(responseLoc);
+//		}
 
-		if(!CollectionUtils.isEmpty(boundaryResponseList)){
-			List<String> tenantBoundaryData = new ArrayList<>();
-			for(MdmsResponse responseLoc : boundaryResponseList){
-				if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes().keySet())) {
-					if(null != responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE)) {
-						eachMasterMap = (Map) responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE);
-						tenantBoundaryData.addAll(eachMasterMap.get(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE));
-					}
-				}
+		if (!CollectionUtils.isEmpty(boundarytList)) {
+			try {
+				BoundaryResponse boundarySearchResponse = restCallRepository.fetchResult(
+						new StringBuilder(propertiesManager.getBoundaryServiceHost()
+								+ propertiesManager.getBoundarySearchUrl()
+								+ "?limit=" + boundarytList.size()
+								+ "&offset=0&tenantId=" + employee.getTenantId()
+								+ "&codes=" + String.join(",", boundarytList)),
+						requestInfo,
+						BoundaryResponse.class
+				);
+				masterData.put(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE, boundarySearchResponse.getBoundary().stream()
+						.map(boundary -> boundary.getCode())
+						.collect(Collectors.toList())
+				);
+				log.info("successfully fetch boundary");
+			} catch (Exception e) {
+				log.error("error while fetching boundary");
+				log.error("Error while fetching boundaries from Boundary Service", e);
+				throw new CustomException("BOUNDARY_SERVICE_SEARCH_ERROR", "Error while fetching boundaries from Boundary Service : " + e.getMessage());
 			}
-			if(!CollectionUtils.isEmpty(tenantBoundaryData))
-				masterData.put(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE,tenantBoundaryData);
 		}
 		return masterData;
 	}
+
 	
 	/**
 	 * Validates search request. Checks the following:
@@ -240,7 +264,7 @@ public class EmployeeValidator {
 		validateEmployee(employee, errorMap, mdmsData);
 		validateAssignments(employee, errorMap, mdmsData);
 		validateServiceHistory(employee, errorMap, mdmsData);
-		validateJurisdicton(employee, errorMap, mdmsData, boundaryMap);
+		//validateJurisdicton(employee, errorMap, mdmsData, boundaryMap);
 		validateEducationalDetails(employee, errorMap, mdmsData);
 		validateDepartmentalTest(employee, errorMap, mdmsData);
 	}
