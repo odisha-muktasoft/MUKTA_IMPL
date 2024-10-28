@@ -76,7 +76,7 @@ async function search_organisation(tenantId, requestinfo, orgId) {
     offset: 0
   };
   var data = {
-    "apiOperation": "SEARCH",
+    // "apiOperation": "SEARCH",
     "SearchCriteria": {
       "tenantId": tenantId,
       "id": [orgId]

@@ -72,7 +72,7 @@ module.exports = {
     mdmsV2: process.env.EGOV_MDMS_V2_HOST || 'http://localhost:8088',
     statements: process.env.RATE_ANALYSIS_STATEMENTS_HOST || 'http://localhost:8089',
     paymentTracker: process.env.EGOV_WMS_HOST || 'http://localhost:8096',
-    mukta_service: process.env.MUKTA_SERVICES_HOST || 'http://localhost:3000'
+    mukta_service: process.env.MUKTA_SERVICES_HOST || 'http://localhost:8097'
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
