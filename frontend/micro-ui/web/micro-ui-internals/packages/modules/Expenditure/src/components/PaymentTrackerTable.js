@@ -21,7 +21,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
               {value ? (
                 <span className={"link"}>
                   <Link
-                    to={`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`}
+                    to={`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber?.split("_")?.[0]}`}
                   >
                     <Button
                       className=""
