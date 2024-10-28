@@ -101,11 +101,11 @@ async function search_mdmsLabourCharges(tenantId, requestinfo) {
     masterName: "LabourCharges",
   };
 
-  var searchEndpoint = config.paths.mdms_get;
+  var searchEndpoint = config.paths.mukta_service_get;
 
   return await axios({
     method: "post",
-    url: url.resolve(config.host.mdms, searchEndpoint),
+    url: url.resolve(config.host.mukta_service, searchEndpoint),
     data: Object.assign(requestinfo),
     params
 
@@ -519,11 +519,11 @@ async function search_mdms_terms_and_conditions(tenantId, requestinfo) {
     masterName: "footer",
   };
 
-  var searchEndpoint = config.paths.mdms_get;
+  var searchEndpoint = config.paths.mukta_service_get;
 
   return await axios({
     method: "post",
-    url: url.resolve(config.host.mdms, searchEndpoint),
+    url: url.resolve(config.host.mukta_service, searchEndpoint),
     data: Object.assign(requestinfo),
     params
 
