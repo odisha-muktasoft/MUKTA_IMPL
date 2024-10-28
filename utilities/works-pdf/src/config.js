@@ -72,6 +72,7 @@ module.exports = {
     mdmsV2: process.env.EGOV_MDMS_V2_HOST || 'http://localhost:8088',
     statements: process.env.RATE_ANALYSIS_STATEMENTS_HOST || 'http://localhost:8089',
     paymentTracker: process.env.EGOV_WMS_HOST || 'http://localhost:8096',
+    mukta_service: process.env.MUKTA_SERVICES_HOST || 'http://localhost:3000'
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -97,7 +98,8 @@ module.exports = {
     analysis_statement_search: "/statements/v1/analysis/_search",
     analysis_utilization_search: "/statements/v1/utilization/_search",
     payment_instruction_search: "/wms/mukta-pi/_search",
-    report_paymentTracker_search: "/wms/report/payment_tracker"
+    report_paymentTracker_search: "/wms/report/payment_tracker",
+    mukta_service_get: "/mukta-services/mdmsV1/_get/_search"
   },
   constraints: {
     "beneficiaryIdByHeadCode": "Deduction_{tanentId}_{headcode}"
