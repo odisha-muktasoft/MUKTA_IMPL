@@ -512,7 +512,7 @@ async function search_hrms(tenantId, requestinfo) {
   });
 }
 
-async function search_mdms_terms_and_conditions(tenantId, requestinfo) {
+async function search_mdms_terms_and_conditions(tenantId, requestinfo) { 
   var params = {
     tenantId: tenantId.split(".")[0],
     moduleName: "tenant",
