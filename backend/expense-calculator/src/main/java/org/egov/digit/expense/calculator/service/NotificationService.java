@@ -8,13 +8,11 @@ import org.egov.digit.expense.calculator.kafka.ExpenseCalculatorProducer;
 import org.egov.digit.expense.calculator.util.HRMSUtils;
 import org.egov.digit.expense.calculator.util.LocalizationUtil;
 import org.egov.digit.expense.calculator.util.NotificationUtil;
-import org.egov.digit.expense.calculator.web.models.Bill;
-import org.egov.digit.expense.calculator.web.models.Calculation;
-import org.egov.digit.expense.calculator.web.models.Criteria;
-import org.egov.digit.expense.calculator.web.models.PurchaseBillRequest;
+import org.egov.digit.expense.calculator.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,69 +39,95 @@ public class NotificationService {
 
     public void sendNotificationForPurchaseBill(PurchaseBillRequest purchaseBillRequest){
 
-        if(config.isSMSEnabled()) {
-            log.info("Notification is enabled for this service");
+        String action = purchaseBillRequest.getWorkflow().getAction();
+        if(action.equalsIgnoreCase("APPROVE") || action.equalsIgnoreCase("REJECT")) {
+            String amount = String.valueOf(purchaseBillRequest.getBill().getTotalAmount());
+            String billNumber = purchaseBillRequest.getBill().getBillNumber();
+            String message = null;
+            String contactMobileNumber = null;
+            Map<String,Object> addtionalFields= new HashMap<>();
+            if (action.equalsIgnoreCase("APPROVE")) {
+                Map<String, String> CBODetails = notificationUtil.getCBOContactPersonDetails(purchaseBillRequest.getRequestInfo(),
+                        purchaseBillRequest.getBill().getTenantId(), purchaseBillRequest.getBill().getContractNumber());
+                message = getMessage(purchaseBillRequest.getRequestInfo(), purchaseBillRequest.getBill().getTenantId(), "PURCHASE_BILL_APPROVE_TO_VENDOR",addtionalFields);
+                contactMobileNumber = CBODetails.get(CONTACT_MOBILE_NUMBER);
 
-            String action = purchaseBillRequest.getWorkflow().getAction();
-            if (action.equalsIgnoreCase("APPROVE") || action.equalsIgnoreCase("REJECT")) {
-                String amount = String.valueOf(purchaseBillRequest.getBill().getTotalAmount());
-                String billNumber = purchaseBillRequest.getBill().getBillNumber();
-                String message = null;
-                String contactMobileNumber = null;
-                if (action.equalsIgnoreCase("APPROVE")) {
-                    Map<String, String> cbODetails = notificationUtil.getCBOContactPersonDetails(purchaseBillRequest.getRequestInfo(),
-                            purchaseBillRequest.getBill().getTenantId(), purchaseBillRequest.getBill().getContractNumber());
-                    message = getMessage(purchaseBillRequest.getRequestInfo(), purchaseBillRequest.getBill().getTenantId(), "PURCHASE_BILL_APPROVE_TO_VENDOR");
-                    contactMobileNumber = cbODetails.get(CONTACT_MOBILE_NUMBER);
+            } else if (action.equalsIgnoreCase("REJECT")) {
 
-                } else if (action.equalsIgnoreCase("REJECT")) {
+                Map<String , String> employeeDetails=hrmsUtils.getEmployeeDetailsByUuid(purchaseBillRequest.getRequestInfo(),purchaseBillRequest.getBill()
+                        .getTenantId(),purchaseBillRequest.getBill().getAuditDetails().getCreatedBy());
+                contactMobileNumber = employeeDetails.get("mobileNumber");
+                message = getMessage(purchaseBillRequest.getRequestInfo(), purchaseBillRequest.getBill().getTenantId(), "PURCHASE_BILL_REJECT_TO_CREATOR",addtionalFields);
 
-                    Map<String, String> employeeDetails = hrmsUtils.getEmployeeDetailsByUuid(purchaseBillRequest.getRequestInfo(), purchaseBillRequest.getBill()
-                            .getTenantId(), purchaseBillRequest.getBill().getAuditDetails().getCreatedBy());
-                    contactMobileNumber = employeeDetails.get("mobileNumber");
-                    message = getMessage(purchaseBillRequest.getRequestInfo(), purchaseBillRequest.getBill().getTenantId(), "PURCHASE_BILL_REJECT_TO_CREATOR");
-
-                }
-                String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
-                SMSRequest smsRequest = SMSRequest.builder().mobileNumber(contactMobileNumber).message(customizedMessage).build();
-                producer.push(config.getSmsNotificationTopic(), smsRequest);
             }
-        }else{
-            log.info("Notification is not enabled for this service");
+            String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
+            checkAdditionalFieldAndPushONSmsTopic(customizedMessage,addtionalFields,contactMobileNumber);
         }
     }
 
     public void sendNotificationForSupervisionBill(RequestInfo requestInfo, Criteria criteria, Calculation calculation, List<Bill> bills){
-
-        if(config.isSMSEnabled()) {
-            log.info("Notification is enabled for this service");
-
-            Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(requestInfo, criteria.getTenantId(), criteria.getContractId());
-            String amount = String.valueOf(calculation.getTotalAmount());
-            String billNumber = bills.get(0).getBillNumber();
-            String message = getMessage(requestInfo, criteria.getTenantId(), "SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO");
-            String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
-            String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
-            SMSRequest smsRequest = SMSRequest.builder().mobileNumber(contactMobileNumber).message(customizedMessage).build();
-            producer.push(config.getSmsNotificationTopic(), smsRequest);
-        }else{
-            log.info("Notification is not enabled for this service");
-        }
+        Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(requestInfo, criteria.getTenantId(), criteria.getContractId());
+        String amount = String.valueOf(calculation.getTotalAmount());
+        String billNumber = bills.get(0).getBillNumber();
+        Map<String,Object> addtionalFields= new HashMap<>();
+        String message = getMessage(requestInfo, criteria.getTenantId(), "SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO",addtionalFields);
+        String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
+        String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
+        checkAdditionalFieldAndPushONSmsTopic(customizedMessage,addtionalFields,contactMobileNumber);
     }
 
-    public String getMessage(RequestInfo requestInfo, String tenantId, String msgCode){
+    public String getMessage(RequestInfo requestInfo, String tenantId, String msgCode, Map<String,Object> addtionalFields){
+        String rootTenantId = tenantId.split("\\.")[0];
         String locale = "en_IN";
         if(requestInfo.getMsgId().split("\\|").length > 1)
             locale = requestInfo.getMsgId().split("\\|")[1];
-        Map<String, Map<String, String>> localizedMessageMap = localizationUtil.getLocalisedMessages(requestInfo, tenantId,
+        Map<String, Map<String, String>> localizedMessageMap = localizationUtil.getLocalisedMessages(requestInfo, rootTenantId,
                 locale, EXPENSE_CALCULATOR_MODULE_CODE);
-        return localizedMessageMap.get(locale + "|" + tenantId).get(msgCode);
+        if(config.isAdditonalFieldRequired()){
+            setAdditionalFields(requestInfo,tenantId,msgCode,addtionalFields);
+        }
+        return localizedMessageMap.get(locale + "|" + rootTenantId).get(msgCode);
     }
 
     public String buildMessageReplaceVariables(String message, String billNumber, String amount){
         message = message.replace("{billnumber}", billNumber)
                 .replace("{amount}", amount);
         return message;
+    }
+
+    /**
+     * Sets additional field if the additonal field required flag is true
+     * @param requestInfo
+     * @param tenantId
+     * @param localizationCode
+     * @param addtionalFields
+     */
+    private void setAdditionalFields(RequestInfo requestInfo,String tenantId, String localizationCode, Map<String,Object> addtionalFields){
+        addtionalFields.put("templateCode",localizationCode);
+        addtionalFields.put("requestInfo",requestInfo);
+        addtionalFields.put("tenantId",tenantId);
+    }
+
+    /**
+     * Checks if the additonal field is empty or not
+     * if !Empty then sends sms request on the existing topic
+     * if Empty then send the sms request on the new topic with additional fields
+     * @param customizedMessage
+     * @param addtionalFields
+     * @param mobileNumber
+     */
+    private void checkAdditionalFieldAndPushONSmsTopic( String customizedMessage , Map<String, Object> addtionalFields,String mobileNumber){
+        if(!addtionalFields.isEmpty()){
+            WorksSmsRequest smsRequest= WorksSmsRequest.builder().message(customizedMessage).additionalFields(addtionalFields)
+                    .mobileNumber(mobileNumber).build();
+            log.info("SMS message with additonal Fields:::::" + smsRequest.toString());
+            producer.push(config.getMuktaNotificationTopic(), smsRequest);
+
+        }else{
+            SMSRequest smsRequest = SMSRequest.builder().mobileNumber(mobileNumber).message(customizedMessage).build();
+            log.info("SMS message without additonalFields:::::" + smsRequest.toString());
+            producer.push(config.getSmsNotificationTopic(), smsRequest);
+        }
     }
 
 }

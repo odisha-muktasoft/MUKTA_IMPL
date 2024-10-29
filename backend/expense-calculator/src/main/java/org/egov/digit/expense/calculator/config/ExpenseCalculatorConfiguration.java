@@ -200,5 +200,19 @@ public class ExpenseCalculatorConfiguration {
 	@Value("${egov.mdms.v2.search.endpoint}")
 	private String mdmsV2EndPoint;
 
+        @Value("${works.estimate.host}")
+	private String estimateHost;
+
+	@Value("${works.estimate.search.endpoint}")
+	private String estimateEndpoint;
+
+	@Value("${expense.billing.bill.index}")
+	private String billIndexTopic;
+
+       @Value("${kafka.topics.works.notification.sms.name}")
+	private String muktaNotificationTopic;
+	@Value("${sms.isAdditonalFieldRequired}")
+	private boolean isAdditonalFieldRequired;
+
 
 }
