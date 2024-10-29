@@ -57,7 +57,7 @@ class MusterCreateBloc extends Bloc<MusterCreateEvent, MusterCreateState> {
               },
               "individualEntries": event.skillsList ?? []
             },
-            "workflow": {"action": "SUBMIT", "comments": "Submit muster roll"}
+            "workflow": {"action": "SUBMIT", "comments": null}
           });
       if (musterRollsModel != null) {
         emit(MusterCreateState.loaded(musterRollsModel));
@@ -92,7 +92,7 @@ class MusterCreateBloc extends Bloc<MusterCreateEvent, MusterCreateState> {
             },
             "workflow": {
               "action": event.reSubmitAction ?? "RE-SUBMIT",
-              "comments": "Muster Roll ReSubmitted",
+              "comments": null,
               "assignees": []
             }
           });
