@@ -507,12 +507,18 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                 .mapIndexed((i, e) => DigitTimelineOptions(
                                                                                       title: t.translate('CBO_MUSTER_${e.workflowState?.state}'),
                                                                                       subTitle: DateFormats.getTimeLineDate(e.auditDetails?.lastModifiedTime ?? 0),
-                                                                                      isCurrentState: i == 0 && e.action == "APPROVE",
-                                                                                      comments: e.comment,
+                                                                                      isCurrentState: e.action == "APPROVE" ? false : i == 0,
+                                                                                      comments: (i == 0 && e.action == "APPROVE")
+                                                                                          ? e.comment
+                                                                                          : i != 0
+                                                                                              ? e.comment
+                                                                                              : null,
                                                                                       documents: e.documents != null ? e.documents?.map((d) => FileStoreModel(name: '', fileStoreId: d.documentUid)).toList() : null,
-                                                                                      assignee: e.assignes?.first.name,
-                                                                                      mobileNumber: e.assignes != null ? '+91-${e.assignes?.first.mobileNumber}' : null,
+                                                                                      assignee: e.assigner?.name,
+                                                                                      mobileNumber: e.assigner != null ? '+91-${e.assigner?.mobileNumber}' : null,
                                                                                     ))
+                                                                                .toList()
+                                                                                .reversed
                                                                                 .toList();
                                                                           }
                                                                         });
@@ -535,27 +541,6 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                               shg_loader.Loaders.circularLoader(context),
                                                                           loaded:
                                                                               (MusterWorkFlowModel? musterWorkFlowModel, bool isInWorkFlow) {
-                                                                            //TODO: timeline
-                                                                            // return DigitCard(
-                                                                            //   padding: const EdgeInsets.all(8.0),
-                                                                            //   child: Column(
-                                                                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                                                                            //     mainAxisAlignment: MainAxisAlignment.start,
-                                                                            //     children: [
-                                                                            //       Padding(
-                                                                            //         padding: const EdgeInsets.only(left: 4.0, bottom: 16.0, top: 8.0),
-                                                                            //         child: Text(
-                                                                            //           t.translate(i18.common.workflowTimeline) ?? '',
-                                                                            //           style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge?.apply(color: const DigitColors().black),
-                                                                            //           textAlign: TextAlign.left,
-                                                                            //         ),
-                                                                            //       ),
-                                                                            //       DigitTimeline(
-                                                                            //         timelineOptions: timeLineAttributes,
-                                                                            //       ),
-                                                                            //     ],
-                                                                            //   ),
-                                                                            // );
                                                                             return timeLineAttributes.isNotEmpty
                                                                                 ? ui_card.DigitCard(
                                                                                     margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
@@ -602,6 +587,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                                   timeLineAttributes[i].subTitle ?? '',
                                                                                                   timeLineAttributes[i].assignee ?? '',
                                                                                                   timeLineAttributes[i].mobileNumber ?? '',
+                                                                                                  timeLineAttributes[i].comments ?? '',
                                                                                                 ],
                                                                                                 label: timeLineAttributes[i].title,
                                                                                                 state: timeLineAttributes[i].isCurrentState ? TimelineStepState.present : TimelineStepState.completed,
@@ -1265,11 +1251,18 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                                   // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                 } else {
                                                                                                   updateLoaded = false;
-                                                                                                  context.read<MusterCreateBloc>().add(UpdateMusterEvent(tenantId: widget.tenantId, id: musterId.toString(), reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action, 
-
-                                                                                                  contractId: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA', 
-                                                                                                 // contractId:  individualMusterRollModel.musterRoll!.first.startDate.toString() ,
-                                                                                                  registerNo: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterNo ?? 'NA', registerName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterName ?? 'NA', orgName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA', skillsList: skillsPayLoad, startDate: individualMusterRollModel.musterRoll!.first.startDate!, registerId: individualMusterRollModel.musterRoll!.first.registerId!));
+                                                                                                  context.read<MusterCreateBloc>().add(UpdateMusterEvent(
+                                                                                                      tenantId: widget.tenantId,
+                                                                                                      id: musterId.toString(),
+                                                                                                      reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action,
+                                                                                                      contractId: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA',
+                                                                                                      // contractId:  individualMusterRollModel.musterRoll!.first.startDate.toString() ,
+                                                                                                      registerNo: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterNo ?? 'NA',
+                                                                                                      registerName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterName ?? 'NA',
+                                                                                                      orgName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA',
+                                                                                                      skillsList: skillsPayLoad,
+                                                                                                      startDate: individualMusterRollModel.musterRoll!.first.startDate!,
+                                                                                                      registerId: individualMusterRollModel.musterRoll!.first.registerId!));
                                                                                                 }
                                                                                               }
                                                                                             : null,
