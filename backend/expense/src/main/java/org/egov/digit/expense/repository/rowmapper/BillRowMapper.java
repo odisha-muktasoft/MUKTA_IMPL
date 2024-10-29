@@ -182,7 +182,6 @@ public class BillRowMapper implements ResultSetExtractor<List<Bill>>{
 				.auditDetails(payerAuditDetails)
 				.id(rs.getString("payer_id"))
 				.build();
-
 	}
 	
 
