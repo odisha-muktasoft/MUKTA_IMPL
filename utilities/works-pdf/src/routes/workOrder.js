@@ -92,7 +92,8 @@ router.post(
             var contract = resContract.data;
             var organisation = resOrg.data;
             var hrms = resHrms.data;
-            var mdmsData = get(resMdmsTermsAndConditions, 'data.MdmsRes.tenant.footer', []);
+            
+            var mdmsData = get(resMdmsTermsAndConditions, 'data.MdmsRes.tenant.tenants', []);
             let worflow = resWorkFlow?.data || {};
             if (contract && contract.contracts && contract.contracts.length > 0 && organisation && organisation.organisations && organisation.organisations.length > 0 && worflow?.ProcessInstances?.length) {
                 var pdfResponse;
