@@ -203,24 +203,26 @@ router.post(
 
                 let termAndConditions = [];
                 if (contract.contracts[0].executingAuthority == 'IA') {
-                    let tnClength = mdmsData[0].termsAndConditions.length;
-
-                    for (i = 0; i < tnClength; i++) {
-                        var termsKey = mdmsData[0].termsAndConditions[i].disclaimer;
-                        var tnc = getLocalizationByKey(termsKey, localizationMaps);
-                        termAndConditions.push(tnc.replace('{nameoftheulb}', tenantIdForTnC));
-
+                    let iaItem = mdmsData.find(item => item.code === 'IA');
+                    if(iaItem){
+                        let tnClength = iaItem.termsAndConditions.length;
+                        for (i = 0; i < tnClength; i++) {
+                            var termsKey = iaItem.termsAndConditions[i].disclaimer;
+                            var tnc = getLocalizationByKey(termsKey, localizationMaps);
+                            termAndConditions.push(tnc.replace('{nameoftheulb}', tenantIdForTnC));
+                        }
                     }
                 }
 
                 if (contract.contracts[0].executingAuthority == 'IP') {
-                    let tnClength = mdmsData[1].termsAndConditions.length;
-
-                    for (i = 0; i < tnClength; i++) {
-                        let termsKey = mdmsData[1].termsAndConditions[i].disclaimer;
-                        let tnc = getLocalizationByKey(termsKey, localizationMaps);
-                        termAndConditions.push(tnc.replace('{nameoftheulb}', tenantIdForTnC));
-
+                    let ipItem = mdmsData.find(item => item.code === 'IP');
+                    if(ipItem){
+                        let tnClength = ipItem.termsAndConditions.length;
+                        for (i = 0; i < tnClength; i++) {
+                            var termsKey = ipItem.termsAndConditions[i].disclaimer;
+                            var tnc = getLocalizationByKey(termsKey, localizationMaps);
+                            termAndConditions.push(tnc.replace('{nameoftheulb}', tenantIdForTnC));
+                        }
                     }
                 }
                 let newTC = [];
