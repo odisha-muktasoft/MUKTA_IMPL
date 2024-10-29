@@ -136,7 +136,7 @@ export const createBillPayload = (data, contract,  docConfigData,workflowDetails
         workflow: {
             "action": "SUBMIT",
             "assignees": workflowDetails.assignees,
-            "comment":workflowDetails.comment
+            "comments":workflowDetails.comment
           }
     };
     return payload;
