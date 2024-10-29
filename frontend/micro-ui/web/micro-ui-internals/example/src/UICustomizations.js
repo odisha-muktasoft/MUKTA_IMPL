@@ -42,7 +42,7 @@ export const UICustomizations = {
     
     if (businessService === businessServiceMap.estimate) {
       const workflow = {
-        comment: data.comments,
+        comments: data.comments,
         documents: data?.documents?.map((document) => {
           return {
             documentType: action?.action + " DOC",
@@ -67,7 +67,7 @@ export const UICustomizations = {
     }
     if (businessService === businessServiceMap.contract || businessService === businessServiceMap.revisedWO ) {
       const workflow = {
-        comment: data?.comments,
+        comments: data?.comments,
         documents: data?.documents?.map((document) => {
           return {
             documentType: action?.action + " DOC",
@@ -92,7 +92,7 @@ export const UICustomizations = {
     }
     if (businessService === businessServiceMap?.["muster roll"]) {
       const workflow = {
-        comment: data?.comments,
+        comments: data?.comments,
         documents: data?.documents?.map((document) => {
           return {
             documentType: action?.action + " DOC",
