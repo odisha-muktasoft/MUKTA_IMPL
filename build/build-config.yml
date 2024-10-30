@@ -225,6 +225,11 @@ config:
       - work-dir: "utilities/transformer-cronjob"
         image-name: "transformer-cronjob"
         dockerfile: "utilities/transformer-cronjob/Dockerfile"
+  - name: "builds/mukta_impl/utilities/boundary-migration"
+    build:
+      - work-dir: "utilities/boundary-migration"
+        dockerfile: "build/maven/Dockerfile"
+        image-name: "boundary-migration"       
 
 # reference-adapters
   - name: "builds/mukta_impl/reference-adapters/ifms-adapter"
