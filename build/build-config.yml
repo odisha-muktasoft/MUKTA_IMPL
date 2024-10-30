@@ -143,7 +143,13 @@ config:
     build:
       - work-dir: "utilities/bulk-upload"
         dockerfile: "build/maven/Dockerfile"
-        image-name: "bulk-upload"        
+        image-name: "bulk-upload"
+        
+  - name: "builds/mukta_impl/utilities/boundary-migration"
+    build:
+      - work-dir: "utilities/boundary-migration"
+        dockerfile: "build/maven/Dockerfile"
+        image-name: "boundary-migration"       
 
 # frontend
   - name: builds/mukta_impl/frontend/micro-ui/works-ui
