@@ -228,7 +228,7 @@ config:
   - name: "builds/mukta_impl/utilities/boundary-migration"
     build:
       - work-dir: "utilities/boundary-migration"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "boundary-migration"       
 
 # reference-adapters
