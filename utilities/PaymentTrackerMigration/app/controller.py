@@ -374,21 +374,21 @@ def migrate():
 
 def process_pis(pi, tenant_id, request_info):
     print(f"Processing PI for tenant_id: {tenant_id} and PI id: {pi['id']}")
-    bill_number = pi['additionalDetails']['billNumber']
-    if bill_number is not None:
-        bill = fetch_bill(request_info,tenant_id,bill_number[0])
-        if bill:
-            additional_details = bill['additionalDetails']
-            if additional_details is not None:
-                pi['additionalDetails']['projectId'] = additional_details['projectId']
-                pi['additionalDetails']['projectCreatedDate'] = additional_details['projectCreatedDate']
+    # bill_number = pi['additionalDetails']['billNumber']
+    # if bill_number is not None:
+    #     bill = fetch_bill(request_info,tenant_id,bill_number[0])
+    #     if bill:
+    #         additional_details = bill['additionalDetails']
+    #         if additional_details is not None:
+    #             pi['additionalDetails']['projectId'] = additional_details['projectId']
+    #             pi['additionalDetails']['projectCreatedDate'] = additional_details['projectCreatedDate']
 
-                pi_request = {
-                    "RequestInfo": request_info,
-                    "paymentInstruction": pi
-                }
+    pi_request = {
+        "RequestInfo": request_info,
+        "paymentInstruction": pi
+    }
 
-                publish_to_kafka(pi_request, os.getenv('MUKTA_PI_INDEX_TOPIC'))
+    publish_to_kafka(pi_request, os.getenv('MUKTA_PI_INDEX_TOPIC'))
 
 
 def check_if_done_pi(pi, cursor, connection):
@@ -420,7 +420,7 @@ def process_pi_for_tenant(request_info, tenant_id, connection, cursor):
             "limit": 100,
             "offSet": 0,
             "sortBy": "createdtime",
-            "order": "DESC"
+            "order": "ASC"
         }
     }
 
@@ -430,7 +430,9 @@ def process_pi_for_tenant(request_info, tenant_id, connection, cursor):
         if response.status_code == 200:
             response_data = response.json()
             for pi in response_data.get('paymentInstructions', []):
-                check_if_done_pi(pi, cursor, connection)
+                # check_if_done_pi(pi, cursor, connection)
+                if check_if_done_pi(pi, cursor, connection) is True:
+                    continue
                 process_pis(pi, tenant_id, request_info)
                 cursor.execute('''INSERT INTO PIMigrationStatus (id, migrated) VALUES (%s, %s)''', (pi['id'], True))
             if len(response_data.get('paymentInstructions', [])) < int(data["pagination"]["limit"]):
@@ -442,7 +444,8 @@ def process_pi_for_tenant(request_info, tenant_id, connection, cursor):
         else:
             print(f"Failed to fetch data from the API. Status code: {response.status_code}")
             print(response.text)
-            break
+            data["pagination"]["offSet"] = str(int(data["pagination"]["offSet"]) + 1)
+            # break
 
 
 
