@@ -150,5 +150,31 @@ public class Estimate {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Estimate{" +
+                "id='" + id + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", estimateNumber='" + estimateNumber + '\'' +
+                ", revisionNumber='" + revisionNumber + '\'' +
+                ", businessService='" + businessService + '\'' +
+                ", versionNumber=" + versionNumber +
+                ", oldUuid='" + oldUuid + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", proposalDate=" + proposalDate +
+                ", status=" + status +
+                ", wfStatus='" + wfStatus + '\'' +
+                ", name='" + name + '\'' +
+                ", referenceNumber='" + referenceNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", executingDepartment='" + executingDepartment + '\'' +
+                ", address=" + address +
+                ", estimateDetails=" + estimateDetails +
+                ", auditDetails=" + auditDetails +
+                ", additionalDetails=" + additionalDetails +
+                ", project=" + project +
+                ", processInstances=" + processInstances +
+                '}';
+    }
 }
 

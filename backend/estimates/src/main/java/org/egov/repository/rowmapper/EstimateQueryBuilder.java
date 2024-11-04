@@ -7,11 +7,14 @@ import org.egov.tracer.model.CustomException;
 import org.egov.web.models.EstimateSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -67,7 +70,7 @@ public class EstimateQueryBuilder {
         if (values.isEmpty())
             queryString.append(" WHERE ");
         else {
-            queryString.append(" AND");
+            queryString.append(" AND ");
         }
     }
 
@@ -271,5 +274,31 @@ public class EstimateQueryBuilder {
             return COUNT_WRAPPER.replace("{INTERNAL_QUERY}", query);
         else
             return query;
+    }
+
+    public String getEstimateQueryForBulkSearch(EstimateSearchCriteria criteria, List<Object> preparedStmtList,Boolean isPlainSearch) {
+
+        Boolean isEmpty = CollectionUtils.isEmpty(criteria.getIds());
+
+        if(isEmpty)
+            throw new CustomException("EG_ET_SEARCH_ERROR"," No uuids given for the Estimate Bulk search");
+
+        StringBuilder builder = new StringBuilder(FETCH_ESTIMATE_QUERY);
+
+        if(!ObjectUtils.isEmpty(criteria.getTenantId()))
+        {
+            addClauseIfRequired(preparedStmtList, builder);
+            builder.append(" where tenant_id=?");
+            preparedStmtList.add(criteria.getTenantId());
+        }
+
+        List<String> uuids = criteria.getIds();
+        if (!CollectionUtils.isEmpty(uuids)) {
+
+            addClauseIfRequired(preparedStmtList,builder);
+            builder.append("est.id IN (").append(createQuery(uuids)).append(")");
+            addToPreparedStatement(preparedStmtList, uuids);
+        }
+        return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
     }
 }

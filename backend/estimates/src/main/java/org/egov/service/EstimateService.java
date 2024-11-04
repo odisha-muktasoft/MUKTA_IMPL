@@ -2,6 +2,7 @@ package org.egov.service;
 
 import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.producer.EstimateProducer;
 import org.egov.repository.EstimateRepository;
@@ -13,8 +14,13 @@ import org.egov.web.models.EstimateRequest;
 import org.egov.web.models.EstimateSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -34,9 +40,10 @@ public class EstimateService {
 
     private final NotificationService notificationService;
     private final EstimateServiceUtil estimateServiceUtil;
+    private final EstimateServiceConfiguration config;
 
     @Autowired
-    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil) {
+    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, EstimateServiceConfiguration config) {
         this.serviceConfiguration = serviceConfiguration;
         this.producer = producer;
         this.serviceValidator = serviceValidator;
@@ -45,6 +52,7 @@ public class EstimateService {
         this.workflowService = workflowService;
         this.notificationService = notificationService;
         this.estimateServiceUtil = estimateServiceUtil;
+        this.config = config;
     }
 
     /**
@@ -121,5 +129,46 @@ public class EstimateService {
                 producer.push(serviceConfiguration.getUpdateEstimateTopic(), oldEstimateRequest);
             }
         }
+    }
+
+    public List<Estimate> searchEstimatePlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+        List<Estimate> estimates = getPropertiesPlainSearch(searchCriteria, requestInfo);
+
+        // Put enrichment if needed
+
+        return estimates;
+    }
+
+    List<Estimate> getPropertiesPlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+
+        if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > config.getMaxLimit())
+            searchCriteria.setLimit(config.getMaxLimit());
+        if(searchCriteria.getLimit()==null)
+            searchCriteria.setLimit(config.getDefaultLimit());
+        if(searchCriteria.getOffset()==null)
+            searchCriteria.setOffset(config.getDefaultOffset());
+
+        EstimateSearchCriteria estimateCriteria = new EstimateSearchCriteria();
+        System.out.println(searchCriteria);
+        System.out.println("hey criteria");
+        if (searchCriteria.getIds() != null) {
+            estimateCriteria.setIds(searchCriteria.getIds());
+        } else {
+            List<String> uuids = estimateRepository.fetchIds(searchCriteria, true);
+            System.out.println(uuids);
+            System.out.println("hey uuids");
+            if (uuids.isEmpty())
+                return Collections.emptyList();
+            estimateCriteria.setIds(uuids);
+        }
+        System.out.println(estimateCriteria.getIds());
+        System.out.println("hey ids");
+        estimateCriteria.setLimit(searchCriteria.getLimit());
+        List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria, true);
+        if(estimates.isEmpty())
+            return Collections.emptyList();
+        for (Estimate estimate:estimates)
+            System.out.println(estimate);
+        return estimates;
     }
 }

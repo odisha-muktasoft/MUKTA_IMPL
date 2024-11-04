@@ -88,4 +88,29 @@ public class EstimateSearchCriteria {
         wfStatus,
         totalAmount
     }
+
+    @Override
+    public String toString() {
+        return "EstimateSearchCriteria{" +
+                "ids=" + ids +
+                ", tenantId='" + tenantId + '\'' +
+                ", estimateNumber='" + estimateNumber + '\'' +
+                ", revisionNumber='" + revisionNumber + '\'' +
+                ", businessService='" + businessService + '\'' +
+                ", versionNumber=" + versionNumber +
+                ", oldUuid='" + oldUuid + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", referenceNumber='" + referenceNumber + '\'' +
+                ", wfStatus='" + wfStatus + '\'' +
+                ", fromProposalDate=" + fromProposalDate +
+                ", toProposalDate=" + toProposalDate +
+                ", executingDepartment='" + executingDepartment + '\'' +
+                ", sortBy=" + sortBy +
+                ", sortOrder=" + sortOrder +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", isCountNeeded=" + isCountNeeded +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
