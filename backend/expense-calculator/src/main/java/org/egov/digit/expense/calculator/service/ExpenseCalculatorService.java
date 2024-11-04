@@ -519,7 +519,7 @@ public class ExpenseCalculatorService {
         }
 
         additionalDetails.put("projectName", project.getName());
-        additionalDetails.put("projectNumber", project.getProjectNumber());
+        additionalDetails.put("projectId", project.getProjectNumber());
         additionalDetails.put("ward", project.getAddress().getBoundary());
         additionalDetails.put("projectDescription", project.getDescription());
         additionalDetails.put("projectCreatedDate", project.getAuditDetails().getCreatedTime());
