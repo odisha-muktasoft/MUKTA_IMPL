@@ -64,7 +64,12 @@ public class EstimateApiController {
 
     @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
     public ResponseEntity<EstimateResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-                                                        @Valid @ModelAttribute EstimateSearchCriteria searchCriteria) {
+                                                        @Valid @ModelAttribute EstimateSearchCriteria searchCriteria,
+                                                        @RequestHeader(value = "TENANTID", required = false) String tenantId) {
+        System.out.println(searchCriteria);
+        System.out.println("first criteria");
+        System.out.println(tenantId);
+        searchCriteria.setTenantId(tenantId);
         List<Estimate> estimates = estimateService.searchEstimatePlainSearch(searchCriteria, requestInfoWrapper.getRequestInfo());
         EstimateResponse response = EstimateResponse.builder().estimates(estimates).responseInfo(
                         responseInfoCreator.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
