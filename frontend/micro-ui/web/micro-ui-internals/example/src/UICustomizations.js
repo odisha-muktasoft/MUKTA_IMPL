@@ -93,15 +93,15 @@ export const UICustomizations = {
     if (businessService === businessServiceMap?.["muster roll"]) {
       const workflow = {
         comments: data?.comments,
-        documents: data?.documents?.map((document) => {
-          return {
-            documentType: action?.action + " DOC",
-            fileName: document?.[1]?.file?.name,
-            fileStoreId: document?.[1]?.fileStoreId?.fileStoreId,
-            documentUid: document?.[1]?.fileStoreId?.fileStoreId,
-            tenantId: document?.[1]?.fileStoreId?.tenantId,
-          };
-        }),
+        // documents: data?.documents?.map((document) => {
+        //   return {
+        //     documentType: action?.action + " DOC",
+        //     fileName: document?.[1]?.file?.name,
+        //     fileStoreId: document?.[1]?.fileStoreId?.fileStoreId,
+        //     documentUid: document?.[1]?.fileStoreId?.fileStoreId,
+        //     tenantId: document?.[1]?.fileStoreId?.tenantId,
+        //   };
+        // }),
         assignees: data?.assignees?.uuid ? [data?.assignees?.uuid] : null,
         action: action.action,
       };
