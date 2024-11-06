@@ -66,7 +66,7 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
 const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
     let updatedSkills = formData?.skillDetails_skill
     //added code field in existing skills to find difference
-    let existingSkills = wageSeekerDataFromAPI?.individual?.skills?.map(item => ({ ...item, code : `${item?.level}.${item?.type}`}))
+    let existingSkills = wageSeekerDataFromAPI?.individual?.skills?.map(item => ({ ...item, code : `${item?.level}`}))
 
     let set1 = new Set(updatedSkills.map(({ code }) => code))
     let set2 = new Set(existingSkills.map(({ code }) => code))
@@ -85,8 +85,10 @@ const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
     })
 
     let skillsTobeAdded = extraSkillsTobeAdded?.map(item => {
-        const separator = item?.code.includes('.') ? '.' : '_';
-        const [level, type] = item?.code.split(separator);
+        //const separator = item?.code.includes('.') ? '.' : '_';
+        //const [level, type] = item?.code.split(separator);
+        const level = item?.code;
+        const type = item?.code;
         return { level, type };
     });
     let skillsTobeRemoved = extraSkillsTobeRemoved?.map(item => ({ ...item, isDeleted: true }))
@@ -186,6 +188,7 @@ export const getWageSeekerSkillDeletePayload = ({wageSeekerDataFromAPI, tenantId
     Individual.name = wageSeekerDataFromAPI?.Individual?.name
     Individual.rowVersion = parseInt(wageSeekerDataFromAPI?.Individual?.rowVersion)
     Individual.skills = skillsTobeRemoved
+    Individual.additionalFields = wageSeekerDataFromAPI?.Individual?.additionalFields
     return {
         Individual
     }
