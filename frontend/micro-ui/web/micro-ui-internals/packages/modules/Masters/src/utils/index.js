@@ -182,7 +182,7 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
 }
 
 export const getWageSeekerSkillDeletePayload = ({wageSeekerDataFromAPI, tenantId, skillsTobeRemoved}) => {
-    let Individual = {}
+    let Individual = {...wageSeekerDataFromAPI?.Individual}
     Individual.id = wageSeekerDataFromAPI?.Individual?.id
     Individual.tenantId = tenantId
     Individual.name = wageSeekerDataFromAPI?.Individual?.name
@@ -190,7 +190,7 @@ export const getWageSeekerSkillDeletePayload = ({wageSeekerDataFromAPI, tenantId
     Individual.skills = skillsTobeRemoved
     Individual.additionalFields = wageSeekerDataFromAPI?.Individual?.additionalFields
     return {
-        Individual
+       Individual
     }
 }
 
