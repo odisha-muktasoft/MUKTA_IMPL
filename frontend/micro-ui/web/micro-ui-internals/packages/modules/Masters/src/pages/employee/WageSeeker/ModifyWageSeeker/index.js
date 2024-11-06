@@ -76,7 +76,7 @@ const ModifyWageSeeker = () => {
 
     useEffect(() => {
         if(configs && !wageSeekerDataFetching) {
-            updateWageSeekerFormDefaultValues({ configs, isModify, sessionFormData, setSessionFormData, wageSeekerData, tenantId, headerLocale, ULBOptions, setIsFormReady})
+            updateWageSeekerFormDefaultValues({ configs, isModify, sessionFormData, setSessionFormData, wageSeekerData, tenantId, headerLocale, ULBOptions, setIsFormReady, t})
         }
       },[configs, wageSeekerDataFetching]);
 
