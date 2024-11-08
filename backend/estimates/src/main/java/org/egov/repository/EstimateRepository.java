@@ -11,7 +11,9 @@ import org.egov.web.models.EstimateRequest;
 import org.egov.web.models.EstimateSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -67,5 +69,31 @@ public class EstimateRepository {
             return 0;
 
         return jdbcTemplate.queryForObject(query, preparedStatement.toArray(), Integer.class);
+    }
+
+    public List<Estimate> getEstimatesForBulkSearch(EstimateSearchCriteria criteria, Boolean isPlainSearch) {
+        List<Object> preparedStmtList = new ArrayList<>();
+        String query = queryBuilder.getEstimateQueryForBulkSearch(criteria, preparedStmtList, isPlainSearch);
+        return jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
+    }
+
+    public List<String> fetchIds(EstimateSearchCriteria criteria, Boolean isPlainSearch) {
+
+        List<Object> preparedStmtList = new ArrayList<>();
+        String basequery = "select id from eg_wms_estimate";
+        StringBuilder builder = new StringBuilder(basequery);
+
+        if(!ObjectUtils.isEmpty(criteria.getTenantId()))
+        {
+            builder.append(" where tenant_id=?");
+            preparedStmtList.add(criteria.getTenantId());
+        }
+
+        String orderbyClause = " order by last_modified_time,id offset ? limit ?";
+        builder.append(orderbyClause);
+        preparedStmtList.add(criteria.getOffset());
+        preparedStmtList.add(criteria.getLimit());
+
+        return jdbcTemplate.query(builder.toString(), preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
     }
 }

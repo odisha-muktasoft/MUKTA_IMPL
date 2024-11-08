@@ -81,6 +81,37 @@ public class ProjectUtil {
         return requestRepository.fetchResult(uriBuilder, projectSearchReqNode);
     }
 
+    public Object getProjectDetailsNoEstimateRequest(String projectId, String tenantId, RequestInfo requestInfo) {
+        log.info("ProjectUtil::getProjectDetails");
+
+        StringBuilder uriBuilder = getProjectUrl();
+
+        //added the url param
+        uriBuilder.append("?").append(TENANT_ID).append(EQUAL_TO).append(tenantId)
+                .append(AMPERSAND)
+                .append(OFFSET).append(EQUAL_TO).append(DEFAULT_OFFSET)
+                .append(AMPERSAND)
+                .append(LIMIT).append(EQUAL_TO).append(DEFAULT_LIMIT);
+
+
+        //created the project search request body
+        ObjectNode projectSearchReqNode = mapper.createObjectNode();
+        ArrayNode projectArrayNode = mapper.createArrayNode();
+
+        ObjectNode projectObjNode = mapper.createObjectNode();
+        projectObjNode.put(ID, projectId);
+        projectObjNode.put(TENANT_ID, tenantId);
+
+        projectArrayNode.add(projectObjNode);
+
+        projectSearchReqNode.putPOJO(REQUEST_INFO, requestInfo);
+        projectSearchReqNode.putPOJO(PROJECTS, projectArrayNode);
+
+        log.info("ProjectUtil::search project request -> {}",projectSearchReqNode);
+
+        return requestRepository.fetchResult(uriBuilder, projectSearchReqNode);
+    }
+
     private StringBuilder getProjectUrl() {
         StringBuilder uriBuilder = new StringBuilder();
         return (uriBuilder.append(serviceConfiguration.getWorksProjectManagementSystemHost())

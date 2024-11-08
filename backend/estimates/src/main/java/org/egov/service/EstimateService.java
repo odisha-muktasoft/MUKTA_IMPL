@@ -1,12 +1,17 @@
 package org.egov.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.RequestInfoWrapper;
+import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.models.project.Project;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.producer.EstimateProducer;
 import org.egov.repository.EstimateRepository;
 import org.egov.util.EstimateServiceConstant;
 import org.egov.util.EstimateServiceUtil;
+import org.egov.util.ProjectUtil;
 import org.egov.validator.EstimateServiceValidator;
 import org.egov.web.models.Estimate;
 import org.egov.web.models.EstimateRequest;
@@ -14,10 +19,7 @@ import org.egov.web.models.EstimateSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,12 +41,15 @@ public class EstimateService {
 
     private final NotificationService notificationService;
     private final EstimateServiceUtil estimateServiceUtil;
+    private final ProjectUtil projectUtil;
     private final RedisService redisService;
+    private final EstimateServiceConfiguration config;
+    private final ObjectMapper objectMapper;
 
     private static final String ESTIMATE_REDIS_KEY = "ESTIMATE_{id}";
 
     @Autowired
-    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, RedisService redisService) {
+    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, ProjectUtil projectUtil, RedisService redisService, EstimateServiceConfiguration config, ObjectMapper objectMapper) {
         this.serviceConfiguration = serviceConfiguration;
         this.producer = producer;
         this.serviceValidator = serviceValidator;
@@ -53,7 +58,10 @@ public class EstimateService {
         this.workflowService = workflowService;
         this.notificationService = notificationService;
         this.estimateServiceUtil = estimateServiceUtil;
+        this.projectUtil = projectUtil;
         this.redisService = redisService;
+        this.config = config;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -165,5 +173,56 @@ public class EstimateService {
 
     private String getEstimateRedisKey(String id) {
         return ESTIMATE_REDIS_KEY.replace("{id}", id);
+    }
+
+    public List<Estimate> searchEstimatePlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+        List<Estimate> estimates = getEstimatesPlainSearch(searchCriteria, requestInfo);
+
+        // Project enrichment
+        for (Estimate estimate: estimates) {
+            log.info("DenormalizeAndEnrichEstimateService:: Enrich project details for estimate number %s", estimate.getEstimateNumber());
+            Object projectRes = projectUtil.getProjectDetailsNoEstimateRequest(estimate.getProjectId(), estimate.getTenantId(), requestInfo);
+
+            //If project payload changes, this key needs to be modified!
+            List<Project> projects = objectMapper.convertValue(((LinkedHashMap) projectRes).get(EstimateServiceConstant.PROJECT_RESP_PAYLOAD_KEY), new TypeReference<List<Project>>() {
+            })  ;
+
+            if (projects != null && !projects.isEmpty()) {
+                estimate.setProject(projects.get(0));
+            }
+            else {
+                log.warn(String.format("Unable to enrich project details for estimate %s. Inbox and search will not function correctly!", estimate.getEstimateNumber()));
+            }
+        }
+
+        return estimates;
+    }
+
+    List<Estimate> getEstimatesPlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+
+        if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > config.getMaxLimit())
+            searchCriteria.setLimit(config.getMaxLimit());
+        if(searchCriteria.getLimit()==null)
+            searchCriteria.setLimit(config.getDefaultLimit());
+        if(searchCriteria.getOffset()==null)
+            searchCriteria.setOffset(config.getDefaultOffset());
+
+        EstimateSearchCriteria estimateCriteria = new EstimateSearchCriteria();
+        if (searchCriteria.getIds() != null) {
+            estimateCriteria.setIds(searchCriteria.getIds());
+        } else {
+            List<String> uuids = estimateRepository.fetchIds(searchCriteria, true);
+            if (uuids.isEmpty())
+                return Collections.emptyList();
+            estimateCriteria.setIds(uuids);
+        }
+        estimateCriteria.setLimit(searchCriteria.getLimit());
+        List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria, true);
+
+
+        if(estimates.isEmpty())
+            return Collections.emptyList();
+
+        return estimates;
     }
 }
