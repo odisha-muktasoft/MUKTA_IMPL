@@ -5,7 +5,7 @@ const useTEorMBCreateValidation=({estimateNumber, tenantId, t})=>{
 
   //To get all the Estimates associated with the contract
   const requestrevisionCriteria = {
-      url: "/estimate/v1/_search",
+      url: "/mukta-estimate/v1/_search",
       params : {tenantId : tenantId , estimateNumber : estimateNumber},
       config : {
         cacheTime : 0,

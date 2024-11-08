@@ -3,7 +3,7 @@ const searchConfig = () => {
         label: "WORKS_SEARCH_ESTIMATES",
         type: 'search',
         apiDetails: {
-            serviceName: "/estimate/v1/_search",
+            serviceName: "/mukta-estimate/v1/_search",
             requestParam: {
                
             },

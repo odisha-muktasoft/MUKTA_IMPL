@@ -25,7 +25,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
   };
 
   const requestCriteria = {
-    url : "/mukta-services/measurement/_search",
+    url : "/mukta-mukta-services/measurement/_search",
 
     body: {
       "contractNumber" : contractNumber,

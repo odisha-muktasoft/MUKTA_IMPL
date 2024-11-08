@@ -3,7 +3,7 @@ import { transformEstimateData } from "../../../../modules/Measurement/src/utils
 const useMBDataForPB=({workOrderNumber, tenantId})=>{
 
     const requestCriteriaForMeasurement = {
-        url : "/mukta-services/measurement/_search",
+        url : "/mukta-mukta-services/measurement/_search",
     
         body: {
           "contractNumber" : workOrderNumber,
@@ -39,7 +39,7 @@ const useMBDataForPB=({workOrderNumber, tenantId})=>{
     const { isLoading : isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(requestCriteria);
 
      const requestCriteriaBill = {
-        url : "/expense-calculator/v1/_search",
+        url : "/mukta-expense-calculator/v1/_search",
     
         body: {
             "searchCriteria": {

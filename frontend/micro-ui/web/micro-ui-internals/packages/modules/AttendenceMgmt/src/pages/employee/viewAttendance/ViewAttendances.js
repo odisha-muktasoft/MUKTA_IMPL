@@ -28,7 +28,7 @@ const ViewAttendance = () => {
   const {isLoading, data, isError, isSuccess, error} = Digit.Hooks.attendance.useViewAttendance(tenantId, { musterRollNumber },{},isStateChanged);
 
   const requestCriteria = {
-    url : "/mukta-services/musterRollValidations/_validate",
+    url : "/mukta-mukta-services/musterRollValidations/_validate",
 
     body: {
       "tenantId" : tenantId,

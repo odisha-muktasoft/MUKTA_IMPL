@@ -342,7 +342,7 @@ const data = {
             project: null,
             ProcessInstances: null,
           },
-          url: "/estimate/v1/_update",
+          url: "/mukta-estimate/v1/_update",
           moduleCode: "Estimate",
           editApplicationNumber: undefined,
         },

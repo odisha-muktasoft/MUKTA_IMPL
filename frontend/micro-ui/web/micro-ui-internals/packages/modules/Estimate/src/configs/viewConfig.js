@@ -193,7 +193,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
             applicationNo: revisionNumber ? revisionNumber : estimateDetails?.estimateNumber,
             tenantId: estimateDetails?.tenantId,
             applicationDetails: estimateDetails,
-            url: "/estimate/v1/_update",
+            url: "/mukta-estimate/v1/_update",
             moduleCode: "Estimate",
             editApplicationNumber: undefined,
             editCallback : getRedirectionCallback
