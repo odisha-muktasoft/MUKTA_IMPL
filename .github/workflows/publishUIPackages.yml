@@ -7,8 +7,6 @@ on:
       - 'master'
       # Push events to branches matching refs/heads/mona/octocat
       - 'UAT'
-      - 'MUKTA-v2.1-Develop'
-      - 'MUKTA-DEVELOP-v2.1.1'
       - 'muktasoft_develop_v2.1.2'
     paths:
       - 'frontend/micro-ui/web/micro-ui-internals/**'
