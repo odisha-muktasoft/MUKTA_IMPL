@@ -12,14 +12,14 @@ export const getTomorrowsDate = () => {
     return tomorrow.toISOString().split("T")[0]
 }
 
-export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sessionFormData, setSessionFormData, wageSeekerData, tenantId, headerLocale, ULBOptions, setIsFormReady }) => {
+export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sessionFormData, setSessionFormData, wageSeekerData, tenantId, headerLocale, ULBOptions, setIsFormReady, t }) => {
 
     const individual = wageSeekerData?.individual
     const bankAccountDetails = wageSeekerData?.bankDetails?.[0]?.bankAccountDetails?.[0]
 
     const adhaar = individual?.identifiers?.find(item => item?.identifierType === 'AADHAAR')
     const socialCategory = individual?.additionalFields?.fields?.find(item => item?.key === "SOCIAL_CATEGORY")
-    const skills = individual?.skills?.length > 0 ? individual?.skills?.map(skill => ({code: `${skill?.level}.${skill?.type}`, name: `COMMON_MASTERS_SKILLS_${skill?.level}`})) : ""
+    const skills = individual?.skills?.length > 0 ? individual?.skills?.map(skill => ({code: `${skill?.level}`, name: t(`COMMON_MASTERS_SKILLS_${skill?.level}`)})) : ""
     
     let photo = ''
     try {
@@ -66,7 +66,7 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
 const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
     let updatedSkills = formData?.skillDetails_skill
     //added code field in existing skills to find difference
-    let existingSkills = wageSeekerDataFromAPI?.individual?.skills?.map(item => ({ ...item, code : `${item?.level}.${item?.type}`}))
+    let existingSkills = wageSeekerDataFromAPI?.individual?.skills?.map(item => ({ ...item, code : `${item?.level}`}))
 
     let set1 = new Set(updatedSkills.map(({ code }) => code))
     let set2 = new Set(existingSkills.map(({ code }) => code))
@@ -85,8 +85,10 @@ const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
     })
 
     let skillsTobeAdded = extraSkillsTobeAdded?.map(item => {
-        const separator = item?.code.includes('.') ? '.' : '_';
-        const [level, type] = item?.code.split(separator);
+        //const separator = item?.code.includes('.') ? '.' : '_';
+        //const [level, type] = item?.code.split(separator);
+        const level = item?.code;
+        const type = item?.code;
         return { level, type };
     });
     let skillsTobeRemoved = extraSkillsTobeRemoved?.map(item => ({ ...item, isDeleted: true }))
@@ -180,14 +182,15 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
 }
 
 export const getWageSeekerSkillDeletePayload = ({wageSeekerDataFromAPI, tenantId, skillsTobeRemoved}) => {
-    let Individual = {}
+    let Individual = {...wageSeekerDataFromAPI?.Individual}
     Individual.id = wageSeekerDataFromAPI?.Individual?.id
     Individual.tenantId = tenantId
     Individual.name = wageSeekerDataFromAPI?.Individual?.name
     Individual.rowVersion = parseInt(wageSeekerDataFromAPI?.Individual?.rowVersion)
     Individual.skills = skillsTobeRemoved
+    Individual.additionalFields = wageSeekerDataFromAPI?.Individual?.additionalFields
     return {
-        Individual
+       Individual
     }
 }
 

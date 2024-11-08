@@ -515,6 +515,7 @@ export const FormComposer = (props) => {
                 <div style={{ display: "grid", gridAutoFlow: "row", width: "100%" }}>
                   <MultiSelectDropdown
                     options={populators?.options}
+                    chipsKey={populators?.optionsKey}
                     optionsKey={populators?.optionsKey}
                     props={props}
                     isPropsNeeded={true}

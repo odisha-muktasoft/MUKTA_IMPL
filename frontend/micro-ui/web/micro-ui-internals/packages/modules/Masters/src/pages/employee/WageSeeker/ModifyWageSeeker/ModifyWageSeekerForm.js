@@ -149,7 +149,7 @@ const requestCriteria = {
       let validateCheckPass = true
       const countSkillsInCategory = {}
       formData.skillDetails_skill.map(skill => {
-        countSkillsInCategory[skill.code.split('.')[1]] = countSkillsInCategory[skill.code.split('.')[1]] ? countSkillsInCategory[skill.code.split('.')[1]] + 1 : 1
+        countSkillsInCategory[skill.code.split('.')[1]?skill.code.split('.')[1]:skill.code.split('.')[0]] = countSkillsInCategory[skill.code.split('.')[1]?skill.code.split('.')[1]:skill.code.split('.')[0]] ? countSkillsInCategory[skill.code.split('.')[1]?skill.code.split('.')[1]:skill.code.split('.')[0]] + 1 : 1
       });
 
       if(Object.keys(countSkillsInCategory)?.length <= 0)
