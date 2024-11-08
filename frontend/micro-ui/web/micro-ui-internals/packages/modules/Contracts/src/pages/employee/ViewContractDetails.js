@@ -91,7 +91,7 @@ const ViewContractDetails = () => {
 
     //fetching measurement data
     const requestCriteria = {
-        url : "/mukta-services/measurement/_search",
+        url : "/mukta-mukta-services/measurement/_search",
     
         body: {
           "contractNumber" : contractId,

@@ -18,13 +18,13 @@ const Urls = {
   PGR_Create: `/pgr-services/v2/request/_create`,
   pgr_count: `/pgr-services/v2/request/_count`,
 
-  OTP_Send: "/user-otp/v1/_send",
+  OTP_Send: "/mukta-user-otp/v1/_send",
   Authenticate: "/user/oauth/token",
   RegisterUser: "/user/citizen/_create",
   ChangePassword: "/user/password/nologin/_update",
   ChangePassword1: "/user/password/_update",
   UserProfileUpdate: "/user/profile/_update",
-  EmployeeSearch: "/egov-hrms/employees/_search",
+  EmployeeSearch: "/mukta-egov-hrms/employees/_search",
 
   InboxSearch: "/works-inbox-service/v2/_search",
 
@@ -35,13 +35,13 @@ const Urls = {
 
   works: {
     create: "/loi-service/v1/_create",
-    estimateSearch: "/estimate/v1/_search",
+    estimateSearch: "/mukta-estimate/v1/_search",
     loiSearch: "/loi-service/v1/_search",
-    createEstimate: "/estimate/v1/_create",
-    approvedEstimateSearch: "/estimate/v1/_search",
-    searchEstimate: "/estimate/v1/_search",
+    createEstimate: "/mukta-estimate/v1/_create",
+    approvedEstimateSearch: "/mukta-estimate/v1/_search",
+    searchEstimate: "/mukta-estimate/v1/_search",
     updateLOI: "/loi-service/v1/_update",
-    updateEstimate: "/estimate/v1/_update",
+    updateEstimate: "/mukta-estimate/v1/_update",
     download_pdf: "/egov-pdf/download/WORKSESTIMATE/estimatepdf",
     createProject: "/project/v1/_create",
     searchProject: "/project/v1/_search",
@@ -54,9 +54,9 @@ const Urls = {
   },
 
   contracts: {
-    createWO: "/contract/v1/_create",
-    search: "/contract/v1/_search",
-    update: "/contract/v1/_update",
+    createWO: "/mukta-contract/v1/_create",
+    search: "/mukta-contract/v1/_search",
+    update: "/mukta-contract/v1/_update",
   },
 
   fsm: {
@@ -92,13 +92,13 @@ const Urls = {
     obps_Reciept_Search: "/collection-services/payments/_search",
     billAmendmentSearch: "/billing-service/amendment/_search",
     getBulkPdfRecordsDetails: "/pdf-service/v1/_getBulkPdfRecordsDetails",
-    createPayment: "/expense/payment/v1/_create",
+    createPayment: "/mukta-expense/payment/v1/_create",
     ifms_funds_search : "/ifms-adapter/funds/v1/_search"
   },
   expense:{
-    createPayment: "/expense/payment/v1/_create",
+    createPayment: "/mukta-expense/payment/v1/_create",
     searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
-    updatePayment: "/expense/payment/v1/_update",
+    updatePayment: "/mukta-expense/payment/v1/_update",
     regenerate : '/egov-pdf/bill/_generate',
     searchPaymentWMS:"/wms/mukta-pi/_search",
     updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
@@ -136,10 +136,10 @@ const Urls = {
     count: "/echallan-services/eChallan/v1/_count",
   },
   hrms: {
-    search: "/egov-hrms/employees/_search",
-    count: "/egov-hrms/employees/_count",
-    create: "/egov-hrms/employees/_create",
-    update: "/egov-hrms/employees/_update",
+    search: "/mukta-egov-hrms/employees/_search",
+    count: "/mukta-egov-hrms/employees/_count",
+    create: "/mukta-egov-hrms/employees/_create",
+    update: "/mukta-egov-hrms/employees/_update",
   },
   tl: {
     create: "/tl-services/v1/_create",
@@ -152,7 +152,7 @@ const Urls = {
   receipts: {
     receipt_download: "/egov-pdf/download/PAYMENT/consolidatedreceipt",
     payments: "/collection-services/payments",
-    count: "/egov-hrms/employees/_count",
+    count: "/mukta-egov-hrms/employees/_count",
   },
   obps: {
     scrutinyDetails: "/edcr/rest/dcr/scrutinydetails",
@@ -235,11 +235,11 @@ const Urls = {
   },
 
   wageseeker: {
-    create: "/individual/v1/_create",
-    search: "/individual/v1/_search",
-    wmssearch: "/wms/individual/_search",
-    update: "/individual/v1/_update",
-    delete: "/individual/v1/_delete",
+    create: "/mukta-individual/v1/_create",
+    search: "/mukta-individual/v1/_search",
+    wmssearch: "/wms/mukta-individual/_search",
+    update: "/mukta-individual/v1/_update",
+    delete: "/mukta-individual/v1/_delete",
   },
 
   noc: {
@@ -251,9 +251,9 @@ const Urls = {
   bills: {
     cancelBill: "/billing-service/bill/v2/_cancelbill",
     createBill: "/expensebilling/demand/v1/_create",
-    searchBill: "/expense/bill/v1/_search",
-    createPurchaseBill: "/expense-calculator/purchase/v1/_createbill",
-    updatePurchaseBill:"/expense-calculator/purchase/v1/_updatebill"
+    searchBill: "/mukta-expense/bill/v1/_search",
+    createPurchaseBill: "/mukta-expense-calculator/purchase/v1/_createbill",
+    updatePurchaseBill:"/mukta-expense-calculator/purchase/v1/_updatebill"
   },
 
   organisation: {
@@ -272,12 +272,12 @@ const Urls = {
   billgenie: "/egov-searcher",
 
   bill: {
-    search: "/expense/bill/v1/_search",
-    searchCalculator: "/expense-calculator/v1/_search",
+    search: "/mukta-expense/bill/v1/_search",
+    searchCalculator: "/mukta-expense-calculator/v1/_search",
   },
 
   calculator: {
-    expenseBill: "/expense-calculator/v1/_estimate",
+    expenseBill: "/mukta-expense-calculator/v1/_estimate",
   },
 
   measurement : {
