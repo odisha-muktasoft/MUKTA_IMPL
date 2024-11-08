@@ -176,7 +176,7 @@ public class EstimateService {
     }
 
     public List<Estimate> searchEstimatePlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
-        List<Estimate> estimates = getEstimatesPlainSearch(searchCriteria, requestInfo);
+        List<Estimate> estimates = getEstimatesPlainSearch(searchCriteria);
 
         // Project enrichment
         for (Estimate estimate: estimates) {
@@ -198,7 +198,7 @@ public class EstimateService {
         return estimates;
     }
 
-    List<Estimate> getEstimatesPlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+    List<Estimate> getEstimatesPlainSearch(EstimateSearchCriteria searchCriteria) {
 
         if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > config.getMaxLimit())
             searchCriteria.setLimit(config.getMaxLimit());
@@ -211,13 +211,13 @@ public class EstimateService {
         if (searchCriteria.getIds() != null) {
             estimateCriteria.setIds(searchCriteria.getIds());
         } else {
-            List<String> uuids = estimateRepository.fetchIds(searchCriteria, true);
+            List<String> uuids = estimateRepository.fetchIds(searchCriteria);
             if (uuids.isEmpty())
                 return Collections.emptyList();
             estimateCriteria.setIds(uuids);
         }
         estimateCriteria.setLimit(searchCriteria.getLimit());
-        List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria, true);
+        List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria);
 
 
         if(estimates.isEmpty())

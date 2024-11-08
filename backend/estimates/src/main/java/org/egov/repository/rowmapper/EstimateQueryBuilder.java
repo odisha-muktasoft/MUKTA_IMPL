@@ -275,7 +275,7 @@ public class EstimateQueryBuilder {
             return query;
     }
 
-    public String getEstimateQueryForBulkSearch(EstimateSearchCriteria criteria, List<Object> preparedStmtList,Boolean isPlainSearch) {
+    public String getEstimateQueryForBulkSearch(EstimateSearchCriteria criteria, List<Object> preparedStmtList) {
 
         Boolean isEmpty = CollectionUtils.isEmpty(criteria.getIds());
 

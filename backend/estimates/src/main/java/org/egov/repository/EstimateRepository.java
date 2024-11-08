@@ -71,13 +71,13 @@ public class EstimateRepository {
         return jdbcTemplate.queryForObject(query, preparedStatement.toArray(), Integer.class);
     }
 
-    public List<Estimate> getEstimatesForBulkSearch(EstimateSearchCriteria criteria, Boolean isPlainSearch) {
+    public List<Estimate> getEstimatesForBulkSearch(EstimateSearchCriteria criteria) {
         List<Object> preparedStmtList = new ArrayList<>();
-        String query = queryBuilder.getEstimateQueryForBulkSearch(criteria, preparedStmtList, isPlainSearch);
+        String query = queryBuilder.getEstimateQueryForBulkSearch(criteria, preparedStmtList);
         return jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
     }
 
-    public List<String> fetchIds(EstimateSearchCriteria criteria, Boolean isPlainSearch) {
+    public List<String> fetchIds(EstimateSearchCriteria criteria) {
 
         List<Object> preparedStmtList = new ArrayList<>();
         String basequery = "select id from eg_wms_estimate";
