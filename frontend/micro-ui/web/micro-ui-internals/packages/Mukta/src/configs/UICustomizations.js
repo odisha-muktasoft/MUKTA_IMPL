@@ -3204,6 +3204,7 @@ export const UICustomizations = {
       if(data?.state?.searchForm?.ward)
         data.body.searchCriteria.moduleSearchCriteria.ward = data?.state?.searchForm?.ward?.[0]?.code;
 
+        data.body.searchCriteria.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
       const projectType = data?.body?.searchCriteria?.moduleSearchCriteria?.projectType?.code;
       delete data.body.searchCriteria.moduleSearchCriteria.projectType;
       if (projectType) data.body.searchCriteria.moduleSearchCriteria.projectType = projectType;
