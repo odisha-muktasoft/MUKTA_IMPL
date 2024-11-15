@@ -45,7 +45,7 @@ public class BillUtils {
                 .action(workflow.getAction())
                 .assignees(workflow.getAssignees())
                 .documents(workflow.getDocuments())
-                .comment(workflow.getComment())
+                .comments(workflow.getComments())
                 .build();
         BillCalculatorRequestInfoWrapper requestInfoWrapper = BillCalculatorRequestInfoWrapper.builder()
                 .requestInfo(requestInfo)
