@@ -2,6 +2,7 @@ package org.egov.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
@@ -22,16 +23,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import javax.net.ssl.*;
-import java.net.HttpURLConnection;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
+
 import java.util.Collections;
-import java.util.List;
 import java.util.TimeZone;
 
 @Slf4j
@@ -54,15 +48,15 @@ public class MainConfiguration {
         return objectMapper;
     }
 
-//    @Bean
-//    @Primary
-//    public RestTemplate restTemplate(TracerProperties tracerProperties) {
-//        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-//        requestFactory.setOutputStreaming(false);
-//        RestTemplate restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(requestFactory));
-//        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateLoggingInterceptor(tracerProperties)));
-//        return restTemplate;
-//    }
+    @Bean
+    @Primary
+    public RestTemplate restTemplate(TracerProperties tracerProperties) {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setOutputStreaming(false);
+        RestTemplate restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(requestFactory));
+        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateLoggingInterceptor(tracerProperties)));
+        return restTemplate;
+    }
 
     /**
      * It will disable ssl certification check
@@ -70,6 +64,7 @@ public class MainConfiguration {
      * @return
      * @throws Exception
      */
+    /*
     @Bean
     public RestTemplate restTemplate() throws Exception {
         TrustManager[] trustAllCertificates = new TrustManager[]{
@@ -112,4 +107,5 @@ public class MainConfiguration {
         converter.setObjectMapper(objectMapper);
         return converter;
     }
+    */
 }
