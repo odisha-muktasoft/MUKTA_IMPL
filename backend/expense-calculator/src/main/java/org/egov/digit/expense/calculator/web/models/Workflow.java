@@ -21,8 +21,8 @@ public class Workflow {
     @JsonProperty("action")
     private String action = null;
 
-    @JsonProperty("comment")
-    private String comment = null;
+    @JsonProperty("comments")
+    private String comments = null;
 
     @JsonProperty("assignees")
     @Valid
