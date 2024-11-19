@@ -280,6 +280,17 @@ const mdmsv2_v1Search = async (tenantId: string, module: string, master: string,
   ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
 }
 
+const search_bank_account = async (bankAccountDetails: any, requestinfo: any) => {
+  console.log(requestinfo,"req");
+  return await httpRequest(
+    url.resolve(config.host.bank_account, config.paths.bank_account),
+    {
+      RequestInfo: requestinfo,
+      bankAccountDetails: bankAccountDetails
+    }
+  );
+}
+
 export {
   create_pdf,
   create_pdf_and_upload,
@@ -294,5 +305,6 @@ export {
   search_measurement,
   calculate_expense,
   searchRates,
-  mdmsv2_v1Search
+  mdmsv2_v1Search,
+  search_bank_account
 };
