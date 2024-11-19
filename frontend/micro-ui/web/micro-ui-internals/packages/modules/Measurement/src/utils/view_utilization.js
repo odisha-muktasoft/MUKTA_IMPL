@@ -26,24 +26,38 @@ var multiply = function(num1, num2) {
 };
 
 const multiplyWithDecimals = (v1, v2) => {
-  const getDecimalPlaces = num => (num.includes('.') ? num.split('.')[1].length : 0);
-  
+  const getDecimalPlaces = num => {
+    return num.includes('.') ? num.split('.')[1].length : 0;
+  };
+
   const d1 = getDecimalPlaces(v1);
   const d2 = getDecimalPlaces(v2);
-  
+
   // Remove decimals from both numbers
   const num1 = v1.replace('.', '');
   const num2 = v2.replace('.', '');
-  
+
   // Multiply as whole numbers
-  let result = multiply(num1, num2);
-  
+  const result = (BigInt(num1) * BigInt(num2)).toString(); // Use BigInt for accurate multiplication
+
   // Insert decimal point at the correct place
   const totalDecimals = d1 + d2;
   if (totalDecimals > 0) {
-    const pointPos = result.length - totalDecimals;
-    result = result.padStart(totalDecimals + 1, '0'); // Ensure result has enough length
-    result = result.slice(0, pointPos) + '.' + result.slice(pointPos);
+    const resultLength = result.length;
+    const pointPos = resultLength - totalDecimals;
+
+    // Handle cases where result length is shorter than decimal places
+    const paddedResult = result.padStart(totalDecimals, '0'); // Ensure enough digits for decimals
+    const integerPart = paddedResult.slice(0, pointPos > 0 ? pointPos : 0);
+    const fractionalPart = paddedResult.slice(pointPos > 0 ? pointPos : 0);
+
+    // Combine integer and fractional parts
+    let formattedResult = (integerPart || '0') + (fractionalPart ? '.' + fractionalPart : '');
+
+    // Remove unnecessary leading and trailing zeros
+    formattedResult = parseFloat(formattedResult).toString();
+
+    return formattedResult;
   }
 
   return result;
