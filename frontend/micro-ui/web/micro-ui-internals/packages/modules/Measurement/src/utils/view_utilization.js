@@ -77,19 +77,25 @@ const roundToPrecisionForString = (value, precision) => {
     return value;
   }
 
-  if (decimalPart[precision] >= 5) {
-    decimalPart = decimalPart.slice(0, precision);
-    if (decimalPart === '9'.repeat(precision)) {
-      value = String(parseFloat(integerPart) + 1);
-    } else {
-      decimalPart = String(Number(decimalPart) + 1);
-      value = integerPart + '.' + decimalPart;
+  // Extract the portion of the decimal part to consider for rounding
+  const roundedDecimal = decimalPart.slice(0, precision);
+  const nextDigit = parseInt(decimalPart[precision] || '0', 10);
+
+  let resultDecimal = roundedDecimal;
+
+  // Perform rounding logic
+  if (nextDigit >= 5) {
+    resultDecimal = (parseInt(roundedDecimal, 10) + 1).toString().padStart(precision, '0');
+
+    // Handle overflow in the decimal part
+    if (resultDecimal.length > precision) {
+      integerPart = (parseInt(integerPart, 10) + 1).toString();
+      resultDecimal = '0'.repeat(precision); // Reset decimal part to zeros
     }
-  } else {
-    value = integerPart + '.' + decimalPart.slice(0, precision);
   }
-  return value;
-}
+
+  return `${integerPart}.${resultDecimal}`;
+};
 
 export const multiplyFourWithFourPointerPrecision = (v1, v2, v3, v4) => {
   v1 = String(v1);
