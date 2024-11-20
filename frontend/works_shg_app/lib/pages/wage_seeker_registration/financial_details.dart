@@ -102,7 +102,6 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                 DigitTextBlock(
                   heading: t.translate(i18.common.financialDetails),
                 ),
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.accountHolderName),
@@ -145,7 +144,6 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.accountNo),
@@ -200,7 +198,6 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.reEnterAccountNo),
@@ -230,7 +227,6 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-
                 ui_component.LabeledField(
                   label: t.translate(i18.common.accountType),
                   isRequired: true,
@@ -260,7 +256,6 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.ifscCode),
@@ -273,6 +268,9 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     formControlName: ifscCodeKey,
                     builder: (field) {
                       return DigitTextFormInput(
+                        inputFormatters: [
+                          UpperCaseTextInputFormatter(),
+                        ],
                         helpText: hintText,
                         // charCount: true,
                         controller: TextEditingController()
@@ -305,20 +303,19 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-
-                
               ],
             ),
             Column(
               children: [
                 Padding(
-                  padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                  padding:
+                      EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                   child: const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: PoweredByDigit(
-                        version: Constants.appVersion,
-                      ),
+                    alignment: Alignment.bottomCenter,
+                    child: PoweredByDigit(
+                      version: Constants.appVersion,
                     ),
+                  ),
                 ),
                 ui_card.DigitCard(children: [
                   Button(
@@ -337,9 +334,11 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                             accountHolderName:
                                 form.value[accountHolderKey].toString(),
                             accountNumber: form.value[accountNoKey].toString(),
-                            reAccountNumber: form.value[reAccountNoKey].toString(),
-                            ifscCode:
-                                form.value[ifscCodeKey].toString().toUpperCase(),
+                            reAccountNumber:
+                                form.value[reAccountNoKey].toString(),
+                            ifscCode: form.value[ifscCodeKey]
+                                .toString()
+                                .toUpperCase(),
                             accountType: form.value[accountTypeKey].toString(),
                             bankName: hintText);
                         BlocProvider.of<WageSeekerBloc>(context).add(
@@ -387,4 +386,17 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
       }, [
         Validators.mustMatch(accountNoKey, reAccountNoKey)
       ]);
+}
+
+class UpperCaseTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

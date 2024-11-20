@@ -21,6 +21,7 @@ import 'package:collection/collection.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -151,7 +152,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   void uploadDocument(List<PlatformFile> files, BuildContext context,
       List<WorkflowDocument> serverData) async {
     List<WorkflowDocument> dataDocument = [];
-    List<PlatformFile> payload = files.where((er) => er.path != null).toList();
+    List<PlatformFile> payload = kIsWeb
+        ? files.where((er) => er.bytes != null).toList()
+        : files.where((er) => er.path != null).toList();
 
     try {
       Navigator.of(
@@ -165,9 +168,32 @@ class _MBDetailPageState extends State<MBDetailPage>
         shg_loader.Loaders.showLoadingDialog(context,
             label:
                 AppLocalizations.of(context).translate(i18.common.uploading));
-        var response = await CoreRepository().uploadFiles(
-            payload.map((e) => File(e.path ?? e.name!)).toList(),
-            "img_measurement_book");
+
+        final List<dynamic> uploadableFiles = payload.map((file) {
+          if (kIsWeb) {
+            // On web, use PlatformFile with bytes
+            return PlatformFile(
+              name: file.name,
+              bytes: file.bytes,
+              size: file.size,
+            );
+          } else {
+            // On native platforms, use the File object
+            return File(
+                file.path ?? file.name); // Default to name if path is null
+          }
+        }).toList();
+
+        // Cast the list appropriately based on the platform
+        final List<dynamic> data = kIsWeb
+            ? uploadableFiles.cast<PlatformFile>()
+            : uploadableFiles.cast<File>();
+        final response =
+            await CoreRepository().uploadFiles(data, "img_measurement_book");
+
+        // var response = await CoreRepository().uploadFiles(
+        //     payload.map((e) => File(e.path ?? e.name!)).toList(),
+        //     "img_measurement_book");
 
         for (int i = 0; i < response.length; i++) {
           dataDocument.add(WorkflowDocument(
@@ -184,8 +210,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                 tenantId: response[i].tenantId,
               )));
         }
-        List<PlatformFile> noPath =
-            files.where((element) => element.path == null).toList();
+        List<PlatformFile> noPath = kIsWeb
+            ? files.where((element) => element.bytes == null).toList()
+            : files.where((element) => element.path == null).toList();
 
         // serverData = serverData.where((file) {
         //   return noPath.any(
@@ -1431,6 +1458,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   timeLineAttributes[
                                                                               i]
                                                                           .mobileNumber ??
+                                                                      '',
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .comments ??
                                                                       '',
                                                                 ],
                                                                 label:

@@ -10,7 +10,9 @@ import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_footer.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -402,9 +404,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.LabeledField(
-                                    isRequired: widget.nextActions!.action == "REJECT"
-                                              ? true
-                                              : false,
+                                    isRequired:
+                                        widget.nextActions!.action == "REJECT"
+                                            ? true
+                                            : false,
                                     label:
                                         "${t.translate("WF_MODAL_COMMENTS")}",
                                     child: DigitTextAreaFormInput(
@@ -669,7 +672,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   padding: const EdgeInsets.only(
                                       top: 16.0, left: 16.0, right: 16.0),
                                   child: ui_component.LabeledField(
-                                    
                                     label: t.translate("WF_MODAL_COMMENTS"),
                                     child: DigitTextAreaFormInput(
                                       maxLine: 5,
@@ -747,13 +749,33 @@ void uploadFileToServer(List<PlatformFile> files, BuildContext context,
     ).popUntil(
       (route) => route is! PopupRoute,
     );
-    String msg=AppLocalizations.of(context).translate(i18.common.loading);
-    shg_loader.Loaders.showLoadingDialog(context,
-        label: msg);
-    var response = await CoreRepository().uploadFiles(
-        files.map((e) => File(e.path ?? e.name)).toList(),
-        "img_measurement_book");
+    String msg = AppLocalizations.of(context).translate(i18.common.loading);
+    shg_loader.Loaders.showLoadingDialog(context, label: msg);
 
+    // // var response = await CoreRepository().uploadFiles(
+    // //     files.map((e) => File(e.path ?? e.name)).toList(),
+    // //     "img_measurement_book");
+
+    final List<dynamic> uploadableFiles = files.map((file) {
+      if (kIsWeb) {
+        // On web, use PlatformFile with bytes
+        return PlatformFile(
+          name: file.name,
+          bytes: file.bytes,
+          size: file.size,
+        );
+      } else {
+        // On native platforms, use the File object
+        return File(file.path ?? file.name); // Default to name if path is null
+      }
+    }).toList();
+
+    // Cast the list appropriately based on the platform
+    final List<dynamic> data = kIsWeb
+        ? uploadableFiles.cast<PlatformFile>()
+        : uploadableFiles.cast<File>();
+    final response =
+        await CoreRepository().uploadFiles(data, "img_measurement_book");
     for (int i = 0; i < response.length; i++) {
       workFlow.add(
           // WorkflowSupportDocument(
