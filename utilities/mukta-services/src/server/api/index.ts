@@ -59,6 +59,27 @@ const search_individual = async (individualIds: Array<string>, tenantId: string,
   );
 }
 
+const search_individual_2 = async (individualIds: Array<string>, tenantId: string, requestinfo: any) => {
+  // currently single property pdfs supported
+  // if (individualIds) {
+  //   individualId = individualId.trim();
+  // }
+  var params = {
+    tenantId: tenantId,
+    limit: 100,
+    offset: 0,
+  };
+  requestinfo.Individual = {
+    individualId: individualIds,
+  };
+
+  return await httpRequest(
+    url.resolve(config.host.individual, config.paths.ind_search),
+    requestinfo,
+    params
+  );
+}
+
 const search_workflow = async (applicationNumber: string, tenantId: string, requestinfo: any) => {
   var params = {
     tenantId: tenantId,
@@ -298,6 +319,7 @@ export {
   search_workflow,
   search_muster,
   search_individual,
+  search_individual_2,
   search_localization,
   search_contract,
   search_estimate,
