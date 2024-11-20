@@ -264,7 +264,8 @@ const Urls = {
 
   bankaccount: {
     create: "/bankaccount-service/bankaccount/v1/_create",
-    search: "/bankaccount-service/bankaccount/v1/_search",
+    //changed here for privacy
+    search: "/mukta-services/bankaccount/v1/_search",
     update: "/bankaccount-service/bankaccount/v1/_update",
   },
 
