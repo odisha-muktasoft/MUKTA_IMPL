@@ -114,7 +114,7 @@ class IndividualController {
         ],
         roleBasedDecryptionPolicy: [
           {
-            roles: ["BILL_ACCOUNTANT", "MUKTA_ADMIN"],
+            roles: ["VIEW_ORG_UNMASKED", "VIEW_DED_UNMASKED", "VIEW_WS_UNMASKED"],
             attributeAccessList: [
               { attribute: "identifierId", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
               { attribute: "fatherName", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },

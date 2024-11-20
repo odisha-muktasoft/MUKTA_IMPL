@@ -69,9 +69,6 @@ const search_individual_2 = async (individualIds: Array<string>, tenantId: strin
     limit: 100,
     offset: 0,
   };
-  requestinfo.Individual = {
-    individualId: individualIds,
-  };
 
   return await httpRequest(
     url.resolve(config.host.individual, config.paths.ind_search),
