@@ -75,7 +75,7 @@ class IndividualController {
     try {
       const { RequestInfo, Individual } = request.body;
       const { tenantId } = request.query;
-      // const tenantId = "od.testing";
+
       const roles = RequestInfo.userInfo.roles.map((role: any) => role.code);
       
       if (typeof tenantId !== "string") {
@@ -85,19 +85,8 @@ class IndividualController {
       // Call the bank account service API
       const individualResponse = await search_individual_2(Individual?.individualId, tenantId, request.body);
 
-      // Masking patterns from config
-      const patterns2 = [
-        { patternId: "010", pattern: "(?<=.)(.*?)(?=.*.$)(?=.@)" },
-        { patternId: "011", pattern: "(?<=.{1})." },
-        { patternId: "012", pattern: "(?<=^.{0}|^.{1}|^.{3}|^.{4})." },
-        { patternId: "013", pattern: "." },
-      ];
-
       let { securityPolicy, maskingPatterns : patterns } = await this.fetchMDMSConfig(tenantId, RequestInfo);
       securityPolicy = securityPolicy.filter((ob: any) => ob?.model === "IndividualSearch")?.[0];
-
-      patterns.push(...patterns2);
-      console.log(securityPolicy, patterns, "secy");
 
       // Mask bank account details based on role and config
       const maskedIndividual = individualResponse?.Individual.map((details: any) => {
