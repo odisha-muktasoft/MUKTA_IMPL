@@ -1,13 +1,10 @@
 import * as express from "express";
-import { search_individual_2, search_mdms } from "../../api/index";
-// import {
-//   search_mdms
-// } from "../../api/index";
+import { search_mdms, search_organisation } from "../../api/index";
 import { errorResponder, sendResponse } from "../../utils/index";
 
 // Define the BankAccountController class
-class IndividualController {
-  public path = "/individual/v1";
+class OrganisationController {
+  public path = "/org-services/organisation/v1";
   public router = express.Router();
 
   constructor() {
@@ -15,7 +12,7 @@ class IndividualController {
   }
 
   public initializeRoutes() {
-    this.router.post(`${this.path}/_search`, this.getIndividual);
+    this.router.post(`${this.path}/_search`, this.getOrganisation);
   }
 
   // Function to mask attributes based on pattern
@@ -68,34 +65,56 @@ class IndividualController {
   }
 
   // Main handler for retrieving and masking bank account details
-  public getIndividual = async (
+  public getOrganisation = async (
     request: express.Request,
     response: express.Response
   ) => {
     try {
-      const { RequestInfo, Individual } = request.body;
-      const { tenantId } = request.query;
-
+      const { RequestInfo, SearchCriteria } = request.body;
+      const tenantId = SearchCriteria.tenantId
       const roles = RequestInfo.userInfo.roles.map((role: any) => role.code);
-      
-      if (typeof tenantId !== "string") {
-        throw new Error("Invalid tenantId: Must be a string.");
-      }
-      
       // Call the bank account service API
-      const individualResponse = await search_individual_2(Individual?.individualId, tenantId, request.body);
+      const organisationResponse = await search_organisation(request.body);
 
-      let { securityPolicy, maskingPatterns : patterns } = await this.fetchMDMSConfig(tenantId, RequestInfo);
-      securityPolicy = securityPolicy.filter((ob: any) => ob?.model === "IndividualSearch")?.[0];
+      const securityPolicy = {
+        model: "OrganisationSearch",
+        attributes: [
+          { name: "doorNo", jsonPath: "orgAddress/*/doorNo", patternId: "011", defaultVisibility: "MASKED" },
+          { name: "street", jsonPath: "orgAddress/*/street", patternId: "015", defaultVisibility: "MASKED" },
+          { name: "locality", jsonPath: "additionalDetails/locality", patternId: "015", defaultVisibility: "MASKED" },
+          { name: "mobileNumber", jsonPath: "contactDetails/*/contactMobileNumber", patternId: "003", defaultVisibility: "MASKED" },
+          { name: "email", jsonPath: "contactDetails/*/contactEmail", patternId: "010", defaultVisibility: "MASKED" },
+          { name: "pan", jsonPath: "identifiers/type=PAN/value", patternId: "014", defaultVisibility: "MASKED" },
+          { name: "gstin", jsonPath: "identifiers/type=GSTIN/value", patternId: "014", defaultVisibility: "MASKED" },
+        ],
+        roleBasedDecryptionPolicy: [
+          {
+            roles: ["VIEW_ORG_UNMASKED", "VIEW_DED_UNMASKED", "VIEW_WS_UNMASKED"],
+            attributeAccessList: [
+              { attribute: "doorNo", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "street", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "locality", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "mobileNumber", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "email", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "pan", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+              { attribute: "gstin", firstLevelVisibility: "PLAIN", secondLevelVisibility: "PLAIN" },
+            ]
+          }
+        ]
+      };
+
+      let { maskingPatterns : patterns } = await this.fetchMDMSConfig(tenantId, RequestInfo);
+      // securityPolicy = securityPolicy.filter((ob: any) => ob?.model === "OrganisationSearch")?.[0];
 
       // Mask bank account details based on role and config
-      const maskedIndividual = individualResponse?.Individual.map((details: any) => {
+      const maskedOrganisation = organisationResponse?.organisations.map((details: any) => {
         let maskedDetails = { ...details };
 
         // Iterate through the attributes in the security policy
         securityPolicy.attributes.forEach((attributeConfig: any) => {
           const { name, jsonPath, patternId } = attributeConfig;
           const pattern = this.getPatternById(patternId, patterns);
+
 
           if (this.hasRoleAccess(roles, name, securityPolicy)) {
             this.changeValue(maskedDetails, jsonPath, false, pattern);
@@ -109,14 +128,14 @@ class IndividualController {
 
       // Format the final response structure
       const responseObj = {
-        ResponseInfo: individualResponse?.ResponseInfo,
-        individual: maskedIndividual,  // Individual with masked/unmasked values
-        TotatCount: individualResponse?.TotatCount
+        ResponseInfo: organisationResponse?.ResponseInfo,
+        organisations: maskedOrganisation,  // Organisations with masked/unmasked values
+        TotatCount: organisationResponse?.TotatCount
       };
 
       return sendResponse(response, responseObj, request);
     } catch (error) {
-      console.error("Error fetching individual:", error);
+      console.error("Error fetching Organisation: ", error);
       return errorResponder(
         { error: "Internal Server Error" },
         request,
@@ -162,22 +181,8 @@ class IndividualController {
           // At the last part, update the value based on mask
           const currentValue = currentObj[part];
           if (currentValue) {
-              if ( part === "locality" || part === "ward") {
-                if (currentValue.additionalDetails) {
-                  currentValue.additionalDetails.isMasked = mask;
-                } else {
-                  currentValue.additionalDetails = {
-                    isMasked: mask
-                  }
-                }
-              } else if ( part === "photo") {
-                if (currentObj.additionalFields) {
-                  currentObj.additionalFields.isPhotoMasked = true;
-                } else {
-                  currentObj.additionalFields = {
-                    isPhotoMasked: true
-                  }
-                }
+              if ( part === "locality") {
+                currentObj.isLocalityMasked = mask;
               } else {
                 // Mask the value using the configured pattern if mask is true
                 if (mask) {
@@ -200,5 +205,5 @@ class IndividualController {
   }
 }
 
-// Export the IndividualController class
-export default IndividualController;
+// Export the OrganisationController class
+export default OrganisationController;
