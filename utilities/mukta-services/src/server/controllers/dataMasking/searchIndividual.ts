@@ -78,6 +78,7 @@ class IndividualController {
 
       const roles = RequestInfo.userInfo.roles.map((role: any) => role.code);
       
+      console.log("request", RequestInfo, Individual, tenantId, roles);
       if (typeof tenantId !== "string") {
         throw new Error("Invalid tenantId: Must be a string.");
       }
@@ -85,7 +86,10 @@ class IndividualController {
       // Call the bank account service API
       const individualResponse = await search_individual_2(Individual?.individualId, tenantId, request.body);
 
+      console.log(individualResponse,"individual")
+
       let { securityPolicy, maskingPatterns : patterns } = await this.fetchMDMSConfig(tenantId, RequestInfo);
+      console.log("securityPolicy", securityPolicy, patterns);
       securityPolicy = securityPolicy.filter((ob: any) => ob?.model === "IndividualSearch")?.[0];
 
       // Mask bank account details based on role and config
@@ -97,6 +101,7 @@ class IndividualController {
           const { name, jsonPath, patternId } = attributeConfig;
           const pattern = this.getPatternById(patternId, patterns);
 
+          console.log("pattern", name, jsonPath, patternId, pattern);
           if (this.hasRoleAccess(roles, name, securityPolicy)) {
             this.changeValue(maskedDetails, jsonPath, false, pattern);
           } else {
@@ -104,6 +109,7 @@ class IndividualController {
           }
         });
 
+        console.log("maskedDetails", maskedDetails);
         return maskedDetails;
       });
 
@@ -147,6 +153,7 @@ class IndividualController {
         }
       } else if (part.includes("=")) {
         if (Array.isArray(currentObj)) {
+          console.log("part", part);
           const key = part.split("=")[0];
           const value = part.split("=")[1];
           currentObj.forEach(item => {

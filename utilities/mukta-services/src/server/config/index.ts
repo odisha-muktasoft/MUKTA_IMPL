@@ -48,9 +48,7 @@ const config = {
     measurement: process.env.EGOV_MEASUREMENT_HOST || HOST || "http://localhost:8074/",
     expense_calculator: process.env.EGOV_EXPENSE_CALCULATOR_HOST || HOST || "http://localhost:8075/",
     mdmsV2: process.env.EGOV_MDMSV2_HOST || HOST ||"http://localhost:8076/",
-    bank_account : process.env.EGOV_BANK_ACCOUNT_HOST || HOST ||"http://localhost:8077/",
-    individual2: process.env.EGOV_INDIVIDUAL_HOST || HOST || "http://localhost:8078/",
-    organisation: process.env.EGOV_ORGANISATION_HOST || HOST || "http://localhost:8079/",
+    bank_account : process.env.EGOV_BANK_ACCOUNT_HOST || HOST ||"http://localhost:8077/"
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -58,7 +56,6 @@ const config = {
     mdms_search: "/egov-mdms-service/v1/_search",
     workflow_search: "/egov-workflow-v2/egov-wf/process/_search",
     ind_search: "/individual/v1/_search",
-    org_search: "/org-services/organisation/v1/_search",
     mus_search: "/muster-roll/v1/_search",
     localization_search: "/localization/messages/v1/_search",
     contract_search: "/contract/v1/_search",
