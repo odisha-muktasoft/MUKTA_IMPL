@@ -86,6 +86,8 @@ class IndividualController {
       // Call the bank account service API
       const individualResponse = await search_individual_2(Individual?.individualId, tenantId, request.body);
 
+      console.log(individualResponse,"individual")
+
       let { securityPolicy, maskingPatterns : patterns } = await this.fetchMDMSConfig(tenantId, RequestInfo);
       console.log("securityPolicy", securityPolicy, patterns);
       securityPolicy = securityPolicy.filter((ob: any) => ob?.model === "IndividualSearch")?.[0];
