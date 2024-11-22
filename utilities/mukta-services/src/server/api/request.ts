@@ -104,6 +104,7 @@ const httpRequest = async (
       ":: ERROR :: " +
       errorResponse.data.Errors[0].code || error
     );
+    console.log(JSON.stringify(errorResponse),"error");
     logger.error(":: ERROR STACK :: " + error.stack || error);
     throwError(
       "error occured while making request to " +

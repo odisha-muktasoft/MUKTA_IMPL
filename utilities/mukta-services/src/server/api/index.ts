@@ -67,6 +67,8 @@ const search_individual_2 = async (individualIds: Array<string>, tenantId: strin
     offset: 0,
   };
 
+  console.log(params,config.host.individual2, config.paths.ind_search,requestinfo,"requestInfo")
+
   return await httpRequest(
     url.resolve(config.host.individual2, config.paths.ind_search),
     requestinfo,
