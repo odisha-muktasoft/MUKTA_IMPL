@@ -97,7 +97,6 @@ class IndividualController {
           const { name, jsonPath, patternId } = attributeConfig;
           const pattern = this.getPatternById(patternId, patterns);
 
-
           if (this.hasRoleAccess(roles, name, securityPolicy)) {
             this.changeValue(maskedDetails, jsonPath, false, pattern);
           } else {
