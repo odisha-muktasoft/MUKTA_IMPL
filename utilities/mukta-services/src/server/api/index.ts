@@ -60,19 +60,15 @@ const search_individual = async (individualIds: Array<string>, tenantId: string,
 }
 
 const search_individual_2 = async (individualIds: Array<string>, tenantId: string, requestinfo: any) => {
-  // currently single property pdfs supported
-  // if (individualIds) {
-  //   individualId = individualId.trim();
-  // }
+
   var params = {
     tenantId: tenantId,
     limit: 100,
     offset: 0,
   };
-  console.log(requestinfo,"request")
-  console.log(config.host.individual,config.paths.ind_search,"paths");
+
   return await httpRequest(
-    url.resolve(config.host.individual, config.paths.ind_search),
+    url.resolve(config.host.individual2, config.paths.ind_search),
     requestinfo,
     params
   );
