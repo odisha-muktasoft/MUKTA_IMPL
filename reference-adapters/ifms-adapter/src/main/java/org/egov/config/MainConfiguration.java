@@ -4,15 +4,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+
 import org.egov.tracer.config.TracerConfiguration;
-import org.egov.tracer.config.TracerProperties;
-import org.egov.tracer.http.RestTemplateLoggingInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +14,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.*;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.util.CollectionUtils;
+
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.*;
 
-import java.util.Collections;
+import java.security.cert.X509Certificate;
+
 import java.util.TimeZone;
 
 @Slf4j
@@ -48,15 +43,6 @@ public class MainConfiguration {
         return objectMapper;
     }
 
-    @Bean
-    @Primary
-    public RestTemplate restTemplate(TracerProperties tracerProperties) {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setOutputStreaming(false);
-        RestTemplate restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(requestFactory));
-        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateLoggingInterceptor(tracerProperties)));
-        return restTemplate;
-    }
 
     /**
      * It will disable ssl certification check
@@ -64,7 +50,6 @@ public class MainConfiguration {
      * @return
      * @throws Exception
      */
-    /*
     @Bean
     public RestTemplate restTemplate() throws Exception {
         TrustManager[] trustAllCertificates = new TrustManager[]{
@@ -107,5 +92,4 @@ public class MainConfiguration {
         converter.setObjectMapper(objectMapper);
         return converter;
     }
-    */
 }
