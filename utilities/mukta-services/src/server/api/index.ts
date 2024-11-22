@@ -74,6 +74,20 @@ const search_individual_2 = async (individualIds: Array<string>, tenantId: strin
   );
 }
 
+const search_organisation = async (requestinfo: any) => {
+
+  var params = {
+    limit: 10,
+    offset: 0
+  };
+  
+  return await httpRequest(
+    url.resolve(config.host.organisation, config.paths.org_search),
+    requestinfo,
+    params
+  )
+}
+
 const search_workflow = async (applicationNumber: string, tenantId: string, requestinfo: any) => {
   var params = {
     tenantId: tenantId,
@@ -314,6 +328,7 @@ export {
   search_muster,
   search_individual,
   search_individual_2,
+  search_organisation,
   search_localization,
   search_contract,
   search_estimate,
