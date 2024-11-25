@@ -15,12 +15,17 @@ _$InitMdmsModelImpl _$$InitMdmsModelImplFromJson(Map<String, dynamic> json) =>
       tenant: json['tenant'] == null
           ? null
           : TenantModel.fromJson(json['tenant'] as Map<String, dynamic>),
+      commonUIConfigModel: json['commonUiConfig'] == null
+          ? null
+          : CommonUIConfigModel.fromJson(
+              json['commonUiConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$InitMdmsModelImplToJson(_$InitMdmsModelImpl instance) =>
     <String, dynamic>{
       'common-masters': instance.commonMastersModel,
       'tenant': instance.tenant,
+      'commonUiConfig': instance.commonUIConfigModel,
     };
 
 _$TenantModelImpl _$$TenantModelImplFromJson(Map<String, dynamic> json) =>
@@ -143,4 +148,90 @@ Map<String, dynamic> _$$CityModuleModelImplToJson(
       'code': instance.code,
       'module': instance.module,
       'order': instance.order,
+    };
+
+_$CommonUIConfigModelImpl _$$CommonUIConfigModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$CommonUIConfigModelImpl(
+      privacyPolicyModels: (json['PrivacyPolicy'] as List<dynamic>?)
+          ?.map((e) => PrivacyPolicyModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$CommonUIConfigModelImplToJson(
+        _$CommonUIConfigModelImpl instance) =>
+    <String, dynamic>{
+      'PrivacyPolicy': instance.privacyPolicyModels,
+    };
+
+_$PrivacyPolicyModelImpl _$$PrivacyPolicyModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PrivacyPolicyModelImpl(
+      header: json['header'] as String?,
+      active: json['active'] as bool?,
+      module: json['module'] as String?,
+      contents: (json['contents'] as List<dynamic>?)
+          ?.map((e) => ContentModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$PrivacyPolicyModelImplToJson(
+        _$PrivacyPolicyModelImpl instance) =>
+    <String, dynamic>{
+      'header': instance.header,
+      'active': instance.active,
+      'module': instance.module,
+      'contents': instance.contents,
+    };
+
+_$ContentModelImpl _$$ContentModelImplFromJson(Map<String, dynamic> json) =>
+    _$ContentModelImpl(
+      header: json['header'] as String?,
+      descriptions: (json['descriptions'] as List<dynamic>?)
+          ?.map((e) => DescriptionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$ContentModelImplToJson(_$ContentModelImpl instance) =>
+    <String, dynamic>{
+      'header': instance.header,
+      'descriptions': instance.descriptions,
+    };
+
+_$DescriptionModelImpl _$$DescriptionModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DescriptionModelImpl(
+      text: json['text'] as String?,
+      type: json['type'] as String?,
+      isBold: json['isBold'] as bool?,
+      subDescriptions: (json['subDescriptions'] as List<dynamic>?)
+          ?.map((e) => SubDescriptionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$DescriptionModelImplToJson(
+        _$DescriptionModelImpl instance) =>
+    <String, dynamic>{
+      'text': instance.text,
+      'type': instance.type,
+      'isBold': instance.isBold,
+      'subDescriptions': instance.subDescriptions,
+    };
+
+_$SubDescriptionModelImpl _$$SubDescriptionModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SubDescriptionModelImpl(
+      text: json['text'] as String?,
+      type: json['type'] as String?,
+      isBold: json['isBold'] as bool?,
+      isSpaceRequired: json['isSpaceRequired'] as bool?,
+    );
+
+Map<String, dynamic> _$$SubDescriptionModelImplToJson(
+        _$SubDescriptionModelImpl instance) =>
+    <String, dynamic>{
+      'text': instance.text,
+      'type': instance.type,
+      'isBold': instance.isBold,
+      'isSpaceRequired': instance.isSpaceRequired,
     };

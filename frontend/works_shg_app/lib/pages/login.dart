@@ -1,7 +1,11 @@
 // import 'package:digit_components/digit_components.dart';
 // import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'dart:async';
+
+import 'package:digit_ui_components/blocs/AppLocalization.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/models/privacy_notice/privacy_notice_model.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
@@ -11,6 +15,7 @@ import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
+import 'package:digit_ui_components/widgets/privacy_policy/privacy_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +62,7 @@ class _LoginPageState extends State<LoginPage>
   bool iconVisibility = true;
 
   String cityDropDownKey = "cityDropDownKey";
+  String privacyPolicy = "privacyPolicy";
 
   @override
   void initState() {
@@ -144,8 +150,8 @@ class _LoginPageState extends State<LoginPage>
 
               AnimatedContainer(
                 height: _tabController.index == 0
-                    ? MediaQuery.of(context).size.height * 0.089
-                    : MediaQuery.of(context).size.height * 0.28,
+                    ? MediaQuery.of(context).size.height * 0.215
+                    : MediaQuery.of(context).size.height * 0.399,
                 duration: const Duration(milliseconds: 000),
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
@@ -156,21 +162,9 @@ class _LoginPageState extends State<LoginPage>
                   ],
                 ),
               ),
-              _buildLoginButton(t, loginContext),
-              // _tabController.index == 1
-              //     ? Center(
-              //         child: Button(
-              //           type: ButtonType.tertiary,
-              //           size: ButtonSize.large,
-              //           label: t.translate(i18.login.forgotPassword),
-              //           onPressed: () {
-              //             forgotPassword(t);
-              //           },
-              //         ),
-              //       )
-              //     : SizedBox.fromSize(
-              //         size: const Size(0, 0),
-              //       ),
+
+              // _buildLoginButton(t, loginContext),
+
               Visibility(
                 visible: _tabController.index == 1,
                 child: Center(
@@ -191,7 +185,8 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  Widget _buildLoginButton(AppLocalizations t, BuildContext loginContext) {
+  Widget _buildLoginButton(
+      AppLocalizations t, BuildContext loginContext, FormGroup formGroup) {
     if (_tabController.index == 0) {
       return BlocListener<OTPBloc, OTPBlocState>(
         listener: (context, state) {
@@ -283,6 +278,11 @@ class _LoginPageState extends State<LoginPage>
                   if (userNameController.text.isNotEmpty &&
                       userPasswordController.text.isNotEmpty &&
                       selectTenantId.isNotEmpty) {
+                    formGroup.markAllAsTouched();
+                    if (!formGroup.valid) return;
+
+                    FocusManager.instance.primaryFocus?.unfocus();
+
                     context.read<AuthBloc>().add(
                           AuthLoginEvent(
                             userId: userNameController.text,
@@ -361,37 +361,87 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  Padding cboLogin(BuildContext loginContext) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
-      child: SizedBox(
-        height: MediaQuery.of(loginContext).size.height * 0.7,
-        child: ui_label.LabeledField(
-          isRequired: true,
-          label:
-              '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}',
-          child: DigitTextFormInput(
-            keyboardType: TextInputType.number,
-            // focusNode: _numberFocus,
-            prefixText: '+91',
-            controller: userIdController,
-            isRequired: true,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+  ReactiveFormBuilder cboLogin(BuildContext loginContext) {
+    return ReactiveFormBuilder(
+      form: detailCboBuildForm,
+      builder:
+          (BuildContext loginContext, FormGroup formGroup, Widget? child) =>
+              Padding(
+        padding: const EdgeInsets.only(top: 0.0),
+        child: SizedBox(
+          height: MediaQuery.of(loginContext).size.height * 0.7,
+          child: Column(
+            children: [
+              ui_label.LabeledField(
+                isRequired: true,
+                label:
+                    '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}',
+                child: DigitTextFormInput(
+                  keyboardType: TextInputType.number,
+                  // focusNode: _numberFocus,
+                  prefixText: '+91',
+                  controller: userIdController,
+                  isRequired: true,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                  ],
+                  onChange: (value) {
+                    setState(() {
+                      canContinue = value.length == 10;
+                    });
+                    // if (value.length == 10) {
+                    //   _numberFocus.unfocus();
+                    // }
+                  },
+                ),
+              ),
+
+              // TODO: temp
+              // Padding(
+              //   padding: EdgeInsets.only(
+              //       top: Theme.of(context).spacerTheme.spacer4,
+              //       bottom: Theme.of(context).spacerTheme.spacer4),
+              //   child:
+              //       BlocBuilder<AppInitializationBloc, AppInitializationState>(
+              //           builder: (context, initState) {
+              //     if (initState.initMdmsModel?.commonUIConfigModel
+              //                 ?.privacyPolicyModels ==
+              //             null ||
+              //         initState.initMdmsModel!.commonUIConfigModel!
+              //             .privacyPolicyModels!.isEmpty) {
+              //       return const SizedBox.shrink();
+              //     }
+
+              //     formGroup
+              //         .control(privacyPolicy)
+              //         .setValidators([Validators.requiredTrue]);
+              //     formGroup.control(privacyPolicy).updateValueAndValidity();
+              //     return PrivacyComponent(
+              //       privacyPolicy: convertToPrivacyPolicyModel(
+              //           AppLocalizations.of(loginContext),
+              //           initState.initMdmsModel!.commonUIConfigModel!
+              //               .privacyPolicyModels!.first),
+              //       formControlName: privacyPolicy,
+              //       text: AppLocalizations.of(loginContext)
+              //           .translate(i18.privacyPolicy.byClick),
+              //       linkText: AppLocalizations.of(loginContext)
+              //           .translate(i18.privacyPolicy.privacyPolicyLink),
+              //       validationMessage: AppLocalizations.of(loginContext)
+              //           .translate(
+              //               "i18.privacyPolicy.privacyPolicyValidationText"),
+              //     );
+              //   }),
+              // ),
+              _buildLoginButton(
+                  AppLocalizations.of(loginContext), context, formGroup),
             ],
-            onChange: (value) {
-              setState(() {
-                canContinue = value.length == 10;
-              });
-              // if (value.length == 10) {
-              //   _numberFocus.unfocus();
-              // }
-            },
           ),
         ),
       ),
     );
   }
+
+  // final privacyPolicyModel = PrivacyNoticeModel.fromJson(privacyPolicyContent);
 
   @override
   Widget build(BuildContext context) {
@@ -472,7 +522,7 @@ class _LoginPageState extends State<LoginPage>
     AppInitializationState data,
   ) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         child: ReactiveFormBuilder(
@@ -534,14 +584,42 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  // Button(
-                  //   type: ButtonType.tertiary,
-                  //   size: ButtonSize.large,
-                  //   label: t.translate(i18.login.forgotPassword),
-                  //   onPressed: () {
-                  //     forgotPassword(t);
-                  //   },
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: Theme.of(context).spacerTheme.spacer4,
+                        bottom: Theme.of(context).spacerTheme.spacer4),
+                    child: BlocBuilder<AppInitializationBloc,
+                        AppInitializationState>(builder: (context, initState) {
+                      if (initState.initMdmsModel?.commonUIConfigModel
+                                  ?.privacyPolicyModels ==
+                              null ||
+                          initState.initMdmsModel!.commonUIConfigModel!
+                              .privacyPolicyModels!.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+
+                      formGroup
+                          .control(privacyPolicy)
+                          .setValidators([Validators.requiredTrue]);
+                      formGroup.control(privacyPolicy).updateValueAndValidity();
+
+                      return PrivacyComponent(
+                        declineText: 'decline',
+                        acceptText: 'accept',
+                        privacyPolicy: convertToPrivacyPolicyModel(
+                            t,
+                            initState.initMdmsModel!.commonUIConfigModel!
+                                .privacyPolicyModels!.first),
+                        formControlName: privacyPolicy,
+                        text: t.translate(i18.privacyPolicy.byClick),
+                        linkText:
+                            t.translate(i18.privacyPolicy.privacyPolicyLink),
+                        validationMessage: t.translate(
+                            "i18.privacyPolicy.privacyPolicyValidationText"),
+                      );
+                    }),
+                  ),
+                  _buildLoginButton(t, context, formGroup),
                 ],
               );
             }),
@@ -549,7 +627,415 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
+  FutureOr<List<dynamic>> getLocalizedDataStringxx() async {
+    return AppLocalizations.localizedStrings;
+  }
+
   FormGroup detailBuildForm() => fb.group(<String, Object>{
         cityDropDownKey: FormControl<TenantListModel>(value: null),
+        privacyPolicy: FormControl<bool>(value: false),
       });
+
+  FormGroup detailCboBuildForm() => fb.group(<String, Object>{
+        privacyPolicy: FormControl<bool>(value: false),
+      });
+
+  // convert to privacy notice model
+  PrivacyNoticeModel? convertToPrivacyPolicyModel(
+      AppLocalizations t, PrivacyPolicyModel? privacyPolicy) {
+    return PrivacyNoticeModel(
+      header: privacyPolicy?.header ?? '',
+      module: privacyPolicy?.module ?? '',
+      active: privacyPolicy?.active,
+      contents: privacyPolicy?.contents
+          ?.map((content) => ContentNoticeModel(
+                header: content.header,
+                descriptions: content.descriptions
+                    ?.map((description) => DescriptionNoticeModel(
+                          text: description.text,
+                          type: description.type,
+                          isBold: description.isBold,
+                          subDescriptions: description.subDescriptions
+                              ?.map(
+                                  (subDescription) => SubDescriptionNoticeModel(
+                                        text: subDescription.text,
+                                        type: subDescription.type,
+                                        isBold: subDescription.isBold,
+                                        isSpaceRequired:
+                                            subDescription.isSpaceRequired,
+                                      ))
+                              .toList(),
+                        ))
+                    .toList(),
+              ))
+          .toList(),
+    );
+  }
 }
+
+final privacyPolicyContent = {
+  "header": "PRIVACY_HEADER",
+  "module": "Mukta",
+  "active": true,
+  "contents": [
+    {
+      "header": "PRIVACY_HEADER_1_SUB_1",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_3",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_4",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_5",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_1_SUB_1_DESC_6",
+          "type": null,
+          "isBold": false
+        },
+        {"text": "PRIVACY_HEADER_1_SUB_1_DESC_7", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_2_SUB_2",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_2_SUB_2_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_2_SUB_2_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_2_SUB_2_DESC_3",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_2_SUB_2_DESC_4",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_2_SUB_2_DESC_3_SUBDESC_1",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_2_SUB_2_DESC_3_SUBDESC_2",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        },
+        {"text": "PRIVACY_HEADER_2_SUB_2_DESC_5", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_3_SUB_3",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_3_SUB_3_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {"text": "PRIVACY_HEADER_3_SUB_3_DESC_2", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_4_SUB_4",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_4_SUB_4_DESC_1",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_1",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_2",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_3",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_4",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_5",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_6",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_7",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        },
+        {"text": "PRIVACY_HEADER_4_SUB_4_DESC_2", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_5_SUB_5",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_5_SUB_5_DESC_1",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_1",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_2",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_3",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_4",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_5",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_6",
+              "type": "points",
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_6_SUB_1",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_6_SUB_6_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_6_SUB_6_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_6_SUB_6_DESC_3",
+          "type": null,
+          "isBold": false
+        },
+        {"text": "PRIVACY_HEADER_6_SUB_6_DESC_4", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_7_SUB_1",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_7_SUB_7_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_7_SUB_7_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_7_SUB_7_DESC_3",
+          "type": null,
+          "isBold": false
+        },
+        {"text": "PRIVACY_HEADER_7_SUB_7_DESC_4", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_8_SUB_1",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_8_SUB_8_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_8_SUB_8_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_8_SUB_8_DESC_3",
+          "type": null,
+          "isBold": false
+        },
+        {"text": "PRIVACY_HEADER_8_SUB_8_DESC_4", "type": null, "isBold": false}
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_9_SUB_9",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_9_SUB_9_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_9_SUB_9_DESC_2",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_9_SUB_9_DESC_3",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_9_SUB_9_DESC_3_SUBDESC_1",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_9_SUB_9_DESC_3_SUBDESC_2",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        },
+        {
+          "text": "PRIVACY_HEADER_9_SUB_9_DESC_4",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_9_SUB_9_DESC_4_SUBDESC_1",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        },
+        {
+          "text": "PRIVACY_HEADER_9_SUB_9_DESC_5",
+          "type": null,
+          "isBold": false,
+          "subDescriptions": [
+            {
+              "text": "PRIVACY_HEADER_9_SUB_9_DESC_5_SUBDESC_1",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            },
+            {
+              "text": "PRIVACY_HEADER_9_SUB_9_DESC_5_SUBDESC_2",
+              "type": null,
+              "isBold": false,
+              "isSpaceRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_10_SUB_10",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_10_SUB_10_DESC_1",
+          "type": null,
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_10_SUB_10_DESC_2",
+          "type": null,
+          "isBold": false
+        }
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_11_SUB_11",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_11_SUB_11_DESC_1",
+          "type": null,
+          "isBold": false
+        }
+      ]
+    },
+    {
+      "header": "PRIVACY_HEADER_12_SUB_12",
+      "descriptions": [
+        {
+          "text": "PRIVACY_HEADER_12_SUB_12_DESC_1",
+          "type": "step",
+          "isBold": false
+        },
+        {
+          "text": "PRIVACY_HEADER_12_SUB_12_DESC_2",
+          "type": "step",
+          "isBold": false
+        }
+      ]
+    }
+  ]
+};

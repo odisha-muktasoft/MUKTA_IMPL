@@ -10,6 +10,14 @@ MyBills myBills = const MyBills();
 MyServiceRequests myServiceRequests = const MyServiceRequests();
 MeasurementBook measurementBook = const MeasurementBook();
 
+PrivacyPolicy privacyPolicy=const PrivacyPolicy();
+class PrivacyPolicy {
+  const PrivacyPolicy();
+  String get byClick => 'ES_BY_CLICKING';
+  String get privacyPolicyLink => 'ES_PRIVACY_POLICY';
+  
+}
+
 class Login {
   const Login();
   String get loginLabel => 'CORE_COMMON_LOGIN';
