@@ -215,6 +215,10 @@ class _LoginPageState extends State<LoginPage>
           onTap: canContinue
               ? () {
                   if (formKey.currentState!.validate()) {
+                    formGroup.markAllAsTouched();
+                    if (!formGroup.valid) return;
+
+                    FocusManager.instance.primaryFocus?.unfocus();
                     loginContext
                         .read<OTPBloc>()
                         .add(OTPSendEvent(mobileNumber: userIdController.text));
@@ -397,41 +401,43 @@ class _LoginPageState extends State<LoginPage>
               ),
 
               // TODO: temp
-              // Padding(
-              //   padding: EdgeInsets.only(
-              //       top: Theme.of(context).spacerTheme.spacer4,
-              //       bottom: Theme.of(context).spacerTheme.spacer4),
-              //   child:
-              //       BlocBuilder<AppInitializationBloc, AppInitializationState>(
-              //           builder: (context, initState) {
-              //     if (initState.initMdmsModel?.commonUIConfigModel
-              //                 ?.privacyPolicyModels ==
-              //             null ||
-              //         initState.initMdmsModel!.commonUIConfigModel!
-              //             .privacyPolicyModels!.isEmpty) {
-              //       return const SizedBox.shrink();
-              //     }
+              Padding(
+                padding: EdgeInsets.only(
+                    top: Theme.of(context).spacerTheme.spacer4,
+                    bottom: Theme.of(context).spacerTheme.spacer4),
+                child:
+                    BlocBuilder<AppInitializationBloc, AppInitializationState>(
+                        builder: (context, initState) {
+                  if (initState.initMdmsModel?.commonUIConfigModel
+                              ?.privacyPolicyModels ==
+                          null ||
+                      initState.initMdmsModel!.commonUIConfigModel!
+                          .privacyPolicyModels!.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
 
-              //     formGroup
-              //         .control(privacyPolicy)
-              //         .setValidators([Validators.requiredTrue]);
-              //     formGroup.control(privacyPolicy).updateValueAndValidity();
-              //     return PrivacyComponent(
-              //       privacyPolicy: convertToPrivacyPolicyModel(
-              //           AppLocalizations.of(loginContext),
-              //           initState.initMdmsModel!.commonUIConfigModel!
-              //               .privacyPolicyModels!.first),
-              //       formControlName: privacyPolicy,
-              //       text: AppLocalizations.of(loginContext)
-              //           .translate(i18.privacyPolicy.byClick),
-              //       linkText: AppLocalizations.of(loginContext)
-              //           .translate(i18.privacyPolicy.privacyPolicyLink),
-              //       validationMessage: AppLocalizations.of(loginContext)
-              //           .translate(
-              //               "i18.privacyPolicy.privacyPolicyValidationText"),
-              //     );
-              //   }),
-              // ),
+                  formGroup
+                      .control(privacyPolicy)
+                      .setValidators([Validators.requiredTrue]);
+                  formGroup.control(privacyPolicy).updateValueAndValidity();
+                  return PrivacyComponent(
+                    privacyPolicy: convertToPrivacyPolicyModel(
+                        AppLocalizations.of(loginContext),
+                        initState.initMdmsModel!.commonUIConfigModel!
+                            .privacyPolicyModels!.first),
+                    formControlName: privacyPolicy,
+                    text: AppLocalizations.of(loginContext)
+                        .translate(i18.privacyPolicy.byClick),
+                    linkText: AppLocalizations.of(loginContext)
+                        .translate(i18.privacyPolicy.privacyPolicyLink),
+                    validationMessage: AppLocalizations.of(loginContext)
+                        .translate(
+                            "i18.privacyPolicy.privacyPolicyValidationText"),
+                    acceptText: 'Accpet',
+                    declineText: 'Decline',
+                  );
+                }),
+              ),
               _buildLoginButton(
                   AppLocalizations.of(loginContext), context, formGroup),
             ],
@@ -644,22 +650,35 @@ class _LoginPageState extends State<LoginPage>
   PrivacyNoticeModel? convertToPrivacyPolicyModel(
       AppLocalizations t, PrivacyPolicyModel? privacyPolicy) {
     return PrivacyNoticeModel(
-      header: privacyPolicy?.header ?? '',
-      module: privacyPolicy?.module ?? '',
+      header: privacyPolicy?.header != null
+          ? t.translate(privacyPolicy!.header!)
+          : '',
+      module: privacyPolicy?.module != null
+          ? t.translate(privacyPolicy!.module!)
+          : '',
       active: privacyPolicy?.active,
       contents: privacyPolicy?.contents
           ?.map((content) => ContentNoticeModel(
-                header: content.header,
+                header:
+                    content.header != null ? t.translate(content.header!) : '',
                 descriptions: content.descriptions
                     ?.map((description) => DescriptionNoticeModel(
-                          text: description.text,
-                          type: description.type,
+                          text: description.text != null
+                              ? t.translate(description.text!)
+                              : '',
+                          type: description.type != null
+                              ? t.translate(description.type!)
+                              : '',
                           isBold: description.isBold,
                           subDescriptions: description.subDescriptions
                               ?.map(
                                   (subDescription) => SubDescriptionNoticeModel(
-                                        text: subDescription.text,
-                                        type: subDescription.type,
+                                        text: subDescription.text != null
+                                            ? t.translate(subDescription.text!)
+                                            : '',
+                                        type: subDescription.type != null
+                                            ? t.translate(subDescription.type!)
+                                            : '',
                                         isBold: subDescription.isBold,
                                         isSpaceRequired:
                                             subDescription.isSpaceRequired,
@@ -672,370 +691,3 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 }
-
-final privacyPolicyContent = {
-  "header": "PRIVACY_HEADER",
-  "module": "Mukta",
-  "active": true,
-  "contents": [
-    {
-      "header": "PRIVACY_HEADER_1_SUB_1",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_3",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_4",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_5",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_1_SUB_1_DESC_6",
-          "type": null,
-          "isBold": false
-        },
-        {"text": "PRIVACY_HEADER_1_SUB_1_DESC_7", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_2_SUB_2",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_2_SUB_2_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_2_SUB_2_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_2_SUB_2_DESC_3",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_2_SUB_2_DESC_4",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_2_SUB_2_DESC_3_SUBDESC_1",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_2_SUB_2_DESC_3_SUBDESC_2",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        },
-        {"text": "PRIVACY_HEADER_2_SUB_2_DESC_5", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_3_SUB_3",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_3_SUB_3_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {"text": "PRIVACY_HEADER_3_SUB_3_DESC_2", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_4_SUB_4",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_4_SUB_4_DESC_1",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_1",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_2",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_3",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_4",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_5",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_6",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_4_SUB_4_DESC_1_SUBDESC_7",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        },
-        {"text": "PRIVACY_HEADER_4_SUB_4_DESC_2", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_5_SUB_5",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_5_SUB_5_DESC_1",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_1",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_2",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_3",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_4",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_5",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_5_SUB_5_DESC_1_SUBDESC_6",
-              "type": "points",
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_6_SUB_1",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_6_SUB_6_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_6_SUB_6_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_6_SUB_6_DESC_3",
-          "type": null,
-          "isBold": false
-        },
-        {"text": "PRIVACY_HEADER_6_SUB_6_DESC_4", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_7_SUB_1",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_7_SUB_7_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_7_SUB_7_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_7_SUB_7_DESC_3",
-          "type": null,
-          "isBold": false
-        },
-        {"text": "PRIVACY_HEADER_7_SUB_7_DESC_4", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_8_SUB_1",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_8_SUB_8_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_8_SUB_8_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_8_SUB_8_DESC_3",
-          "type": null,
-          "isBold": false
-        },
-        {"text": "PRIVACY_HEADER_8_SUB_8_DESC_4", "type": null, "isBold": false}
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_9_SUB_9",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_9_SUB_9_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_9_SUB_9_DESC_2",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_9_SUB_9_DESC_3",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_9_SUB_9_DESC_3_SUBDESC_1",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_9_SUB_9_DESC_3_SUBDESC_2",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        },
-        {
-          "text": "PRIVACY_HEADER_9_SUB_9_DESC_4",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_9_SUB_9_DESC_4_SUBDESC_1",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        },
-        {
-          "text": "PRIVACY_HEADER_9_SUB_9_DESC_5",
-          "type": null,
-          "isBold": false,
-          "subDescriptions": [
-            {
-              "text": "PRIVACY_HEADER_9_SUB_9_DESC_5_SUBDESC_1",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            },
-            {
-              "text": "PRIVACY_HEADER_9_SUB_9_DESC_5_SUBDESC_2",
-              "type": null,
-              "isBold": false,
-              "isSpaceRequired": true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_10_SUB_10",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_10_SUB_10_DESC_1",
-          "type": null,
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_10_SUB_10_DESC_2",
-          "type": null,
-          "isBold": false
-        }
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_11_SUB_11",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_11_SUB_11_DESC_1",
-          "type": null,
-          "isBold": false
-        }
-      ]
-    },
-    {
-      "header": "PRIVACY_HEADER_12_SUB_12",
-      "descriptions": [
-        {
-          "text": "PRIVACY_HEADER_12_SUB_12_DESC_1",
-          "type": "step",
-          "isBold": false
-        },
-        {
-          "text": "PRIVACY_HEADER_12_SUB_12_DESC_2",
-          "type": "step",
-          "isBold": false
-        }
-      ]
-    }
-  ]
-};
