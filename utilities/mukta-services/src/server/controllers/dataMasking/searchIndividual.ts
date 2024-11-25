@@ -110,7 +110,7 @@ class IndividualController {
       // Format the final response structure
       const responseObj = {
         ResponseInfo: individualResponse?.ResponseInfo,
-        individual: maskedIndividual,  // Individual with masked/unmasked values
+        Individual: maskedIndividual,  // Individual with masked/unmasked values
         TotatCount: individualResponse?.TotatCount
       };
 
