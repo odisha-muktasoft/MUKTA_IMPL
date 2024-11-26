@@ -74,7 +74,7 @@ public class IndividualService {
         for (ContactDetails contactDetails : contactDetailsList) {
 
             Individual newUser = Individual.builder().build();
-            addIndividualDefaultFields(stateLevelTenantId, (List<Role>) role, newUser, contactDetails, true, null);
+            addIndividualDefaultFields(stateLevelTenantId, role, newUser, contactDetails, true, null);
             IndividualBulkResponse response = individualExists(contactDetails, requestInfo, Boolean.TRUE, stateLevelTenantId);
             List<Individual> existingIndividualFromService = response.getIndividual();
             IndividualResponse individualResponse;
@@ -265,7 +265,7 @@ public class IndividualService {
      */
     private void addIndividualDefaultFields(String tenantId, List<Role> role, Individual individual, ContactDetails contactDetails, boolean isCreate, Individual existingIndividual) {
         log.info("IndividualService::addUserDefaultFields");
-        UserDetails userDetails = UserDetails.builder().roles(Collections.singletonList((Role) role))
+        UserDetails userDetails = UserDetails.builder().roles(role)
                 .tenantId(tenantId).username(contactDetails.getContactMobileNumber())
                 .userType(UserType.fromValue("CITIZEN")).build();
         individual.setMobileNumber(contactDetails.getContactMobileNumber());
