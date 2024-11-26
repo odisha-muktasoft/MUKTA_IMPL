@@ -41,7 +41,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
           },
           photo : {
             title: "ES_COMMON_PHOTOGRAPH",
-            thumbnailsToShow: thumbnails,
+            thumbnailsToShow: thumbnails && individual?.additionalFields?.isPhotoMasked == true ? '' : thumbnails,
             isMasked : thumbnails && individual?.additionalFields?.isPhotoMasked == true ? "CS_COMMON_UNDISCLOSED" : false         
           }
         }
@@ -50,9 +50,9 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
         title: "ES_COMMON_LOCATION_DETAILS",
         asSectionHeader: true,
         values: [
-            { title: "CORE_COMMON_PROFILE_CITY", value: individual?.address?.[0]?.tenantId ? (individual?.address?.[0]?.city?.includes("*") ? getAddressMasked(Digit.Utils.locale.getCityLocale(individual?.address?.[0]?.tenantId)) : Digit.Utils.locale.getCityLocale(individual?.address?.[0]?.tenantId)) : t("NA")},
-            { title: "COMMON_WARD", value: individual?.address?.[0]?.ward?.code ? (individual?.address?.[0]?.ward?.additionalDetails?.isMasked ? getAddressMasked(Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.ward?.code, tenantId)) : Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.ward?.code, tenantId)) : t("NA")},
-            { title: "COMMON_LOCALITY", value: individual?.address?.[0]?.locality?.code ? (individual?.address?.[0]?.locality?.additionalDetails?.isMasked ? getAddressMasked(Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.locality?.code, tenantId)) : Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.locality?.code, tenantId)) : t("NA")},
+            { title: "CORE_COMMON_PROFILE_CITY", value: individual?.address?.[0]?.tenantId ? (individual?.address?.[0]?.city?.includes("*") ? getAddressMasked(t(Digit.Utils.locale.getCityLocale(individual?.address?.[0]?.tenantId))) : Digit.Utils.locale.getCityLocale(individual?.address?.[0]?.tenantId)) : t("NA")},
+            { title: "COMMON_WARD", value: individual?.address?.[0]?.ward?.code ? (individual?.address?.[0]?.ward?.additionalDetails?.isMasked ? getAddressMasked(t(Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.ward?.code, tenantId))) : Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.ward?.code, tenantId)) : t("NA")},
+            { title: "COMMON_LOCALITY", value: individual?.address?.[0]?.locality?.code ? (individual?.address?.[0]?.locality?.additionalDetails?.isMasked ? getAddressMasked(t(Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.locality?.code, tenantId))) : Digit.Utils.locale.getMohallaLocale(individual?.address?.[0]?.locality?.code, tenantId)) : t("NA")},
             { title: "ES_COMMON_STREET", value: individual?.address?.[0]?.street || t("NA")},
             { title: "ES_COMMON_DOOR_NO", value: individual?.address?.[0]?.doorNo || t("NA")},
         ]
