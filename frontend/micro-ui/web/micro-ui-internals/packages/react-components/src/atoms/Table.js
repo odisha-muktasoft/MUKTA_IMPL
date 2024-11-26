@@ -187,6 +187,8 @@ const Table = ({
                 <tr {...row.getRowProps()}>
                   {showAutoSerialNo && <td>{i + 1}</td>}
                   {row.cells.map((cell) => {
+                     const cellValue = cell.value;
+                     const isLinkObject = cellValue && typeof cellValue === "object" && cellValue.isLink;
                     return (
                       <td
                         // style={{ padding: "20px 18px", fontSize: "16px", borderTop: "1px solid grey", textAlign: "left", verticalAlign: "middle" }}
@@ -199,9 +201,9 @@ const Table = ({
                           getCellProps(cell),
                         ])}
                       >
-                        {cell.attachment_link ? (
-                          <a style={{ color: "#1D70B8" }} href={cell.attachment_link}>
-                            {cell.render("Cell")}
+                        {cell.attachment_link || isLinkObject ? (
+                          <a style={{ color: isLinkObject ? "#c84c0e" :"#1D70B8" }}  href={cell.attachment_link || cellValue?.to}>
+                            {isLinkObject? cellValue?.label : cell.render("Cell")}
                           </a>
                         ) : (
                           <React.Fragment> {cell.render("Cell")} </React.Fragment>

@@ -59,13 +59,14 @@ export const mustorRollDetailsTableColumns = (t) => [
       return <Amount customStyle={{ textAlign: 'right'}} value={value} t={t}></Amount>
     }
   },
-  {
-    Header: () => <p>{t("EXP_BANK_ACCOUNT_DETAILS")}</p>,
-    accessor: "bankAccountDetails",
-    Cell: ({ value, column, row }) => {
-      return renderBankAccountDetails(value);
-    }
-  },
+  //removed for DPP
+  // {
+  //   Header: () => <p>{t("EXP_BANK_ACCOUNT_DETAILS")}</p>,
+  //   accessor: "bankAccountDetails",
+  //   Cell: ({ value, column, row }) => {
+  //     return renderBankAccountDetails(value);
+  //   }
+  // },
   // {
   //   Header: () => <p>{t("ES_COMMON_PAYMENT_STATUS")}</p>,
   //   accessor: "paymentStatus",

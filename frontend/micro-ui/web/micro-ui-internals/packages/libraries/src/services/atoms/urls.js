@@ -236,7 +236,7 @@ const Urls = {
 
   wageseeker: {
     create: "/individual/v1/_create",
-    search: "/individual/v1/_search",
+    search: "/mukta-services/individual/v1/_search",
     wmssearch: "/wms/individual/_search",
     update: "/individual/v1/_update",
     delete: "/individual/v1/_delete",
