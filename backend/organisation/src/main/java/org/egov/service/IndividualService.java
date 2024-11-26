@@ -307,9 +307,20 @@ public class IndividualService {
                 .code(OrganisationConstant.ORG_ADMIN_ROLE_CODE)
                 .name(OrganisationConstant.ORG_ADMIN_ROLE_NAME)
                 .build());
+
         roles.add(Role.builder()
                 .code(OrganisationConstant.VIEW_ORG_UNMASKED_CODE)
                 .name(OrganisationConstant.VIEW_ORG_UNMASKED_NAME)
+                .build());
+
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_DED_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_DED_UNMASKED_NAME)
+                .build());
+
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_WS_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_WS_UNMASKED_NAME)
                 .build());
 
         return roles;

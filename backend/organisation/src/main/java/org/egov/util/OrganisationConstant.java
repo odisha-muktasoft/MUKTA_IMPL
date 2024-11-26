@@ -20,7 +20,13 @@ public class OrganisationConstant {
     public static final String ORG_CITIZEN_TYPE = "CITIZEN";
 
     public static final String VIEW_ORG_UNMASKED_CODE = "VIEW_ORG_UNMASKED";
-    public static final String VIEW_ORG_UNMASKED_NAME = "VIEW_ORG_UNMASKED";
+    public static final String VIEW_ORG_UNMASKED_NAME = "View ORG Unmasked";
+
+    public static final String VIEW_DED_UNMASKED_CODE = "VIEW_DED_UNMASKED";
+    public static final String VIEW_DED_UNMASKED_NAME = "View DED Unmasked";
+
+    public static final String VIEW_WS_UNMASKED_CODE = "VIEW_WS_UNMASKED";
+    public static final String VIEW_WS_UNMASKED_NAME = "View Ws Unmasked";
 
 
     public static final String PATTERN_NAME = "^[^\\\\$\\\"<>?\\\\\\\\~`!@#$%^()+={}\\\\[\\\\]*,:;“”‘’]*$";
