@@ -65,4 +65,61 @@ class DataPrivacy {
             .toList() ??
         [];
   }
+
+/// extracting individualIDs from wms search indexer response
+/// 
+static List<String?> getIndividualIdsFromListModel(IndividualListModel individualListModel) {
+  return individualListModel.Individual?.map((individual) => individual.individualId).toList() ?? [];
+}
+
+static List<String> getIndividualIdsFromWMSModel(WMSIndividualListModel? wmsIndividualListModel) {
+  if (wmsIndividualListModel == null || wmsIndividualListModel.items == null) {
+    return [];
+  }
+
+  return wmsIndividualListModel.items!
+      .where((singleWMS) => singleWMS.businessObject?.individualId != null)
+      .map((singleWMS) => singleWMS.businessObject!.individualId!)
+      .toList();
+}
+
+
+
+///
+  ///
+  ///  wms/indexer
+  static WMSIndividualListModel updateIndividualEntriesInWmsForEngageWS(
+  WMSIndividualListModel musterRollsModel,
+  List<IndividualModel> individualList,
+) {
+  // Create a map for faster lookup by individualId
+  var individualMap = {
+    for (var individual in individualList) individual.individualId: individual,
+  };
+
+  // Map through the items in the musterRollsModel and update the entries
+  var updatedMusterRolls = musterRollsModel.items?.map((musterRoll) {
+    var matchingIndividual =
+        individualMap[musterRoll.businessObject?.individualId];
+
+    if (matchingIndividual != null && musterRoll.businessObject != null) {
+      // Update specific fields in businessObject
+      return SingleWMSIndividualModel(
+        businessObject: musterRoll.businessObject!.copyWith(
+          fatherName: matchingIndividual.fatherName,
+          husbandName: matchingIndividual.husbandName,
+          mobileNumber: matchingIndividual.mobileNumber,
+        ),
+      );
+    }
+    // Return the original musterRoll if no match
+    return musterRoll;
+  }).toList();
+
+  // Return updated WMSIndividualListModel
+  return WMSIndividualListModel(items: updatedMusterRolls);
+}
+
+
+
 }

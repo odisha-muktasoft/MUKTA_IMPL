@@ -8,8 +8,10 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:works_shg_app/data/repositories/attendence_repository/individual_repository.dart';
 import 'package:works_shg_app/models/attendance/attendance_registry_model.dart';
 import 'package:works_shg_app/models/table/table_model.dart';
+import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -25,6 +27,7 @@ import '../blocs/attendance/individual_wms_search.dart';
 import '../blocs/attendance/search_projects/search_individual_project.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
+import '../data/remote_client.dart';
 import '../models/attendance/individual_list_model.dart';
 import '../router/app_router.dart';
 import '../utils/models.dart';
@@ -838,7 +841,22 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
     );
   }
 
-  void onSuggestionSelected(user) {
+  void onSuggestionSelected(user) async {
+    IndividualListModel individualListModelData =
+        await IndividualRepository(Client().init()).searchIndividual(
+            url: Urls.attendanceRegisterServices.individualSearch,
+            queryParameters: {
+          "offset": '0',
+          "limit": '100',
+          "tenantId": widget.tenantId.toString(),
+        },
+            body: {
+          "Individual": {
+            "individualId": [user["individualCode"]]
+          }
+        });
+
+
     setState(() {
       searchController.text = '';
       bool hasDuplicate = addToTableList
@@ -851,7 +869,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           "aadhaar": user["aadhaar"],
           "gender": user["gender"],
           "individualCode": user["individualCode"],
-          "individualGaurdianName": user["individualGaurdianName"],
+          "individualGaurdianName":individualListModelData.Individual?.first.fatherName??individualListModelData.Individual?.first.husbandName,
           "skill": user["skill"],
           "individualId": user["individualId"],
           "uuid": user["uuid"],
@@ -874,6 +892,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                     .isEmpty
             ? addToTableList
                 .map((e) => {
+                      // develop
                       "registerId": registerId.toString(),
                       "individualId": e["uuid"],
                       "enrollmentDate": registerStartDate,

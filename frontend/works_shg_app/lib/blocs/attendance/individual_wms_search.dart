@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/data_privacy.dart';
 
 import '../../data/remote_client.dart';
 import '../../data/repositories/attendence_repository/individual_repository.dart';
@@ -114,7 +115,31 @@ class IndividualWMSSearchBloc
               "offset": 0
             }
           });
-      emit(IndividualWMSSearchState.loaded(individualListModel));
+
+      List<String> filterdIds =
+          DataPrivacy.getIndividualIdsFromWMSModel(individualListModel);
+
+      IndividualListModel individualListModelData =
+          await IndividualRepository(client.init()).searchIndividual(
+              url: Urls.attendanceRegisterServices.individualSearch,
+              queryParameters: {
+            "offset": '0',
+            "limit": '100',
+            "tenantId": event.tenant.toString(),
+          },
+              body: {
+            "Individual": {"individualId": filterdIds}
+          });
+      if (individualListModelData.Individual != null) {
+        WMSIndividualListModel musterRollsModelTest =
+            DataPrivacy.updateIndividualEntriesInWmsForEngageWS(
+                individualListModel, individualListModelData.Individual!);
+        emit(IndividualWMSSearchState.loaded(musterRollsModelTest));
+      } else {
+        emit(IndividualWMSSearchState.loaded(individualListModel));
+      }
+
+      // emit(IndividualWMSSearchState.loaded(individualListModel));
     } on DioException catch (e) {
       emit(IndividualWMSSearchState.error(
           e.response?.data['Errors'][0]['code']));
