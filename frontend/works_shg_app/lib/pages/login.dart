@@ -432,9 +432,11 @@ class _LoginPageState extends State<LoginPage>
                         .translate(i18.privacyPolicy.privacyPolicyLink),
                     validationMessage: AppLocalizations.of(loginContext)
                         .translate(
-                            "i18.privacyPolicy.privacyPolicyValidationText"),
-                    acceptText: 'Accpet',
-                    declineText: 'Decline',
+                            i18.privacyPolicy.privacyPolicyValidationText),
+                    acceptText: AppLocalizations.of(loginContext)
+                        .translate(i18.privacyPolicy.accept),
+                    declineText: AppLocalizations.of(loginContext)
+                        .translate(i18.privacyPolicy.decline),
                   );
                 }),
               ),
@@ -610,8 +612,8 @@ class _LoginPageState extends State<LoginPage>
                       formGroup.control(privacyPolicy).updateValueAndValidity();
 
                       return PrivacyComponent(
-                        declineText: 'decline',
-                        acceptText: 'accept',
+                        declineText: t.translate(i18.privacyPolicy.decline),
+                        acceptText: t.translate(i18.privacyPolicy.accept),
                         privacyPolicy: convertToPrivacyPolicyModel(
                             t,
                             initState.initMdmsModel!.commonUIConfigModel!
@@ -621,7 +623,7 @@ class _LoginPageState extends State<LoginPage>
                         linkText:
                             t.translate(i18.privacyPolicy.privacyPolicyLink),
                         validationMessage: t.translate(
-                            "i18.privacyPolicy.privacyPolicyValidationText"),
+                            i18.privacyPolicy.privacyPolicyValidationText),
                       );
                     }),
                   ),

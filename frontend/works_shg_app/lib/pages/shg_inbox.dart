@@ -4,11 +4,8 @@ import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart'
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
-import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
-import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
-import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -21,10 +18,7 @@ import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
-import 'package:works_shg_app/widgets/atoms/custom_info_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/molecules/digit_table.dart' as shg_app;
 
@@ -54,7 +48,6 @@ import '../utils/date_formats.dart';
 import '../utils/models.dart';
 import '../utils/models/track_attendance_payload.dart';
 import '../utils/notifiers.dart';
-import '../widgets/button_link.dart';
 import '../widgets/circular_button.dart';
 import '../widgets/atoms/digit_timeline.dart';
 import '../widgets/atoms/table_dropdown.dart';

@@ -72,6 +72,7 @@ _$OrgAdditionalDetailsImpl _$$OrgAdditionalDetailsImplFromJson(
     _$OrgAdditionalDetailsImpl(
       registeredByDept: json['registeredByDept'] as String?,
       deptRegistrationNum: json['deptRegistrationNum'] as String?,
+      isLocalityMasked: json['isLocalityMasked'] as bool?,
       locality: json['locality'] as String?,
     );
 
@@ -80,6 +81,7 @@ Map<String, dynamic> _$$OrgAdditionalDetailsImplToJson(
     <String, dynamic>{
       'registeredByDept': instance.registeredByDept,
       'deptRegistrationNum': instance.deptRegistrationNum,
+      'isLocalityMasked': instance.isLocalityMasked,
       'locality': instance.locality,
     };
 

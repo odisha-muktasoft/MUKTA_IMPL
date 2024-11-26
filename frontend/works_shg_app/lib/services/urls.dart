@@ -30,8 +30,8 @@ class CommonServices {
 class ORGServices {
   const ORGServices();
 
-  String get bfforgSearch => 'mukta-services/org-services/organisation/v1/_search';
-   String get orgSearch => 'org-services/organisation/v1/_search';
+  String get orgSearch => 'mukta-services/org-services/organisation/v1/_search';
+   String get bfforgSearch => 'org-services/organisation/v1/_search';
   String get financeSearch => 'bankaccount-service/bankaccount/v1/_search';
   String get bfffinanceSearch => 'mukta-services/bankaccount/v1/_search';
 }
