@@ -1,4 +1,5 @@
 import AttendanceService from "../../elements/Attendance";
+import { WageSeekerService } from "../../elements/WageSeeker";
 import { WorksService } from "../../elements/Works";
 
 const attendanceTypes = {
@@ -41,29 +42,31 @@ const getWeekAttendance = (data) => {
   return weekAttendance
 }
 
-const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
+const getAttendanceTableData = async(data, skills, t, expenseCalculations, indResponse) => {
+  let individuals = indResponse?.Individual;
   let tableData = {}
   if(data?.individualEntries?.length > 0) {
     data?.individualEntries.filter((ob) => ob?.attendanceEntries !== null)?.forEach((item, index) => {
       let tableRow = {}
+      let individualdata = individuals?.filter((ob) => ob?.individualId === item?.additionalDetails?.userId)?.[0]
       tableRow.id = item.id
       tableRow.sno = index + 1
-      tableRow.registerId = item?.additionalDetails?.userId || t("NA")
+      tableRow.registerId = {isLink:true, label:individualdata?.individualId, to:`/works-ui/employee/masters/view-wageseeker?tenantId=${individualdata?.tenantId}&individualId=${individualdata?.individualId}`} || t("NA")
       tableRow.actualWorkingDays = item?.actualTotalAttendance || 0
-      tableRow.nameOfIndividual = item?.additionalDetails?.userName || t("NA")
-      tableRow.guardianName = item?.additionalDetails?.fatherName  || t("NA")
-      const skill = skills[item?.additionalDetails?.skillCode]
+      tableRow.nameOfIndividual = individualdata?.name?.givenName || t("NA")
+      tableRow.guardianName = individualdata?.fatherName  || t("NA")
+      const skill = skills[individualdata?.skills?.[0]?.type]
       tableRow.skill = skill ? `${t(skill.sorSubType)} - ${skill.description}` : t("NA");
-      tableRow.amount = skills[item?.additionalDetails?.skillCode]?.amount * item?.actualTotalAttendance || 0
+      tableRow.amount = skills[individualdata?.skills?.[0]?.type]?.amount * item?.actualTotalAttendance || 0
       tableRow.modifiedAmount = expenseCalculations?.filter(data=>data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
       tableRow.modifiedWorkingDays = item?.modifiedTotalAttendance ? item?.modifiedTotalAttendance : item?.actualTotalAttendance
-      tableRow.bankAccountDetails = {
-        accountNo : item?.additionalDetails?.bankDetails || t("NA"),
-        ifscCode : null
-      }
-      tableRow.aadharNumber = item?.additionalDetails?.aadharNumber || t("NA")
+      // tableRow.bankAccountDetails = {
+      //   accountNo : item?.additionalDetails?.bankDetails || t("NA"),
+      //   ifscCode : null
+      // }
+      // tableRow.aadharNumber = item?.additionalDetails?.aadharNumber || t("NA")
       tableRow.attendence = getWeekAttendance(item?.attendanceEntries)
-      tableRow.perDayWage = skills[item?.additionalDetails?.skillCode]?.rates?.rate || 0
+      tableRow.perDayWage = skills[individualdata?.skills?.[0]?.type]?.rates?.rate || 0
       tableData[item.id] = tableRow
     });
 
@@ -88,7 +91,7 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
   return tableData
 }
 
-const transformViewDataToApplicationDetails = async (t, data, skills) => {
+const transformViewDataToApplicationDetails = async (t, data, skills, indResponse) => {
 
   const expenseCalculatorPayload = {
     criteria : {
@@ -103,7 +106,7 @@ const transformViewDataToApplicationDetails = async (t, data, skills) => {
   if(data?.musterRolls?.length === 0) throw new Error('No data found');
   
   const musterRoll = data.musterRolls[0]
-  const attendanceTableData = await getAttendanceTableData(musterRoll, skills, t, expenseCalculations)
+  const attendanceTableData = await getAttendanceTableData(musterRoll, skills, t, expenseCalculations, indResponse)
   
   const totalAmount = expenseCalculationsResponse?.calculation?.totalAmount;
   const weekDates = getWeekDates(musterRoll)
@@ -206,9 +209,19 @@ export const fetchAttendanceDetails = async (t, tenantId, searchParams) => {
   try {
     const response = await AttendanceService.search(tenantId, searchParams);
     // const workflowDetails = await workflowDataDetails(tenantId, searchParams.musterRollNumber);
+    let IndsToSearch = response?.musterRolls?.[0].individualEntries.map((ob) => ob?.individualId)
+
+    let indPayload =IndsToSearch?.length!==0 ? {
+      Individual:{
+        id:IndsToSearch
+      }
+    } : null
+
+    const indResponse = await WageSeekerService.search(tenantId, indPayload, {tenantId,offset:0,limit:100});
+
     const skills = await getWageSeekerSkills(response)
     
-    return transformViewDataToApplicationDetails(t, response, skills)
+    return transformViewDataToApplicationDetails(t, response, skills, indResponse)
   } catch (error) {
       throw new Error(error?.response?.data?.Errors[0].message);
   }
