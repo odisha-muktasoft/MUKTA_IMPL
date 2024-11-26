@@ -181,8 +181,12 @@ class IndividualController {
               } else {
                 // Mask the value using the configured pattern if mask is true
                 if (mask) {
-                  const maskedValue = this.applyMask(currentValue, pattern);
-                  currentObj[part] = maskedValue;
+                  if (pattern === ".") {
+                    currentObj[part] = "CS_COMMON_UNDISCLOSED";
+                  } else {
+                    const maskedValue = this.applyMask(currentValue, pattern);
+                    currentObj[part] = maskedValue;
+                  }
                 } else {
                   currentObj[part] = currentValue;
                 }
