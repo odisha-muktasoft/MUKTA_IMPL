@@ -19,6 +19,9 @@ public class OrganisationConstant {
     public static final String ORG_ADMIN_ROLE_NAME = "Organization admin";
     public static final String ORG_CITIZEN_TYPE = "CITIZEN";
 
+    public static final String VIEW_ORG_UNMASKED_CODE = "VIEW_ORG_UNMASKED";
+    public static final String VIEW_ORG_UNMASKED_NAME = "VIEW_ORG_UNMASKED";
+
 
     public static final String PATTERN_NAME = "^[^\\\\$\\\"<>?\\\\\\\\~`!@#$%^()+={}\\\\[\\\\]*,:;“”‘’]*$";
 

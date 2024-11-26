@@ -302,10 +302,17 @@ public class IndividualService {
      * @return
      */
     private Role getOrgAdminRole() {
-        return Role.builder()
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.builder()
                 .code(OrganisationConstant.ORG_ADMIN_ROLE_CODE)
                 .name(OrganisationConstant.ORG_ADMIN_ROLE_NAME)
-                .build();
+                .build());
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_ORG_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_ORG_UNMASKED_NAME)
+                .build());
+
+        return (Role) roles;
     }
     private Role getCitizenRole() {
         return Role.builder()
