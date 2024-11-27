@@ -17,6 +17,7 @@ import org.egov.common.models.individual.*;
 import org.egov.common.models.project.ApiOperation;
 import org.egov.common.models.user.UserRequest;
 import org.egov.common.utils.CommonUtils;
+import org.egov.common.utils.ResponseInfoFactory;
 import org.egov.common.validator.Validator;
 import org.egov.individual.config.IndividualProperties;
 import org.egov.individual.repository.IndividualRepository;
@@ -40,7 +41,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.client.RestOperations;
 
 import static org.egov.common.utils.CommonUtils.getIdFieldName;
 import static org.egov.common.utils.CommonUtils.getIdList;
@@ -98,7 +98,6 @@ public class IndividualService {
     private final Predicate<Validator<IndividualBulkRequest, Individual>> isApplicableForDelete = validator ->
             validator.getClass().equals(NullIdValidator.class)
                     || validator.getClass().equals(NonExistentEntityValidator.class);
-    private RestOperations restTemplate;
 
     @Autowired
     public IndividualService(IndividualRepository individualRepository,
@@ -183,39 +182,28 @@ public class IndividualService {
     public List<Individual> update(IndividualRequest request) {
         IndividualBulkRequest bulkRequest = IndividualBulkRequest.builder().requestInfo(request.getRequestInfo())
                 .individuals(Collections.singletonList(request.getIndividual())).build();
-        // Search API Call to Fetch the Existing Individual
-        Individual existingIndividual = searchIndividualById(request.getIndividual().getIndividualId(), request.getIndividual().getTenantId(), request.getRequestInfo());
-        // Modify Fields Based on Search Response
-        if (existingIndividual != null) {
-            if(request.getIndividual().getGender() == null) {
-                request.getIndividual().setGender(existingIndividual.getGender());
-            }
-            if(request.getIndividual().getRelationship() == null || request.getIndividual().getRelationship().contains("UNDISCLOSED")) {
-                request.getIndividual().setRelationship(existingIndividual.getRelationship());
-            }
-            if (existingIndividual.getAdditionalFields() != null) {
-                // Get the SOCIAL_CATEGORY field from the request
-                List<Field> requestFields = request.getIndividual().getAdditionalFields().getFields();
-                List<Field> existingFields = existingIndividual.getAdditionalFields().getFields();
+        IndividualSearch individualSearch= IndividualSearch.builder().
+                individualId(Collections.singletonList(request.getIndividual().getIndividualId())).build();
 
-                Field requestSocialCategory = requestFields.stream()
-                        .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
-                        .findFirst()
-                        .orElse(null);
+        SearchResponse<Individual> searchResponse  = search(
+                individualSearch,
+                100,
+                0,
+                request.getIndividual().getTenantId(),
+                null,
+                false,
+                request.getRequestInfo()
+        );
+        IndividualResponse response = IndividualResponse.builder()
+                .individual(searchResponse.getResponse().get(0))
+                .build();
 
-                Field existingSocialCategory = existingFields.stream()
-                        .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
-                        .findFirst()
-                        .orElse(null);
-
-                // If SOCIAL_CATEGORY is null in the request, update it with the value from the existing individual
-                if ((requestSocialCategory == null || requestSocialCategory.getValue().contains("UNDISCLOSED")) && existingSocialCategory != null) {
-                    requestFields.add(new Field("SOCIAL_CATEGORY", existingSocialCategory.getValue()));
-                }
-            }
-
+        if (bulkRequest.getIndividuals().get(0).getGender() == null) {
+            bulkRequest.getIndividuals().get(0).setGender(response.getIndividual().getGender());
         }
-
+        if (bulkRequest.getIndividuals().get(0).getRelationship() == null || bulkRequest.getIndividuals().get(0).getRelationship().contains("UNDISCLOSED")) {
+            bulkRequest.getIndividuals().get(0).setRelationship(response.getIndividual().getRelationship());
+        }
         List<Individual> individuals = update(bulkRequest, false);
 
         // check if sms feature is enable for the environment role
@@ -481,20 +469,6 @@ public class IndividualService {
                 return false;
         }
         return true;
-    }
-
-    private Individual searchIndividualById(String individualId, String tenantId, RequestInfo requestInfo) {
-        // Build the search request payload
-        Map<String, Object> searchRequest = new HashMap<>();
-        searchRequest.put("Individual", Map.of("individualId", Collections.singletonList(individualId)));
-        searchRequest.put("RequestInfo", requestInfo);
-
-        // Define the URL for the search API
-        String searchUrl = String.format("http://individual.works:8080/individual/v1/_search?tenantId=%s&offset=0&limit=100", tenantId);
-
-        // Call the search API
-        ResponseEntity<IndividualBulkResponse> response = restTemplate.postForEntity(searchUrl, searchRequest, IndividualBulkResponse.class);
-        return response.getBody().getIndividual().get(0);
     }
 
 }
