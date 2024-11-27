@@ -490,7 +490,7 @@ public class IndividualService {
         searchRequest.put("RequestInfo", requestInfo);
 
         // Define the URL for the search API
-        String searchUrl = String.format("http://localhost:8080/individual/v1/_search?tenantId=%s&offset=0&limit=100", tenantId);
+        String searchUrl = String.format("http://individual.works:8080/individual/v1/_search?tenantId=%s&offset=0&limit=100", tenantId);
 
         // Call the search API
         ResponseEntity<IndividualBulkResponse> response = restTemplate.postForEntity(searchUrl, searchRequest, IndividualBulkResponse.class);
