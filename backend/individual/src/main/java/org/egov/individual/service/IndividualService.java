@@ -1,13 +1,6 @@
 package org.egov.individual.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,13 +10,10 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.ds.Tuple;
 import org.egov.common.models.Error;
 import org.egov.common.models.ErrorDetails;
+import org.egov.common.models.core.Field;
 import org.egov.common.models.core.Role;
 import org.egov.common.models.core.SearchResponse;
-import org.egov.common.models.individual.Identifier;
-import org.egov.common.models.individual.Individual;
-import org.egov.common.models.individual.IndividualBulkRequest;
-import org.egov.common.models.individual.IndividualRequest;
-import org.egov.common.models.individual.IndividualSearch;
+import org.egov.common.models.individual.*;
 import org.egov.common.models.project.ApiOperation;
 import org.egov.common.models.user.UserRequest;
 import org.egov.common.utils.CommonUtils;
@@ -45,9 +35,12 @@ import org.egov.individual.validators.UniqueEntityValidator;
 import org.egov.individual.validators.UniqueSubEntityValidator;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.client.RestOperations;
 
 import static org.egov.common.utils.CommonUtils.getIdFieldName;
 import static org.egov.common.utils.CommonUtils.getIdList;
@@ -105,6 +98,7 @@ public class IndividualService {
     private final Predicate<Validator<IndividualBulkRequest, Individual>> isApplicableForDelete = validator ->
             validator.getClass().equals(NullIdValidator.class)
                     || validator.getClass().equals(NonExistentEntityValidator.class);
+    private RestOperations restTemplate;
 
     @Autowired
     public IndividualService(IndividualRepository individualRepository,
@@ -189,6 +183,39 @@ public class IndividualService {
     public List<Individual> update(IndividualRequest request) {
         IndividualBulkRequest bulkRequest = IndividualBulkRequest.builder().requestInfo(request.getRequestInfo())
                 .individuals(Collections.singletonList(request.getIndividual())).build();
+        // Search API Call to Fetch the Existing Individual
+        Individual existingIndividual = searchIndividualById(request.getIndividual().getIndividualId(), request.getIndividual().getTenantId(), request.getRequestInfo());
+        // Modify Fields Based on Search Response
+        if (existingIndividual != null) {
+            if(request.getIndividual().getGender() == null) {
+                request.getIndividual().setGender(existingIndividual.getGender());
+            }
+            if(request.getIndividual().getRelationship() == null || request.getIndividual().getRelationship().contains("UNDISCLOSED")) {
+                request.getIndividual().setRelationship(existingIndividual.getRelationship());
+            }
+            if (existingIndividual.getAdditionalFields() != null) {
+                // Get the SOCIAL_CATEGORY field from the request
+                List<Field> requestFields = request.getIndividual().getAdditionalFields().getFields();
+                List<Field> existingFields = existingIndividual.getAdditionalFields().getFields();
+
+                Field requestSocialCategory = requestFields.stream()
+                        .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                        .findFirst()
+                        .orElse(null);
+
+                Field existingSocialCategory = existingFields.stream()
+                        .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                        .findFirst()
+                        .orElse(null);
+
+                // If SOCIAL_CATEGORY is null in the request, update it with the value from the existing individual
+                if ((requestSocialCategory == null || requestSocialCategory.getValue().contains("UNDISCLOSED")) && existingSocialCategory != null) {
+                    requestFields.add(new Field("SOCIAL_CATEGORY", existingSocialCategory.getValue()));
+                }
+            }
+
+        }
+
         List<Individual> individuals = update(bulkRequest, false);
 
         // check if sms feature is enable for the environment role
@@ -455,4 +482,19 @@ public class IndividualService {
         }
         return true;
     }
+
+    private Individual searchIndividualById(String individualId, String tenantId, RequestInfo requestInfo) {
+        // Build the search request payload
+        Map<String, Object> searchRequest = new HashMap<>();
+        searchRequest.put("Individual", Map.of("individualId", Collections.singletonList(individualId)));
+        searchRequest.put("RequestInfo", requestInfo);
+
+        // Define the URL for the search API
+        String searchUrl = String.format("http://localhost:8080/individual/v1/_search?tenantId=%s&offset=0&limit=100", tenantId);
+
+        // Call the search API
+        ResponseEntity<IndividualBulkResponse> response = restTemplate.postForEntity(searchUrl, searchRequest, IndividualBulkResponse.class);
+        return response.getBody().getIndividual().get(0);
+    }
+
 }
