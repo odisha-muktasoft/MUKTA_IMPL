@@ -102,7 +102,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
     title: "EXP_BENEFICIARY_DETAILS",
     asSectionHeader: true,
     values: [
-        { title: "ES_COMMON_MUSTER_ROLL_ID", value: musterRollNum || t("ES_COMMON_NA"), isLink : true, to : '/works-ui/employee/attendencemgmt/view-attendance?tenantId=od.testing&musterRollNumber=MR/2024-25/09/24/000957'},
+        { title: "ES_COMMON_MUSTER_ROLL_ID", value: musterRollNum || t("ES_COMMON_NA"), isLink : true, to : `/works-ui/employee/attendencemgmt/view-attendance?tenantId=${tenantId}&musterRollNumber=${musterRollNum}`},
         { title: "ES_COMMON_MUSTER_ROLL_PERIOD", value: `${Digit.DateUtils.ConvertTimestampToDate(musterRoll?.startDate, 'dd/MM/yyyy')} - ${Digit.DateUtils.ConvertTimestampToDate(musterRoll?.endDate, 'dd/MM/yyyy')}` || t("ES_COMMON_NA") }
     ],
     additionalDetails : {
