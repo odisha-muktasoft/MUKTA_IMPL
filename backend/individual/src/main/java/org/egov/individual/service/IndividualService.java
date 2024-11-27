@@ -219,9 +219,12 @@ public class IndividualService {
                     .findFirst()
                     .orElse(null);
 
-            // If SOCIAL_CATEGORY is null in the request, update it with the value from the existing individual
-            if ((requestSocialCategory == null || requestSocialCategory.getValue().contains("UNDISCLOSED")) && existingSocialCategory != null) {
-                requestFields.add(new Field("SOCIAL_CATEGORY", existingSocialCategory.getValue()));
+            // If SOCIAL_CATEGORY is null in the request or is "UNDISCLOSED", update it with the value from the response
+            if (existingSocialCategory != null) {
+                if (requestSocialCategory.getValue().contains("UNDISCLOSED") || requestSocialCategory.getValue() == null) {
+                    // Update the existing SOCIAL_CATEGORY value in the request
+                    requestSocialCategory.setValue(existingSocialCategory.getValue());
+                }
             }
         }
 
