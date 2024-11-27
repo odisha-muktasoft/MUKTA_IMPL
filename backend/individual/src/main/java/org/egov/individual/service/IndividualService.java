@@ -204,6 +204,27 @@ public class IndividualService {
         if (bulkRequest.getIndividuals().get(0).getRelationship() == null || bulkRequest.getIndividuals().get(0).getRelationship().contains("UNDISCLOSED")) {
             bulkRequest.getIndividuals().get(0).setRelationship(response.getIndividual().getRelationship());
         }
+        if (request.getIndividual().getAdditionalFields() != null && response.getIndividual().getAdditionalFields() != null) {
+            // Get the SOCIAL_CATEGORY field from the request
+            List<Field> requestFields = request.getIndividual().getAdditionalFields().getFields();
+            List<Field> existingFields = response.getIndividual().getAdditionalFields().getFields();
+
+            Field requestSocialCategory = requestFields.stream()
+                    .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                    .findFirst()
+                    .orElse(null);
+
+            Field existingSocialCategory = existingFields.stream()
+                    .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                    .findFirst()
+                    .orElse(null);
+
+            // If SOCIAL_CATEGORY is null in the request, update it with the value from the existing individual
+            if ((requestSocialCategory == null || requestSocialCategory.getValue().contains("UNDISCLOSED")) && existingSocialCategory != null) {
+                requestFields.add(new Field("SOCIAL_CATEGORY", existingSocialCategory.getValue()));
+            }
+        }
+
         List<Individual> individuals = update(bulkRequest, false);
 
         // check if sms feature is enable for the environment role
