@@ -168,9 +168,10 @@ public class IndividualService {
                 addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
             }
 
+            List<Role> citizenRole = getCitizenRole();
             Set<ContactDetails> toBeRemovedMembers = organisationFromDB.getContactDetails().stream().filter(contactDetails -> toBeRemovedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeRemovedMembers) {
-                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, getCitizenRole());
+                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) citizenRole);
             }
 
             if(!newMembers.isEmpty() && !toBeRemovedMembers.isEmpty()) {
@@ -325,11 +326,14 @@ public class IndividualService {
 
         return roles;
     }
-    private Role getCitizenRole() {
-        return Role.builder()
+    private List<Role> getCitizenRole() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.builder()
                 .code(OrganisationConstant.ORG_CITIZEN_TYPE)
                 .name(OrganisationConstant.ORG_CITIZEN_TYPE)
-                .build();
+                .build());
+
+        return roles;
     }
 
     /**
