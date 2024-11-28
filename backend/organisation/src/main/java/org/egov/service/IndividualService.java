@@ -102,13 +102,13 @@ public class IndividualService {
         }
     }
 
-    public void updateContactDetails(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, Role role) {
+    public void updateContactDetails(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, List<Role> role) {
         IndividualBulkResponse response = individualExists(contactDetails, requestInfo, Boolean.TRUE, tenantId);
         StringBuilder uri = new StringBuilder(config.getIndividualHost());
         if (!CollectionUtils.isEmpty(response.getIndividual())) {
             Individual existingIndividual = response.getIndividual().get(0);
             Individual newIndividual = Individual.builder().build();
-            addIndividualDefaultFields(tenantId, (List<Role>) role, newIndividual, contactDetails, false, existingIndividual);
+            addIndividualDefaultFields(tenantId, role, newIndividual, contactDetails, false, existingIndividual);
             uri = uri.append(config.getIndividualUpdateEndpoint());
             IndividualRequest individualRequest = IndividualRequest.builder().requestInfo(requestInfo).individual(newIndividual).build();
             IndividualResponse individualResponse = individualUpdateCall(individualRequest, uri);
@@ -160,27 +160,18 @@ public class IndividualService {
             // Plainly update the individuals which are not new to the org
             Set<ContactDetails> toBeUpdatedExistingMembers = organisation.getContactDetails().stream().filter(contactDetails -> dbMembersMobiles.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeUpdatedExistingMembers) {
-                for (Role r : role) { // Loop through each role
-                    updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, r);
-                }
-//                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
+                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, role);
             }
 
             Set<ContactDetails> newMembers = organisation.getContactDetails().stream().filter(contactDetails -> toBeAddedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : newMembers) {
-                for (Role r : role) { // Loop through each citizen role
-                    addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, r);
-                }
-//                addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
+                addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, role);
             }
 
             List<Role> citizenRole = getCitizenRole();
             Set<ContactDetails> toBeRemovedMembers = organisationFromDB.getContactDetails().stream().filter(contactDetails -> toBeRemovedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeRemovedMembers) {
-                for (Role r : citizenRole) { // Loop through each citizen role
-                    updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, r);
-                }
-//                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) citizenRole);
+                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, citizenRole);
             }
 
             if(!newMembers.isEmpty() && !toBeRemovedMembers.isEmpty()) {
@@ -200,7 +191,7 @@ public class IndividualService {
 
     }
 
-    private void addContactAsOrgMember(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, Role role) {
+    private void addContactAsOrgMember(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, List<Role> role) {
         IndividualBulkResponse response = individualExists(contactDetails, requestInfo, Boolean.TRUE, tenantId);
         StringBuilder uri = new StringBuilder(config.getIndividualHost());
 
@@ -214,7 +205,7 @@ public class IndividualService {
             }
             else{
                 Individual newIndividual = Individual.builder().build();
-                addIndividualDefaultFields(tenantId, (List<Role>) role, newIndividual, contactDetails, false, existingIndividual);
+                addIndividualDefaultFields(tenantId, role, newIndividual, contactDetails, false, existingIndividual);
                 uri = uri.append(config.getIndividualUpdateEndpoint());
                 IndividualRequest individualRequest = IndividualRequest.builder().requestInfo(requestInfo).individual(newIndividual).build();
                 IndividualResponse individualResponse = individualUpdateCall(individualRequest, uri);
@@ -223,7 +214,7 @@ public class IndividualService {
         }
         else{
             Individual newUser = Individual.builder().build();
-            addIndividualDefaultFields(tenantId, (List<Role>) role, newUser, contactDetails, true, null);
+            addIndividualDefaultFields(tenantId, role, newUser, contactDetails, true, null);
             IndividualResponse individualResponse = createIndividualFromIndividualService(requestInfo, newUser, contactDetails);
             setContactFields(contactDetails, individualResponse, requestInfo);
         }
