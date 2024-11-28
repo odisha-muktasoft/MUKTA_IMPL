@@ -39,6 +39,10 @@ public class IndividualTestBuilder {
         this.builder.id(args.length > 0 ? args[0] : "some-id");
         return this;
     }
+    public IndividualTestBuilder withIndividualId(String... args) {
+        this.builder.individualId(args.length > 0 ? args[0] : "some-id");
+        return this;
+    }
 
     public IndividualTestBuilder withTenantId(String... args) {
         this.builder.tenantId(args.length > 0 ? args[0] : "some-tenant-id");

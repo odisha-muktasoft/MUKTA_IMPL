@@ -2,10 +2,7 @@ package org.egov.individual.service;
 
 import org.egov.common.helper.RequestInfoTestBuilder;
 import org.egov.common.models.core.SearchResponse;
-import org.egov.common.models.individual.Identifier;
-import org.egov.common.models.individual.Individual;
-import org.egov.common.models.individual.IndividualBulkRequest;
-import org.egov.common.models.individual.IndividualRequest;
+import org.egov.common.models.individual.*;
 import org.egov.common.service.IdGenService;
 import org.egov.common.validator.Validator;
 import org.egov.individual.config.IndividualProperties;
@@ -146,6 +143,7 @@ class IndividualServiceUpdateTest {
         Individual requestIndividual = IndividualTestBuilder.builder()
                 .withClientReferenceId()
                 .withId("some-id")
+                .withIndividualId("some-id")
                 .withName()
                 .withTenantId()
                 .withAddress()
@@ -159,10 +157,12 @@ class IndividualServiceUpdateTest {
                 .withRequestInfo(RequestInfoTestBuilder.builder().withCompleteRequestInfo().build())
                 .withIndividuals(requestIndividual)
                 .build();
+        IndividualSearch individualSearch= IndividualSearch.builder().individualId(Collections.singletonList("some-id")).build();
         List<Individual> individualsInDb = new ArrayList<>();
         individualsInDb.add(IndividualTestBuilder.builder()
                 .withClientReferenceId()
                 .withId("some-id")
+                .withIndividualId("some-id")
                 .withName()
                 .withTenantId()
                 .withAddress()
@@ -175,7 +175,14 @@ class IndividualServiceUpdateTest {
                 .withAuditDetails()
                 .build());
 
+        when(encryptionService.encrypt(any(IndividualSearch.class),
+                 any(String.class))).thenReturn(individualSearch);
 
+        when(individualRepository.find(any(IndividualSearch.class),any(),any(),any(),any(),any())) .thenReturn(SearchResponse.<Individual>builder()
+                .totalCount(Long.valueOf(individualsInDb.size()))
+                .response(individualsInDb)
+                .build());
+        when(encryptionService.decrypt(anyList(),any(String.class),any())).thenReturn(individualsInDb);
         when(individualRepository.findById(anyList(),eq("id"),eq(false))).thenReturn(SearchResponse.<Individual>builder()
                 .totalCount(Long.valueOf(individualsInDb.size()))
                 .response(individualsInDb)
@@ -221,6 +228,7 @@ class IndividualServiceUpdateTest {
         Individual requestIndividual = IndividualTestBuilder.builder()
                 .withClientReferenceId()
                 .withName("some-new-family-name", "some-new-given-name")
+                .withIndividualId("some-id")
                 .withTenantId()
                 .withAddress()
                 .withId("some-id")
@@ -234,10 +242,12 @@ class IndividualServiceUpdateTest {
                 .withRequestInfo(RequestInfoTestBuilder.builder().withCompleteRequestInfo().build())
                 .withIndividuals(requestIndividual)
                 .build();
+        IndividualSearch individualSearch= IndividualSearch.builder().individualId(Collections.singletonList("some-id")).build();
         List<Individual> individualsInDb = new ArrayList<>();
         individualsInDb.add(IndividualTestBuilder.builder()
                 .withClientReferenceId()
                 .withId("some-id")
+                .withIndividualId("some-id")
                 .withName()
                 .withTenantId()
                 .withAddress()
@@ -249,6 +259,15 @@ class IndividualServiceUpdateTest {
                 .withRowVersion()
                 .withAuditDetails()
                 .build());
+
+        when(encryptionService.encrypt(any(IndividualSearch.class),
+                any(String.class))).thenReturn(individualSearch);
+
+        when(individualRepository.find(any(IndividualSearch.class),any(),any(),any(),any(),any())) .thenReturn(SearchResponse.<Individual>builder()
+                .totalCount(Long.valueOf(individualsInDb.size()))
+                .response(individualsInDb)
+                .build());
+        when(encryptionService.decrypt(anyList(),any(String.class),any())).thenReturn(individualsInDb);
 
         when(individualRepository.findById(anyList(),eq("id"),eq(false))).thenReturn(SearchResponse.<Individual>builder()
                 .totalCount(Long.valueOf(individualsInDb.size()))
