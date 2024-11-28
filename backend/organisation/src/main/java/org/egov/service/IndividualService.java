@@ -160,18 +160,27 @@ public class IndividualService {
             // Plainly update the individuals which are not new to the org
             Set<ContactDetails> toBeUpdatedExistingMembers = organisation.getContactDetails().stream().filter(contactDetails -> dbMembersMobiles.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeUpdatedExistingMembers) {
-                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
+                for (Role r : role) { // Loop through each role
+                    updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, r);
+                }
+//                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
             }
 
             Set<ContactDetails> newMembers = organisation.getContactDetails().stream().filter(contactDetails -> toBeAddedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : newMembers) {
-                addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
+                for (Role r : role) { // Loop through each citizen role
+                    addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, r);
+                }
+//                addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, (Role) role);
             }
 
             List<Role> citizenRole = getCitizenRole();
             Set<ContactDetails> toBeRemovedMembers = organisationFromDB.getContactDetails().stream().filter(contactDetails -> toBeRemovedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeRemovedMembers) {
-                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) citizenRole);
+                for (Role r : citizenRole) { // Loop through each citizen role
+                    updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, r);
+                }
+//                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, (Role) citizenRole);
             }
 
             if(!newMembers.isEmpty() && !toBeRemovedMembers.isEmpty()) {
