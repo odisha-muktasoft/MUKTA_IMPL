@@ -43,13 +43,12 @@ public class EstimateService {
     private final EstimateServiceUtil estimateServiceUtil;
     private final ProjectUtil projectUtil;
     private final RedisService redisService;
-    private final EstimateServiceConfiguration config;
     private final ObjectMapper objectMapper;
 
     private static final String ESTIMATE_REDIS_KEY = "ESTIMATE_{id}";
 
     @Autowired
-    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, ProjectUtil projectUtil, RedisService redisService, EstimateServiceConfiguration config, ObjectMapper objectMapper) {
+    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, ProjectUtil projectUtil, RedisService redisService, ObjectMapper objectMapper) {
         this.serviceConfiguration = serviceConfiguration;
         this.producer = producer;
         this.serviceValidator = serviceValidator;
@@ -60,7 +59,6 @@ public class EstimateService {
         this.estimateServiceUtil = estimateServiceUtil;
         this.projectUtil = projectUtil;
         this.redisService = redisService;
-        this.config = config;
         this.objectMapper = objectMapper;
     }
 
@@ -200,12 +198,12 @@ public class EstimateService {
 
     List<Estimate> getEstimatesPlainSearch(EstimateSearchCriteria searchCriteria) {
 
-        if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > config.getMaxLimit())
-            searchCriteria.setLimit(config.getMaxLimit());
+        if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > serviceConfiguration.getMaxLimit())
+            searchCriteria.setLimit(serviceConfiguration.getMaxLimit());
         if(searchCriteria.getLimit()==null)
-            searchCriteria.setLimit(config.getDefaultLimit());
+            searchCriteria.setLimit(serviceConfiguration.getDefaultLimit());
         if(searchCriteria.getOffset()==null)
-            searchCriteria.setOffset(config.getDefaultOffset());
+            searchCriteria.setOffset(serviceConfiguration.getDefaultOffset());
 
         EstimateSearchCriteria estimateCriteria = new EstimateSearchCriteria();
         if (searchCriteria.getIds() != null) {
