@@ -7,7 +7,9 @@ import org.egov.works.repository.rowmapper.ContractRowMapper;
 import org.egov.works.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +50,31 @@ public class ContractRepository {
                 .pagination(pagination)
                 .build();
         return getContracts(contractCriteria);
+    }
+
+    public List<Contract> getContractsForBulkSearch(List<String> uuids, Integer limit, String tenantId) {
+        List<Object> preparedStmtList = new ArrayList<>();
+        String query = queryBuilder.getContractQueryForBulkSearch(uuids, limit, tenantId, preparedStmtList);
+        return jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
+    }
+
+    public List<String> fetchIds(Integer offset, Integer limit, String tenantId) {
+
+        List<Object> preparedStmtList = new ArrayList<>();
+        String basequery = "select id from eg_wms_contract";
+        StringBuilder builder = new StringBuilder(basequery);
+
+        if(!ObjectUtils.isEmpty(tenantId))
+        {
+            builder.append(" where tenant_id=?");
+            preparedStmtList.add(tenantId);
+        }
+
+        String orderbyClause = " order by last_modified_time,id offset ? limit ?";
+        builder.append(orderbyClause);
+        preparedStmtList.add(offset);
+        preparedStmtList.add(limit);
+
+        return jdbcTemplate.query(builder.toString(), preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
     }
 }

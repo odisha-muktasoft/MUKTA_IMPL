@@ -1,5 +1,6 @@
 package org.egov.works.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -332,5 +333,35 @@ public class ContractService {
                 StringUtils.isEmpty(searchCriteria.getStatus()) &&
                 StringUtils.isEmpty(searchCriteria.getWfStatus()) &&
                 CollectionUtils.isEmpty(searchCriteria.getOrgIds());
+    }
+
+    public List<Contract> searchContractPlainSearch(Integer offset, Integer limit, String tenantId, RequestInfo requestInfo) {
+        List<Contract> contracts = getContractsPlainSearch(offset, limit, tenantId);
+
+        // enrichment if needed
+
+        return contracts;
+    }
+
+    List<Contract> getContractsPlainSearch(Integer offset, Integer limit, String tenantId) {
+
+        if (limit != null && limit > contractServiceConfiguration.getContractMaxLimit())
+            limit = contractServiceConfiguration.getContractMaxLimit();
+        if(limit==null)
+            limit = contractServiceConfiguration.getContractDefaultLimit();
+        if(offset==null)
+            offset = contractServiceConfiguration.getContractDefaultOffset();
+
+
+        List<String> uuids = contractRepository.fetchIds(offset, limit, tenantId);
+        if (uuids.isEmpty())
+            return Collections.emptyList();
+
+        List<Contract> contracts = contractRepository.getContractsForBulkSearch(uuids, limit, tenantId);
+
+        if(contracts.isEmpty())
+            return Collections.emptyList();
+
+        return contracts;
     }
 }

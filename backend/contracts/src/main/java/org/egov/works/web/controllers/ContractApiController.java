@@ -2,6 +2,7 @@ package org.egov.works.web.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.works.service.ContractService;
 import org.egov.works.web.models.ContractCriteria;
 import org.egov.works.web.models.ContractRequest;
@@ -15,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -61,4 +60,13 @@ public class ContractApiController {
         return new ResponseEntity<>(contractResponse, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<ContractResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+                                                        @Valid @RequestParam Integer offset, @Valid @RequestParam Integer limit, @Valid @RequestParam String tenantId) {
+        List<Contract> contracts = contractService.searchContractPlainSearch(offset, limit, tenantId, requestInfoWrapper.getRequestInfo());
+        ContractResponse response = ContractResponse.builder().contracts(contracts).responseInfo(
+                        responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
