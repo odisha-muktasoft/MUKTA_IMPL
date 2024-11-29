@@ -128,7 +128,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
      CurrentStartDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.startDate;
      CurrentEndDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate;
   }
-  const musterRoll = typeof musterRollNumber == "string" ? musterRollNumber : "NA";
+  const musterRoll = typeof musterRollNumber == "string" ? musterRollNumber : (allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.musterRollNumber?.[0] || "NA")
 
   let uploadedDocs = {}
   allMeasurements?.[0]?.documents.forEach((doc,index)=>{
