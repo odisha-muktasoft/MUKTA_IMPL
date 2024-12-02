@@ -34,11 +34,13 @@ const multiplyWithDecimals = (v1, v2) => {
   const d2 = getDecimalPlaces(v2);
 
   // Remove decimals from both numbers
-  const num1 = v1.replace('.', '');
-  const num2 = v2.replace('.', '');
+  let num1 = v1.replace('.', '');
+  let num2 = v2.replace('.', '');
 
   // Multiply as whole numbers
-  const result = (BigInt(num1) * BigInt(num2)).toString(); // Use BigInt for accurate multiplication
+  if(num1 === "undefined") num1 = 1;
+  if(num2 === "undefined") num2 = 1;
+  const result = num1 && num2 && num1 !== "undefined" && num2 !== "undefined" ? (BigInt(num1) * BigInt(num2)).toString() : ""; // Use BigInt for accurate multiplication
 
   // Insert decimal point at the correct place
   const totalDecimals = d1 + d2;

@@ -99,7 +99,8 @@ module.exports = {
     analysis_utilization_search: "/statements/v1/utilization/_search",
     payment_instruction_search: "/wms/mukta-pi/_search",
     report_paymentTracker_search: "/wms/report/payment_tracker",
-    mukta_service_get: "/mukta-services/mdmsV1/_get/_search"
+    mukta_service_get: "/mukta-services/mdmsV1/_get/_search",
+    masked_ind_search: "/mukta-services/individual/v1/_search",
   },
   constraints: {
     "beneficiaryIdByHeadCode": "Deduction_{tanentId}_{headcode}"
