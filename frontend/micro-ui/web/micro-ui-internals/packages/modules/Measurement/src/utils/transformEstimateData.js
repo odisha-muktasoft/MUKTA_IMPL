@@ -4,6 +4,9 @@ output is array of object of type which is passed
 
 */
 
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import React from "react";
+
 export const transformEstimateData = (lineItems, contract, type, measurement = {}, allMeasurements = [], showM=false) => {
   /* logic to be updated according to business usecase*/
   //let isCreateorUpdate = window.location.href.includes("create") || window.location.href.includes("update");
@@ -128,7 +131,8 @@ export const getDefaultValues = (data, t, mbNumber) => {
      CurrentStartDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.startDate;
      CurrentEndDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate;
   }
-  const musterRoll = typeof musterRollNumber == "string" ? musterRollNumber : (allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.musterRollNumber?.[0] || "NA")
+  //const musterRoll = typeof musterRollNumber == "string" ? musterRollNumber : (allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.musterRollNumber?.[0] || "NA")
+  const musterRoll = findMusterRollNumber(data?.musterRolls,'',data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.startDate,data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate)
 
   let uploadedDocs = {}
   allMeasurements?.[0]?.documents.forEach((doc,index)=>{
@@ -160,7 +164,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
     projectDesc,
     projectLocation,
     sanctionDate:issueDate ?  Digit.DateUtils.ConvertEpochToDate(issueDate) : Digit.DateUtils.ConvertEpochToDate(estimate?.proposalDate),
-    musterRollNo: musterRoll,
+    musterRollNo: window.location.href.includes("measurement/update") ? <Link style={{ color: "#C84C0E" }} to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${data?.allMeasurements?.[0]?.tenantId}&musterRollNumber=${musterRoll}`}>{musterRoll}</Link> : musterRoll,
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
     CurrentEndDate,
