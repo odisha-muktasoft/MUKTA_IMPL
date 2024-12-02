@@ -54,6 +54,28 @@ async function search_musterRoll(tenantId, requestinfo, musterRollNumber) {
     params,
   });
 }
+
+async function search_individual(individualIds, tenantId, requestinfo) {
+  var params = {
+    tenantId: tenantId,
+    limit: 100,
+    offset: 0,
+  };
+  var data = {
+    // "apiOperation": "SEARCH",
+    "Individual": {
+      individualId: individualIds
+    }
+  }
+
+  return await axios({
+    method: "post",
+    url: url.resolve(config.host.mukta_service, config.paths.masked_ind_search),
+    data: Object.assign(requestinfo, data),
+    params,
+  });
+}
+
 async function search_contract(tenantId, requestinfo, contractId) {
   var params = {
     tenantId: tenantId,
@@ -684,6 +706,7 @@ module.exports = {
   search_estimateDetails,
   search_revisedEstimateDetails,
   search_musterRoll,
+  search_individual,
   search_contract,
   search_mdms,
   search_localization,
