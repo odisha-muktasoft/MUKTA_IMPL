@@ -116,7 +116,7 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
     //DPP update here as well for socialCategory
     if(formData?.basicDetails_socialCategory?.code) {
         Individual.additionalFields = {
-            fields: [...Individual.additionalFields.fields.filter((ob) => ob?.key !== "SOCIAL_CATEGORY"),{
+            fields: [...wageSeekerDataFromAPI?.individual?.additionalFields.fields.filter((ob) => ob?.key !== "SOCIAL_CATEGORY"),{
                 key: "SOCIAL_CATEGORY",
                 value: formData?.basicDetails_socialCategory?.code
             }]
