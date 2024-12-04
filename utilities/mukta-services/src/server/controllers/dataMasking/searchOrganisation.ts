@@ -156,6 +156,14 @@ class OrganisationController {
           if (currentValue) {
               if ( part === "locality") {
                 currentObj.isLocalityMasked = mask;
+              } else if (part === "boundaryCode") {
+                if (currentObj.geoLocation.additionalDetails) {
+                  currentObj.geoLocation.additionalDetails.isWardMasked = mask;
+                } else {
+                  currentObj.geoLocation.additionalDetails = {
+                    isWardMasked: mask
+                  }
+                }
               } else {
                 // Mask the value using the configured pattern if mask is true
                 if (mask) {
