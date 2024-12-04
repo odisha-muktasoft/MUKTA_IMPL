@@ -34,6 +34,11 @@
                     .search-field-wrapper.search.custom-both-clear-search{
                         .search-button-wrapper.search {
                             grid-column: initial;
+                            
+                        }
+                        .search-button-wrapper.search.customIndSearchButton {
+                            grid-column: 4;
+                            
                         }
                     .search-button-wrapper{
                         .link-label{

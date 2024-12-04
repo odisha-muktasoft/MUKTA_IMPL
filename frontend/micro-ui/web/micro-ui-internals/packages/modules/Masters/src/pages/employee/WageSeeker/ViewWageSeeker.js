@@ -13,6 +13,7 @@ const ViewWageSeeker = () => {
 
   const wageSeekerSession = Digit.Hooks.useSessionStorage("WAGE_SEEKER_CREATE", {});
   const [sesionFormData, clearSessionFormData] = wageSeekerSession;
+  const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
   // const tenantId = Digit.ULBService.getCurrentTenantId()
   const {individualId,tenantId } = Digit.Hooks.useQueryParams()
@@ -60,11 +61,11 @@ const ViewWageSeeker = () => {
             mutate={()=>{}}
             tenantId={tenantId}
           />
-           <ActionBar
+          {loggedInUserRoles?.includes("VIEW_WS_UNMASKED") && loggedInUserRoles?.includes("VIEW_DED_UNMASKED") && <ActionBar
             actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}
             setactionFieldsToRight={true}
             className={"new-actionbar"}
-          />
+          />}
           </React.Fragment>
       }
       {

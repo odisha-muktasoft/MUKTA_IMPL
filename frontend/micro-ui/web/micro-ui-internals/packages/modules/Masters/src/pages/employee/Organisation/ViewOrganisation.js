@@ -16,6 +16,7 @@ const ViewOrganisation = () => {
   const [activeLink, setActiveLink] = useState("Location_Details");
   const orgSession = Digit.Hooks.useSessionStorage("ORG_CREATE", {});
   const [sessionFormData, clearSessionFormData] = orgSession;
+  const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
   const configNavItems = [
     {
@@ -121,11 +122,11 @@ const ViewOrganisation = () => {
               )}
             </Tab>
           )}
-          <ActionBar
+          {loggedInUserRoles?.includes("VIEW_ORG_UNMASKED") && loggedInUserRoles?.includes("VIEW_DED_UNMASKED") && <ActionBar
             actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}
             setactionFieldsToRight={true}
             className={"new-actionbar"}
-          />
+          />}
         </React.Fragment>
       )}
       {showDataError && (
