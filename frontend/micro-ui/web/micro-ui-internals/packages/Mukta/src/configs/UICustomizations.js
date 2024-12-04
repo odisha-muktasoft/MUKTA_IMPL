@@ -1545,7 +1545,7 @@ export const UICustomizations = {
         case "MASTERS_ADDRESS":
           return value ? (
             <span style={{ whiteSpace: "break-spaces" }}>
-              {String(`${t(Digit.Utils.locale.getCityLocale(row?.tenantId))} ${t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId))}`)}
+              {String(`${t(Digit.Utils.locale.getCityLocale(row?.tenantId))}, ${t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId))}`)}
             </span>
           ) : (
             t("ES_COMMON_NA")

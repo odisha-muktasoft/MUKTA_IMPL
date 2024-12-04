@@ -27,12 +27,12 @@ const searchWMSWageSeekerConfig = () => {
             "formClassName": "custom-both-clear-search",
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
+            "type":"customIndSearchButton",
             "minReqFields": 1,
             "defaultValues": {
               "ward": "",
               "individualId": "",
               "name": "",
-              "socialCategoryValue": "",
               "mobileNumber": "",
               "createdFrom": "",
               "createdTo": ""
@@ -44,9 +44,6 @@ const searchWMSWageSeekerConfig = () => {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  // "optionsCustomStyle": {
-                  //   "top": "2.3rem"
-                  // },
                   "name": "ward",
                   "type": "ward",
                   "optionsKey": "i18nKey",
@@ -76,33 +73,21 @@ const searchWMSWageSeekerConfig = () => {
                   "validation": { "minlength": 2 }
                 }
               },
-              {
-                "label": "CORE_COMMON_PROFILE_MOBILE_NUMBER",
-                "type": "mobileNumber",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "name": "mobileNumber",
-                  "error": "PROJECT_PATTERN_ERR_MSG",
-                  "validation": { "pattern": {}, "minlength": 2 }
-                }
-              },
-              {
-                "label": "MASTERS_SOCIAL_CATEGORY",
-                "type": "dropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "name": "socialCategoryValue",
-                  "optionsKey": "code",
-                  // "optionsCustomStyle": { "top": "2.3rem" },
-                  "mdmsConfig": {
-                    "masterName": "SocialCategory",
-                    "moduleName": "common-masters",
-                    "localePrefix": "MASTERS"
-                  }
-                }
-              },
+              // {
+              //   "label": "MASTERS_SOCIAL_CATEGORY",
+              //   "type": "dropdown",
+              //   "isMandatory": false,
+              //   "disable": false,
+              //   "populators": {
+              //     "name": "socialCategoryValue",
+              //     "optionsKey": "code",
+              //     "mdmsConfig": {
+              //       "masterName": "SocialCategory",
+              //       "moduleName": "common-masters",
+              //       "localePrefix": "MASTERS"
+              //     }
+              //   }
+              // },
               {
                 "label": "CREATED_FROM_DATE",
                 "type": "date",
@@ -152,11 +137,6 @@ const searchWMSWageSeekerConfig = () => {
                 "label": "MASTERS_WAGESEEKER_NAME",
                 "jsonPath": "businessObject.name.givenName"
               },
-              { "label": "MASTERS_FATHER_NAME", "jsonPath": "businessObject.fatherName" },
-              {
-                "label": "MASTERS_SOCIAL_CATEGORY",
-                "jsonPath": "businessObject.additionalFields.fields[0].value"
-              },
               {
                 "label": "CORE_COMMON_PROFILE_CITY",
                 "jsonPath": "businessObject.address[0].tenantId",
@@ -165,11 +145,6 @@ const searchWMSWageSeekerConfig = () => {
               {
                 "label": "MASTERS_WARD",
                 "jsonPath": "businessObject.address[0].ward.code",
-                "additionalCustomization": true
-              },
-              {
-                "label": "MASTERS_LOCALITY",
-                "jsonPath": "businessObject.address[0].locality.code",
                 "additionalCustomization": true
               }
             ],
