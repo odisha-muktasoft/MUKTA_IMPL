@@ -15,8 +15,8 @@ class PrivacyPolicy {
   const PrivacyPolicy();
   String get byClick => 'ES_BY_CLICKING';
   String get privacyPolicyLink => 'ES_PRIVACY_POLICY';
-  String get accept=>'CORE_BUTTON_ACCEPT';
-  String get decline=>'CORE_BUTTON_DECLINE';
+  String get accept=>'DIGIT_I_ACCEPT';
+  String get decline=>'DIGIT_I_DO_NOT_ACCEPT';
   String get privacyPolicyValidationText=>"PRIVACY_POLICY_VALIDATION_ERROR";
   
 }

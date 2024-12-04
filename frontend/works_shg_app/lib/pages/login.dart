@@ -2,19 +2,16 @@
 // import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'dart:async';
 
-import 'package:digit_ui_components/blocs/AppLocalization.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/privacy_notice/privacy_notice_model.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
     as ui_label;
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
-import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:digit_ui_components/widgets/privacy_policy/privacy_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -211,48 +208,39 @@ class _LoginPageState extends State<LoginPage>
             },
           );
         },
-        child: InkWell(
-          onTap: canContinue
-              ? () {
-                  if (formKey.currentState!.validate()) {
-                    formGroup.markAllAsTouched();
-                    if (!formGroup.valid) return;
+        child: ReactiveFormConsumer(builder:
+            (BuildContext context, FormGroup formGroup, Widget? child) {
+          bool canPrivacy =
+              (formGroup.control(privacyPolicy).value == true) ? true : false;
+          return InkWell(
+            onTap: (canContinue && canPrivacy)
+                ? () {
+                    if (formKey.currentState!.validate()) {
+                      formGroup.markAllAsTouched();
+                      if (!formGroup.valid) return;
 
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    loginContext
-                        .read<OTPBloc>()
-                        .add(OTPSendEvent(mobileNumber: userIdController.text));
-                  } else {
-                    setState(() {
-                      autoValidation = true;
-                    });
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      loginContext.read<OTPBloc>().add(
+                          OTPSendEvent(mobileNumber: userIdController.text));
+                    } else {
+                      setState(() {
+                        autoValidation = true;
+                      });
+                    }
                   }
-                }
-              : null,
-          child: IgnorePointer(
-            child: Button(
-              mainAxisSize: MainAxisSize.max,
-              isDisabled: !canContinue,
-              size: ButtonSize.large,
-              type: ButtonType.primary,
-              onPressed: () {},
-              // onPressed: canContinue
-              //     ? () {
-              //         if (formKey.currentState!.validate()) {
-              //           loginContext
-              //               .read<OTPBloc>()
-              //               .add(OTPSendEvent(mobileNumber: userIdController.text));
-              //         } else {
-              //           setState(() {
-              //             autoValidation = true;
-              //           });
-              //         }
-              //       }
-              //     : null,
-              label: t.translate(i18.common.continueLabel),
+                : null,
+            child: IgnorePointer(
+              child: Button(
+                mainAxisSize: MainAxisSize.max,
+                isDisabled: isDisabledFunction(canContinue, canPrivacy),
+                size: ButtonSize.large,
+                type: ButtonType.primary,
+                onPressed: () {},
+                label: t.translate(i18.common.continueLabel),
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       );
     } else {
       return BlocListener<AuthBloc, AuthState>(
@@ -274,55 +262,62 @@ class _LoginPageState extends State<LoginPage>
             orElse: () {},
           );
         },
-        child: InkWell(
-          onTap: (userNameController.text.isNotEmpty &&
-                  userPasswordController.text.isNotEmpty &&
-                  selectTenantId.isNotEmpty)
-              ? () {
-                  if (userNameController.text.isNotEmpty &&
-                      userPasswordController.text.isNotEmpty &&
-                      selectTenantId.isNotEmpty) {
-                    formGroup.markAllAsTouched();
-                    if (!formGroup.valid) return;
+        child: ReactiveFormConsumer(builder:
+            (BuildContext context, FormGroup formGroup, Widget? child) {
+          bool privacyCheck =
+              (formGroup.control(privacyPolicy).value == true) ? true : false;
+          return InkWell(
+            onTap: (userNameController.text.isNotEmpty &&
+                    userPasswordController.text.isNotEmpty &&
+                    selectTenantId.isNotEmpty &&
+                    privacyCheck)
+                ? () {
+                    if (userNameController.text.isNotEmpty &&
+                        userPasswordController.text.isNotEmpty &&
+                        selectTenantId.isNotEmpty) {
+                      formGroup.markAllAsTouched();
+                      if (!formGroup.valid) return;
 
-                    FocusManager.instance.primaryFocus?.unfocus();
+                      FocusManager.instance.primaryFocus?.unfocus();
 
-                    context.read<AuthBloc>().add(
-                          AuthLoginEvent(
-                            userId: userNameController.text,
-                            password: userPasswordController.text,
-                            roleType: RoleType.employee,
-                            tenantId: selectTenantId,
-                          ),
-                        );
-                  } else {
-                    Notifiers.getToastMessage(
-                      context,
-                      t.translate(i18.common.allFieldsMandatory),
-                      'ERROR',
-                    );
-                    //new
-                    // Toast.showToast(
-                    //   context,
-                    //   message: t.translate(i18.common.allFieldsMandatory),
-                    //   type: ToastType.error,
-                    // );
+                      context.read<AuthBloc>().add(
+                            AuthLoginEvent(
+                              userId: userNameController.text,
+                              password: userPasswordController.text,
+                              roleType: RoleType.employee,
+                              tenantId: selectTenantId,
+                            ),
+                          );
+                    } else {
+                      Notifiers.getToastMessage(
+                        context,
+                        t.translate(i18.common.allFieldsMandatory),
+                        'ERROR',
+                      );
+                      //new
+                      // Toast.showToast(
+                      //   context,
+                      //   message: t.translate(i18.common.allFieldsMandatory),
+                      //   type: ToastType.error,
+                      // );
+                    }
                   }
-                }
-              : null,
-          child: IgnorePointer(
-            child: Button(
-              mainAxisSize: MainAxisSize.max,
-              isDisabled: !(userNameController.text.isNotEmpty &&
-                  userPasswordController.text.isNotEmpty &&
-                  selectTenantId.isNotEmpty),
-              size: ButtonSize.large,
-              type: ButtonType.primary,
-              onPressed: () {},
-              label: t.translate(i18.common.continueLabel),
+                : null,
+            child: IgnorePointer(
+              child: Button(
+                mainAxisSize: MainAxisSize.max,
+                isDisabled: !(userNameController.text.isNotEmpty &&
+                    userPasswordController.text.isNotEmpty &&
+                    selectTenantId.isNotEmpty &&
+                    privacyCheck),
+                size: ButtonSize.large,
+                type: ButtonType.primary,
+                onPressed: () {},
+                label: t.translate(i18.common.continueLabel),
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       );
     }
   }
@@ -390,9 +385,11 @@ class _LoginPageState extends State<LoginPage>
                     FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                   ],
                   onChange: (value) {
-                    setState(() {
-                      canContinue = value.length == 10;
-                    });
+                    if (value.length == 10) {
+                      setState(() {
+                        canContinue = true;
+                      });
+                    }
                     // if (value.length == 10) {
                     //   _numberFocus.unfocus();
                     // }
@@ -669,7 +666,9 @@ class _LoginPageState extends State<LoginPage>
                               ? t.translate(description.text!)
                               : '',
                           type: description.type != null
-                              ? t.translate(description.type!)
+                              ? description.type == "step"
+                                  ? 'Step'
+                                  : t.translate(description.type!)
                               : '',
                           isBold: description.isBold,
                           subDescriptions: description.subDescriptions
@@ -691,5 +690,15 @@ class _LoginPageState extends State<LoginPage>
               ))
           .toList(),
     );
+  }
+
+//
+
+  bool isDisabledFunction(bool a, bool b) {
+    if (a == true && b == true) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
