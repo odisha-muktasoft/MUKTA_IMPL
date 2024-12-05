@@ -55,9 +55,9 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations, indRe
       tableRow.actualWorkingDays = item?.actualTotalAttendance || 0
       tableRow.nameOfIndividual = individualdata?.name?.givenName || t("NA")
       tableRow.guardianName = individualdata?.fatherName  || t("NA")
-      const skill = skills[individualdata?.skills?.[0]?.type]
+      const skill = skills[item?.additionalDetails?.skillCode]
       tableRow.skill = skill ? `${t(skill.sorSubType)} - ${skill.description}` : t("NA");
-      tableRow.amount = skills[individualdata?.skills?.[0]?.type]?.amount * item?.actualTotalAttendance || 0
+      tableRow.amount = skills[item?.additionalDetails?.skillCode]?.amount * item?.actualTotalAttendance || 0
       tableRow.modifiedAmount = expenseCalculations?.filter(data=>data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
       tableRow.modifiedWorkingDays = item?.modifiedTotalAttendance ? item?.modifiedTotalAttendance : item?.actualTotalAttendance
       // tableRow.bankAccountDetails = {
@@ -66,7 +66,7 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations, indRe
       // }
       // tableRow.aadharNumber = item?.additionalDetails?.aadharNumber || t("NA")
       tableRow.attendence = getWeekAttendance(item?.attendanceEntries)
-      tableRow.perDayWage = skills[individualdata?.skills?.[0]?.type]?.rates?.rate || 0
+      tableRow.perDayWage = skills[item?.additionalDetails?.skillCode]?.rates?.rate || 0
       tableData[item.id] = tableRow
     });
 
