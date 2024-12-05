@@ -14,7 +14,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
   const GSTIN = organisation?.identifiers?.find(item => item?.isActive && item?.type === 'GSTIN')
 
   const getAddressMasked = (value) => {
-    return value.replace(/(?<=.{1}).(?=.{1})/g, '*');
+    return value.replace(/(?<=.{1})./g, '*');
   }
   const orgDetails = [
     {
