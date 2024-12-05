@@ -14,7 +14,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
   const GSTIN = organisation?.identifiers?.find(item => item?.isActive && item?.type === 'GSTIN')
 
   const getAddressMasked = (value) => {
-    return value.replace(/(?<=.{1}).(?=.{1})/g, '*');
+    return value.replace(/.(?=.{1,}$)/g, '*');
   }
   const orgDetails = [
     {
@@ -46,7 +46,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
     asSectionHeader: true,
     values: [
         { title: "CORE_COMMON_PROFILE_CITY", value: organisation?.orgAddress?.[0]?.tenantId ? Digit.Utils.locale.getCityLocale(organisation?.orgAddress?.[0]?.tenantId) : t("NA")},
-        { title: "COMMON_WARD", value: organisation?.orgAddress?.[0]?.boundaryCode ? ( organisation?.orgAddress?.[0]?.geoLocation?.additionalDetails?.isWardMasked ? getAddressMasked(t(Digit.Utils.locale.getMohallaLocale(organisation?.orgAddress?.[0]?.boundaryCode, tenantId))) : Digit.Utils.locale.getMohallaLocale(organisation?.orgAddress?.[0]?.boundaryCode, tenantId)) : t("NA")},
+        { title: "COMMON_WARD", value: organisation?.orgAddress?.[0]?.boundaryCode ? Digit.Utils.locale.getMohallaLocale(organisation?.orgAddress?.[0]?.boundaryCode, tenantId) : t("NA")},
         { title: "COMMON_LOCALITY", value: organisation?.additionalDetails?.locality ? ( organisation?.additionalDetails?.isLocalityMasked ? getAddressMasked(t(Digit.Utils.locale.getMohallaLocale(organisation?.additionalDetails?.locality, tenantId))) : Digit.Utils.locale.getMohallaLocale(organisation?.additionalDetails?.locality, tenantId)) : t("NA")},
         { title: "ES_COMMON_STREET", value: organisation?.orgAddress?.[0]?.street || t("NA")},
         { title: "ES_COMMON_DOOR_NO", value: organisation?.orgAddress?.[0]?.doorNo || t("NA")},
