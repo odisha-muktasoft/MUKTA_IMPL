@@ -108,14 +108,14 @@ public class MusterRollServiceUtil {
 
 		additionalDetails.put("userId", matchedIndividual.getIndividualId());
 		additionalDetails.put("userName", matchedIndividual.getName().getGivenName());
-		additionalDetails.put("fatherName", matchedIndividual.getFatherName());
-		additionalDetails.put("mobileNo", matchedIndividual.getMobileNumber());
-		additionalDetails.put("gender",matchedIndividual.getGender());
-		Identifier aadhaar = matchedIndividual.getIdentifiers().stream()
-				.filter(identifier -> identifier.getIdentifierType().contains("AADHAAR")).findFirst().orElse(null);
-		if (aadhaar != null) {
-			additionalDetails.put("aadharNumber", aadhaar.getIdentifierId());
-		}
+//		additionalDetails.put("fatherName", matchedIndividual.getFatherName());
+//		additionalDetails.put("mobileNo", matchedIndividual.getMobileNumber());
+//		additionalDetails.put("gender",matchedIndividual.getGender());
+//		Identifier aadhaar = matchedIndividual.getIdentifiers().stream()
+//				.filter(identifier -> identifier.getIdentifierType().contains("AADHAAR")).findFirst().orElse(null);
+//		if (aadhaar != null) {
+//			additionalDetails.put("aadharNumber", aadhaar.getIdentifierId());
+//		}
 
 		// populate individual's skill details in create and update (user selected skill
 		// will be set in additionalDetails)
@@ -134,9 +134,9 @@ public class MusterRollServiceUtil {
 				String ifscCode = bankAccountDetails.get(0).getBankBranchIdentifier().getCode();
 				String accountHolderName = bankAccountDetails.get(0).getAccountHolderName();
 				String accountType = bankAccountDetails.get(0).getAccountType();
-				additionalDetails.put("bankDetails", accountNumber + "-" + ifscCode);
-				additionalDetails.put("accountHolderName", accountHolderName);
-				additionalDetails.put("accountType", accountType);
+//				additionalDetails.put("bankDetails", accountNumber + "-" + ifscCode);
+//				additionalDetails.put("accountHolderName", accountHolderName);
+//				additionalDetails.put("accountType", accountType);
 			}
 		}
 
