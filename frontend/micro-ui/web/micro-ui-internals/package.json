@@ -63,6 +63,9 @@
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
   },
+  "resolutions": {
+    "**/@babel/traverse":"7.25.9"
+  },
   "dependencies": {
     "react-google-recaptcha": "^3.1.0",
     "lodash": "^4.17.21",
