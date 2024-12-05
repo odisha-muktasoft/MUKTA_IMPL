@@ -8,6 +8,9 @@
   "scripts": {
     "start": "react-scripts start"
   },
+  "resolutions": {
+    "**/@babel/traverse":"7.25.9"
+  },
   "devDependencies": {
     "@egovernments/digit-ui-react-components": "1.5.12",
     "@egovernments/digit-ui-components": "0.0.2-beta.47",
