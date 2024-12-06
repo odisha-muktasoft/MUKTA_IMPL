@@ -17,8 +17,8 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
       thumbnails = individual?.photo && await getThumbnails([individual?.photo], tenantId)
     } catch (error) {}
     
-    const socialCategory = individual?.additionalFields?.fields?.find(item => item?.key === "SOCIAL_CATEGORY")
-    const adhaar = individual?.identifiers?.find(item => item?.identifierType === 'AADHAAR')
+    const socialCategory = (individual?.additionalFields?.fields && Array.isArray(individual?.additionalFields?.fields)) ? individual?.additionalFields?.fields?.find(item => item?.key === "SOCIAL_CATEGORY") : undefined;
+    const adhaar = (individual?.identifiers && Array.isArray(individual.identifiers)) ? individual?.identifiers?.find(item => item?.identifierType === 'AADHAAR') : undefined;
 
     const headerDetails = {
         title: " ",
@@ -32,7 +32,7 @@ const transformViewDataToApplicationDetails = async (t, data, tenantId) => {
             { title: "ES_COMMON_BIRTHDATE", value: individual?.dateOfBirth || t("NA")},
             { title: "CORE_COMMON_PROFILE_GENDER", value: individual?.gender ?(individual?.gender?.includes("UNDISCLOSED") ? t(individual?.gender) : `COMMON_MASTERS_GENDER_${individual?.gender}`) : t("NA")},
             { title: "CORE_COMMON_PROFILE_MOBILE_NUMBER", value: individual?.mobileNumber || t("NA")},
-            { title: "MASTERS_SOCIAL_CATEGORY", value: socialCategory ? (socialCategory?.value?.includes("UNDISCLOSED")? t(socialCategory?.value): `COMMON_MASTERS_SOCIAL_${socialCategory?.value}`) : t("NA")}
+            { title: "MASTERS_SOCIAL_CATEGORY", value: socialCategory ? (socialCategory?.value?.includes("UNDISCLOSED")? t(socialCategory?.value): `COMMON_MASTERS_SOCIAL_${socialCategory?.value}`) : t("CS_COMMON_UNDISCLOSED")}
         ],
         additionalDetails: {
           skills: {
