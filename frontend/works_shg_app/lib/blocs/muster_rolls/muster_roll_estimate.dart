@@ -69,7 +69,7 @@ class MusterRollEstimateBloc
         emit(MusterRollEstimateState.loaded(musterRollsModelTest));
       } else {
         emit(MusterRollEstimateState.loaded(musterRollsModel));
-      }
+     }
     } on DioException catch (e) {
       emit(const MusterRollEstimateState.loaded(EstimateMusterRollsModel()));
     }

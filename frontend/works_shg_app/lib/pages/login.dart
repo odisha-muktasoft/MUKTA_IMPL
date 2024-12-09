@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage>
 
               AnimatedContainer(
                 height: _tabController.index == 0
-                    ? MediaQuery.of(context).size.height * 0.215
+                    ? MediaQuery.of(context).size.height * 0.255
                     : MediaQuery.of(context).size.height * 0.399,
                 duration: const Duration(milliseconds: 000),
                 child: TabBarView(
@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage>
 
               // _buildLoginButton(t, loginContext),
 
-              Visibility(
+             if(_tabController.index == 1)...[ Visibility(
                 visible: _tabController.index == 1,
                 child: Center(
                   child: Button(
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage>
                     },
                   ),
                 ),
-              ),
+              )],
             ],
           ),
         ),
@@ -397,7 +397,7 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
 
-              // TODO: temp
+              
               Padding(
                 padding: EdgeInsets.only(
                     top: Theme.of(context).spacerTheme.spacer4,

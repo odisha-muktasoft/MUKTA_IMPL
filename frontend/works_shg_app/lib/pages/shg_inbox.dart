@@ -337,6 +337,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                             .first
                                                             .endDate ??
                                                         0);
+
+                                                setState(() {});
                                               }
                                             });
                                       },
@@ -359,32 +361,41 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                               //         error.toString()),
                                               //     type: ToastType.error),
                                               loaded: (AttendanceRegistersModel?
-                                                  individualAttendanceRegisterModel) {
-                                                daysInRange = DateFormats.checkDaysInRange(
-                                                    DateFormats.dateToTimeStamp(
-                                                        DateFormats
-                                                            .getDateFromTimestamp(
-                                                                selectedDateRange!
-                                                                    .startDate)),
-                                                    DateFormats.dateToTimeStamp(
-                                                        DateFormats
-                                                            .getDateFromTimestamp(
-                                                                selectedDateRange!
-                                                                    .endDate)),
-                                                    individualAttendanceRegisterModel!
-                                                        .attendanceRegister!
-                                                        .first
-                                                        .startDate!,
-                                                    individualAttendanceRegisterModel
-                                                        .attendanceRegister!
-                                                        .first
-                                                        .endDate!);
+                                                  individualAttendanceRegisterModel) async {
+                                                daysInRange = DateFormats
+                                                    .checkDaysInRange(
+                                                  DateFormats.dateToTimeStamp(
+                                                    DateFormats
+                                                        .getDateFromTimestamp(
+                                                      selectedDateRange!
+                                                          .startDate,
+                                                    ),
+                                                  ),
+                                                  DateFormats.dateToTimeStamp(
+                                                    DateFormats
+                                                        .getDateFromTimestamp(
+                                                      selectedDateRange!
+                                                          .endDate,
+                                                    ),
+                                                  ),
+                                                  individualAttendanceRegisterModel!
+                                                      .attendanceRegister!
+                                                      .first
+                                                      .startDate!,
+                                                  individualAttendanceRegisterModel
+                                                      .attendanceRegister!
+                                                      .first
+                                                      .endDate!,
+                                                );
+
                                                 dates = DateFormats
                                                     .getFormattedDatesOfAWeek(
                                                         selectedDateRange!
                                                             .startDate,
                                                         selectedDateRange!
                                                             .endDate);
+
+                                                setState(() {});
                                               });
                                         },
                                         child: BlocBuilder<

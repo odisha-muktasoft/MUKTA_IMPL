@@ -707,7 +707,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                 ? estimateMusterRoll.where((m) => m.individualId == e.individualId).first.musterIndividualAdditionalDetails?.fatherName ?? e.additionalDetails?.individualGaurdianName
                                                                                                 : e.additionalDetails?.individualGaurdianName ?? '',
                                                                                         individualId: e.individualId,
-                                                                                        skillCodeList: estimateMusterRoll!.where((mu) => mu.individualId == e.individualId).toList().isNotEmpty ? estimateMusterRoll.where((m) => m.individualId == e.individualId).first.musterIndividualAdditionalDetails?.skillCode ?? [] : [],
+                                                                                        skillCodeList: estimateMusterRoll!.where((mu) => mu.individualId == e.individualId).toList().isNotEmpty ? estimateMusterRoll.where((m) => m.individualId == e.individualId).first.musterIndividualAdditionalDetails?.skillCode!.toList() ?? [] : [],
                                                                                         id: existingSkills.where((s) => s.individualId == e.individualId).toList().isNotEmpty
                                                                                             ? existingSkills.firstWhere((s) => s.individualId == e.individualId, orElse: () => IndividualSkills()).id
                                                                                             : estimateMusterRoll.where((mu) => mu.individualId == e.individualId).toList().isNotEmpty
@@ -780,6 +780,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                         auditDetails: estimateMusterRoll.where((mu) => mu.individualId == e.individualId).toList().isNotEmpty ? estimateMusterRoll.where((m) => m.individualId == e.individualId).first.attendanceEntries?.first.auditDetails : null),
                                                                                   )
                                                                                   .toList();
+                                                                                  
                                                                               if (newList.isEmpty) {
                                                                                 for (var i = 0; i < attendeeList.length; i++) {
                                                                                   var item1 = attendeeList[i];
@@ -856,8 +857,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                 }
                                                                               }
                                                                             }
+
                                                                             tableData =
                                                                                 getAttendanceData(newList);
+
+                                                                                
                                                                             return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                                                               Padding(
                                                                                 padding: const EdgeInsets.all(8.0),
