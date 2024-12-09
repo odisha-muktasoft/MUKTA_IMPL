@@ -83,7 +83,7 @@ router.post(
                         gender: individual.gender,
                         mobileNumber: individual.mobileNumber,
                         userId: individual.individualId,
-                        skillCode: individual.skills[0].type,
+                        skillCode: entry.additionalDetails.skillCode,
                     }
                     return { ...entry, additionalDetails };
                   })
