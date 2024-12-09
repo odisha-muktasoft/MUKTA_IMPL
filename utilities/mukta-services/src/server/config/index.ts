@@ -3,7 +3,7 @@
 
 import { getErrorCodes } from "./constants";
 
-const HOST = process.env.EGOV_HOST || "https://unified-dev.digit.org/";
+const HOST = process.env.EGOV_HOST || "https://mukta-uat.digit.org/";
 
 if (!HOST) {
   console.log("You need to set the HOST variable");
@@ -47,7 +47,10 @@ const config = {
     estimate:  process.env.EGOV_ESTIMATE_HOST || HOST || "http://localhost:8073/",
     measurement: process.env.EGOV_MEASUREMENT_HOST || HOST || "http://localhost:8074/",
     expense_calculator: process.env.EGOV_EXPENSE_CALCULATOR_HOST || HOST || "http://localhost:8075/",
-    mdmsV2: process.env.EGOV_MDMSV2_HOST || HOST ||"http://localhost:8076/"
+    mdmsV2: process.env.EGOV_MDMSV2_HOST || HOST ||"http://localhost:8076/",
+    bank_account : process.env.EGOV_BANK_ACCOUNT_HOST || HOST ||"http://localhost:8077/",
+    individual2: process.env.EGOV_INDIVIDUAL_HOST || HOST || "http://localhost:8078/",
+    organisation: process.env.EGOV_ORGANISATION_HOST || HOST || "http://localhost:8079/"
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -61,7 +64,9 @@ const config = {
     estimate_search: "/estimate/v1/_search",
     measurement_search: "/measurement-service/v1/_search",
     expense_caluclator:"/expense-calculator/v1/_estimate",
-    mdmsV2_search: "/mdms-v2/v1/_search"
+    mdmsV2_search: "/mdms-v2/v1/_search",
+    bank_account : "/bankaccount-service/bankaccount/v1/_search",
+    org_search: "/org-services/organisation/v1/_search"
   },
 };
 
