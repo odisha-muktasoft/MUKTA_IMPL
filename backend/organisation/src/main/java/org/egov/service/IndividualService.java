@@ -62,7 +62,7 @@ public class IndividualService {
         StringBuilder uri = new StringBuilder(config.getIndividualHost());
         String stateLevelTenantId = multiStateInstanceUtil.getStateLevelTenant(organisationList.get(0).getTenantId());
         RequestInfo requestInfo = request.getRequestInfo();
-        Role role = getOrgAdminRole();
+        List<Role> role = getOrgAdminRole();
 
         List<ContactDetails> contactDetailsList = new ArrayList<>();
         for (Organisation organisation : organisationList) {
@@ -87,7 +87,7 @@ public class IndividualService {
                 contactDetails.setId(UUID.randomUUID().toString());
                 individualResponse = createIndividualFromIndividualService(requestInfo, newUser, contactDetails);
 
-            } else if (!existingRoleCode.contains(getOrgAdminRole().getCode())) {
+            } else if (!existingRoleCode.contains(getOrgAdminRole().get(0).getCode())) {
                 Individual newIndividual = Individual.builder().build();
                 addIndividualDefaultFields(stateLevelTenantId, role, newIndividual, contactDetails, false, existingIndividualFromService.get(0));
                 uri = uri.append(config.getIndividualUpdateEndpoint());
@@ -102,7 +102,7 @@ public class IndividualService {
         }
     }
 
-    public void updateContactDetails(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, Role role) {
+    public void updateContactDetails(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, List<Role> role) {
         IndividualBulkResponse response = individualExists(contactDetails, requestInfo, Boolean.TRUE, tenantId);
         StringBuilder uri = new StringBuilder(config.getIndividualHost());
         if (!CollectionUtils.isEmpty(response.getIndividual())) {
@@ -130,7 +130,7 @@ public class IndividualService {
         RequestInfo requestInfo = request.getRequestInfo();
         String tenantId = organisationList.get(0).getTenantId();
         String stateLevelTenantId = multiStateInstanceUtil.getStateLevelTenant(organisationList.get(0).getTenantId());
-        Role role = getOrgAdminRole();
+        List<Role> role = getOrgAdminRole();
 
         OrgSearchCriteria orgSearchCriteria = OrgSearchCriteria.builder()
                 .id(new ArrayList<>()).tenantId(tenantId).build();
@@ -168,9 +168,10 @@ public class IndividualService {
                 addContactAsOrgMember(contactDetails, stateLevelTenantId, requestInfo, role);
             }
 
+            List<Role> citizenRole = getCitizenRole();
             Set<ContactDetails> toBeRemovedMembers = organisationFromDB.getContactDetails().stream().filter(contactDetails -> toBeRemovedMembersMobile.contains(contactDetails.getContactMobileNumber())).collect(Collectors.toSet());
             for(ContactDetails contactDetails : toBeRemovedMembers) {
-                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, getCitizenRole());
+                updateContactDetails(contactDetails, stateLevelTenantId, requestInfo, citizenRole);
             }
 
             if(!newMembers.isEmpty() && !toBeRemovedMembers.isEmpty()) {
@@ -190,7 +191,7 @@ public class IndividualService {
 
     }
 
-    private void addContactAsOrgMember(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, Role role) {
+    private void addContactAsOrgMember(ContactDetails contactDetails, String tenantId, RequestInfo requestInfo, List<Role> role) {
         IndividualBulkResponse response = individualExists(contactDetails, requestInfo, Boolean.TRUE, tenantId);
         StringBuilder uri = new StringBuilder(config.getIndividualHost());
 
@@ -199,7 +200,7 @@ public class IndividualService {
             List<String> existingRoleCode = new ArrayList<>();
             if((existingIndividual.getUserDetails()!=null) && !CollectionUtils.isEmpty(existingIndividual.getUserDetails().getRoles()))
                 existingRoleCode = existingIndividual.getUserDetails().getRoles().stream().map(Role::getCode).collect(Collectors.toList());
-            if(existingRoleCode.contains(getOrgAdminRole().getCode())){
+            if(existingRoleCode.contains(getOrgAdminRole().get(0).getCode())){
                 throw new CustomException("USER.EXISTS", "Individual contanct number: "+contactDetails.getContactMobileNumber()+" already exists in system");
             }
             else{
@@ -263,9 +264,9 @@ public class IndividualService {
      * @param individual
      * @param contactDetails
      */
-    private void addIndividualDefaultFields(String tenantId, Role role, Individual individual, ContactDetails contactDetails, boolean isCreate, Individual existingIndividual) {
+    private void addIndividualDefaultFields(String tenantId, List<Role> role, Individual individual, ContactDetails contactDetails, boolean isCreate, Individual existingIndividual) {
         log.info("IndividualService::addUserDefaultFields");
-        UserDetails userDetails = UserDetails.builder().roles(Collections.singletonList(role))
+        UserDetails userDetails = UserDetails.builder().roles(role)
                 .tenantId(tenantId).username(contactDetails.getContactMobileNumber())
                 .userType(UserType.fromValue("CITIZEN")).build();
         individual.setMobileNumber(contactDetails.getContactMobileNumber());
@@ -289,7 +290,7 @@ public class IndividualService {
 
         contactDetails.setActive(true);
         contactDetails.setTenantId(tenantId);
-        contactDetails.setRoles(Collections.singletonList(role));
+        contactDetails.setRoles(role);
         contactDetails.setType(OrganisationConstant.ORG_CITIZEN_TYPE);
         contactDetails.setCreatedDate(null);
         contactDetails.setCreatedBy(null);
@@ -301,17 +302,38 @@ public class IndividualService {
      * this is will be hardcoded from code level as we have fix CITIZEN role
      * @return
      */
-    private Role getOrgAdminRole() {
-        return Role.builder()
+    private List<Role> getOrgAdminRole() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.builder()
                 .code(OrganisationConstant.ORG_ADMIN_ROLE_CODE)
                 .name(OrganisationConstant.ORG_ADMIN_ROLE_NAME)
-                .build();
+                .build());
+
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_ORG_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_ORG_UNMASKED_NAME)
+                .build());
+
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_DED_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_DED_UNMASKED_NAME)
+                .build());
+
+        roles.add(Role.builder()
+                .code(OrganisationConstant.VIEW_WS_UNMASKED_CODE)
+                .name(OrganisationConstant.VIEW_WS_UNMASKED_NAME)
+                .build());
+
+        return roles;
     }
-    private Role getCitizenRole() {
-        return Role.builder()
+    private List<Role> getCitizenRole() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.builder()
                 .code(OrganisationConstant.ORG_CITIZEN_TYPE)
                 .name(OrganisationConstant.ORG_CITIZEN_TYPE)
-                .build();
+                .build());
+
+        return roles;
     }
 
     /**
