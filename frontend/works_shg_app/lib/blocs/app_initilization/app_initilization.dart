@@ -70,6 +70,16 @@ class AppInitializationBloc
                 }
               ],
             },
+
+            {
+              "moduleName": "commonUiConfig",
+              "masterDetails": [
+                {
+                  "name": "PrivacyPolicy",
+                },
+                
+              ],
+            },
           ]);
       GlobalVariables.globalConfigObject = globalConfigModel;
       GlobalVariables.stateInfoListModel =

@@ -1,4 +1,5 @@
 // import 'package:digit_components/digit_components.dart';
+import 'package:collection/collection.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
@@ -12,22 +13,16 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
+import 'package:works_shg_app/utils/string_extension.dart';
 
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_financial_bloc.dart';
 import '../blocs/organisation/org_search_bloc.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/wage_seeker/banking_details_model.dart';
-import '../utils/common_methods.dart';
 import '../utils/constants.dart';
 import '../utils/global_variables.dart';
-import '../widgets/back.dart';
-import '../widgets/side_bar.dart';
 import '../widgets/work_details_card.dart';
-import '../widgets/atoms/app_bar_logo.dart';
-import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -175,13 +170,13 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                     .toList();
                             locationDetails = organisationListModel
                                 .organisations!
-                                .map((e) => {
+                                .mapIndexed((index,e) => {
                                       i18.common.city:
                                           'TENANT_TENANTS_${e.tenantId.toUpperCase().replaceAll('.', '_')}',
                                       i18.common.ward:
                                           '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.orgAddress?.first.boundaryCode ?? 'NA'}',
-                                      i18.common.locality:
-                                          '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.additionalDetails?.locality}',
+                                      i18.common.locality:organisationListModel.organisations?[index].additionalDetails?.isLocalityMasked!=null&&organisationListModel.organisations?[index].additionalDetails?.isLocalityMasked==true?
+                                         t.translate( '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.additionalDetails?.locality}').toString().mask():'${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${e.additionalDetails?.locality}',
                                       i18.common.streetName:
                                           e.orgAddress?.first.street != null
                                               ? (e.orgAddress?.first.street ??

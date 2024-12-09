@@ -18,7 +18,7 @@ class AppLogo extends StatelessWidget {
           return Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding:  EdgeInsets.only(bottom:Theme.of(context).spacerTheme.spacer4),
+                padding:  EdgeInsets.only(bottom:Theme.of(context).spacerTheme.spacer2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
