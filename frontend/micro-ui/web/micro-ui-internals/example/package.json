@@ -9,7 +9,8 @@
     "start": "react-scripts start"
   },
   "resolutions": {
-    "**/@babel/traverse":"7.25.9"
+    "**/@babel/traverse":"7.25.9",
+    "**/@jridgewell/gen-mapping": "0.3.5"
   },
   "devDependencies": {
     "@egovernments/digit-ui-react-components": "1.5.12",
@@ -20,7 +21,7 @@
     "@egovernments/digit-ui-module-dss": "1.5.52",
     "@egovernments/digit-ui-module-attendencemgmt": "0.4.16",
     "@egovernments/digit-ui-module-contracts": "0.4.15",
-    "@egovernments/digit-ui-module-measurement":"0.2.24",
+    "@egovernments/digit-ui-module-measurement":"0.2.25",
     "@egovernments/digit-ui-module-estimate": "0.4.22",
     "@egovernments/digit-ui-module-masters": "0.4.27",
     "@egovernments/digit-ui-module-project": "0.4.17",
