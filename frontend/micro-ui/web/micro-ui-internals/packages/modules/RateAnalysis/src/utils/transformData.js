@@ -66,18 +66,51 @@ export const getDefaultExtraCharges = (compositionData, allOverheadData) => {
 
 export const deepCompare = (obj1, obj2) => {
   console.log("obj1", obj1, "obj2", obj2);
-  if (obj1 === obj2) return false; // Identical references or values
-  if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) return true; // Different types or one is null
 
+  // Handle cases where obj1 and obj2 are not objects (primitives or null)
+  if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) {
+    return obj1 !== obj2; // Direct comparison for primitive values
+  }
+
+  console.log("here")
+  // Check if both obj1 and obj2 are arrays
+  const isArray1 = Array.isArray(obj1);
+  const isArray2 = Array.isArray(obj2);
+
+  if (isArray1 !== isArray2) {
+    return true; // One is an array, the other is not
+  }
+
+  if (isArray1 && isArray2) {
+    // Compare arrays element by element
+    if (obj1.length !== obj2.length) {
+      return true; // Arrays of different lengths
+    }
+
+    for (let i = 0; i < obj1.length; i++) {
+      if (deepCompare(obj1[i], obj2[i])) {
+        return true; // Difference found in array elements
+      }
+    }
+
+    return false; // Arrays are identical
+  }
+
+  // Compare objects (non-array case)
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
 
+  console.log("keys1", keys1, "keys2", keys2);
+
   for (let key of keys1) {
-    if (!keys2.includes(key) || deepCompare(obj1[key], obj2[key])) return true; // Key missing or values differ
+    if (!keys2.includes(key) || deepCompare(obj1[key], obj2[key])) {
+      return true; // Key missing or values differ
+    }
   }
 
   return false; // No differences found
 };
+
 
 export const getPerUnitQty = (data, analysisQty) => {
   return parseFloat(data?.quantity) / parseFloat(data?.definedQuantity) / parseFloat(analysisQty);
