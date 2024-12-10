@@ -48,6 +48,9 @@
     "deploy:jenkins": "./scripts/jenkins.sh",
     "clean": "rm -rf node_modules"
   },
+  "resolutions": {
+    "**/@babel/traverse":"7.25.9"
+  },
   "devDependencies": {
     "husky": "7.0.4",
     "lint-staged": "12.3.7",

@@ -236,7 +236,7 @@ const Urls = {
 
   wageseeker: {
     create: "/individual/v1/_create",
-    search: "/individual/v1/_search",
+    search: "/mukta-services/individual/v1/_search",
     wmssearch: "/wms/individual/_search",
     update: "/individual/v1/_update",
     delete: "/individual/v1/_delete",
@@ -257,14 +257,15 @@ const Urls = {
   },
 
   organisation: {
-    search: "/org-services/organisation/v1/_search",
+    search: "/mukta-services/org-services/organisation/v1/_search",
     create: "/org-services/organisation/v1/_create",
     update: "/org-services/organisation/v1/_update",
   },
 
   bankaccount: {
     create: "/bankaccount-service/bankaccount/v1/_create",
-    search: "/bankaccount-service/bankaccount/v1/_search",
+    //changed here for privacy
+    search: "/mukta-services/bankaccount/v1/_search",
     update: "/bankaccount-service/bankaccount/v1/_update",
   },
 

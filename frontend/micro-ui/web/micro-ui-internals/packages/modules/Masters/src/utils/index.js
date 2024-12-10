@@ -106,16 +106,17 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
         givenName: formData?.basicDetails_wageSeekerName
     }
     Individual.dateOfBirth = Digit.DateUtils.ConvertTimestampToDate(new Date(formData?.basicDetails_dateOfBirth), 'dd/MM/yyyy')
-    Individual.gender = formData?.basicDetails_gender?.code
+    if(!(formData?.basicDetails_gender?.code?.includes("UNDISCLOSED"))) Individual.gender = formData?.basicDetails_gender?.code
     Individual.mobileNumber = formData?.basicDetails_mobileNumber
     Individual.fatherName = formData?.basicDetails_fatherHusbandName
-    Individual.relationship = formData?.basicDetails_relationShip?.code
+    if(!(formData?.basicDetails_relationShip?.code?.includes("UNDISCLOSED")))Individual.relationship = formData?.basicDetails_relationShip?.code
     // Individual.skills = formData?.skillDetails_skill?.map(skill => ({ level: skill?.code?.split('.')?.[0], type: skill?.code?.split('.')?.[1]}))
     Individual.photo = formData?.basicDetails_photograph?.[0]?.[1]?.fileStoreId?.fileStoreId
 
+    //DPP update here as well for socialCategory
     if(formData?.basicDetails_socialCategory?.code) {
         Individual.additionalFields = {
-            fields: [{
+            fields: [...wageSeekerDataFromAPI?.individual?.additionalFields.fields.filter((ob) => ob?.key !== "SOCIAL_CATEGORY"),{
                 key: "SOCIAL_CATEGORY",
                 value: formData?.basicDetails_socialCategory?.code
             }]
