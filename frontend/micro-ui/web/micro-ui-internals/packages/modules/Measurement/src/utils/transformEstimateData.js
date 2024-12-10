@@ -132,7 +132,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
      CurrentEndDate = data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate;
   }
   //const musterRoll = typeof musterRollNumber == "string" ? musterRollNumber : (allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.musterRollNumber?.[0] || "NA")
-  const musterRoll = findMusterRollNumber(data?.musterRolls,'',data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.startDate,data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate)
+  const musterRoll = findMusterRollNumber(data?.musterRolls,'',data?.allMeasurements?.length > 0  ? data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.startDate : period?.startDate,data?.allMeasurements?.length > 0  ? data?.allMeasurements?.filter(ob => ob?.measurementNumber === mbNumber)?.[0]?.additionalDetails?.endDate :  period?.endDate)
 
   let uploadedDocs = {}
   allMeasurements?.[0]?.documents.forEach((doc,index)=>{
@@ -164,7 +164,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
     projectDesc,
     projectLocation,
     sanctionDate:issueDate ?  Digit.DateUtils.ConvertEpochToDate(issueDate) : Digit.DateUtils.ConvertEpochToDate(estimate?.proposalDate),
-    musterRollNo: window.location.href.includes("measurement/update") ? <Link style={{ color: "#C84C0E" }} to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${data?.allMeasurements?.[0]?.tenantId}&musterRollNumber=${musterRoll}`}>{musterRoll}</Link> : musterRoll,
+    musterRollNo: musterRoll ? <Link style={{ color: "#C84C0E" }} to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${data?.allMeasurements?.[0]?.tenantId}&musterRollNumber=${musterRoll}`}>{musterRoll}</Link> : "NA",
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
     CurrentEndDate,
