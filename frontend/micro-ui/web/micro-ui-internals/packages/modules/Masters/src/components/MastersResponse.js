@@ -8,6 +8,7 @@ const MastersResponse = () => {
   const history = useHistory();
   const { state } = useLocation();
   const queryParams = Digit.Hooks.useQueryParams();
+  const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
   const navigate = (page) => {
     switch (page) {
@@ -29,7 +30,7 @@ const MastersResponse = () => {
   const children = [
     <div style={{ display: "flex", alignItems: "center" }}>
       <Button label={t("ES_COMMON_GOTO_HOME")} variation="link" icon={"ArrowBack"} onClick={() => navigate("home-screen")} type="button" />
-      {!state?.isWageSeeker && state?.isSuccess && (
+      {!state?.isWageSeeker && state?.isSuccess && loggedInUserRoles?.includes("VIEW_ORG_UNMASKED") && loggedInUserRoles?.includes("VIEW_DED_UNMASKED") && (
         <Button label={t("MASTERS_ORGANISATION_MODIFY")} variation="link" icon={"EditIcon"} onClick={() => navigate("modify-org")} type="button" />
       )}
       {!state?.isWageSeeker && state?.isSuccess && (
