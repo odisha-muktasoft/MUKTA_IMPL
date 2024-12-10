@@ -638,6 +638,7 @@ OrgAdditionalDetails _$OrgAdditionalDetailsFromJson(Map<String, dynamic> json) {
 mixin _$OrgAdditionalDetails {
   String? get registeredByDept => throw _privateConstructorUsedError;
   String? get deptRegistrationNum => throw _privateConstructorUsedError;
+  bool? get isLocalityMasked => throw _privateConstructorUsedError;
   String? get locality => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -655,6 +656,7 @@ abstract class $OrgAdditionalDetailsCopyWith<$Res> {
   $Res call(
       {String? registeredByDept,
       String? deptRegistrationNum,
+      bool? isLocalityMasked,
       String? locality});
 }
 
@@ -674,6 +676,7 @@ class _$OrgAdditionalDetailsCopyWithImpl<$Res,
   $Res call({
     Object? registeredByDept = freezed,
     Object? deptRegistrationNum = freezed,
+    Object? isLocalityMasked = freezed,
     Object? locality = freezed,
   }) {
     return _then(_value.copyWith(
@@ -685,6 +688,10 @@ class _$OrgAdditionalDetailsCopyWithImpl<$Res,
           ? _value.deptRegistrationNum
           : deptRegistrationNum // ignore: cast_nullable_to_non_nullable
               as String?,
+      isLocalityMasked: freezed == isLocalityMasked
+          ? _value.isLocalityMasked
+          : isLocalityMasked // ignore: cast_nullable_to_non_nullable
+              as bool?,
       locality: freezed == locality
           ? _value.locality
           : locality // ignore: cast_nullable_to_non_nullable
@@ -704,6 +711,7 @@ abstract class _$$OrgAdditionalDetailsImplCopyWith<$Res>
   $Res call(
       {String? registeredByDept,
       String? deptRegistrationNum,
+      bool? isLocalityMasked,
       String? locality});
 }
 
@@ -720,6 +728,7 @@ class __$$OrgAdditionalDetailsImplCopyWithImpl<$Res>
   $Res call({
     Object? registeredByDept = freezed,
     Object? deptRegistrationNum = freezed,
+    Object? isLocalityMasked = freezed,
     Object? locality = freezed,
   }) {
     return _then(_$OrgAdditionalDetailsImpl(
@@ -731,6 +740,10 @@ class __$$OrgAdditionalDetailsImplCopyWithImpl<$Res>
           ? _value.deptRegistrationNum
           : deptRegistrationNum // ignore: cast_nullable_to_non_nullable
               as String?,
+      isLocalityMasked: freezed == isLocalityMasked
+          ? _value.isLocalityMasked
+          : isLocalityMasked // ignore: cast_nullable_to_non_nullable
+              as bool?,
       locality: freezed == locality
           ? _value.locality
           : locality // ignore: cast_nullable_to_non_nullable
@@ -743,7 +756,10 @@ class __$$OrgAdditionalDetailsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OrgAdditionalDetailsImpl implements _OrgAdditionalDetails {
   const _$OrgAdditionalDetailsImpl(
-      {this.registeredByDept, this.deptRegistrationNum, this.locality});
+      {this.registeredByDept,
+      this.deptRegistrationNum,
+      this.isLocalityMasked,
+      this.locality});
 
   factory _$OrgAdditionalDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrgAdditionalDetailsImplFromJson(json);
@@ -753,11 +769,13 @@ class _$OrgAdditionalDetailsImpl implements _OrgAdditionalDetails {
   @override
   final String? deptRegistrationNum;
   @override
+  final bool? isLocalityMasked;
+  @override
   final String? locality;
 
   @override
   String toString() {
-    return 'OrgAdditionalDetails(registeredByDept: $registeredByDept, deptRegistrationNum: $deptRegistrationNum, locality: $locality)';
+    return 'OrgAdditionalDetails(registeredByDept: $registeredByDept, deptRegistrationNum: $deptRegistrationNum, isLocalityMasked: $isLocalityMasked, locality: $locality)';
   }
 
   @override
@@ -769,14 +787,16 @@ class _$OrgAdditionalDetailsImpl implements _OrgAdditionalDetails {
                 other.registeredByDept == registeredByDept) &&
             (identical(other.deptRegistrationNum, deptRegistrationNum) ||
                 other.deptRegistrationNum == deptRegistrationNum) &&
+            (identical(other.isLocalityMasked, isLocalityMasked) ||
+                other.isLocalityMasked == isLocalityMasked) &&
             (identical(other.locality, locality) ||
                 other.locality == locality));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, registeredByDept, deptRegistrationNum, locality);
+  int get hashCode => Object.hash(runtimeType, registeredByDept,
+      deptRegistrationNum, isLocalityMasked, locality);
 
   @JsonKey(ignore: true)
   @override
@@ -798,6 +818,7 @@ abstract class _OrgAdditionalDetails implements OrgAdditionalDetails {
   const factory _OrgAdditionalDetails(
       {final String? registeredByDept,
       final String? deptRegistrationNum,
+      final bool? isLocalityMasked,
       final String? locality}) = _$OrgAdditionalDetailsImpl;
 
   factory _OrgAdditionalDetails.fromJson(Map<String, dynamic> json) =
@@ -807,6 +828,8 @@ abstract class _OrgAdditionalDetails implements OrgAdditionalDetails {
   String? get registeredByDept;
   @override
   String? get deptRegistrationNum;
+  @override
+  bool? get isLocalityMasked;
   @override
   String? get locality;
   @override

@@ -7,6 +7,7 @@ var { search_musterRoll, create_pdf, search_localization } = require("../api");
 var {searchEstimateFormusterRoll,create_pdf  }= require("../api");
 var { search_contract, create_pdf } = require("../api");
 var { search_mdmsV2, create_pdf } = require("../api");
+var { search_individual, create_pdf } = require("../api");
 const { asyncMiddleware } = require("../utils/asyncMiddleware");
 const { calculateAttendenceDetails, calculateAttendenceTotal, getDateMonth } = require("../utils/calculateMusterData");
 const get = require("lodash.get");
@@ -60,8 +61,35 @@ router.post(
                 if (ex.response && ex.response.data) console.log(ex.response.data);
                 return renderError(res, "Failed to query details of the mdms v2 service", 500);
             }
+            try {
+                individualIds = resMuster.data.musterRolls[0].individualEntries.map(ind => ind.additionalDetails.userId);
+                resIndividuals = await search_individual(individualIds, tenantId, requestinfo);
+            }
+            catch (ex) {
+                if (ex.response && ex.response.data) console.log(ex.response.data);
+                return renderError(res, "Failed to query details of the individual service", 500);
+            }
             var muster = resMuster.data;
+            muster.musterRolls[0] = enrichIndividualEntries(muster.musterRolls[0], resIndividuals.data.Individual);
             muster.musterRolls[0] = filterIndividualEntries(muster.musterRolls[0]);
+
+            function enrichIndividualEntries(muster_roll, individuals) {
+                if (Array.isArray(muster_roll.individualEntries)) {
+                  muster_roll.individualEntries = muster_roll.individualEntries.map(entry => {
+                    const individual = individuals.find(i => i.individualId === entry.additionalDetails.userId);
+                    const additionalDetails = {
+                        fatherName: individual.fatherName,
+                        userName: individual.name.givenName,
+                        gender: individual.gender,
+                        mobileNumber: individual.mobileNumber,
+                        userId: individual.individualId,
+                        skillCode: entry.additionalDetails.skillCode,
+                    }
+                    return { ...entry, additionalDetails };
+                  })
+                }
+                return muster_roll;
+            }
 
             function filterIndividualEntries(muster_roll) {
                 if (Array.isArray(muster_roll.individualEntries)) {

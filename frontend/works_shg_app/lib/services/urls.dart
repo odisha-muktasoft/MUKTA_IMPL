@@ -30,8 +30,10 @@ class CommonServices {
 class ORGServices {
   const ORGServices();
 
-  String get orgSearch => 'org-services/organisation/v1/_search';
+  String get orgSearch => 'mukta-services/org-services/organisation/v1/_search';
+   String get bfforgSearch => 'org-services/organisation/v1/_search';
   String get financeSearch => 'bankaccount-service/bankaccount/v1/_search';
+  String get bfffinanceSearch => 'mukta-services/bankaccount/v1/_search';
 }
 
 class BillServices {
@@ -106,7 +108,8 @@ class AttendanceRegisterServices {
   String get createAttendanceLog => 'attendance/log/v1/_create';
   String get updateAttendanceLog => 'attendance/log/v1/_update';
   String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
-  String get individualSearch => 'individual/v1/_search';
+  String get bffindividualSearch => 'individual/v1/_search';
+  String get individualSearch => 'mukta-services/individual/v1/_search';
   String get wmsIndividualSearch => 'wms/individual/_search';
 
   // // unified-qa

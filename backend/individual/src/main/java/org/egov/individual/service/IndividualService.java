@@ -1,13 +1,6 @@
 package org.egov.individual.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,16 +10,14 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.ds.Tuple;
 import org.egov.common.models.Error;
 import org.egov.common.models.ErrorDetails;
+import org.egov.common.models.core.Field;
 import org.egov.common.models.core.Role;
 import org.egov.common.models.core.SearchResponse;
-import org.egov.common.models.individual.Identifier;
-import org.egov.common.models.individual.Individual;
-import org.egov.common.models.individual.IndividualBulkRequest;
-import org.egov.common.models.individual.IndividualRequest;
-import org.egov.common.models.individual.IndividualSearch;
+import org.egov.common.models.individual.*;
 import org.egov.common.models.project.ApiOperation;
 import org.egov.common.models.user.UserRequest;
 import org.egov.common.utils.CommonUtils;
+import org.egov.common.utils.ResponseInfoFactory;
 import org.egov.common.validator.Validator;
 import org.egov.individual.config.IndividualProperties;
 import org.egov.individual.repository.IndividualRepository;
@@ -45,6 +36,8 @@ import org.egov.individual.validators.UniqueEntityValidator;
 import org.egov.individual.validators.UniqueSubEntityValidator;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
@@ -189,6 +182,52 @@ public class IndividualService {
     public List<Individual> update(IndividualRequest request) {
         IndividualBulkRequest bulkRequest = IndividualBulkRequest.builder().requestInfo(request.getRequestInfo())
                 .individuals(Collections.singletonList(request.getIndividual())).build();
+        IndividualSearch individualSearch= IndividualSearch.builder().
+                individualId(Collections.singletonList(request.getIndividual().getIndividualId())).build();
+
+        SearchResponse<Individual> searchResponse  = search(
+                individualSearch,
+                100,
+                0,
+                request.getIndividual().getTenantId(),
+                null,
+                false,
+                request.getRequestInfo()
+        );
+        IndividualResponse response = IndividualResponse.builder()
+                .individual(searchResponse.getResponse().get(0))
+                .build();
+
+        if (bulkRequest.getIndividuals().get(0).getGender() == null) {
+            bulkRequest.getIndividuals().get(0).setGender(response.getIndividual().getGender());
+        }
+        if (bulkRequest.getIndividuals().get(0).getRelationship() == null || bulkRequest.getIndividuals().get(0).getRelationship().contains("UNDISCLOSED")) {
+            bulkRequest.getIndividuals().get(0).setRelationship(response.getIndividual().getRelationship());
+        }
+        if (request.getIndividual().getAdditionalFields() != null && response.getIndividual().getAdditionalFields() != null) {
+            // Get the SOCIAL_CATEGORY field from the request
+            List<Field> requestFields = request.getIndividual().getAdditionalFields().getFields();
+            List<Field> existingFields = response.getIndividual().getAdditionalFields().getFields();
+
+            Field requestSocialCategory = requestFields.stream()
+                    .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                    .findFirst()
+                    .orElse(null);
+
+            Field existingSocialCategory = existingFields.stream()
+                    .filter(field -> "SOCIAL_CATEGORY".equals(field.getKey()))
+                    .findFirst()
+                    .orElse(null);
+
+            // If SOCIAL_CATEGORY is null in the request or is "UNDISCLOSED", update it with the value from the response
+            if (existingSocialCategory != null) {
+                if (requestSocialCategory.getValue().contains("UNDISCLOSED") || requestSocialCategory.getValue() == null) {
+                    // Update the existing SOCIAL_CATEGORY value in the request
+                    requestSocialCategory.setValue(existingSocialCategory.getValue());
+                }
+            }
+        }
+
         List<Individual> individuals = update(bulkRequest, false);
 
         // check if sms feature is enable for the environment role
@@ -455,4 +494,5 @@ public class IndividualService {
         }
         return true;
     }
+
 }

@@ -59,6 +59,35 @@ const search_individual = async (individualIds: Array<string>, tenantId: string,
   );
 }
 
+const search_individual_2 = async (individualIds: Array<string>, tenantId: string, requestinfo: any) => {
+
+  var params = {
+    tenantId: tenantId,
+    limit: 100,
+    offset: 0,
+  };
+
+  return await httpRequest(
+    url.resolve(config.host.individual2, config.paths.ind_search),
+    requestinfo,
+    params
+  );
+}
+
+const search_organisation = async (requestinfo: any) => {
+
+  var params = {
+    limit: 10,
+    offset: 0
+  };
+  
+  return await httpRequest(
+    url.resolve(config.host.organisation, config.paths.org_search),
+    requestinfo,
+    params
+  )
+}
+
 const search_workflow = async (applicationNumber: string, tenantId: string, requestinfo: any) => {
   var params = {
     tenantId: tenantId,
@@ -280,6 +309,16 @@ const mdmsv2_v1Search = async (tenantId: string, module: string, master: string,
   ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
 }
 
+const search_bank_account = async (bankAccountDetails: any, requestinfo: any) => {
+  return await httpRequest(
+    url.resolve(config.host.bank_account, config.paths.bank_account),
+    {
+      RequestInfo: requestinfo,
+      bankAccountDetails: bankAccountDetails
+    }
+  );
+}
+
 export {
   create_pdf,
   create_pdf_and_upload,
@@ -288,11 +327,14 @@ export {
   search_workflow,
   search_muster,
   search_individual,
+  search_individual_2,
+  search_organisation,
   search_localization,
   search_contract,
   search_estimate,
   search_measurement,
   calculate_expense,
   searchRates,
-  mdmsv2_v1Search
+  mdmsv2_v1Search,
+  search_bank_account
 };

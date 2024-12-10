@@ -273,6 +273,9 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     formControlName: ifscCodeKey,
                     builder: (field) {
                       return DigitTextFormInput(
+                         inputFormatters: [
+                          UpperCaseTextInputFormatter(),
+                        ],
                         helpText: hintText,
                         // charCount: true,
                         controller: TextEditingController()
@@ -387,4 +390,18 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
       }, [
         Validators.mustMatch(accountNoKey, reAccountNoKey)
       ]);
+}
+
+
+class UpperCaseTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

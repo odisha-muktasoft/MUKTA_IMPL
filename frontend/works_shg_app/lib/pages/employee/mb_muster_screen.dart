@@ -476,6 +476,10 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                                                         i]
                                                                     .mobileNumber ??
                                                                 '',
+                                                                 timeLineAttributes[
+                                                                        i]
+                                                                    .comments ??
+                                                                '',
                                                           ],
                                                           label:
                                                               timeLineAttributes[
