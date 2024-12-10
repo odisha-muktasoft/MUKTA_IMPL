@@ -266,13 +266,17 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   }, [showToast]);
 
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    console.log("result", deepCompare(formData,createState));
     if (deepCompare(formData,createState)) {
+      console.log("change found", formData, createState);
       setState({ ...createState, ...formData })
     }
     else if((!formData?.extraCharges || formData?.extraCharges?.length == 0) && createState?.extraCharges?.length > 0 && isUpdate)
     {
+      console.log("extra charges removed", formData, createState);
       setState({ ...createState, extraCharges: [] })
     }
+    console.log("final", createState);
   };
 
   const validateRateAnalysis =() => {

@@ -65,6 +65,7 @@ export const getDefaultExtraCharges = (compositionData, allOverheadData) => {
 };
 
 export const deepCompare = (obj1, obj2) => {
+  console.log("obj1", obj1, "obj2", obj2);
   if (obj1 === obj2) return false; // Identical references or values
   if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) return true; // Different types or one is null
 
