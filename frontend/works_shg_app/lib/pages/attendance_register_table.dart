@@ -931,6 +931,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('${user["name"]}', style: style),
+            Text('${user["individualGaurdianName"]}', style: style),
             Text('${user["individualCode"]}',
                 style: style.apply(fontSizeDelta: -2))
           ],
