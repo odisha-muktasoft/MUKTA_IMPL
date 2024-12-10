@@ -46,7 +46,6 @@ const TableWithOutHead = (props) => {
           justifyContent: "flex-end",
           paddingRight: "0%",
           alignItems: "center",
-          marginTop: "-30px",
         }}
       >
         <table
