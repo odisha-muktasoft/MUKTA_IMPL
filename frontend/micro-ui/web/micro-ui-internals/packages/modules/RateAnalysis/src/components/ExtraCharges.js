@@ -31,6 +31,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
+  console.log("initial values", getValues());
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : []);
 
   useEffect(() => {
@@ -159,6 +160,9 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           );
           setRows(updatedRows);
           setValue(`${formFieldName}[${rowIndex}].applicableOn`, e);
+          console.log("final12", getValues());
+          console.log("key", `${formFieldName}[${rowIndex}].applicableOn`);
+          console.log("value", getValues(`${formFieldName}[${rowIndex}].applicableOn`));
           props.onChange(e);
           }}
           onBlur={props?.onBlur}
@@ -178,6 +182,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     setRows([...updatedRows]);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
     console.log("final12", getValues());
+    console.log("key", `${formFieldName}[${rowIndex}].figure`);
+    console.log("value", getValues(`${formFieldName}[${rowIndex}].figure`));
   };
 
   const setDescription = (e, rowIndex) => {
@@ -189,6 +195,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     setRows([...updatedRows]);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
     console.log("final12", getValues());
+    console.log("key", `${formFieldName}[${rowIndex}].description`);
+    console.log("value", getValues(`${formFieldName}[${rowIndex}].description`));
   };
 
   const isValidQuantity = (value) => {
