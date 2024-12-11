@@ -180,7 +180,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     );
     console.log("updatedRows", updatedRows);
     setRows([...updatedRows]);
-    setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    // setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
     console.log("final12", getValues());
     console.log("key", `${formFieldName}[${rowIndex}].figure`);
     console.log("value", getValues(`${formFieldName}[${rowIndex}].figure`));
@@ -193,15 +193,25 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     );
     console.log("updatedRows", updatedRows);
     setRows([...updatedRows]);
-    setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    // setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
     console.log("final12", getValues());
     console.log("key", `${formFieldName}[${rowIndex}].description`);
     console.log("value", getValues(`${formFieldName}[${rowIndex}].description`));
   };
 
   useEffect(() => {
-    setValue(formFieldName,rows);
-    console.log("maybe", formFieldName, rows, getValues());
+    rows.map((row, index) => {
+      setValue(`${formFieldName}[${index}].description`, row.description);
+      setValue(`${formFieldName}[${index}].applicableOn`, row.applicableOn);
+      setValue(`${formFieldName}[${index}].calculationType`, row.calculationType);
+      setValue(`${formFieldName}[${index}].figure`, row.figure);
+    })
+    console.log(getValues("extraCharges"));
+    console.log(getValues("extraCharges[0]"));
+    console.log(getValues("extraCharges[0].description"));
+    console.log("maybe");
+    // setValue("extraCharges", rows);
+    // console.log("maybe", formFieldName, rows, getValues());
   }, [rows])
 
   const isValidQuantity = (value) => {
