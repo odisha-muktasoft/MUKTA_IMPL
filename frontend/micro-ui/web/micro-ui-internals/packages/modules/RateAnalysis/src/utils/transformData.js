@@ -65,14 +65,12 @@ export const getDefaultExtraCharges = (compositionData, allOverheadData) => {
 };
 
 export const deepCompare = (obj1, obj2) => {
-  console.log("obj1", obj1, "obj2", obj2);
 
   // Handle cases where obj1 and obj2 are not objects (primitives or null)
   if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) {
     return obj1 !== obj2; // Direct comparison for primitive values
   }
 
-  console.log("here")
   // Check if both obj1 and obj2 are arrays
   const isArray1 = Array.isArray(obj1);
   const isArray2 = Array.isArray(obj2);
@@ -100,7 +98,6 @@ export const deepCompare = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
 
-  console.log("keys1", keys1, "keys2", keys2);
 
   for (let key of keys1) {
     if (!keys2.includes(key) || deepCompare(obj1[key], obj2[key])) {

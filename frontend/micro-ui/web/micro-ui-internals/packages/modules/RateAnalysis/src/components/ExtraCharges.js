@@ -170,19 +170,25 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   };
 
   const setAmountField = (e, rowIndex) => {
+    console.log("amount change", e.target.value);
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
-    setRows(updatedRows);
+    console.log("updatedRows", updatedRows);
+    setRows([...updatedRows]);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    console.log("final12", getValues());
   };
 
   const setDescription = (e, rowIndex) => {
+    console.log("desc change", e.target.value);
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, description: e.target.value } : row
     );
-    setRows(updatedRows);
+    console.log("updatedRows", updatedRows);
+    setRows([...updatedRows]);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    console.log("final12", getValues());
   };
 
   const isValidQuantity = (value) => {
