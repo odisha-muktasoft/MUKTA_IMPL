@@ -164,7 +164,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
     projectDesc,
     projectLocation,
     sanctionDate:issueDate ?  Digit.DateUtils.ConvertEpochToDate(issueDate) : Digit.DateUtils.ConvertEpochToDate(estimate?.proposalDate),
-    musterRollNo: window.location.href.includes("measurement/update") ? <Link style={{ color: "#C84C0E" }} to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${data?.allMeasurements?.[0]?.tenantId}&musterRollNumber=${musterRoll}`}>{musterRoll}</Link> : musterRoll,
+    musterRollNo: musterRoll ? <Link style={{ color: "#C84C0E" }} to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${data?.allMeasurements?.[0]?.tenantId || Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${musterRoll}`}>{musterRoll}</Link> : "NA",
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
     CurrentEndDate,
