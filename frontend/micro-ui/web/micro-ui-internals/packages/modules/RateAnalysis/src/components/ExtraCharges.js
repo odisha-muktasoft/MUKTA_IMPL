@@ -169,20 +169,23 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     }
   };
 
-  const setAmountField = (e, rowIndex) => {
+  const setAmountField = (e, rowIndex,props) => {
+    console.log("coming here to amount")
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    props.onChange(e.target.value)
   };
 
-  const setDescription = (e, rowIndex) => {
+  const setDescription = (e, rowIndex,props) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, description: e.target.value } : row
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    props.onChange(e.target.value)
   };
 
   const isValidQuantity = (value) => {
@@ -205,7 +208,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(2)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextInput
+                {/* <TextInput
                   style={{ marginBottom: "0px", wordWrap: "break-word" }}
                   name={`${formFieldName}[${rowIndex}].description`}
                   //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
@@ -220,6 +223,35 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     },
                     required: false
                   })}
+                /> */}
+                <Controller
+                  control={control}
+                  name={`${formFieldName}[${rowIndex}].description`}
+                  rules={{
+                    maxLength: {
+                      value: 512,
+                      message: t(`WORKS_PATTERN_ERR`)
+                    },
+                    required: false
+                  }}
+                  render={(props) => (
+                      <TextInput
+                    style={{ marginBottom: "0px", wordWrap: "break-word" }}
+                    name={`${formFieldName}[${rowIndex}].description`}
+                    //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                    defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
+                    onChange={(e) => {
+                      setDescription(e,rowIndex,props);
+                    }}
+                    inputRef={register({
+                      maxLength: {
+                        value: 512,
+                        message: t(`WORKS_PATTERN_ERR`)
+                      },
+                      required: false
+                    })}
+                  /> 
+                  )}
                 />
               </div>
               <div style={errorContainerStyles}>
@@ -309,7 +341,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(5)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextInput
+                {/* <TextInput
                   style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                   name={`${formFieldName}[${rowIndex}].figure`}
                   //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
@@ -329,6 +361,39 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     }
                   }
                 }
+                /> */}
+                <Controller
+                  control={control}
+                  name={`${formFieldName}[${rowIndex}].figure`}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.applicableOn || row.applicableOn) : null}
+                  rules={{
+                    required: false,
+                    max: populators?.quantity?.max,
+                    pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
+                  }}
+                  render={(props) =>
+                    <TextInput
+                  style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
+                  name={`${formFieldName}[${rowIndex}].figure`}
+                  //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.figure || row.figure) : null}
+                  inputRef={register({
+                    required: false,
+                    max: populators?.quantity?.max,
+                    pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
+                  })}
+                  onChange={(e) => {
+                    if(isValidQuantity(parseFloat(e?.target.value))){
+                      setAmountField(e, rowIndex,props)
+                    }
+                    else
+                    {
+                      e.target.value = e?.target.value.slice(0, e?.target.value.length - 1);
+                    }
+                  }
+                }
+                />
+                  }
                 />
               </div>
               <div style={errorContainerStyles}>
