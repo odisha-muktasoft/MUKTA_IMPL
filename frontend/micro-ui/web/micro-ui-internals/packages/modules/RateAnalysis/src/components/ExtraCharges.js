@@ -199,6 +199,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     console.log("value", getValues(`${formFieldName}[${rowIndex}].description`));
   };
 
+  useEffect(() => {
+    setValue(formFieldName,rows);
+    console.log("maybe", formFieldName, rows, getValues());
+  }, [rows])
+
   const isValidQuantity = (value) => {
     const regex = /^\d{0,4}(\.\d{0,2})?$/;
     return regex.test(value);
