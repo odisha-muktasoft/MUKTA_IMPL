@@ -235,12 +235,6 @@ config:
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
         image-name: "ifms-adapter-db"
 
-  - name: "builds/mukta_impl/reference-adapters/sms-adapter"
-    build:
-      - work-dir: "reference-adapters/sms-adapter"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "sms-adapter"
-
    # mukta
   - name: "builds/mukta_impl/mukta/mukta-contracts"
     build:
@@ -313,6 +307,11 @@ config:
     build:
       - work-dir: "backend/egov-notification-sms"
         image-name: "egov-notification-sms"
-        dockerfile: "build/maven-java17/Dockerfile"     
+        dockerfile: "build/maven-java17/Dockerfile"
+  - name: "builds/mukta_impl/reference-adapters/sms-adapter"
+    build:
+      - work-dir: "reference-adapters/sms-adapter"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "sms-adapter"      
 
         
