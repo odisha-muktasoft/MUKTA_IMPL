@@ -1,6 +1,6 @@
 {
   "name": "@egovernments/digit-ui-module-measurement",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "description": "Measurement Module UI",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
@@ -18,7 +18,7 @@
     "react-router-dom": "5.3.0"
   },
   "resolutions": {
-    "**/@babel/traverse":"7.25.9",
+    "**/@babel/traverse": "7.25.9",
     "**/@jridgewell/gen-mapping": "0.3.5"
   },
   "dependencies": {
