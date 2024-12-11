@@ -26,7 +26,6 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       applicableOn: "",
       calculationType: "",
       figure: "",
-      isShow: true,
     },
   ];
 
@@ -39,7 +38,6 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       setRows(formData[formFieldName].map((item, index) => ({
         ...item,
         key: index + 1,
-        isShow: true,
       })));
     } else {
       setRows(initialState);
@@ -100,12 +98,17 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   };
 
   const removeRow = (rowIndex) => {
-    // const updatedRows = rows.map((row, index) =>
-    //   index === rowIndex ? { ...row, isShow: false } : row
-    // );
     const updatedRows = rows.filter((row, index) => index != rowIndex );
-    setRows([...updatedRows]);
-    setValue(formFieldName,[...updatedRows]);
+
+    // Recalculate keys for the updated rows to maintain proper order
+    const recalculatedRows = updatedRows.map((row, index) => ({
+      ...row,
+      key: index + 1, // Ensure sequential keys
+    }));
+  
+    // Update the state and form values
+    setRows(recalculatedRows);
+    setValue(formFieldName, recalculatedRows);
   };
 
   const addRow = () => {
@@ -115,7 +118,6 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       applicableOn: "",
       calculationType: "",
       figure: "",
-      isShow: true,
     };
     setRows([...rows, newRow]);
   };
@@ -169,20 +171,22 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     }
   };
 
-  const setAmountField = (e, rowIndex) => {
+  const setAmountField = (e, rowIndex, props) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    props.onChange(e.target.value)
   };
 
-  const setDescription = (e, rowIndex) => {
+  const setDescription = (e, rowIndex, props) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, description: e.target.value } : row
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    props.onChange(e.target.value)
   };
 
   const isValidQuantity = (value) => {
@@ -197,29 +201,42 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, rowIndex) => {
-      if (row.isShow) i++;
-      return row.isShow && (
-        <tr key={row?.key} style={!row?.isShow ? { display: 'none' } : {}}>
+      i++;
+      return (
+        <tr key={row?.key}>
           <td style={getStyles(1)}>{i}</td>
 
           <td style={getStyles(2)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextInput
-                  style={{ marginBottom: "0px", wordWrap: "break-word" }}
+                <Controller
+                  control={control}
                   name={`${formFieldName}[${rowIndex}].description`}
-                  //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
-                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
-                  onChange={(e) => {
-                    setDescription(e,rowIndex);
-                  }}
-                  inputRef={register({
+                  rules={{
                     maxLength: {
                       value: 512,
                       message: t(`WORKS_PATTERN_ERR`)
                     },
                     required: false
-                  })}
+                  }}
+                  render={(props) => (
+                      <TextInput
+                    style={{ marginBottom: "0px", wordWrap: "break-word" }}
+                    name={`${formFieldName}[${rowIndex}].description`}
+                    //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                    defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
+                    onChange={(e) => {
+                      setDescription(e,rowIndex,props);
+                    }}
+                    inputRef={register({
+                      maxLength: {
+                        value: 512,
+                        message: t(`WORKS_PATTERN_ERR`)
+                      },
+                      required: false
+                    })}
+                  /> 
+                  )}
                 />
               </div>
               <div style={errorContainerStyles}>
@@ -309,7 +326,17 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(5)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextInput
+                <Controller
+                  control={control}
+                  name={`${formFieldName}[${rowIndex}].figure`}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.applicableOn || row.applicableOn) : null}
+                  rules={{
+                    required: false,
+                    max: populators?.quantity?.max,
+                    pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
+                  }}
+                  render={(props) =>
+                    <TextInput
                   style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                   name={`${formFieldName}[${rowIndex}].figure`}
                   //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
@@ -321,7 +348,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                   })}
                   onChange={(e) => {
                     if(isValidQuantity(parseFloat(e?.target.value))){
-                      setAmountField(e, rowIndex)
+                      setAmountField(e, rowIndex,props)
                     }
                     else
                     {
@@ -329,6 +356,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     }
                   }
                 }
+                />
+                  }
                 />
               </div>
               <div style={errorContainerStyles}>
