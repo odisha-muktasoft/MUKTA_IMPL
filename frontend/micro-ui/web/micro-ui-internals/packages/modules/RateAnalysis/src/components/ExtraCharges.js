@@ -98,13 +98,18 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   };
 
   const removeRow = (rowIndex, props) => {
-    const updatedRows = rows.filter((row, index) => index != rowIndex );
+    let updatedRows = [];
+    rows.map((row, index) => {
+      if (index !== rowIndex) {
+        updatedRows.push({...row});
+      }
+    });
 
     // Recalculate keys for the updated rows to maintain proper order
-    const recalculatedRows = updatedRows.map((row, index) => ({
-      ...row,
-      key: index + 1, // Ensure sequential keys
-    }));
+    let recalculatedRows = [];
+    updatedRows.map((row, index) => {
+      recalculatedRows.push ({...row, key: index + 1})
+    });
   
     // Update the state and form values
     setRows([...recalculatedRows]);
