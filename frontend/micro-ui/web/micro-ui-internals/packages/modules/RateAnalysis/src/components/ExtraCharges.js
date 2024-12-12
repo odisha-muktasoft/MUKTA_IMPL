@@ -107,8 +107,10 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     }));
   
     // Update the state and form values
-    setRows(recalculatedRows);
-    setValue(formFieldName, recalculatedRows);
+    setRows([...recalculatedRows]);
+    setValue(formFieldName, [...recalculatedRows]);
+    console.log(updatedRows, recalculatedRows, rows);
+    console.log(getValues());
   };
 
   const addRow = () => {
