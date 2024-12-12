@@ -97,7 +97,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     });
   };
 
-  const removeRow = (rowIndex) => {
+  const removeRow = (rowIndex, props) => {
     const updatedRows = rows.filter((row, index) => index != rowIndex );
 
     // Recalculate keys for the updated rows to maintain proper order
@@ -109,6 +109,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     // Update the state and form values
     setRows([...recalculatedRows]);
     setValue(formFieldName, [...recalculatedRows]);
+    props.onChange(rowIndex);
     console.log(updatedRows, recalculatedRows, rows);
     console.log(getValues());
   };
@@ -378,11 +379,20 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
           <td style={getStyles(8)}>
             <div style={cellContainerStyle}>
-              {(
+              <Controller
+                control={control}
+                name={`${formFieldName}[${rowIndex}].delete`}
+                render={(props) => (
+                  <span onClick={() =>  removeRow(rowIndex, props)} className="icon-wrapper">
+                    <DeleteIcon fill={"#FF9100"} />
+                  </span>
+                )}
+              />
+              {/* {(
                 <span onClick={() =>  removeRow(rowIndex)} className="icon-wrapper">
                   <DeleteIcon fill={"#FF9100"} />
                 </span>
-              )}
+              )} */}
             </div>
             <div style={errorContainerStyles}></div>
           </td>
