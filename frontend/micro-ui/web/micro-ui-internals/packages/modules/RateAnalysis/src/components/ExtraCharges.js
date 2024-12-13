@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useMemo } from "react";
+import React, { Fragment, useState, useEffect, useMemo, useCallback } from "react";
 import {
   AddIcon,
   DeleteIcon,
@@ -26,11 +26,25 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       applicableOn: "",
       calculationType: "",
       figure: "",
+      isShow: true,
     },
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : []);
+  
+  const setFormValue = useCallback(
+    (value) => {
+      register("extraCharges", value);
+      console.log("here1", value);
+      console.log(getValues());
+    },
+    [setValue]
+  );
+
+  useEffect(() => {
+    setValue("extraDetails", rows);
+  }, [rows]);
 
   useEffect(() => {
     if(window.location.href.includes("update"))
@@ -38,6 +52,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       setRows(formData[formFieldName].map((item, index) => ({
         ...item,
         key: index + 1,
+        isShow: true,
       })));
     } else {
       setRows(initialState);
@@ -96,27 +111,14 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       );
     });
   };
-
-  const removeRow = (rowIndex, props) => {
-    let updatedRows = [];
-    rows.map((row, index) => {
-      if (index !== rowIndex) {
-        updatedRows.push({...row});
-      }
-    });
-
-    // Recalculate keys for the updated rows to maintain proper order
-    let recalculatedRows = [];
-    updatedRows.map((row, index) => {
-      recalculatedRows.push ({...row, key: index + 1})
-    });
-  
-    // Update the state and form values
-    setRows([...recalculatedRows]);
-    setValue(formFieldName, [...recalculatedRows]);
-    props.onChange(rowIndex);
-    console.log(updatedRows, recalculatedRows, rows);
-    console.log(getValues());
+  const removeRow = (rowIndex) => {
+    // const updatedRows = rows.map((row, index) =>
+    //   index === rowIndex ? { ...row, isShow: false } : row
+    // );
+    const updatedRows = rows.filter((row, index) => index != rowIndex );
+    setRows([...updatedRows]);
+    setFormValue(formFieldName,[...updatedRows]);
+    console.log("here2", rows, updatedRows, getValues());
   };
 
   const addRow = () => {
@@ -126,6 +128,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       applicableOn: "",
       calculationType: "",
       figure: "",
+      isShow: true,
     };
     setRows([...rows, newRow]);
   };
@@ -168,7 +171,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
             index === rowIndex ? { ...row, applicableOn: e } : row
           );
           setRows(updatedRows);
-          setValue(`${formFieldName}[${rowIndex}].applicableOn`, e);
+          setFormValue(`${formFieldName}[${rowIndex}].applicableOn`, e);
           props.onChange(e);
           }}
           onBlur={props?.onBlur}
@@ -178,22 +181,21 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       );
     }
   };
-
-  const setAmountField = (e, rowIndex, props) => {
+  const setAmountField = (e, rowIndex,props) => {
+    console.log("coming here to amount")
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
     setRows(updatedRows);
-    setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    setFormValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
     props.onChange(e.target.value)
   };
-
-  const setDescription = (e, rowIndex, props) => {
+  const setDescription = (e, rowIndex,props) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, description: e.target.value } : row
     );
     setRows(updatedRows);
-    setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    setFormValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
     props.onChange(e.target.value)
   };
 
@@ -205,18 +207,34 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
-
+  
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, rowIndex) => {
-      i++;
-      return (
-        <tr key={row?.key}>
+      if (row.isShow) i++;
+      return row.isShow && (
+        <tr key={row?.key} style={!row?.isShow ? { display: 'none' } : {}}>
           <td style={getStyles(1)}>{i}</td>
 
           <td style={getStyles(2)}>
             <div style={cellContainerStyle}>
               <div>
+                {/* <TextInput
+                  style={{ marginBottom: "0px", wordWrap: "break-word" }}
+                  name={`${formFieldName}[${rowIndex}].description`}
+                  //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
+                  onChange={(e) => {
+                    setDescription(e,rowIndex);
+                  }}
+                  inputRef={register({
+                    maxLength: {
+                      value: 512,
+                      message: t(`WORKS_PATTERN_ERR`)
+                    },
+                    required: false
+                  })}
+                /> */}
                 <Controller
                   control={control}
                   name={`${formFieldName}[${rowIndex}].description`}
@@ -310,7 +328,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                         index === rowIndex ? { ...row, calculationType: e } : row
                       );
                       setRows(updatedRows);
-                      setValue(`${formFieldName}[${rowIndex}].calculationType`, e);
+                      setFormValue(`${formFieldName}[${rowIndex}].calculationType`, e);
                       props.onChange(e);
                       }}
                       onBlur={props?.onBlur}
@@ -334,6 +352,27 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(5)}>
             <div style={cellContainerStyle}>
               <div>
+                {/* <TextInput
+                  style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
+                  name={`${formFieldName}[${rowIndex}].figure`}
+                  //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.figure || row.figure) : null}
+                  inputRef={register({
+                    required: false,
+                    max: populators?.quantity?.max,
+                    pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
+                  })}
+                  onChange={(e) => {
+                    if(isValidQuantity(parseFloat(e?.target.value))){
+                      setAmountField(e, rowIndex)
+                    }
+                    else
+                    {
+                      e.target.value = e?.target.value.slice(0, e?.target.value.length - 1);
+                    }
+                  }
+                }
+                /> */}
                 <Controller
                   control={control}
                   name={`${formFieldName}[${rowIndex}].figure`}
@@ -384,20 +423,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
           <td style={getStyles(8)}>
             <div style={cellContainerStyle}>
-              <Controller
-                control={control}
-                name={`${formFieldName}[${rowIndex}].delete`}
-                render={(props) => (
-                  <span onClick={() =>  removeRow(rowIndex, props)} className="icon-wrapper">
-                    <DeleteIcon fill={"#FF9100"} />
-                  </span>
-                )}
-              />
-              {/* {(
+              {(
                 <span onClick={() =>  removeRow(rowIndex)} className="icon-wrapper">
                   <DeleteIcon fill={"#FF9100"} />
                 </span>
-              )} */}
+              )}
             </div>
             <div style={errorContainerStyles}></div>
           </td>
