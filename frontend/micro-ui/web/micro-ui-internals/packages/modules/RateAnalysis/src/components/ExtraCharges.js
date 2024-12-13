@@ -117,7 +117,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     // );
     const updatedRows = rows.filter((row, index) => index != rowIndex );
     setRows([...updatedRows]);
-    setFormValue(formFieldName,[...updatedRows]);
+    setFormValue([...updatedRows]);
     console.log("here2", rows, updatedRows, getValues());
   };
 
@@ -186,16 +186,16 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
-    setRows(updatedRows);
-    setFormValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
+    setRows([...updatedRows]);
+    setFormValue([...updatedRows]);
     props.onChange(e.target.value)
   };
   const setDescription = (e, rowIndex,props) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, description: e.target.value } : row
     );
-    setRows(updatedRows);
-    setFormValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+    setRows([...updatedRows]);
+    setFormValue([...updatedRows]);
     props.onChange(e.target.value)
   };
 
@@ -327,8 +327,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                         const updatedRows = rows.map((row, index) =>
                         index === rowIndex ? { ...row, calculationType: e } : row
                       );
-                      setRows(updatedRows);
-                      setFormValue(`${formFieldName}[${rowIndex}].calculationType`, e);
+                      setRows([...updatedRows]);
+                      setFormValue([...updatedRows]);
                       props.onChange(e);
                       }}
                       onBlur={props?.onBlur}
