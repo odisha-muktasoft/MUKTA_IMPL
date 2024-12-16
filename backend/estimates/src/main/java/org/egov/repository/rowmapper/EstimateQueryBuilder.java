@@ -272,4 +272,29 @@ public class EstimateQueryBuilder {
         else
             return query;
     }
+
+    public String getEstimateQueryForBulkSearch(EstimateSearchCriteria criteria, List<Object> preparedStmtList) {
+
+        Boolean isEmpty = CollectionUtils.isEmpty(criteria.getIds());
+
+        if(isEmpty)
+            throw new CustomException("EG_EST_SEARCH_ERROR"," No uuids given for the Estimate Bulk search");
+
+        StringBuilder builder = new StringBuilder(FETCH_ESTIMATE_QUERY);
+
+        if(!ObjectUtils.isEmpty(criteria.getTenantId()))
+        {
+            addClauseIfRequired(preparedStmtList, builder);
+            builder.append(" where tenant_id=?");
+            preparedStmtList.add(criteria.getTenantId());
+        }
+
+        List<String> uuids = criteria.getIds();
+        if (!CollectionUtils.isEmpty(uuids)) {
+            addClauseIfRequired(preparedStmtList,builder);
+            builder.append("est.id IN (").append(createQuery(uuids)).append(")");
+            addToPreparedStatement(preparedStmtList, uuids);
+        }
+        return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
+    }
 }

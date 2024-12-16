@@ -44,16 +44,18 @@ public class EstimateService {
     private static final String ESTIMATE_REDIS_KEY = "ESTIMATE_{id}";
 
     @Autowired
-    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, RedisService redisService) {
+    public EstimateService(EstimateServiceConfiguration serviceConfiguration, EstimateProducer producer, EstimateServiceValidator serviceValidator, EnrichmentService enrichmentService, EstimateRepository estimateRepository, WorkflowService workflowService, NotificationService notificationService, EstimateServiceUtil estimateServiceUtil, ProjectUtil projectUtil, RedisService redisService, ObjectMapper objectMapper) {
         this.serviceConfiguration = serviceConfiguration;
         this.producer = producer;
         this.serviceValidator = serviceValidator;
         this.enrichmentService = enrichmentService;
         this.estimateRepository = estimateRepository;
+        this.projectUtil = projectUtil;
         this.workflowService = workflowService;
         this.notificationService = notificationService;
         this.estimateServiceUtil = estimateServiceUtil;
         this.redisService = redisService;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -165,5 +167,57 @@ public class EstimateService {
 
     private String getEstimateRedisKey(String id) {
         return ESTIMATE_REDIS_KEY.replace("{id}", id);
+    }
+
+
+    public List<Estimate> searchEstimatePlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
+        List<Estimate> estimates = getEstimatesPlainSearch(searchCriteria);
+
+        // Project enrichment
+        for (Estimate estimate: estimates) {
+            log.info("DenormalizeAndEnrichEstimateService:: Enrich project details for estimate number %s", estimate.getEstimateNumber());
+            Object projectRes = projectUtil.getProjectDetailsNoEstimateRequest(estimate.getProjectId(), estimate.getTenantId(), requestInfo);
+
+            //If project payload changes, this key needs to be modified!
+            List<Project> projects = objectMapper.convertValue(((LinkedHashMap) projectRes).get(EstimateServiceConstant.PROJECT_RESP_PAYLOAD_KEY), new TypeReference<List<Project>>() {
+            })  ;
+
+            if (projects != null && !projects.isEmpty()) {
+                estimate.setProject(projects.get(0));
+            }
+
+            else {
+                log.warn(String.format("Unable to enrich project details for estimate %s. Inbox and search will not function correctly!", estimate.getEstimateNumber()));
+            }
+        }
+
+        return estimates;
+    }
+
+    List<Estimate> getEstimatesPlainSearch(EstimateSearchCriteria searchCriteria) {
+
+        if (searchCriteria.getLimit() != null && searchCriteria.getLimit() > serviceConfiguration.getMaxLimit())
+            searchCriteria.setLimit(serviceConfiguration.getMaxLimit());
+        if(searchCriteria.getLimit()==null)
+            searchCriteria.setLimit(serviceConfiguration.getDefaultLimit());
+        if(searchCriteria.getOffset()==null)
+            searchCriteria.setOffset(serviceConfiguration.getDefaultOffset());
+
+        EstimateSearchCriteria estimateCriteria = new EstimateSearchCriteria();
+        if (searchCriteria.getIds() != null) {
+            estimateCriteria.setIds(searchCriteria.getIds());
+        } else {
+            List<String> uuids = estimateRepository.fetchIds(searchCriteria);
+            if (uuids.isEmpty())
+                return Collections.emptyList();
+            estimateCriteria.setIds(uuids);
+        }
+        estimateCriteria.setLimit(searchCriteria.getLimit());
+        List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria);
+
+        if(estimates.isEmpty())
+            return Collections.emptyList();
+
+        return estimates;
     }
 }
