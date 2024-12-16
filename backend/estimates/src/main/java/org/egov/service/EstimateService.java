@@ -1,12 +1,17 @@
 package org.egov.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.RequestInfoWrapper;
+import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.models.project.Project;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.producer.EstimateProducer;
 import org.egov.repository.EstimateRepository;
 import org.egov.util.EstimateServiceConstant;
 import org.egov.util.EstimateServiceUtil;
+import org.egov.util.ProjectUtil;
 import org.egov.validator.EstimateServiceValidator;
 import org.egov.web.models.Estimate;
 import org.egov.web.models.EstimateRequest;
@@ -14,10 +19,7 @@ import org.egov.web.models.EstimateSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,7 +41,9 @@ public class EstimateService {
 
     private final NotificationService notificationService;
     private final EstimateServiceUtil estimateServiceUtil;
+    private final ProjectUtil projectUtil;
     private final RedisService redisService;
+    private final ObjectMapper objectMapper;
 
     private static final String ESTIMATE_REDIS_KEY = "ESTIMATE_{id}";
 
