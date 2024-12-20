@@ -333,4 +333,42 @@ public class ContractService {
                 StringUtils.isEmpty(searchCriteria.getWfStatus()) &&
                 CollectionUtils.isEmpty(searchCriteria.getOrgIds());
     }
+
+    public List<Contract> searchContractPlainSearch(Integer offset, Integer limit, String tenantId, RequestInfo requestInfo) {
+        List<Contract> contracts = getContractsPlainSearch(offset, limit, tenantId);
+
+        // enrichment if needed
+
+        return contracts;
+    }
+    List<Contract> getContractsPlainSearch(Integer offset, Integer limit, String tenantId) {
+
+        ContractCriteria contractCriteria = new ContractCriteria();
+        contractCriteria.setPagination(new Pagination());
+
+        contractCriteria.getPagination().setOffSet(offset);
+        contractCriteria.getPagination().setLimit(limit);
+        contractCriteria.setTenantId(tenantId);
+
+        if (contractCriteria.getPagination().getLimit() != null && contractCriteria.getPagination().getLimit() > contractServiceConfiguration.getContractMaxLimit())
+            contractCriteria.getPagination().setLimit(contractServiceConfiguration.getContractMaxLimit());
+        if(contractCriteria.getPagination().getLimit() == null)
+            contractCriteria.getPagination().setLimit(contractServiceConfiguration.getContractDefaultLimit());
+        if(contractCriteria.getPagination().getOffSet()==null)
+            contractCriteria.getPagination().setOffSet(contractServiceConfiguration.getContractDefaultOffset());
+
+        List<String> uuids = contractRepository.fetchIds(contractCriteria);
+
+
+        if (uuids.isEmpty())
+            return Collections.emptyList();
+        contractCriteria.setIds(uuids);
+
+        List<Contract> contracts = contractRepository.getContractsForBulkSearch(contractCriteria);
+
+        if(contracts.isEmpty())
+            return Collections.emptyList();
+
+        return contracts;
+    }
 }
