@@ -71,4 +71,9 @@ public class MusterRollApiController {
         return new ResponseEntity<MusterRollResponse>(musterRollResponse, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<MusterRollResponse> musterRollV1PlainsearchPOST(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper, @Valid @ModelAttribute MusterRollSearchCriteria searchCriteria) {
+        MusterRollResponse musterRollResponse = musterRollService.searchMusterRollPlainsearch(requestInfoWrapper, searchCriteria);
+        return new ResponseEntity<MusterRollResponse>(musterRollResponse, HttpStatus.OK);
+    }
 }
