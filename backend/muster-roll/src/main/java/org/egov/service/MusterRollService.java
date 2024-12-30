@@ -34,9 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.egov.util.MusterRollServiceConstants.STATUS_APPROVED;
@@ -334,4 +332,35 @@ public class MusterRollService {
                         .limit(searchCriteria.getLimit()) // limit
                         .collect(Collectors.toList());
     }
+
+    public MusterRollResponse searchMusterRollPlainsearch(RequestInfoWrapper requestInfoWrapper, MusterRollSearchCriteria searchCriteria) {
+        List<MusterRoll> musterRolls = getMusterRollsPlainsearch(searchCriteria);
+
+        // enrichment if needed
+
+        // populate response
+        ResponseInfo responseInfo = responseInfoCreator.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true);
+        return MusterRollResponse.builder().responseInfo(responseInfo).musterRolls(musterRolls).build();
+    }
+
+    private List<MusterRoll> getMusterRollsPlainsearch(MusterRollSearchCriteria searchCriteria) {
+
+        enrichmentService.enrichSearchRequest(searchCriteria);
+
+        MusterRollSearchCriteria musterRollCriteria = new MusterRollSearchCriteria();
+
+        List<String> uuids = musterRollRepository.fetchIds(searchCriteria);
+        if (uuids.isEmpty())
+            return Collections.emptyList();
+
+        musterRollCriteria.setIds(uuids);
+
+        List<MusterRoll> musterRolls = musterRollRepository.getMusterRollsForBulkSearch(musterRollCriteria);
+
+        if(musterRolls.isEmpty())
+            return Collections.emptyList();
+
+        return musterRolls;
+    }
+
 }

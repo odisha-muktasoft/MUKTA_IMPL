@@ -1,11 +1,14 @@
 package org.egov.repository.querybuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.egov.tracer.model.CustomException;
 import org.egov.util.MusterRollServiceUtil;
 import org.egov.web.models.MusterRollSearchCriteria;
 import org.egov.works.services.common.models.expense.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -187,5 +190,31 @@ public class MusterRollQueryBuilder {
             return COUNT_WRAPPER.replace("{INTERNAL_QUERY}", query);
         else
             return query;
+    }
+
+    public String getMusterRollQueryForBulkSearch(MusterRollSearchCriteria criteria, List<Object> preparedStmtList) {
+
+        Boolean isEmpty = CollectionUtils.isEmpty(criteria.getIds());
+
+        if(isEmpty)
+            throw new CustomException("EG_MR_SEARCH_ERROR"," No uuids given for the MusterRoll Bulk search");
+
+        StringBuilder builder = new StringBuilder(FETCH_MUSTER_ROLL_QUERY);
+
+        if(!ObjectUtils.isEmpty(criteria.getTenantId()))
+        {
+            addClauseIfRequired(preparedStmtList, builder);
+            builder.append("muster.tenant_id=?");
+            preparedStmtList.add(criteria.getTenantId());
+        }
+
+        List<String> uuids = criteria.getIds();
+        if (!CollectionUtils.isEmpty(uuids)) {
+            addClauseIfRequired(preparedStmtList,builder);
+            builder.append("muster.id IN (").append(createQuery(uuids)).append(")");
+            addToPreparedStatement(preparedStmtList, uuids);
+        }
+
+        return builder.toString();
     }
 }
