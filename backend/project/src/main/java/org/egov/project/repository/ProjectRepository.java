@@ -367,4 +367,38 @@ public class ProjectRepository extends GenericRepository<Project> {
         log.info("Total project count is : " + count);
         return count;
     }
+
+    public List<Project> getProjectsForBulkSearch(String tenantId, Integer limit, Integer offset) {
+        List<Object> preparedStmtList = new ArrayList<>();
+        String query = queryBuilder.getProjectQueryForBulkSearch(tenantId, limit, offset, preparedStmtList);
+        List<Project> projects = jdbcTemplate.query(query, addressRowMapper, preparedStmtList.toArray());
+
+        Set<String> projectIds = projects.stream().map(Project :: getId).collect(Collectors.toSet());
+
+        List<Project> ancestors = null;
+        List<Project> descendants = null;
+        //Get Project ancestors if includeAncestors flag is true
+        ancestors = getProjectAncestors(projects);
+        if (ancestors != null && !ancestors.isEmpty()) {
+            List<String> ancestorProjectIds = ancestors.stream().map(Project :: getId).collect(Collectors.toList());
+            projectIds.addAll(ancestorProjectIds);
+        }
+
+        //Get Project descendants if includeDescendants flag is true
+        descendants = getProjectDescendants(projects);
+        if (descendants != null && !descendants.isEmpty()) {
+            List<String> descendantsProjectIds = descendants.stream().map(Project :: getId).collect(Collectors.toList());
+            projectIds.addAll(descendantsProjectIds);
+        }
+
+        //Fetch targets based on Project Ids
+        List<Target> targets = getTargetsBasedOnProjectIds(projectIds);
+
+        //Fetch documents based on Project Ids
+        List<Document> documents = getDocumentsBasedOnProjectIds(projectIds);
+
+        //Construct Project Objects with fetched projects, targets and documents using Project id
+        return buildProjectSearchResult(projects, targets, documents, ancestors, descendants);
+    }
+
 }

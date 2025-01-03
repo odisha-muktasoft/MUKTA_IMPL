@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.common.contract.response.ResponseInfo;
 import org.egov.common.models.core.ProjectSearchURLParams;
 import org.egov.common.models.core.SearchResponse;
@@ -526,6 +527,24 @@ public class ProjectApiController {
 
         ResponseInfo responseInfo = ResponseInfoFactory.createResponseInfo(project.getRequestInfo(), true);
         ProjectResponse projectResponse = ProjectResponse.builder().responseInfo(responseInfo).project(enrichedProjectRequest.getProjects()).build();
+        return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<ProjectResponse> plainsearchV1Project(
+            @Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+            @ApiParam(value = "Tenant id", defaultValue = "false") @Valid @RequestParam(value = "TenantId", required = false) String tenantId,
+            @ApiParam(value = "Limit", defaultValue = "false") @Valid @RequestParam(value = "limit", required = false) Integer limit,
+            @ApiParam(value = "Offset", defaultValue = "false") @Valid @RequestParam(value = "offset", required = false) Integer offset
+    ) {
+        List<Project> projects = projectService.plainsearchProject(tenantId, limit, offset);
+        ResponseInfo responseInfo = ResponseInfoFactory.createResponseInfo(requestInfoWrapper.getRequestInfo(), true);
+//        Integer count = projectService.countAllProjects(projectSearchRequest, urlParams);
+        ProjectResponse projectResponse = ProjectResponse.builder()
+                .responseInfo(responseInfo)
+                .project(projects)
+//                .totalCount(count)
+                .build();
         return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.OK);
     }
 
