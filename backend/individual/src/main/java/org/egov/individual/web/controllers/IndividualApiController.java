@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.common.contract.response.ResponseInfo;
 import org.egov.common.models.core.SearchResponse;
 import org.egov.common.models.core.URLParams;
@@ -145,5 +146,17 @@ public class IndividualApiController {
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseInfoFactory
                 .createResponseInfo(request.getRequestInfo(), true));
+    }
+
+    @RequestMapping(value = "/v1/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<IndividualBulkResponse> individualV1PlainsearchPost(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+                                                                              @Valid @RequestParam Integer limit, @Valid @RequestParam Integer offset, @Valid @RequestParam String tenantId) {
+
+        List<Individual> individuals = individualService.searchIndividualPlainSearch(limit, offset, tenantId, requestInfoWrapper.getRequestInfo());
+        IndividualBulkResponse response = IndividualBulkResponse.builder()
+                .individual(individuals)
+                .responseInfo(ResponseInfoFactory.createResponseInfo(requestInfoWrapper.getRequestInfo(), true))
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

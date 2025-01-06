@@ -495,4 +495,15 @@ public class IndividualService {
         return true;
     }
 
+    public List<Individual> searchIndividualPlainSearch(Integer limit, Integer offset, String tenantId, RequestInfo requestInfo) {
+        List<Individual> individuals = individualRepository.getIndividualsForBulkSearch(limit, offset, tenantId);
+
+        if(individuals.isEmpty())
+            return Collections.emptyList();
+
+        // enrichment if needed
+
+        return individuals;
+    }
+
 }
