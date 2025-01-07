@@ -66,8 +66,10 @@ public class ContractApiController {
 
     @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
     public ResponseEntity<ContractResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-                                                        @Valid @RequestParam Integer offset, @Valid @RequestParam Integer limit, @Valid @RequestParam String tenantId) {
-        List<Contract> contracts = contractService.searchContractPlainSearch(offset, limit, tenantId, requestInfoWrapper.getRequestInfo());
+                                                        @Valid @RequestParam(required = false) String tenantId,
+                                                        @Valid @RequestParam Integer limit,
+                                                        @Valid @RequestParam Integer offset) {
+        List<Contract> contracts = contractService.searchContractPlainSearch(limit, offset, tenantId);
         ContractResponse response = ContractResponse.builder().contracts(contracts).responseInfo(
                         responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
                 .build();

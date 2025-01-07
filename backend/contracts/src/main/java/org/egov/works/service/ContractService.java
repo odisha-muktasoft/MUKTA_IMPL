@@ -334,14 +334,7 @@ public class ContractService {
                 CollectionUtils.isEmpty(searchCriteria.getOrgIds());
     }
 
-    public List<Contract> searchContractPlainSearch(Integer offset, Integer limit, String tenantId, RequestInfo requestInfo) {
-        List<Contract> contracts = getContractsPlainSearch(offset, limit, tenantId);
-
-        // enrichment if needed
-
-        return contracts;
-    }
-    List<Contract> getContractsPlainSearch(Integer offset, Integer limit, String tenantId) {
+    public List<Contract> searchContractPlainSearch(Integer limit, Integer offset, String tenantId) {
 
         ContractCriteria contractCriteria = new ContractCriteria();
         contractCriteria.setPagination(new Pagination());
