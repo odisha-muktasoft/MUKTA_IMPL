@@ -208,14 +208,12 @@ public class EstimateService {
             searchCriteria.setOffset(serviceConfiguration.getDefaultOffset());
 
         EstimateSearchCriteria estimateCriteria = new EstimateSearchCriteria();
-        if (searchCriteria.getIds() != null) {
-            estimateCriteria.setIds(searchCriteria.getIds());
-        } else {
-            List<String> uuids = estimateRepository.fetchIds(searchCriteria);
-            if (uuids.isEmpty())
-                return Collections.emptyList();
-            estimateCriteria.setIds(uuids);
-        }
+
+        List<String> uuids = estimateRepository.fetchIds(searchCriteria);
+        if (uuids.isEmpty())
+            return Collections.emptyList();
+        estimateCriteria.setIds(uuids);
+
         estimateCriteria.setLimit(searchCriteria.getLimit());
         List<Estimate> estimates = estimateRepository.getEstimatesForBulkSearch(estimateCriteria);
 
