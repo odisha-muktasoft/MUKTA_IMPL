@@ -3,6 +3,7 @@ package org.egov.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.models.project.Project;
@@ -177,21 +178,23 @@ public class EstimateService {
     public List<Estimate> searchEstimatePlainSearch(EstimateSearchCriteria searchCriteria, RequestInfo requestInfo) {
         List<Estimate> estimates = getEstimatesPlainSearch(searchCriteria);
 
+
         // Project enrichment
         for (Estimate estimate: estimates) {
-            log.info("DenormalizeAndEnrichEstimateService:: Enrich project details for estimate number %s", estimate.getEstimateNumber());
-            Object projectRes = projectUtil.getProjectDetailsNoEstimateRequest(estimate.getProjectId(), estimate.getTenantId(), requestInfo);
+            if (estimate != null && StringUtils.isNotBlank(estimate.getTenantId()) && StringUtils.isNotBlank(estimate.getEstimateNumber())) {
+                log.info("DenormalizeAndEnrichEstimateService:: Enrich project details for estimate number %s", estimate.getEstimateNumber());
+                Object projectRes = projectUtil.getProjectDetailsNoEstimateRequest(estimate.getProjectId(), estimate.getTenantId(), requestInfo);
 
-            //If project payload changes, this key needs to be modified!
-            List<Project> projects = objectMapper.convertValue(((LinkedHashMap) projectRes).get(EstimateServiceConstant.PROJECT_RESP_PAYLOAD_KEY), new TypeReference<List<Project>>() {
-            })  ;
+                //If project payload changes, this key needs to be modified!
+                List<Project> projects = objectMapper.convertValue(((LinkedHashMap) projectRes).get(EstimateServiceConstant.PROJECT_RESP_PAYLOAD_KEY), new TypeReference<List<Project>>() {
+                })  ;
 
-            if (projects != null && !projects.isEmpty()) {
-                estimate.setProject(projects.get(0));
-            }
-
-            else {
-                log.warn(String.format("Unable to enrich project details for estimate %s. Inbox and search will not function correctly!", estimate.getEstimateNumber()));
+                if (projects != null && !projects.isEmpty()) {
+                    estimate.setProject(projects.get(0));
+                }
+                else {
+                    log.warn(String.format("Unable to enrich project details for estimate %s. Inbox and search will not function correctly!", estimate.getEstimateNumber()));
+                }
             }
         }
 
