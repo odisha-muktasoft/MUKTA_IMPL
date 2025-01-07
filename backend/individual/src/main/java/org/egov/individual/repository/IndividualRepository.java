@@ -373,11 +373,9 @@ public class IndividualRepository extends GenericRepository<Individual> {
 
         log.info("query-------------------------->");
         log.info(query);
-        log.info(paramsMap.toString());
 
         List<Individual> individuals = this.namedParameterJdbcTemplate.query(query, paramsMap, this.rowMapper);
-        System.out.println(individuals);
-        System.out.println("hey");
+
         if (!individuals.isEmpty()) {
             enrichIndividuals(individuals, true);
         }
