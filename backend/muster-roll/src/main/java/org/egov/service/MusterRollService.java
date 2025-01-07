@@ -336,8 +336,6 @@ public class MusterRollService {
     public MusterRollResponse searchMusterRollPlainsearch(RequestInfoWrapper requestInfoWrapper, MusterRollSearchCriteria searchCriteria) {
         List<MusterRoll> musterRolls = getMusterRollsPlainsearch(searchCriteria);
 
-        // enrichment if needed
-
         // populate response
         ResponseInfo responseInfo = responseInfoCreator.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true);
         return MusterRollResponse.builder().responseInfo(responseInfo).musterRolls(musterRolls).build();
