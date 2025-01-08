@@ -126,7 +126,15 @@ config:
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "rate-analysis"
       - work-dir: "backend/rate-analysis/src/main/resources/db"
-        image-name: "rate-analysis-db"             
+        image-name: "rate-analysis-db"   
+
+  - name: "builds/mukta_impl/backend/project"
+    build:
+      - work-dir: "backend/project"
+        image-name: "project"
+        dockerfile: "build/maven/Dockerfile"
+      - work-dir: "backend/project/src/main/resources/db"
+        image-name: "project-db"
 
   # utilities
   - name: "builds/mukta_impl/utilities/egov-pdf"
