@@ -534,16 +534,14 @@ public class ProjectApiController {
     public ResponseEntity<ProjectResponse> plainsearchV1Project(
             @Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
             @ApiParam(value = "Tenant id", defaultValue = "false") @Valid @RequestParam(value = "TenantId", required = false) String tenantId,
-            @ApiParam(value = "Limit", defaultValue = "false") @Valid @RequestParam(value = "limit", required = false) Integer limit,
-            @ApiParam(value = "Offset", defaultValue = "false") @Valid @RequestParam(value = "offset", required = false) Integer offset
+            @ApiParam(value = "Limit", defaultValue = "false") @Valid @RequestParam(value = "limit", required = true) Integer limit,
+            @ApiParam(value = "Offset", defaultValue = "false") @Valid @RequestParam(value = "offset", required = true) Integer offset
     ) {
         List<Project> projects = projectService.plainsearchProject(tenantId, limit, offset);
         ResponseInfo responseInfo = ResponseInfoFactory.createResponseInfo(requestInfoWrapper.getRequestInfo(), true);
-//        Integer count = projectService.countAllProjects(projectSearchRequest, urlParams);
         ProjectResponse projectResponse = ProjectResponse.builder()
                 .responseInfo(responseInfo)
                 .project(projects)
-//                .totalCount(count)
                 .build();
         return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.OK);
     }
