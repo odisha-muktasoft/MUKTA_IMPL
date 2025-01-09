@@ -150,7 +150,7 @@ public class IndividualApiController {
 
     @RequestMapping(value = "/v1/_plainsearch", method = RequestMethod.POST)
     public ResponseEntity<IndividualBulkResponse> individualV1PlainsearchPost(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-                                                                              @Valid @RequestParam Integer limit, @Valid @RequestParam Integer offset, @Valid @RequestParam String tenantId) {
+                                                                              @Valid @RequestParam Integer limit, @Valid @RequestParam Integer offset, @Valid @RequestParam(required = false) String tenantId) {
 
         List<Individual> individuals = individualService.searchIndividualPlainSearch(limit, offset, tenantId, requestInfoWrapper.getRequestInfo());
         IndividualBulkResponse response = IndividualBulkResponse.builder()
