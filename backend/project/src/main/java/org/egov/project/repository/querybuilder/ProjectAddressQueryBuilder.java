@@ -377,4 +377,28 @@ public class ProjectAddressQueryBuilder {
         String query = getProjectSearchQuery(projectSearch, urlParams, preparedStatement, Boolean.TRUE);
         return query;
     }
+
+    public String getProjectQueryForBulkSearch(String tenantId, Integer limit, Integer offset, List<Object> preparedStmtList) {
+
+        StringBuilder queryBuilder = new StringBuilder(FETCH_PROJECT_ADDRESS_QUERY);
+
+        // Check if tenant ID is provided in URL parameters
+        if (StringUtils.isNotBlank(tenantId)) {
+            addClauseIfRequired(preparedStmtList, queryBuilder);
+            if (!tenantId.contains(DOT)) {
+                // State level tenant ID: use LIKE for partial matching
+                log.info("State level tenant");
+                queryBuilder.append(" prj.tenantId like ? ");
+                preparedStmtList.add(tenantId + '%');
+            } else {
+                // City level tenant ID: use exact match
+                log.info("City level tenant");
+                queryBuilder.append(" prj.tenantId=? ");
+                preparedStmtList.add(tenantId);
+            }
+        }
+
+        // Wrap constructed SQL query with pagination criteria
+        return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, limit, offset);
+    }
 }

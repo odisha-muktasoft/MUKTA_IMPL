@@ -340,4 +340,13 @@ public class ProjectService {
     public Integer countAllProjects(ProjectSearchRequest projectSearchRequest, ProjectSearchURLParams urlParams) {
         return projectRepository.getProjectCount(projectSearchRequest.getProject(), urlParams);
     }
+
+    public List<Project> plainsearchProject(String tenantId, Integer limit, Integer offset) {
+        List<Project> projects = projectRepository.getProjectsForBulkSearch(tenantId, limit, offset);
+
+        // enrichment if needed
+
+        return projects;
+    }
+
 }
