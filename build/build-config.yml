@@ -132,7 +132,7 @@ config:
     build:
       - work-dir: "backend/project"
         image-name: "project"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
       - work-dir: "backend/project/src/main/resources/db"
         image-name: "project-db"
 
