@@ -295,7 +295,7 @@ def generateBasicInformations(connection, epoch_to):
     cursor.execute("""
         select tenantid as ulb, count(*) as employee 
         from eg_hrms_employee 
-        where active=true and lastmodifieddate <= %s 
+        where active=true 
         group by tenantid order by tenantid;
     """, (epoch_to,))
     result = cursor.fetchall()
