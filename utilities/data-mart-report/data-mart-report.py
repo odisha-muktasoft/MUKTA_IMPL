@@ -227,7 +227,7 @@ def getResponseFromExpenseCalculator(ids, tenant):
                 api_payload = {"criteria": {"tenantId": tenant, "musterRollId": id_batch},"RequestInfo": request_payload}
 
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload)).json()
-                if response["calculation"]["totalAmount"] is not None:
+                if "calculation" in response and response["calculation"] is not None and "totalAmount" in response["calculation"] and response["calculation"]["totalAmount"] is not None:
                     totalValueOfMusterRoll += response["calculation"]["totalAmount"]
 
     return totalValueOfMusterRoll
