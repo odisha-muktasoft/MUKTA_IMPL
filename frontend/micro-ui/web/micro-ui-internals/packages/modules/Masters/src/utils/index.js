@@ -20,6 +20,8 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
     const adhaar = individual?.identifiers?.find(item => item?.identifierType === 'AADHAAR')
     const socialCategory = individual?.additionalFields?.fields?.find(item => item?.key === "SOCIAL_CATEGORY")
     const skills = individual?.skills?.length > 0 ? individual?.skills?.map(skill => ({code: `${skill?.level}.${skill?.type}`, name: `COMMON_MASTERS_SKILLS_${skill?.level}.${skill?.type}`})) : ""
+
+    const aadhaarResponse = individual?.additionalFields?.fields?.find(item => item?.key === "aadhaar_response")
     
     let photo = ''
     try {
@@ -32,7 +34,10 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
         if(isModify) {
             configs.defaultValues.basicDetails_wageSeekerId = individual?.individualId ? individual?.individualId : ""
         }
-        configs.defaultValues.basicDetails_aadhar = adhaar ? adhaar?.identifierId : ""
+        configs.defaultValues.basicDetails_aadhar = individual?.identifiers?.length ? individual?.identifiers[0].identifierId : ""
+        configs.defaultValues.basicDetails_doc = individual?.identifiers?.length ? { code: individual?.identifiers[0].identifierType, name: individual?.identifiers[0].identifierType, active: true } : ""
+        configs.defaultValues.basicDetails_isVerified = individual?.additionalFields?.fields?.is_aadhaar_verified ? individual?.additionalFields?.fields?.is_aadhaar_verified : false
+        configs.defaultValues.basicDetails_aadhaarResponse = aadhaarResponse ? aadhaarResponse?.value : "{}"
         configs.defaultValues.basicDetails_wageSeekerName = individual?.name?.givenName ? individual?.name?.givenName : ""
         configs.defaultValues.basicDetails_fatherHusbandName = individual?.fatherName ? individual?.fatherName : ""
         configs.defaultValues.basicDetails_relationShip = individual?.relationship ? { code: individual?.relationship, name: `COMMON_MASTERS_RELATIONSHIP_${individual?.relationship}`, active: true } : ""
@@ -99,6 +104,8 @@ const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
 export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, tenantId, isModify}) => {
     let Individual = {}
 
+    const currentEpochTime = Math.floor(new Date().getTime() / 1000);
+
     Individual.tenantId = tenantId
     Individual.name = {
         givenName: formData?.basicDetails_wageSeekerName
@@ -116,7 +123,20 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
             fields: [{
                 key: "SOCIAL_CATEGORY",
                 value: formData?.basicDetails_socialCategory?.code
-            }]
+            },
+            {
+                key: "is_aadhaar_verified",
+                value: formData?.basicDetails_isVerified
+            },
+            {
+                key: "modification_time",
+                value: currentEpochTime // Add the current epoch time as the value
+            },
+            {
+                key: "aadhaar_response",
+                value: formData?.basicDetails_aadhaarResponse
+            }
+        ]
         }
     }
     
@@ -172,6 +192,8 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
         Individual.rowVersion = wageSeekerDataFromAPI?.individual?.rowVersion
         //here set the identifiers on Individual object
         Individual.identifiers = wageSeekerDataFromAPI?.individual?.identifiers
+        Individual.identifiers[0].identifierId = formData.basicDetails_aadhar
+        Individual.identifiers[0].identifierType = formData.basicDetails_doc.name
     }
     
     return {
