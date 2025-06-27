@@ -103,7 +103,7 @@ public class NotificationService {
         log.info("build Message For Reject Action");
         message = buildMessageForRejectAction(estimate, smsDetails, message);
         log.info("push message for REJECT Action");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails, estimate.getTenantId());
 
     }
 
@@ -128,7 +128,7 @@ public class NotificationService {
         }
         log.info("build Message For Approve Action for Estimate Creator");
         message = buildMessageForApproveActionCreator(estimate, smsDetails, message);
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails,estimate.getTenantId());
     }
 
 
@@ -288,19 +288,19 @@ public class NotificationService {
             additionalField.put("tenantId",request.getEstimate().getTenantId());
     }
 
-    private void checkAdditionalFieldAndPushONSmsTopic( String customizedMessage , Map<String, Object> additionalField,Map<String,String> smsDetails){
+    private void checkAdditionalFieldAndPushONSmsTopic( String customizedMessage , Map<String, Object> additionalField,Map<String,String> smsDetails, String tenantId){
 
 
         if(!additionalField.isEmpty()){
             WorksSmsRequest smsRequest=WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
                     .mobileNumber(smsDetails.get("mobileNumber")).build();
             log.info("SMS message with Additonal Fields:::::" + smsRequest.toString());
-            producer.push(config.getMuktaNotificationTopic(), smsRequest);
+            producer.push(tenantId,config.getMuktaNotificationTopic(), smsRequest);
 
         }else{
             SMSRequest smsRequest = SMSRequest.builder().mobileNumber(smsDetails.get("mobileNumber")).message(customizedMessage).build();
             log.info("SMS message without additional fields:::::" + smsRequest.toString());
-            producer.push(config.getSmsNotifTopic(), smsRequest);
+            producer.push(tenantId, config.getSmsNotifTopic(), smsRequest);
         }
     }
 
