@@ -21,7 +21,7 @@ SELECT count(*) from eg_user_backup;
 
 Step 4:
 List the tables and fields that need to be decrypted
-
+https://docs.google.com/spreadsheets/d/1JzIYpOjuxSR3qAEaQfRsw4TTez_6IqzX/edit?gid=1915980387#gid=1915980387
 
 
 Step 5:
@@ -35,9 +35,7 @@ Verify python3 is installed and the psycopg2 package is installed via pip3
 
 
 Step 7:
-Port forward the encryption service in portnumber 8094
-kubectl port-forward "${POD}" 8094:8080 -n egov
-
+Update the API details for the enc service
 
 
 Step 8:
