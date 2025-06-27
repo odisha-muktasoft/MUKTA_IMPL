@@ -7,9 +7,8 @@ Step 2:
 Copy the original table into a backup table.
 
 #Create backup table
-CREATE TABLE eg_user_backup AS SELECT * FROM eg_user;
-#Insert all data into the backup table
-INSERT INTO eg_user_backup SELECT * FROM eg_user;
+CREATE TABLE eg_user_decpt AS SELECT * FROM eg_user;
+
 
 
 
