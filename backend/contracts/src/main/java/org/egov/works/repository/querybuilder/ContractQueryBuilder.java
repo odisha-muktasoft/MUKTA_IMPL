@@ -8,6 +8,8 @@ import org.egov.works.web.models.ContractCriteria;
 import org.egov.works.web.models.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -297,5 +299,28 @@ public class ContractQueryBuilder {
 
     private void addToPreparedStatement(List<Object> preparedStmtList, Collection<String> ids) {
         preparedStmtList.addAll(ids);
+    }
+
+    public String getContractQueryForBulkSearch(ContractCriteria contractCriteria, List<Object> preparedStmtList) {
+        Boolean isEmpty = CollectionUtils.isEmpty(contractCriteria.getIds());
+
+        if(isEmpty)
+            throw new CustomException("EG_EST_SEARCH_ERROR"," No uuids given for the Estimate Bulk search");
+        StringBuilder builder = new StringBuilder(CONTRACT_SELECT_QUERY);
+
+        if(!ObjectUtils.isEmpty(contractCriteria.getTenantId()))
+        {
+            addClauseIfRequired(builder, preparedStmtList);
+            builder.append(" contract.tenant_id=? ");
+            preparedStmtList.add(contractCriteria.getTenantId());
+        }
+
+        if (!CollectionUtils.isEmpty(contractCriteria.getIds())) {
+            addClauseIfRequired(builder, preparedStmtList);
+            builder.append(" contract.id IN (").append(createQuery(contractCriteria.getIds())).append(")");
+            addToPreparedStatement(preparedStmtList, contractCriteria.getIds());
+        }
+
+        return addPaginationWrapper(builder.toString(), preparedStmtList, contractCriteria);
     }
 }

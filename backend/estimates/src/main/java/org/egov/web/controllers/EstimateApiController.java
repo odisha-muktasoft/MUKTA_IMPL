@@ -66,4 +66,14 @@ public class EstimateApiController {
         return new ResponseEntity<EstimateResponse>(estimateResponse, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<EstimateResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+                                                        @Valid @ModelAttribute EstimateSearchCriteria searchCriteria) {
+        List<Estimate> estimates = estimateService.searchEstimatePlainSearch(searchCriteria, requestInfoWrapper.getRequestInfo());
+        EstimateResponse response = EstimateResponse.builder().estimates(estimates).responseInfo(
+                        responseInfoCreator.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
