@@ -12,6 +12,7 @@ import logging
 import requests
 import psycopg2
 from psycopg2.extras import DictCursor, Json
+from psycopg2 import sql
 from datetime import datetime
 
 # ——— Configuration ——————————————————————————————————————————————
@@ -93,9 +94,17 @@ def migrate_jsonb():
     id_col = CONFIG["id_column"]
     jcol   = CONFIG["json_column"]
 
-    select_sql = f"SELECT {id_col}, {jcol} FROM {table} WHERE {jcol} IS NOT NULL"
+    select_sql = sql.SQL("SELECT {id_col}, {jcol} FROM {table} WHERE {jcol} IS NOT NULL FOR UPDATE SKIP LOCKED").format(
+        id_col=sql.Identifier(id_col),
+        jcol=sql.Identifier(jcol),
+        table=sql.Identifier(table)
+    )
 
     with psycopg2.connect(CONFIG["db"]["dsn"]) as conn:
+        # Avoid waiting forever on locks / long queries
+        with conn.cursor() as _c:
+            _c.execute("SET SESSION lock_timeout = '5s';")
+            _c.execute("SET SESSION statement_timeout = '60s';")
         with conn.cursor(cursor_factory=DictCursor) as cur:
             logger.info("Querying JSON rows: %s", select_sql)
             cur.execute(select_sql)
@@ -130,8 +139,23 @@ def migrate_jsonb():
                     data[k] = plain
 
                 # write back the JSONB
-                update_sql = f"UPDATE {table} SET {jcol} = %s WHERE {id_col} = %s"
-                cur.execute(update_sql, [Json(data), pk])
+                update_sql = sql.SQL("UPDATE {table} SET {jcol} = %s WHERE {id_col} = %s").format(
+                    table=sql.Identifier(table),
+                    jcol=sql.Identifier(jcol),
+                    id_col=sql.Identifier(id_col)
+                )
+                try:
+                    cur.execute(
+                        update_sql,
+                        [
+                            Json(data, dumps=lambda d: json.dumps(d, ensure_ascii=True, default=str)),
+                            pk,
+                        ],
+                    )
+                except Exception as e:
+                    logger.error("Row %s: update failed (will skip): %s", pk, e)
+                    conn.rollback()
+                    continue
                 logger.info("Row %s: JSON decrypted and updated keys %s", pk, list(decrypted))
 
             conn.commit()
