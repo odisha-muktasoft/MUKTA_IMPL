@@ -34,7 +34,7 @@ logger = logging.getLogger("program_disburse_migrator")
 logger.setLevel(logging.INFO)
 fmt = logging.Formatter("%(asctime)s %(levelname)-8s %(message)s")
 ch = logging.StreamHandler();   ch.setFormatter(fmt); logger.addHandler(ch)
-fh = logging.FileHandler(logfile); fh.setFormatter(fmt); logger.addHandler(fh)
+fh = logging.FileHandler(logfile, mode="a", encoding="utf-8"); fh.setFormatter(fmt); logger.addHandler(fh)
 
 
 def call_disburse_search(parent_id: str, location_code: str) -> dict:
@@ -87,7 +87,7 @@ def migrate_children(conn, children: list):
                WHERE id = %s
             """
             cur.execute(sql, [acct, Json(indiv), cid])
-            logger.info("  ➔ Updated child %s: account_code=%r", cid, acct)
+            logger.info("  -> Updated child %s: account_code=%r", cid, acct)
         conn.commit()
 
 
