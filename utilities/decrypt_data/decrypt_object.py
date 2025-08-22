@@ -1,3 +1,11 @@
+'''
+This is for mukta ifix adapter service table where individual details are encrypted using encryption service
+table names which will get decrypted using this script is 
+
+*   eg_mukta_ifms_disburse_decpt
+
+'''
+
 import os
 import json
 import logging
@@ -36,24 +44,47 @@ def decrypt_values(payload: dict) -> dict:
     returns: { key1: plain1, key2: plain2, … }
     """
     if not payload:
+        logger.debug("Empty payload provided for decryption")
         return {}
 
+    logger.debug("Attempting to decrypt %d fields: %s", len(payload), list(payload.keys()))
+    logger.debug("API URL: %s", CONFIG["decryption_api_url"])
+
     try:
+        # Log the request payload (without showing sensitive data)
+        logger.debug("Sending decrypt request with %d encrypted fields", len(payload))
+        
         resp = requests.post(
             CONFIG["decryption_api_url"],
             json=[payload],            # API expects a list of dicts
             headers={"Content-Type": "application/json"},
             timeout=10
         )
+        
+        logger.debug("Decrypt API response status: %d", resp.status_code)
         resp.raise_for_status()
+        
         result = resp.json()           # e.g. [ {key1: plain1}, {key2: plain2} ]
+        logger.debug("Decrypt API returned %d result entries", len(result))
+        
         out = {}
         for entry in result:
             out.update(entry)
+        
+        logger.info("Successfully decrypted %d fields: %s", len(out), list(out.keys()))
         return out
 
+    except requests.exceptions.Timeout as e:
+        logger.error("Decrypt API timeout after 10s for fields %s: %s", list(payload.keys()), e)
+        return {}
+    except requests.exceptions.RequestException as e:
+        logger.error("Decrypt API request error for fields %s: %s", list(payload.keys()), e)
+        return {}
+    except json.JSONDecodeError as e:
+        logger.error("Decrypt API returned invalid JSON for fields %s: %s", list(payload.keys()), e)
+        return {}
     except Exception as e:
-        logger.error("Decrypt API error for %r: %s", payload, e)
+        logger.error("Unexpected decrypt API error for fields %s: %s", list(payload.keys()), e)
         return {}
 
 
@@ -72,6 +103,7 @@ def migrate_jsonb():
             logger.info("Found %d rows with JSONB data", len(rows))
 
             for row in rows:
+                logger.info("Processing row %s", row[id_col])
                 pk = row[id_col]
                 data = row[jcol] or {}
                 if not isinstance(data, dict):
