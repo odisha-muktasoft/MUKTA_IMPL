@@ -19,8 +19,8 @@ CONFIG = {
     "db": {
         "dsn": ""
     },
-    "table": "eg_program_disburse" + "_decpt",
-    "api_url": "http://program-service-works.works:8080/mukta/program-service/v1/disburse/_search",
+    "table": "ifix.eg_program_disburse" + "_decpt",
+    "api_url": "http://program-service.ifix:8080/ifms/program-service/v1/disburse/_search",
     "log_dir": "logs"
 }
 
