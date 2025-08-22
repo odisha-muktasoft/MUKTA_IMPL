@@ -3,6 +3,7 @@
 '''
 import os
 import logging
+import json
 import requests
 import psycopg2
 from psycopg2.extras import DictCursor
@@ -105,10 +106,12 @@ formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(message)s")
 # Console handler
 ch = logging.StreamHandler()
 ch.setFormatter(formatter)
+ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 # File handler
-fh = logging.FileHandler(log_filename, mode="a")
+fh = logging.FileHandler(log_filename, mode="a", encoding="utf-8")
 fh.setFormatter(formatter)
+fh.setLevel(logging.INFO)
 logger.addHandler(fh)
 
 
@@ -123,7 +126,7 @@ def decrypt_values(encrypted_fields: dict) -> dict:
         return {}
 
     try:
-        logger.debug("Calling decrypt API for payload: %s", to_send)
+        logger.debug("Calling decrypt API for payload: %s", json.dumps(to_send, ensure_ascii=True))
         resp = requests.post(
             CONFIG["decryption_api_url"],
             json=[to_send],
@@ -135,7 +138,7 @@ def decrypt_values(encrypted_fields: dict) -> dict:
         decrypted = {}
         for item in result_list:
             decrypted.update(item)
-        logger.info("Decrypted → %s", decrypted)
+        logger.info("Decrypted -> %s", json.dumps(decrypted, ensure_ascii=True))
         return decrypted
 
     except requests.RequestException as e:
