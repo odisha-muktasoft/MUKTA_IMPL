@@ -367,8 +367,8 @@ def main():
     print(f"Output Directory: {OUTPUT_DIR}")
     print("=" * 50)
     print("File naming convention:")
-    print("• public schema: tablename.xlsx")
-    print("• ifix schema: ifix_tablename.xlsx")
+    print("- public schema: tablename.xlsx")
+    print("- ifix schema: ifix_tablename.xlsx")
     print("=" * 50)
     
     # Create exporter instance
@@ -391,7 +391,7 @@ def main():
             else:
                 print(f"\nWARNING: Export completed with data integrity issues. Please check the summary above.")
         else:
-            print("\n❌ No tables were exported")
+            print("\nERROR: No tables were exported")
             sys.exit(1)
             
     except KeyboardInterrupt:
