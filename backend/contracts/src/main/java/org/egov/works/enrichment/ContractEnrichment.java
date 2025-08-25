@@ -502,7 +502,7 @@ public class ContractEnrichment {
                     if (APPROVE_ACTION.equalsIgnoreCase(contractRequest.getWorkflow().getAction())) {
                         markContractAndDocumentsStatus(contractRequestFromDB, Status.INACTIVE);
                         markLineItemsAndAmountBreakupsStatus(contractRequestFromDB, Status.INACTIVE);
-                        contractProducer.push(config.getUpdateContractTopic(), contractRequestFromDB);
+                        contractProducer.push(contractRequest.getContract().getTenantId(),config.getUpdateContractTopic(), contractRequestFromDB);
                         // Push updated end date to kafka topic to update attendance register end date
                         JsonNode requestInfo = mapper.convertValue(contractRequest.getRequestInfo(), JsonNode.class);
                         JsonNode attendanceContractRevisionRequest = mapper.createObjectNode()
@@ -512,14 +512,14 @@ public class ContractEnrichment {
                                 .put("endDate", contractRequest.getContract().getEndDate());
 
                         log.info("Pushing updated end date to attendance register end date update topic");
-                        contractProducer.push(config.getUpdateTimeExtensionTopic(), attendanceContractRevisionRequest);
+                        contractProducer.push(contractRequest.getContract().getTenantId(),config.getUpdateTimeExtensionTopic(), attendanceContractRevisionRequest);
                     }
                     break;
                 }
                 case CONTRACT_REVISION_ESTIMATE: {
                     markContractAndDocumentsStatus(contractRequestFromDB, Status.INACTIVE);
                     markLineItemsAndAmountBreakupsStatus(contractRequestFromDB, Status.INACTIVE);
-                    contractProducer.push(config.getUpdateContractTopic(), contractRequestFromDB);
+                    contractProducer.push(contractRequest.getContract().getTenantId(),config.getUpdateContractTopic(), contractRequestFromDB);
                     break;
                 }
                 default:

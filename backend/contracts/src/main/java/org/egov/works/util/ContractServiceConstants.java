@@ -119,4 +119,6 @@ public class ContractServiceConstants {
     public static final String REJECTED_STATUS = "REJECTED";
 
     public static final String SUBMIT="SUBMIT";
+
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
 }

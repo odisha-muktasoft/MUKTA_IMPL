@@ -370,7 +370,7 @@ public class ContractServiceValidator {
                 estimatedLineItemIdsList.add(estimateLineItemId);
             }
         }
-        ContractCriteria contractCriteria = ContractCriteria.builder().estimateLineItemIds(estimatedLineItemIdsList).build();
+        ContractCriteria contractCriteria = ContractCriteria.builder().tenantId(contract.getTenantId()).estimateLineItemIds(estimatedLineItemIdsList).build();
         List<LineItems> fetchedLineItems = lineItemsRepository.getLineItems(contractCriteria);
         List<LineItems> filteredLineItems = fetchedLineItems.stream().filter(e -> e.getStatus().equals(Status.ACTIVE)).collect(Collectors.toList());
         if (!filteredLineItems.isEmpty()) {
@@ -404,7 +404,7 @@ public class ContractServiceValidator {
             }
         }
 
-        ContractCriteria contractCriteria = ContractCriteria.builder().estimateLineItemIds(estimatedLineItemIds).build();
+        ContractCriteria contractCriteria = ContractCriteria.builder().tenantId(contract.getTenantId()).estimateLineItemIds(estimatedLineItemIds).build();
         List<LineItems> fetchedLineItems = lineItemsRepository.getLineItems(contractCriteria);
 
         if (!fetchedLineItems.isEmpty()) {

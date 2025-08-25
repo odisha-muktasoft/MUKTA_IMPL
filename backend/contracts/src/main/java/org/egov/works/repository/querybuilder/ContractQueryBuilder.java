@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 @Slf4j
 public class ContractQueryBuilder {
@@ -83,13 +85,13 @@ public class ContractQueryBuilder {
             "amountBreakups.created_time AS amtCreatedTime, " +
             "amountBreakups.last_modified_time AS amtLastModifiedTime " +
 
-            "FROM eg_wms_contract AS contract " +
-            "LEFT JOIN eg_wms_contract_documents AS document " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_contract AS contract " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_wms_contract_documents AS document " +
             "ON contract.id = document.contract_id " +
-            "LEFT JOIN eg_wms_contract_line_items AS lineItems " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_wms_contract_line_items AS lineItems " +
             "ON contract.id = lineItems.contract_id " +
-            "LEFT JOIN " +
-            "eg_wms_contract_amount_breakups as amountBreakups " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_wms_contract_amount_breakups as amountBreakups " +
             "ON lineItems.id=amountBreakups.line_item_id ";
 
     private static final String PAGINATION_WRAPPER = "SELECT * FROM " +

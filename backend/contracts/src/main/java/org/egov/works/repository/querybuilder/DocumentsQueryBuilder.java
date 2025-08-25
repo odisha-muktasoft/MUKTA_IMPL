@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 public class DocumentsQueryBuilder {
 
@@ -20,7 +22,7 @@ public class DocumentsQueryBuilder {
             "document.last_modified_by AS lastModifiedBy, " +
             "document.created_time AS createdTime, " +
             "document.last_modified_time AS lastModifiedTime " +
-            "FROM eg_wms_contract_documents AS document ";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_contract_documents AS document ";
 
 
     public String getDocumentSearchQuery(ContractCriteria criteria, List<Object> preparedStmtList) {

@@ -70,5 +70,6 @@ public class ServiceConstants {
     public  static final String SENT_BACK="SENT_BACK";
     public static final String SEND_BACK_TO_ORIGINATOR="SEND_BACK_TO_ORIGINATOR";
 
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
 
 }

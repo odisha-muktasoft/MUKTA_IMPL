@@ -1,16 +1,16 @@
 package org.egov.service;
 
-import ch.qos.logback.core.BasicStatusManager;
 import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.common.models.project.Project;
+import org.egov.kafka.AttendanceProducer;
+import org.egov.util.CommonUtils;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.RegisterEnrichment;
 import org.egov.enrichment.StaffEnrichmentService;
-import org.egov.common.producer.Producer;
 import org.egov.repository.AttendeeRepository;
 import org.egov.repository.RegisterRepository;
 import org.egov.repository.StaffRepository;
@@ -34,7 +34,7 @@ public class AttendanceRegisterService {
 
     private final ResponseInfoFactory responseInfoFactory;
 
-    private final Producer producer;
+    private final AttendanceProducer attendanceProducer;
 
     private final AttendanceServiceConfiguration attendanceServiceConfiguration;
 
@@ -48,13 +48,16 @@ public class AttendanceRegisterService {
     private final AttendeeRepository attendeeRepository;
 
     private final StaffEnrichmentService staffEnrichmentService;
+
     private final IndividualServiceUtil individualServiceUtil;
 
+    private CommonUtils commonUtils;
+
     @Autowired
-    public AttendanceRegisterService(AttendanceServiceValidator attendanceServiceValidator, ResponseInfoFactory responseInfoFactory, Producer producer, AttendanceServiceConfiguration attendanceServiceConfiguration, RegisterEnrichment registerEnrichment, StaffRepository staffRepository, RegisterRepository registerRepository, AttendeeRepository attendeeRepository, StaffEnrichmentService staffEnrichmentService, IndividualServiceUtil individualServiceUtil) {
+    public AttendanceRegisterService(AttendanceServiceValidator attendanceServiceValidator, ResponseInfoFactory responseInfoFactory, AttendanceProducer attendanceProducer, AttendanceServiceConfiguration attendanceServiceConfiguration, RegisterEnrichment registerEnrichment, StaffRepository staffRepository, RegisterRepository registerRepository, AttendeeRepository attendeeRepository, StaffEnrichmentService staffEnrichmentService, IndividualServiceUtil individualServiceUtil, CommonUtils commonUtils) {
         this.attendanceServiceValidator = attendanceServiceValidator;
         this.responseInfoFactory = responseInfoFactory;
-        this.producer = producer;
+        this.attendanceProducer = attendanceProducer;
         this.attendanceServiceConfiguration = attendanceServiceConfiguration;
         this.registerEnrichment = registerEnrichment;
         this.staffRepository = staffRepository;
@@ -62,6 +65,7 @@ public class AttendanceRegisterService {
         this.attendeeRepository = attendeeRepository;
         this.staffEnrichmentService = staffEnrichmentService;
         this.individualServiceUtil = individualServiceUtil;
+        this.commonUtils = commonUtils;
     }
 
     /**
@@ -74,7 +78,9 @@ public class AttendanceRegisterService {
         attendanceServiceValidator.validateCreateAttendanceRegister(request);
         registerEnrichment.enrichRegisterOnCreate(request);
         log.info("Enriched Register with Register number, Ids, first staff and audit details");
-        producer.push(attendanceServiceConfiguration.getSaveAttendanceRegisterTopic(), request);
+
+        String tenantId = request.getAttendanceRegister().get(0).getTenantId();
+        attendanceProducer.push(tenantId,attendanceServiceConfiguration.getSaveAttendanceRegisterTopic(), request);
         log.info("Pushed create attendance register request to kafka");
         return request;
     }
@@ -114,7 +120,7 @@ public class AttendanceRegisterService {
             Long userId = requestInfoWrapper.getRequestInfo().getUserInfo().getId();
 
             String individualId = individualServiceUtil.getIndividualDetailsFromUserId(userId,requestInfoWrapper.getRequestInfo(), searchCriteria.getTenantId()).get(0).getId();
-            Set<String> registers = fetchRegistersAssociatedToLoggedInStaffUser(individualId);
+            Set<String> registers = fetchRegistersAssociatedToLoggedInStaffUser(individualId,searchCriteria.getTenantId());
             updateSearchCriteriaAndFetchAndFilterRegisters(registers, searchCriteria, resultAttendanceRegisters);
         }
         return resultAttendanceRegisters;
@@ -231,9 +237,9 @@ public class AttendanceRegisterService {
     private List<IndividualEntry> fetchAllAttendeesAssociatedToRegisterIds(List<String> registerIdsToSearch, AttendanceRegisterSearchCriteria searchCriteria) {
         AttendeeSearchCriteria attendeeSearchCriteria = null;
         if(searchCriteria.getAttendeeId() != null){
-            attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIdsToSearch).individualIds(Collections.singletonList(searchCriteria.getAttendeeId())).build();
+            attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIdsToSearch).tenantId(searchCriteria.getTenantId()).individualIds(Collections.singletonList(searchCriteria.getAttendeeId())).build();
         } else {
-            attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIdsToSearch).build();
+            attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIdsToSearch).tenantId(searchCriteria.getTenantId()).build();
         }
         return attendeeRepository.getAttendees(attendeeSearchCriteria);
     }
@@ -242,9 +248,9 @@ public class AttendanceRegisterService {
     private List<StaffPermission> fetchAllStaffMembersAssociatedToRegisterIds(List<String> registerIdsToSearch, AttendanceRegisterSearchCriteria searchCriteria) {
         StaffSearchCriteria staffSearchCriteria = null ;
         if(searchCriteria.getStaffId() != null){
-            staffSearchCriteria = StaffSearchCriteria.builder().registerIds(registerIdsToSearch).individualIds(Collections.singletonList(searchCriteria.getStaffId())).build();
+            staffSearchCriteria = StaffSearchCriteria.builder().registerIds(registerIdsToSearch).tenantId(searchCriteria.getTenantId()).individualIds(Collections.singletonList(searchCriteria.getStaffId())).build();
         } else {
-            staffSearchCriteria = StaffSearchCriteria.builder().registerIds(registerIdsToSearch).build();
+            staffSearchCriteria = StaffSearchCriteria.builder().registerIds(registerIdsToSearch).tenantId(searchCriteria.getTenantId()).build();
         }
         return staffRepository.getAllStaff(staffSearchCriteria);
     }
@@ -259,17 +265,17 @@ public class AttendanceRegisterService {
     }
 
     /* Get all registers associated for the logged in staff  */
-    private Set<String> fetchRegistersAssociatedToLoggedInStaffUser(String uuid) {
+    private Set<String> fetchRegistersAssociatedToLoggedInStaffUser(String uuid, String tenantId) {
         List<String> individualIds = new ArrayList<>();
         individualIds.add(uuid);
-        StaffSearchCriteria staffSearchCriteria = StaffSearchCriteria.builder().individualIds(individualIds).build();
+        StaffSearchCriteria staffSearchCriteria = StaffSearchCriteria.builder().individualIds(individualIds).tenantId(tenantId).build();
         List<StaffPermission> staffMembers = staffRepository.getAllStaff(staffSearchCriteria);
         return staffMembers.stream().map(e -> e.getRegisterId()).collect(Collectors.toSet());
     }
 
     /* Get all registers associated for the logged in attendee  */
-    private Set<String> fetchRegistersAssociatedToLoggedInAttendeeUser(String uuid) {
-        AttendeeSearchCriteria attendeeSearchCriteria = AttendeeSearchCriteria.builder().individualIds(Collections.singletonList(uuid)).build();
+    private Set<String> fetchRegistersAssociatedToLoggedInAttendeeUser(String uuid, String tenantId) {
+        AttendeeSearchCriteria attendeeSearchCriteria = AttendeeSearchCriteria.builder().individualIds(Collections.singletonList(uuid)).tenantId(tenantId).build();
         List<IndividualEntry> attendees = attendeeRepository.getAttendees(attendeeSearchCriteria);
         return attendees.stream().map(e -> e.getRegisterId()).collect(Collectors.toSet());
     }
@@ -297,7 +303,7 @@ public class AttendanceRegisterService {
 
         registerEnrichment.enrichRegisterOnUpdate(attendanceRegisterRequest, attendanceRegistersFromDB);
         log.info("Enriched with register Number, Ids and AuditDetails");
-        producer.push(attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
+        attendanceProducer.push(tenantId, attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
         log.info("Pushed update attendance register request to kafka");
 
         return attendanceRegisterRequest;
@@ -332,7 +338,9 @@ public class AttendanceRegisterService {
                             .build();
                     registerEnrichment.enrichRegisterOnUpdate(attendanceRegisterRequest, updatedRegisters);
                     log.info("Pushing update attendance register request to kafka");
-                    producer.push(attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
+
+                    String tenantId = commonUtils.getTenantId(projects);
+                    attendanceProducer.push(tenantId, attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
                     log.info("Pushed update attendance register request to kafka");
                 }
             });
@@ -399,7 +407,7 @@ public class AttendanceRegisterService {
                         requestInfo(requestInfo).build();
 
                 registerEnrichment.enrichRegisterOnUpdate(attendanceRegisterRequest, Collections.singletonList(attendanceRegister));
-                producer.push(attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
+                attendanceProducer.push(tenantId, attendanceServiceConfiguration.getUpdateAttendanceRegisterTopic(), attendanceRegisterRequest);
             }
         }else {
             throw new CustomException("ATTENDANCE_REGISTER_NOT_FOUND", "Attendance registers not found for the referenceId");

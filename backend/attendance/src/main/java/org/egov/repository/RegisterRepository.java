@@ -1,8 +1,10 @@
 package org.egov.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.exception.InvalidTenantIdException;
 import org.egov.repository.querybuilder.RegisterQueryBuilder;
 import org.egov.repository.rowmapper.RegisterRowMapper;
+import org.egov.tracer.model.CustomException;
 import org.egov.web.models.AttendanceRegister;
 import org.egov.web.models.AttendanceRegisterSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.egov.config.Constants.INVALID_TENANT_ID;
 
 @Repository
 @Slf4j
@@ -31,7 +35,13 @@ public class RegisterRepository {
 
     public List<AttendanceRegister> getRegister(AttendanceRegisterSearchCriteria searchCriteria) {
         List<Object> preparedStmtList = new ArrayList<>();
-        String query = queryBuilder.getAttendanceRegisterSearchQuery(searchCriteria, preparedStmtList);
+        String query = null;
+        // Wrap query construction in try-catch to handle invalid tenant scenarios gracefully
+        try {
+            query = queryBuilder.getAttendanceRegisterSearchQuery(searchCriteria, preparedStmtList);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+        }
         log.info("Query of get register : " + query);
         log.info("preparedStmtList of get register : " + preparedStmtList.toString());
         List<AttendanceRegister> attendanceRegisterList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());

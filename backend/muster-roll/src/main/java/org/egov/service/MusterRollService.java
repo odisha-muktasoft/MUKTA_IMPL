@@ -128,7 +128,7 @@ public class MusterRollService {
         calculationService.createAttendance(musterRollRequest,true);
         workflowService.updateWorkflowStatus(musterRollRequest);
 
-        musterRollProducer.push(serviceConfiguration.getSaveMusterRollTopic(), musterRollRequest);
+        musterRollProducer.push(musterRollRequest.getMusterRoll().getTenantId(),serviceConfiguration.getSaveMusterRollTopic(), musterRollRequest);
         return musterRollRequest;
     }
 
@@ -211,7 +211,7 @@ public class MusterRollService {
             calculationService.updateAttendance(musterRollRequest,mdmsData);
         }
         workflowService.updateWorkflowStatus(musterRollRequest);
-        musterRollProducer.push(serviceConfiguration.getUpdateMusterRollTopic(), musterRollRequest);
+        musterRollProducer.push(tenantId, serviceConfiguration.getUpdateMusterRollTopic(), musterRollRequest);
 
         try {
             notificationService.sendNotificationToCBO(musterRollRequest);
@@ -221,7 +221,7 @@ public class MusterRollService {
 
         //If the musterroll is in 'APPROVED' status, push the musterRoll to calculate topic to be processed by expense-calculator service
         if (StringUtils.isNotBlank(musterRollRequest.getMusterRoll().getMusterRollStatus()) && STATUS_APPROVED.equalsIgnoreCase(musterRollRequest.getMusterRoll().getMusterRollStatus())) {
-            musterRollProducer.push(serviceConfiguration.getCalculateMusterRollTopic(), musterRollRequest);
+            musterRollProducer.push(tenantId, serviceConfiguration.getCalculateMusterRollTopic(), musterRollRequest);
         }
 
         return musterRollRequest;

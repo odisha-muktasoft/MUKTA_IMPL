@@ -1,6 +1,7 @@
 package org.egov.kafka;
 
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.tracer.kafka.CustomKafkaTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,16 @@ import org.springframework.stereotype.Service;
 
 @Service("bankAccountProducer")
 @Slf4j
-public class Producer {
+public class BankAccountProducer {
 
     @Autowired
     private CustomKafkaTemplate<String, Object> kafkaTemplate;
 
-    public void push(String topic, Object value) {
-        kafkaTemplate.send(topic, value);
+    @Autowired
+    private MultiStateInstanceUtil multiStateInstanceUtil;
+
+    public void push(String tenantId, String topic , Object value){
+        String updatedTopic = multiStateInstanceUtil.getStateSpecificTopicName(tenantId,topic);
+        kafkaTemplate.send(updatedTopic,value);
     }
 }

@@ -15,8 +15,13 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
+
+import static org.egov.util.EstimateServiceConstant.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 @Slf4j
@@ -28,11 +33,14 @@ public class EstimateRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
+
     @Autowired
-    public EstimateRepository(EstimateRowMapper rowMapper, EstimateQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate) {
+    public EstimateRepository(EstimateRowMapper rowMapper, EstimateQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.rowMapper = rowMapper;
         this.queryBuilder = queryBuilder;
         this.jdbcTemplate = jdbcTemplate;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
 
@@ -49,6 +57,13 @@ public class EstimateRepository {
             searchCriteria.setIsCountNeeded(Boolean.FALSE);
         }
         String query = queryBuilder.getEstimateQuery(searchCriteria, preparedStmtList);
+
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, searchCriteria.getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
+
         return jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
     }
 
@@ -66,6 +81,13 @@ public class EstimateRepository {
         if (query == null)
             return 0;
 
-        return jdbcTemplate.queryForObject(query, preparedStatement.toArray(), Integer.class);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
+
+
+        return jdbcTemplate.queryForObject(query, Integer.class, preparedStatement.toArray());
     }
 }

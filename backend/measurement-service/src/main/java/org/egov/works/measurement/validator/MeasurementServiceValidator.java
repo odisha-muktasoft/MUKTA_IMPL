@@ -115,7 +115,9 @@ public class MeasurementServiceValidator {
             mbNumbers.add(measurementService.getMeasurementNumber());
         }
 
-        List<MeasurementService> existingMeasurementService = serviceRequestRepository.getMeasurementServicesFromMBSTable(namedParameterJdbcTemplate, mbNumbers);
+        String tenantId = measurementServiceRequest.getMeasurements().get(0).getTenantId();
+
+        List<MeasurementService> existingMeasurementService = serviceRequestRepository.getMeasurementServicesFromMBSTable(namedParameterJdbcTemplate, mbNumbers, tenantId);
         enrichMeasurementServiceWithMeasurement(existingMeasurementService,measurementServiceRequest);
         if(existingMeasurementService.size()!=measurementServiceRequest.getMeasurements().size()){
             throw new CustomException(MEASUREMENT_SERVICE_DATA_NOT_EXIST_CODE, MEASUREMENT_SERVICE_DATA_NOT_EXIST_MSG);

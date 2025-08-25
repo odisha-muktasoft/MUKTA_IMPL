@@ -67,6 +67,7 @@ public class BillService {
 		Bill bill = billRequest.getBill();
 		RequestInfo requestInfo = billRequest.getRequestInfo();
 		BillResponse response = null;
+		String tenantId = bill.getTenantId();
 
 		validator.validateCreateRequest(billRequest);
 		enrichmentUtil.encrichBillForCreate(billRequest);
@@ -85,7 +86,7 @@ public class BillService {
 			bill.setStatus(Status.ACTIVE);
 		}
 
-		expenseProducer.push(config.getBillCreateTopic(), billRequest);
+		expenseProducer.push(tenantId, config.getBillCreateTopic(), billRequest);
 		
 		response = BillResponse.builder()
 				.bills(Arrays.asList(billRequest.getBill()))
@@ -105,6 +106,7 @@ public class BillService {
 		Bill bill = billRequest.getBill();
 		RequestInfo requestInfo = billRequest.getRequestInfo();
 		BillResponse response = null;
+		String tenantId = bill.getTenantId();
 
 		List<Bill> billsFromSearch = validator.validateUpdateRequest(billRequest);
 		enrichmentUtil.encrichBillWithUuidAndAuditForUpdate(billRequest, billsFromSearch);
@@ -119,8 +121,8 @@ public class BillService {
 		}catch (Exception e){
 			log.error("Exception while sending notification: " + e);
 		}
-		
-		expenseProducer.push(config.getBillUpdateTopic(), billRequest);
+
+		expenseProducer.push(tenantId, config.getBillCreateTopic(), billRequest);
 		response = BillResponse.builder()
 				.bills(Arrays.asList(billRequest.getBill()))
 				.responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true))

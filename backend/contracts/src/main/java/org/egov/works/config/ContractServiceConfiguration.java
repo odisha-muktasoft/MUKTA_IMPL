@@ -119,6 +119,9 @@ public class ContractServiceConfiguration {
     @Value("${contracts.revision.topic}")
     private String updateTimeExtensionTopic;
 
+    @Value("${estimate.kafka.update.topic}")
+    private String updateEstimateTopic;
+
     //attendance service register search config
     @Value("${contract.default.offset}")
     private Integer contractDefaultOffset;
