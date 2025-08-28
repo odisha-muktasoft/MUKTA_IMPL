@@ -12,12 +12,12 @@ public class EstimateProducer {
 
     private final CustomKafkaTemplate<String, Object> kafkaTemplate;
 
-    @Autowired
-    private MultiStateInstanceUtil multiStateInstanceUtil;
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
 
     @Autowired
-    public EstimateProducer(CustomKafkaTemplate<String, Object> kafkaTemplate) {
+    public EstimateProducer(CustomKafkaTemplate<String, Object> kafkaTemplate, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.kafkaTemplate = kafkaTemplate;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
     public void push( String topic, Object value) {
