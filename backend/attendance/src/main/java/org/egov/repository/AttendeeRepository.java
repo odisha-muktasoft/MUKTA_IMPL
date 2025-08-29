@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.egov.config.Constants.INVALID_TENANT_ID;
+import static org.egov.config.Constants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 public class AttendeeRepository {
@@ -37,7 +37,7 @@ public class AttendeeRepository {
         try {
             query = queryBuilder.getAttendanceAttendeeSearchQuery( searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         List<IndividualEntry> attendanceStaffList = jdbcTemplate.query(query, attendeeRowMapper, preparedStmtList.toArray());
         return attendanceStaffList;

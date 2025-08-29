@@ -22,7 +22,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import static org.egov.config.Constants.INVALID_TENANT_ID;
+import static org.egov.config.Constants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 @Slf4j
@@ -56,7 +56,7 @@ public class AttendanceLogRepository extends GenericRepository<AttendanceLog> {
         try {
             query = queryBuilder.getAttendanceLogSearchQuery(searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         log.info("Query build successfully");
         List<AttendanceLog> attendanceLogList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
@@ -71,7 +71,7 @@ public class AttendanceLogRepository extends GenericRepository<AttendanceLog> {
         try {
             query = queryBuilder.getAttendanceLogSearchQuery( searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         log.info("Query build successfully. Based on Individual Ids ["+searchCriteria.getIndividualIds().toString()+"]");
         List<AttendanceLog> attendanceLogList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());

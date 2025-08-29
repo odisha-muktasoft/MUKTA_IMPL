@@ -14,8 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.egov.config.Constants.INVALID_TENANT_ID;
-import static org.egov.config.Constants.INVALID_TENANT_ID_MSG;
+import static org.egov.config.Constants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 @Slf4j
@@ -40,7 +39,7 @@ public class StaffRepository {
         try {
             query = queryBuilder.getActiveAttendanceStaffSearchQuery( searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         List<StaffPermission> attendanceStaffList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         return attendanceStaffList;
@@ -53,7 +52,7 @@ public class StaffRepository {
         try {
             query = queryBuilder.getAttendanceStaffSearchQuery( searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         List<StaffPermission> attendanceStaffList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         return attendanceStaffList;
@@ -71,7 +70,7 @@ public class StaffRepository {
         try {
             query = queryBuilder.appendOrderLimit(queryBuilder.getAttendanceStaffSearchQuery( searchCriteria, preparedStmtList));
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         List<StaffPermission> attendanceStaffList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         return attendanceStaffList;

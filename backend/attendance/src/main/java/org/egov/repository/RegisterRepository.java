@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.egov.config.Constants.INVALID_TENANT_ID;
+import static org.egov.config.Constants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 @Slf4j
@@ -40,7 +40,7 @@ public class RegisterRepository {
         try {
             query = queryBuilder.getAttendanceRegisterSearchQuery(searchCriteria, preparedStmtList);
         } catch (InvalidTenantIdException e) {
-            throw new CustomException(INVALID_TENANT_ID, e.getMessage());
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
         log.info("Query of get register : " + query);
         log.info("preparedStmtList of get register : " + preparedStmtList.toString());
