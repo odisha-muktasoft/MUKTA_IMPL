@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.AttendanceLogEnrichment;
 import org.egov.helper.AttendanceLogRequestTestBuilder;
-import org.egov.common.producer.Producer;
+import org.egov.kafka.AttendanceProducer;
 import org.egov.repository.AttendanceLogRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.ResponseInfoFactory;
@@ -33,7 +33,6 @@ public class AttendanceLogServiceTest {
     @Mock
     private AttendanceLogServiceValidator attendanceLogServiceValidator;
 
-
     @Mock
     private ResponseInfoFactory responseInfoFactory;
 
@@ -42,7 +41,7 @@ public class AttendanceLogServiceTest {
     private AttendanceLogEnrichment attendanceLogEnricher;
 
     @Mock
-    private Producer producer;
+    private AttendanceProducer producer;
 
     @Mock
     private AttendanceServiceConfiguration config;
@@ -51,17 +50,18 @@ public class AttendanceLogServiceTest {
     @DisplayName("create attendance log successfully")
     @Test
     public void createAttendanceLogTest_1(){
+
         AttendanceLogRequest attendanceLogRequest = AttendanceLogRequestTestBuilder.builder().withRequestInfo().addGoodAttendanceLog().build();
-        when(config.getCreateAttendanceLogTopic()).thenReturn("save-attendance-log");
+        String tenantId = attendanceLogRequest.getAttendance().get(0).getTenantId();
+        String configTopic = "save-attendance-log";
+
+        when(config.getCreateAttendanceLogTopic()).thenReturn(configTopic);
 
         attendanceLogService.createAttendanceLog(attendanceLogRequest);
 
         verify(attendanceLogServiceValidator, times(1)).validateCreateAttendanceLogRequest(attendanceLogRequest);
-
         verify(attendanceLogEnricher, times(1)).enrichAttendanceLogCreateRequest(attendanceLogRequest);
-
-        verify(producer, times(1)).push(eq("save-attendance-log"), any(AttendanceLogRequest.class));
-
+        verify(producer, times(1)).push(eq(tenantId), eq(configTopic), any(AttendanceLogRequest.class));
         assertNotNull(attendanceLogRequest.getAttendance());
     }
 }
