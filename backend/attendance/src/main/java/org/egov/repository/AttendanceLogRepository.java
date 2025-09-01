@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.data.query.builder.SelectQueryBuilder;
 import org.egov.common.data.repository.GenericRepository;
+import org.egov.common.exception.InvalidTenantIdException;
 import org.egov.common.producer.Producer;
 import org.egov.repository.querybuilder.AttendanceLogQueryBuilder;
 import org.egov.repository.rowmapper.AttendanceLogRowMapper;
+import org.egov.tracer.model.CustomException;
 import org.egov.web.models.AttendanceLog;
 import org.egov.web.models.AttendanceLogSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+
+import static org.egov.config.Constants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 @Slf4j
@@ -34,10 +38,11 @@ public class AttendanceLogRepository extends GenericRepository<AttendanceLog> {
             RedisTemplate<String, Object> redisTemplate,
             SelectQueryBuilder selectQueryBuilder,
             AttendanceLogRowMapper rowMapper,
-            JdbcTemplate jdbcTemplate) {
+            JdbcTemplate jdbcTemplate,
+            AttendanceLogQueryBuilder queryBuilder) {
         super(producer, namedParameterJdbcTemplate, redisTemplate, selectQueryBuilder, null, Optional.of("abc"));
         this.rowMapper = rowMapper;
-        this.queryBuilder = new AttendanceLogQueryBuilder();
+        this.queryBuilder = queryBuilder;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -46,7 +51,13 @@ public class AttendanceLogRepository extends GenericRepository<AttendanceLog> {
         List<Object> preparedStmtList = new ArrayList<>();
         if(!StringUtils.isBlank(searchCriteria.getRegisterId())) log.info("Fetching Attendance Log list. RegisterId ["+searchCriteria.getRegisterId()+"]");
         if(!CollectionUtils.isEmpty(searchCriteria.getClientReferenceId())) log.info("Fetching Attendance Log list. ClientReferenceIds "+searchCriteria.getClientReferenceId());
-        String query = queryBuilder.getAttendanceLogSearchQuery(searchCriteria, preparedStmtList);
+        String query = null;
+        // Wrap query construction in try-catch to handle invalid tenant scenarios gracefully
+        try {
+            query = queryBuilder.getAttendanceLogSearchQuery(searchCriteria, preparedStmtList);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         log.info("Query build successfully");
         List<AttendanceLog> attendanceLogList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         log.info("Fetched Attendance Log list");
@@ -55,7 +66,13 @@ public class AttendanceLogRepository extends GenericRepository<AttendanceLog> {
     public List<AttendanceLog> getAttendanceLogsBasedOnIndividualId(AttendanceLogSearchCriteria searchCriteria) {
         List<Object> preparedStmtList = new ArrayList<>();
         log.info("Fetching Attendance Log list. Based on Individual Ids ["+searchCriteria.getIndividualIds().toString()+"]");
-        String query = queryBuilder.getAttendanceLogSearchQuery(searchCriteria, preparedStmtList);
+        String query = null;
+        // Wrap query construction in try-catch to handle invalid tenant scenarios gracefully
+        try {
+            query = queryBuilder.getAttendanceLogSearchQuery( searchCriteria, preparedStmtList);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         log.info("Query build successfully. Based on Individual Ids ["+searchCriteria.getIndividualIds().toString()+"]");
         List<AttendanceLog> attendanceLogList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         log.info("Fetched Attendance Log list. Based on Individual Ids ["+searchCriteria.getIndividualIds().toString()+"]");

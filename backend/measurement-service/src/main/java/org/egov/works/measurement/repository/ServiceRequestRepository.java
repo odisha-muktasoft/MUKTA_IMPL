@@ -4,6 +4,9 @@ package org.egov.works.measurement.repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
+import org.egov.tracer.model.CustomException;
 import org.egov.tracer.model.ServiceCallException;
 import org.egov.works.measurement.repository.rowmapper.MeasurementServiceRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.egov.works.measurement.config.ServiceConstants.EXTERNAL_SERVICE_EXCEPTION;
-import static org.egov.works.measurement.config.ServiceConstants.SEARCHER_SERVICE_EXCEPTION;
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+import static org.egov.works.measurement.config.ServiceConstants.*;
 
 @Repository
 @Slf4j
@@ -29,13 +32,16 @@ public class ServiceRequestRepository {
 
     private RestTemplate restTemplate;
 
-    private String getMeasurementServiceSql = "SELECT * FROM eg_mbs_measurements WHERE mbNumber IN (:mbNumbers)";
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
+
+    private String getMeasurementServiceSql = "SELECT * FROM " + SCHEMA_REPLACE_STRING + ".eg_mbs_measurements WHERE mbNumber IN (:mbNumbers)";
 
 
     @Autowired
-    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate) {
+    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.mapper = mapper;
         this.restTemplate = restTemplate;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
 
@@ -54,15 +60,22 @@ public class ServiceRequestRepository {
         return response;
     }
 
-    public List<org.egov.works.measurement.web.models.MeasurementService> getMeasurementServicesFromMBSTable(NamedParameterJdbcTemplate jdbcTemplate, List<String> mbNumbers) {
+    public List<org.egov.works.measurement.web.models.MeasurementService> getMeasurementServicesFromMBSTable(NamedParameterJdbcTemplate jdbcTemplate, List<String> mbNumbers, String tenantId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("mbNumbers", mbNumbers);
         if(mbNumbers.isEmpty()){
             return Collections.emptyList();
         }
+        String query = null;
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(getMeasurementServiceSql, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
 
         try {
-            return jdbcTemplate.query(getMeasurementServiceSql, params, new MeasurementServiceRowMapper());
+
+            return jdbcTemplate.query(query, params, new MeasurementServiceRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList(); // No MeasurementServices found
         }

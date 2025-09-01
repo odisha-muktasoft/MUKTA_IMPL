@@ -71,7 +71,7 @@ public class ContractService {
         if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
             setCacheContract(contractRequest.getContract());
         }
-        contractProducer.push(contractServiceConfiguration.getCreateContractTopic(), contractRequest);
+        contractProducer.push(contractRequest.getContract().getTenantId(),contractServiceConfiguration.getCreateContractTopic(), contractRequest);
 
         ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(contractRequest.getRequestInfo(), true);
         ContractResponse contractResponse = ContractResponse.builder().responseInfo(responseInfo).contracts(Collections.singletonList(contractRequest.getContract())).build();
@@ -89,7 +89,7 @@ public class ContractService {
         if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
             setCacheContract(contractRequest.getContract());
         }
-        contractProducer.push(contractServiceConfiguration.getUpdateContractTopic(), contractRequest);
+        contractProducer.push(contractRequest.getContract().getTenantId(),contractServiceConfiguration.getUpdateContractTopic(), contractRequest);
         try {
             notificationService.sendNotification(contractRequest);
         }catch (Exception e){

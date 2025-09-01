@@ -4,7 +4,7 @@ package org.egov.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.config.Configuration;
-import org.egov.kafka.Producer;
+import org.egov.kafka.BankAccountProducer;
 import org.egov.repository.BankAccountRepository;
 import org.egov.validator.BankAccountValidator;
 import org.egov.web.models.*;
@@ -34,7 +34,7 @@ public class BankAccountService {
     private BankAccountRepository bankAccountRepository;
 
     @Autowired
-    private Producer bankAccountProducer;
+    private BankAccountProducer bankAccountProducer;
 
     @Autowired
     private Configuration configuration;
@@ -49,7 +49,8 @@ public class BankAccountService {
 
         encryptionService.encrypt(bankAccountRequest, BANK_ACCOUNT_ENCRYPT_KEY);
 
-        bankAccountProducer.push(configuration.getSaveBankAccountTopic(), bankAccountRequest);
+        String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
+        bankAccountProducer.push(tenantId, configuration.getSaveBankAccountTopic(), bankAccountRequest);
 
         return bankAccountRequest;
     }
@@ -108,7 +109,8 @@ public class BankAccountService {
 
         encryptionService.encrypt(bankAccountRequest, BANK_ACCOUNT_ENCRYPT_KEY);
 
-        bankAccountProducer.push(configuration.getUpdateBankAccountTopic(), bankAccountRequest);
+        String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
+        bankAccountProducer.push(tenantId, configuration.getUpdateBankAccountTopic(), bankAccountRequest);
 
         return bankAccountRequest;
     }

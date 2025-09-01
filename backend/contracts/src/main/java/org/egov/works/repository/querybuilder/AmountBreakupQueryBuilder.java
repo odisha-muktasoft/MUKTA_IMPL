@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 public class AmountBreakupQueryBuilder {
 
@@ -19,7 +21,7 @@ public class AmountBreakupQueryBuilder {
             "amountBreakup.last_modified_by AS lastModifiedBy, " +
             "amountBreakup.created_time AS createdTime, " +
             "amountBreakup.last_modified_time AS lastModifiedTime " +
-            "FROM eg_wms_contract_amountBreakups AS amountBreakup ";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_contract_amountBreakups AS amountBreakup ";
 
 
     public String getAmountBreakupSearchQuery(ContractCriteria criteria, List<Object> preparedStmtList) {

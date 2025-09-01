@@ -23,7 +23,6 @@ import java.util.List;
 public class MBServiceConsumer {
     private final ObjectMapper mapper;
 
-
     private final RestTemplate restTemplate;
 
     private final MBServiceProducer MBServiceProducer;
@@ -39,7 +38,7 @@ public class MBServiceConsumer {
     }
 
 
-    @KafkaListener(topics = {"${measurement-service.kafka.create.topic}","${measurement-service.kafka.update.topic}"})
+    @KafkaListener(topicPattern = "${kafka.consumer.topic.pattern}")
     public void listen(final HashMap<String, Object> record , @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         MeasurementRequest measurementRequest = mapper.convertValue(record,MeasurementRequest.class);
 
@@ -65,7 +64,8 @@ public class MBServiceConsumer {
 
         }
 
+        String tenantId = measurements.get(0).getTenantId();
         //pushing into new topic after enriching
-        MBServiceProducer.push(MBServiceConfiguration.getEnrichMeasurementTopic(), accumulatedDataList);
+        MBServiceProducer.push(tenantId, MBServiceConfiguration.getEnrichMeasurementTopic(), accumulatedDataList);
     }
 }

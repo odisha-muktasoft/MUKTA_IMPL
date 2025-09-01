@@ -52,7 +52,10 @@ public class MeasurementRegistry {
         // enrich measurements
         enrichmentService.enrichMeasurement(request);
         // push to kafka topic
-        MBRegistryProducer.push(MBRegistryConfiguration.getCreateMeasurementTopic(),request);
+
+        String tenantId = request.getMeasurements().get(0).getTenantId();
+
+        MBRegistryProducer.push(tenantId, MBRegistryConfiguration.getCreateMeasurementTopic(),request);
 
         return  MeasurementResponse.builder().responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(request.getRequestInfo(),true)).measurements(request.getMeasurements()).build();
 
@@ -82,8 +85,10 @@ public class MeasurementRegistry {
         // Create the MeasurementResponse object
         MeasurementResponse response = measurementRegistryUtil.makeUpdateResponse(measurementRegistrationRequest.getMeasurements(),measurementRegistrationRequest);
 
+        String tenantId = measurementRegistrationRequest.getMeasurements().get(0).getTenantId();
+
         // Push the response to the MBRegistryProducer
-        MBRegistryProducer.push(MBRegistryConfiguration.getUpdateTopic(), response);
+        MBRegistryProducer.push(tenantId, MBRegistryConfiguration.getUpdateTopic(), response);
 
         return response;
     }

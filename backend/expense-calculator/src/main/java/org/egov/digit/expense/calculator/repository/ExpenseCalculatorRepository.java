@@ -2,11 +2,14 @@ package org.egov.digit.expense.calculator.repository;
 
 import org.egov.digit.expense.calculator.repository.querybuilder.ExpenseCalculatorQueryBuilder;
 import org.egov.digit.expense.calculator.repository.rowmapper.BillRowMapper;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.digit.expense.calculator.repository.rowmapper.ExpenseCalculatorBillRowMapper;
 import org.egov.digit.expense.calculator.repository.rowmapper.ExpenseCalculatorMusterRowMapper;
 import org.egov.digit.expense.calculator.repository.rowmapper.ExpenseCalculatorProjectRowMapper;
 import org.egov.digit.expense.calculator.web.models.BillMapper;
 import org.egov.digit.expense.calculator.web.models.CalculatorSearchRequest;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.egov.digit.expense.calculator.util.ExpenseCalculatorServiceConstants.INVALID_TENANT_ID_ERR_CODE;
 
 @Repository
 public class ExpenseCalculatorRepository {
@@ -30,14 +35,17 @@ public class ExpenseCalculatorRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
+
     @Autowired
-    public ExpenseCalculatorRepository(ExpenseCalculatorMusterRowMapper musterRowMapper, ExpenseCalculatorBillRowMapper billRowMapper, ExpenseCalculatorProjectRowMapper projectRowMapper, BillRowMapper billMapper, ExpenseCalculatorQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate) {
+    public ExpenseCalculatorRepository(ExpenseCalculatorMusterRowMapper musterRowMapper, ExpenseCalculatorBillRowMapper billRowMapper, ExpenseCalculatorProjectRowMapper projectRowMapper, BillRowMapper billMapper, ExpenseCalculatorQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.musterRowMapper = musterRowMapper;
         this.billRowMapper = billRowMapper;
         this.projectRowMapper = projectRowMapper;
         this.billMapper = billMapper;
         this.queryBuilder = queryBuilder;
         this.jdbcTemplate = jdbcTemplate;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
 
@@ -49,6 +57,11 @@ public class ExpenseCalculatorRepository {
     public List<String> getMusterRoll(String contractId, String billType, String tenantId, List<String> billIds) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getMusterRollsOfContract(contractId, billType, tenantId, billIds, preparedStmtList);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query, musterRowMapper, preparedStmtList.toArray());
     }
     
@@ -62,18 +75,33 @@ public class ExpenseCalculatorRepository {
     public List<String> getBills(String contractId, String tenantId) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getBillsOfContract(contractId, tenantId, preparedStmtList);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query, billRowMapper, preparedStmtList.toArray());
     }
     
     public List<String> getBillsByProjectNumber(String tenantId, List<String> projectNumbers) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getBillsByProjectNumbers(tenantId, projectNumbers, preparedStmtList);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query, billRowMapper, preparedStmtList.toArray());
     }
     
     public List<String> getUniqueProjectNumbers(String tenantId) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getUniqueProjectNumbersByTenant(tenantId,preparedStmtList);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query, projectRowMapper, preparedStmtList.toArray());
     }
     
@@ -85,15 +113,24 @@ public class ExpenseCalculatorRepository {
     public Map<String,BillMapper> getBillMappers(CalculatorSearchRequest calculatorSearchRequest) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getBillIds(calculatorSearchRequest,preparedStmtList,false);
-
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, calculatorSearchRequest.getSearchCriteria().getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query,billMapper,preparedStmtList.toArray());
     }
 
     public Integer getBillCount(CalculatorSearchRequest calculatorSearchRequest) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getSearchCountQueryString(calculatorSearchRequest, preparedStmtList,true);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, calculatorSearchRequest.getSearchCriteria().getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         if (query == null)
             return 0;
-        return jdbcTemplate.queryForObject(query, preparedStmtList.toArray(), Integer.class);
+        return jdbcTemplate.queryForObject(query, Integer.class, preparedStmtList.toArray());
     }
 }
