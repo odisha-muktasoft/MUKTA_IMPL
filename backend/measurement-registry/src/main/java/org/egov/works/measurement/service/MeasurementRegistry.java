@@ -9,6 +9,7 @@ import org.egov.works.measurement.config.MBRegistryConfiguration;
 import org.egov.works.measurement.kafka.MBRegistryProducer;
 import org.egov.works.measurement.repository.ServiceRequestRepository;
 import org.egov.works.measurement.util.MeasurementRegistryUtil;
+import org.egov.works.measurement.util.PaginationUtil;
 import org.egov.works.measurement.util.ResponseInfoFactory;
 import org.egov.works.measurement.validator.MeasurementValidator;
 import org.egov.works.measurement.web.models.*;
@@ -37,6 +38,8 @@ public class MeasurementRegistry {
     private MeasurementRegistryUtil measurementRegistryUtil;
     @Autowired
     private EnrichmentService enrichmentService;
+    @Autowired
+    private PaginationUtil paginationUtil;
 
     /**
      * Handles measurement create
@@ -99,7 +102,7 @@ public class MeasurementRegistry {
      */
     public List<Measurement> searchMeasurements(MeasurementCriteria searchCriteria, MeasurementSearchRequest measurementSearchRequest) {
 
-        handleNullPagination(measurementSearchRequest);
+        paginationUtil.handleNullPagination(measurementSearchRequest);
         if (searchCriteria == null) {
             throw new CustomException(SEARCH_CRITERIA_MANDATORY_CODE, SEARCH_CRITERIA_MANDATORY_MSG);
         } else if (StringUtils.isEmpty(searchCriteria.getTenantId())) {
@@ -109,15 +112,6 @@ public class MeasurementRegistry {
         return measurements;
     }
 
-
-    private void handleNullPagination(MeasurementSearchRequest body){
-        if (body.getPagination() == null) {
-            body.setPagination(new Pagination());
-            body.getPagination().setLimit(null);
-            body.getPagination().setOffSet(null);
-            body.getPagination().setOrder(Pagination.OrderEnum.DESC);
-        }
-    }
 
     public MeasurementResponse createSearchResponse(MeasurementSearchRequest body){
         MeasurementResponse response = new MeasurementResponse();

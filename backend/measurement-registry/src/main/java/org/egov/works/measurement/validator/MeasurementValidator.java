@@ -8,7 +8,6 @@ import net.minidev.json.JSONArray;
 import org.egov.common.contract.models.Document;
 import org.egov.tracer.model.CustomException;
 import org.egov.works.measurement.config.MBRegistryConfiguration;
-import org.egov.works.measurement.service.MeasurementRegistry;
 import org.egov.works.measurement.util.MdmsUtil;
 import org.egov.works.measurement.util.MeasurementRegistryUtil;
 import org.egov.works.measurement.web.models.*;
@@ -18,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.egov.works.measurement.repository.ServiceRequestRepository;
+import org.egov.works.measurement.util.PaginationUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -37,9 +38,11 @@ public class MeasurementValidator {
     @Autowired
     private MBRegistryConfiguration MBRegistryConfiguration;
     @Autowired
-    private MeasurementRegistry measurementRegistry;
-    @Autowired
     private MeasurementRegistryUtil measurementRegistryUtil;
+    @Autowired
+    private ServiceRequestRepository serviceRequestRepository;
+    @Autowired
+    private PaginationUtil paginationUtil;
 
     /**
      * Validate the measurement Req for valid tenantId
@@ -81,7 +84,8 @@ public class MeasurementValidator {
             criteria.setTenantId(measurement.getTenantId());
 
             //Getting list every time because tenantId may vary
-            List<Measurement> existingMeasurementList= measurementRegistry.searchMeasurements(criteria,searchRequest);
+            paginationUtil.handleNullPagination(searchRequest);
+            List<Measurement> existingMeasurementList= serviceRequestRepository.getMeasurements(criteria,searchRequest);
             if (existingMeasurementList.isEmpty()) {
                 throw new CustomException(MEASUREMENT_DATA_NOT_EXIST_CODE, MEASUREMENT_DATA_NOT_EXIST_MSG);
             }
