@@ -20,12 +20,6 @@ import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING
 public class MeasurementQueryBuilder {
 
     @Autowired
-    private MeasurementQueryBuilder QueryUtil;
-
-    @Autowired
-    private Pagination pagination;
-
-    @Autowired
     private MBRegistryConfiguration config;
 
 
