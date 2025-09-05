@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 baseurl=$DB_URL
 echo "the baseurl : $DB_URL"
