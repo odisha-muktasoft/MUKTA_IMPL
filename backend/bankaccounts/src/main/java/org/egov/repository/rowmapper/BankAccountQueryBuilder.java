@@ -15,6 +15,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 @Slf4j
 public class BankAccountQueryBuilder {
@@ -29,27 +31,27 @@ public class BankAccountQueryBuilder {
             "bankAcctDetail.created_by AS bankAcctDetailCreatedBy,bankAcctDetail.last_modified_by AS bankAcctDetailLastModifiedBy," +
             "bankAcctDetail.created_time AS bankAcctDetailCreatedTime,bankAcctDetail.last_modified_time AS bankAcctDetailLastModifiedTime,bankAcctDetail.created_time AS bankAcctDetailCreatedTime," +
             "bankAcctIdntfr.id AS bankAcctIdntfrId,bankAcctDoc.bank_account_detail_id AS bankAcctDocAcctId " +
-            "FROM eg_bank_account AS bankAcct " +
-            "LEFT JOIN " +
-            "eg_bank_account_detail AS bankAcctDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_bank_account AS bankAcct " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_account_detail AS bankAcctDetail " +
             "ON (bankAcct.id=bankAcctDetail.bank_account_id) " +
-            "LEFT JOIN " +
-            "eg_bank_accounts_doc AS bankAcctDoc " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_accounts_doc AS bankAcctDoc " +
             "ON (bankAcctDetail.id=bankAcctDoc.bank_account_detail_id) " +
-            "LEFT JOIN " +
-            "eg_bank_branch_identifier AS bankAcctIdntfr " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_branch_identifier AS bankAcctIdntfr " +
             "ON (bankAcctDetail.id=bankAcctIdntfr.bank_account_detail_id) ";
 
     private static final String BANK_ACCOUNT_COUNT_QUERY = "SELECT distinct(bankAcct.id) " +
-            "FROM eg_bank_account AS bankAcct " +
-            "LEFT JOIN " +
-            "eg_bank_account_detail AS bankAcctDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_bank_account AS bankAcct " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_account_detail AS bankAcctDetail " +
             "ON (bankAcct.id=bankAcctDetail.bank_account_id) " +
-            "LEFT JOIN " +
-            "eg_bank_accounts_doc AS bankAcctDoc " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_accounts_doc AS bankAcctDoc " +
             "ON (bankAcctDetail.id=bankAcctDoc.bank_account_detail_id) " +
-            "LEFT JOIN " +
-            "eg_bank_branch_identifier AS bankAcctIdntfr " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_branch_identifier AS bankAcctIdntfr " +
             "ON (bankAcctDetail.id=bankAcctIdntfr.bank_account_detail_id) ";
 
     private final String paginationWrapper = "SELECT * FROM " +

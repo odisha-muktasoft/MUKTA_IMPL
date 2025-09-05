@@ -54,7 +54,8 @@ public class BankAccountService {
 
         encryptionService.encrypt(bankAccountRequest, BANK_ACCOUNT_ENCRYPT_KEY);
 
-        bankAccountProducer.push(configuration.getSaveBankAccountTopic(), bankAccountRequest);
+        String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
+        bankAccountProducer.push(tenantId, configuration.getSaveBankAccountTopic(), bankAccountRequest);
 
         return bankAccountRequest;
     }
@@ -113,7 +114,8 @@ public class BankAccountService {
 
         encryptionService.encrypt(bankAccountRequest, BANK_ACCOUNT_ENCRYPT_KEY);
 
-        bankAccountProducer.push(configuration.getUpdateBankAccountTopic(), bankAccountRequest);
+        String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
+        bankAccountProducer.push(tenantId, configuration.getUpdateBankAccountTopic(), bankAccountRequest);
 
         return bankAccountRequest;
     }

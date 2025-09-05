@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 @Slf4j
 public class MeasurementQueryBuilder {
@@ -33,11 +33,11 @@ public class MeasurementQueryBuilder {
 
             "dc.filestore as filestore, dc.documentType as documentType, dc.documentuuid as documentuuid, dc.additionaldetails as dcadditionaldetails, dc.id as dcid " +
 
-            "FROM eg_mb_measurements m " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_mb_measurements m " +
 
-            "INNER JOIN eg_mb_measurement_details md ON m.id = md.referenceId " +
-            "INNER JOIN eg_mb_measurement_measures mm ON md.id = mm.id "+
-            "LEFT JOIN eg_mb_measurement_documents dc ON m.id = dc.referenceId ";
+            "INNER JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_details md ON m.id = md.referenceId " +
+            "INNER JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_measures mm ON md.id = mm.id "+
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_documents dc ON m.id = dc.referenceId ";
 
 
     private static String WRAPPER_QUERY = "SELECT * FROM " +
@@ -47,7 +47,7 @@ public class MeasurementQueryBuilder {
             "WHERE offset_ > ? AND offset_ <= ?";
 
     private static final String MEASUREMENT_COUNT_QUERY = "SELECT distinct(m.id) " +
-            "FROM eg_mb_measurements m ";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_mb_measurements m ";
 
     private static final String COUNT_WRAPPER = " SELECT COUNT(*) FROM ({INTERNAL_QUERY}) AS count ";
 
