@@ -82,6 +82,11 @@ public class ServiceRequestRepository {
     public Integer getCount(MeasurementCriteria criteria) {
         List<Object> preparedStmtList = new ArrayList<>();
         String countQuery = queryBuilder.getSearchCountQueryString(criteria, preparedStmtList, null);
+        try {
+            countQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(countQuery, criteria.getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.queryForObject(countQuery, preparedStmtList.toArray(), Integer.class);
     }
 }
