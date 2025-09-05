@@ -36,6 +36,10 @@ public class MeasurementRegistry {
     }
 
     public List<org.egov.works.measurement.web.models.MeasurementService> changeToMeasurementService(List<Measurement> measurements) {
+        List<org.egov.works.measurement.web.models.MeasurementService> result = new ArrayList<>();
+        if (measurements == null || measurements.isEmpty()) {
+            return result;
+        }
         String tenantId = measurements.get(0).getTenantId();
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         List<String> mbNumbers = getMbNumbers(measurements);
@@ -44,7 +48,7 @@ public class MeasurementRegistry {
         List<org.egov.works.measurement.web.models.MeasurementService> orderedExistingMeasurementService = serviceValidator.createOrderedMeasurementServiceList(mbNumbers, mbNumberToServiceMap);
 
         // Create measurement services for each measurement
-        List<org.egov.works.measurement.web.models.MeasurementService> result = createMeasurementServices(measurements, orderedExistingMeasurementService);
+        result = createMeasurementServices(measurements, orderedExistingMeasurementService);
 
         return result;
     }
