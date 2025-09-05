@@ -584,7 +584,7 @@ public class AttendanceLogServiceValidator {
         String userUUID = attendanceLogRequest.getRequestInfo().getUserInfo().getUuid();
         String registerId = attendanceLogRequest.getAttendance().get(0).getRegisterId();
         // Extract tenantId from request info to scope individual service call and validation
-        String tenantId = attendanceLogRequest.getRequestInfo().getUserInfo().getTenantId();
+        String tenantId = attendanceLogRequest.getAttendance().get(0).getTenantId();
         String individualId = individualServiceUtil.getIndividualDetailsFromUserId(attendanceLogRequest.getRequestInfo().getUserInfo().getId(), attendanceLogRequest.getRequestInfo(), attendanceLogRequest.getAttendance().get(0).getTenantId()).get(0).getId();
         validateLoggedInUser(tenantId, individualId, registerId);
         log.info("User ["+userUUID+"] validation is done for register ["+registerId+"]");
