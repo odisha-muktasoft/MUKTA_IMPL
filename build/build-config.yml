@@ -18,8 +18,8 @@
 # -
 config:
 
-# backend
-  - name: "builds/digit-works/backend/attendance"
+  # backend
+  - name: "builds/mukta_impl/backend/attendance"
     build:
       - work-dir: "backend/attendance"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -27,29 +27,14 @@ config:
       - work-dir: "backend/attendance/src/main/resources/db"
         image-name: "attendance-db"
 
-  - name: "builds/health-campaign-services/health-services/health-attendance-works"
-    build:
-      - work-dir: "backend/attendance"
-        dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "health-attendance"
-      - work-dir: "backend/attendance/src/main/resources/db"
-        image-name: "health-attendance-db"
-
-  - name: "builds/digit-works/backend/muster-roll"
+  - name: "builds/mukta_impl/backend/muster-roll"
     build:
       - work-dir: "backend/muster-roll"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "muster-roll"
       - work-dir: "backend/muster-roll/src/main/resources/db"
         image-name: "muster-roll-db"
-  - name: "builds/health-campaign-services/health-services/health-muster-roll"
-    build:
-      - work-dir: "backend/muster-roll"
-        dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "health-muster-roll"
-      - work-dir: "backend/muster-roll/src/main/resources/db"
-        image-name: "health-muster-roll-db"
-  - name: "builds/digit-works/backend/estimates"
+  - name: "builds/mukta_impl/backend/estimates"
     build:
       - work-dir: "backend/estimates"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -57,15 +42,13 @@ config:
       - work-dir: "backend/estimates/src/main/resources/db"
         image-name: "estimates-db"
 
-  - name: "builds/digit-works/backend/works-management-service"
+  - name: "builds/mukta_impl/backend/works-management-service"
     build:
       - work-dir: "backend/wms"
-        dockerfile: "build/maven-java17/Dockerfile"
+        dockerfile: "build/maven/Dockerfile"
         image-name: "works-management-service"
-      - work-dir: "backend/wms/src/main/resources/db"
-        image-name: "works-management-service-db"
-  
-  - name: "builds/digit-works/backend/organisation"
+
+  - name: "builds/mukta_impl/backend/organisation"
     build:
       - work-dir: "backend/organisation"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -73,31 +56,31 @@ config:
       - work-dir: "backend/organisation/src/main/resources/db"
         image-name: "organisation-db"
 
-  - name: "builds/digit-works/backend/contracts"
+  - name: "builds/mukta_impl/backend/contracts"
     build:
       - work-dir: "backend/contracts"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "contracts"
       - work-dir: "backend/contracts/src/main/resources/db"
         image-name: "contracts-db"
-        
-  - name: "builds/digit-works/backend/bankaccounts"
+
+  - name: "builds/mukta_impl/backend/bankaccounts"
     build:
       - work-dir: "backend/bankaccounts"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "bankaccounts"
       - work-dir: "backend/bankaccounts/src/main/resources/db"
         image-name: "bankaccounts-db"
-        
-  - name: "builds/digit-works/backend/expenses-billing"
+
+  - name: "builds/mukta_impl/backend/expenses-billing"
     build:
       - work-dir: "backend/expenses-billing"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "expenses-billing"
       - work-dir: "backend/expenses-billing/src/main/resources/db"
         image-name: "expenses-billing-db"
-        
-  - name: "builds/digit-works/backend/expense-calculator"
+
+  - name: "builds/mukta_impl/backend/expense-calculator"
     build:
       - work-dir: "backend/expense-calculator"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -105,15 +88,7 @@ config:
       - work-dir: "backend/expense-calculator/src/main/resources/db"
         image-name: "expense-calculator-db"
 
-  - name: "builds/health-campaign-services/health-services/health-expense-calculator"
-    build:
-      - work-dir: "backend/health-expense-calculator"
-        dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "health-expense-calculator"
-      - work-dir: "backend/health-expense-calculator/src/main/resources/db"
-        image-name: "health-expense-calculator-db"
-        
-  - name: "builds/digit-works/backend/expense"
+  - name: "builds/mukta_impl/backend/expense"
     build:
       - work-dir: "backend/expense"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -121,23 +96,15 @@ config:
       - work-dir: "backend/expense/src/main/resources/db"
         image-name: "expense-db"
 
-  - name: "builds/health-campaign-services/health-services/health-expense"
-    build:
-      - work-dir: "backend/expense"
-        dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "health-expense"
-      - work-dir: "backend/expense/src/main/resources/db"
-        image-name: "health-expense-db"
-
-  - name: "builds/digit-works/backend/measurement-service"
+  - name: "builds/mukta_impl/backend/measurement-service"
     build:
       - work-dir: "backend/measurement-service"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "measurement-service"
       - work-dir: "backend/measurement-service/src/main/resources/db"
-        image-name: "measurement-service-db"     
+        image-name: "measurement-service-db"
 
-  - name: "builds/digit-works/backend/measurement-registry"
+  - name: "builds/mukta_impl/backend/measurement-registry"
     build:
       - work-dir: "backend/measurement-registry"
         dockerfile: "build/maven-java17/Dockerfile"
@@ -145,131 +112,214 @@ config:
       - work-dir: "backend/measurement-registry/src/main/resources/db"
         image-name: "measurement-registry-db"
 
-  - name: "builds/digit-works/backend/rate-analysis"
+  - name: "builds/mukta_impl/backend/statements"
+    build:
+      - work-dir: "backend/statements"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "statements"
+      - work-dir: "backend/statements/src/main/resources/db"
+        image-name: "statements-db"
+
+  - name: "builds/mukta_impl/backend/rate-analysis"
     build:
       - work-dir: "backend/rate-analysis"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "rate-analysis"
       - work-dir: "backend/rate-analysis/src/main/resources/db"
         image-name: "rate-analysis-db"
-  - name: "builds/digit-works/backend/statements"
+
+  - name: "builds/mukta_impl/backend/project"
     build:
-      - work-dir: "backend/statements"
+      - work-dir: "backend/project"
+        image-name: "project"
         dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "statements"
-      - work-dir: "backend/statements/src/main/resources/db"
-        image-name: "statements-db"      
+      - work-dir: "backend/project/src/main/resources/db"
+        image-name: "project-db"
 
   # utilities
-  - name: "builds/digit-works/utilities/egov-pdf"
+  - name: "builds/mukta_impl/utilities/egov-pdf"
     build:
       - work-dir: "utilities/egov-pdf"
-        image-name: "egov-pdf"  
-  - name: "builds/digit-works/utilities/egov-bff-service"
+        image-name: "egov-pdf"
+  - name: "builds/mukta_impl/utilities/egov-bff-service"
     build:
       - work-dir: "utilities/egov-bff-service"
-        image-name: "egov-bff-service"  
-  - name: "builds/digit-works/utilities/mukta-services"
-    build:
-      - work-dir: "utilities/mukta-services"
-        image-name: "mukta-services"
+        image-name: "egov-bff-service"
 
-# frontend
-  - name: builds/digit-works/frontend/micro-ui/works-ui
+  - name: "builds/mukta_impl/utilities/bulk-upload"
+    build:
+      - work-dir: "utilities/bulk-upload"
+        dockerfile: "build/maven/Dockerfile"
+        image-name: "bulk-upload"
+
+  # frontend
+  - name: builds/mukta_impl/frontend/micro-ui/works-ui
     build:
       - work-dir: frontend/micro-ui/
         dockerfile: frontend/micro-ui/web/docker/Dockerfile
         image-name: works-ui
-  - name: builds/digit-works/frontend/works
+  - name: builds/mukta_impl/frontend/works
     build:
       - work-dir: frontend/micro-ui/
         dockerfile: frontend/micro-ui/web/works/Dockerfile
         image-name: works-ui
-  - name: builds/digit-works/frontend/core
+  - name: builds/mukta_impl/frontend/core
     build:
       - work-dir: frontend/micro-ui/
         dockerfile: frontend/micro-ui/web/works/Dockerfile
         image-name: core-ui
 
-  - name: builds/digit-works/frontend/works-shg-app
+  - name: builds/mukta_impl/frontend/works-shg-app
     build:
       - work-dir: frontend/works_shg_app/
         dockerfile: frontend/works_shg_app/docker/Dockerfile
         image-name: works-shg-app
 
-# utilities
-  - name: "builds/digit-works/utilities/works-pdf"
+  # utilities
+  - name: "builds/mukta_impl/utilities/works-pdf"
     build:
       - work-dir: "utilities/works-pdf"
         image-name: "works-pdf"
       - work-dir: "utilities/works-pdf/migration"
         image-name: "works-pdf-db"
-        
-  - name: "builds/digit-works/utilities/expense-cronjob"
+
+  - name: "builds/mukta_impl/utilities/expense-cronjob"
     build:
       - work-dir: "utilities/expense-cronjob"
         image-name: "expense-cronjob"
         dockerfile: "utilities/expense-cronjob/Dockerfile"
-
-  - name: "builds/digit-works/utilities/ifms-cronjob-va"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-va"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-va"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-pis"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-pis"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pis"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-pag"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-pag"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pag"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-pd"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-pd"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pd"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-fd"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-fd"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-fd"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-ftps"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-ftps"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-ftps"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-ftfps"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-ftfps"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-ftfps"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-  - name: "builds/digit-works/utilities/ifms-cronjob-pa"
+  - name: "builds/mukta_impl/utilities/ifms-cronjob-pa"
     build:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pa"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
+  - name: "builds/mukta_impl/utilities/transformer-cronjob"
+    build:
+      - work-dir: "utilities/transformer-cronjob"
+        image-name: "transformer-cronjob"
+        dockerfile: "utilities/transformer-cronjob/Dockerfile"
 
-# reference-adapters
-  - name: "builds/digit-works/reference-adapters/ifms-adapter"
+  # reference-adapters
+  - name: "builds/mukta_impl/reference-adapters/ifms-adapter"
     build:
       - work-dir: "reference-adapters/ifms-adapter"
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "ifms-adapter"
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
         image-name: "ifms-adapter-db"
-  - name: "builds/digit-works/reference-adapters/mukta-ifix-adapter"
-    build:
-      - work-dir: "reference-adapters/mukta-ifix-adapter"
-        dockerfile: "build/maven-java17/Dockerfile"
-        image-name: "mukta-ifix-adapter"
-      - work-dir: "reference-adapters/mukta-ifix-adapter/src/main/resources/db"
-        image-name: "mukta-ifix-adapter-db"
 
-# libraries
-  - name: "builds/digit-works/libraries/works-services-common"
+  # mukta
+  - name: "builds/mukta_impl/mukta/mukta-contracts"
     build:
-      - work-dir: "libraries/works-services-common"
-        image-name: "works-services-common"
+      - work-dir: "backend/contracts"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-contracts"
+      - work-dir: "backend/contracts/src/main/resources/db"
+        image-name: "mukta-contracts-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-estimates"
+    build:
+      - work-dir: "backend/estimates"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-estimates"
+      - work-dir: "backend/estimates/src/main/resources/db"
+        image-name: "mukta-estimates-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-expense"
+    build:
+      - work-dir: "backend/expense"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-expense"
+      - work-dir: "backend/expense/src/main/resources/db"
+        image-name: "mukta-expense-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-expense-calculator"
+    build:
+      - work-dir: "backend/expense-calculator"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-expense-calculator"
+      - work-dir: "backend/expense-calculator/src/main/resources/db"
+        image-name: "mukta-expense-calculator-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-individual"
+    build:
+      - work-dir: "backend/individual"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "individual"
+      - work-dir: "backend/individual/src/main/resources/db"
+        image-name: "individual-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-mukta-service"
+    build:
+      - work-dir: "utilities/mukta-services"
+        dockerfile: "utilities/mukta-services/Dockerfile"
+        image-name: "mukta-services"
+
+  - name: "builds/mukta_impl/mukta/mukta-works-pdf"
+    build:
+      - work-dir: "utilities/works-pdf"
+        image-name: "works-pdf"
+      - work-dir: "utilities/works-pdf/migration"
+        image-name: "works-pdf-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-hrms"
+    build:
+      - work-dir: "backend/egov-hrms"
+        image-name: "egov-hrms"
+        dockerfile: "build/maven-java17/Dockerfile"
+      - work-dir: "backend/egov-hrms/src/main/resources/db"
+        image-name: "egov-hrms-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-user-otp"
+    build:
+      - work-dir: "backend/user-otp"
+        image-name: "user-otp"
+        dockerfile: "build/maven-java17/Dockerfile"
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-notification-sms"
+    build:
+      - work-dir: "backend/egov-notification-sms"
+        image-name: "egov-notification-sms"
+        dockerfile: "build/maven-java17/Dockerfile"
+  - name: "builds/mukta_impl/reference-adapters/sms-adapter"
+    build:
+      - work-dir: "reference-adapters/sms-adapter"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "sms-adapter"
+
+
