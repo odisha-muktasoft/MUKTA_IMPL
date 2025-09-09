@@ -1,10 +1,9 @@
 package org.egov.works.measurement.web.controllers;
 
 import org.egov.works.measurement.TestConfiguration;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -18,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * API tests for MeasurementApiController
  */
-@Disabled
-@ExtendWith(SpringExtension.class)
+@Ignore
+@RunWith(SpringRunner.class)
 @WebMvcTest(MeasurementApiController.class)
 @Import(TestConfiguration.class)
 public class MeasurementApiControllerTest {

@@ -15,25 +15,28 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.egov.util.BankAccountConstant.INVALID_TENANT_ID_ERR_CODE;
+
 
 @Repository
 @Slf4j
 public class BankAccountRepository {
 
+    private final JdbcTemplate jdbcTemplate;
+
+    private final BankAccountQueryBuilder queryBuilder;
+
+    private final BankAccountRowMapper rowMapper;
+
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private BankAccountQueryBuilder queryBuilder;
-
-    @Autowired
-    private BankAccountRowMapper rowMapper;
-
-    @Autowired
-    private MultiStateInstanceUtil multiStateInstanceUtil;
+    public BankAccountRepository(JdbcTemplate jdbcTemplate, BankAccountQueryBuilder queryBuilder, BankAccountRowMapper rowMapper, MultiStateInstanceUtil multiStateInstanceUtil) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.queryBuilder = queryBuilder;
+        this.rowMapper = rowMapper;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
+    }
 
     /**
      * @param searchRequest
@@ -48,7 +51,7 @@ public class BankAccountRepository {
         }
         String query = queryBuilder.getBankAccountQuery(searchRequest, preparedStmtList);
         try {
-            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, searchRequest.getBankAccountDetails().getTenantId());
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, searchCriteria.getTenantId());
         } catch (InvalidTenantIdException e) {
             throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
@@ -70,7 +73,6 @@ public class BankAccountRepository {
 
         if (query == null)
             return 0;
-
         try {
             query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, searchRequest.getBankAccountDetails().getTenantId());
         } catch (InvalidTenantIdException e) {

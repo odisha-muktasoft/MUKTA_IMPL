@@ -29,39 +29,38 @@ import static org.egov.works.measurement.config.ServiceConstants.*;
 @Slf4j
 public class ServiceRequestRepository {
 
-    private final ObjectMapper mapper;
-
-    private final MeasurementQueryBuilder queryBuilder;
-
-    private final  JdbcTemplate jdbcTemplate;
-
-    private final RestTemplate restTemplate;
-
-    private final MeasurementRowMapper rowMapper;
-
-    private final MultiStateInstanceUtil multiStateInstanceUtil;
+    private ObjectMapper mapper;
+    @Autowired
+    private MeasurementQueryBuilder queryBuilder;
 
     @Autowired
-    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate, MeasurementQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate, MeasurementRowMapper rowMapper, MultiStateInstanceUtil multiStateInstanceUtil) {
-        this.mapper = mapper;
-        this.restTemplate = restTemplate;
-        this.queryBuilder = queryBuilder;
-        this.jdbcTemplate = jdbcTemplate;
-        this.rowMapper = rowMapper;
-        this.multiStateInstanceUtil = multiStateInstanceUtil;
-    }
+    private JdbcTemplate jdbcTemplate;
+
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private MeasurementRowMapper rowMapper;
+
+    @Autowired
+    private MultiStateInstanceUtil multiStateInstanceUtil;
 
 
     public ArrayList<Measurement> getMeasurements(MeasurementCriteria searchCriteria, MeasurementSearchRequest measurementSearchRequest) {
         List<Object> preparedStmtList = new ArrayList<>();
-        String query = queryBuilder.getMeasurementSearchQuery(searchCriteria, preparedStmtList, measurementSearchRequest);
+        String query = queryBuilder.getMeasurementSearchQuery(searchCriteria, preparedStmtList, measurementSearchRequest,false);
         try {
             query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, searchCriteria.getTenantId());
         } catch (InvalidTenantIdException e) {
             throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
         }
-        ArrayList<Measurement> measurementsList = jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
+        ArrayList<Measurement> measurementsList = jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
         return measurementsList;
+    }
+
+    @Autowired
+    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate) {
+        this.mapper = mapper;
+        this.restTemplate = restTemplate;
     }
 
 
@@ -78,5 +77,16 @@ public class ServiceRequestRepository {
         }
 
         return response;
+    }
+
+    public Integer getCount(MeasurementCriteria criteria) {
+        List<Object> preparedStmtList = new ArrayList<>();
+        String countQuery = queryBuilder.getSearchCountQueryString(criteria, preparedStmtList, null);
+        try {
+            countQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(countQuery, criteria.getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
+        return jdbcTemplate.queryForObject(countQuery, preparedStmtList.toArray(), Integer.class);
     }
 }

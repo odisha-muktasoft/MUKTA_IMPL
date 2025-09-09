@@ -10,6 +10,7 @@ import org.egov.common.contract.response.ResponseInfo;
 import org.egov.service.BankAccountService;
 import org.egov.util.ResponseInfoFactory;
 import org.egov.web.models.*;
+import org.egov.works.services.common.models.bankaccounts.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +34,16 @@ public class BankaccountApiController {
 
     private final HttpServletRequest request;
 
-    @Autowired
-    private ResponseInfoFactory responseInfoFactory;
+    private final ResponseInfoFactory responseInfoFactory;
+
+    private final BankAccountService bankAccountService;
 
     @Autowired
-    private BankAccountService bankAccountService;
-
-    @Autowired
-    public BankaccountApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public BankaccountApiController(ObjectMapper objectMapper, HttpServletRequest request, ResponseInfoFactory responseInfoFactory, BankAccountService bankAccountService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.responseInfoFactory = responseInfoFactory;
+        this.bankAccountService = bankAccountService;
     }
 
     @RequestMapping(value = "/_create", method = RequestMethod.POST)

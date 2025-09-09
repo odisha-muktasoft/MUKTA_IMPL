@@ -4,10 +4,11 @@ package org.egov.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.config.Configuration;
-import org.egov.kafka.BankAccountProducer;
+import org.egov.kafka.Producer;
 import org.egov.repository.BankAccountRepository;
 import org.egov.validator.BankAccountValidator;
 import org.egov.web.models.*;
+import org.egov.works.services.common.models.bankaccounts.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,23 +25,27 @@ public class BankAccountService {
     public static final String BANK_ACCOUNT_HOLDER_NAME_ENCRYPT_KEY = "BankAccountHolderNameEncrypt";
     public static final String BANK_ACCOUNT_DECRYPT_KEY = "BankAccountDecrypt";
 
-    @Autowired
-    private BankAccountValidator bankAccountValidator;
+    private final BankAccountValidator bankAccountValidator;
+
+    private final EnrichmentService enrichmentService;
+
+    private final BankAccountRepository bankAccountRepository;
+
+    private final Producer bankAccountProducer;
+
+    private final Configuration configuration;
+
+    private final EncryptionService encryptionService;
 
     @Autowired
-    private EnrichmentService enrichmentService;
-
-    @Autowired
-    private BankAccountRepository bankAccountRepository;
-
-    @Autowired
-    private BankAccountProducer bankAccountProducer;
-
-    @Autowired
-    private Configuration configuration;
-
-    @Autowired
-    private EncryptionService encryptionService;
+    public BankAccountService(BankAccountValidator bankAccountValidator, EnrichmentService enrichmentService, BankAccountRepository bankAccountRepository, Producer bankAccountProducer, Configuration configuration, EncryptionService encryptionService) {
+        this.bankAccountValidator = bankAccountValidator;
+        this.enrichmentService = enrichmentService;
+        this.bankAccountRepository = bankAccountRepository;
+        this.bankAccountProducer = bankAccountProducer;
+        this.configuration = configuration;
+        this.encryptionService = encryptionService;
+    }
 
     public BankAccountRequest createBankAccount(BankAccountRequest bankAccountRequest) {
         log.info("BankAccountService::createBankAccount");

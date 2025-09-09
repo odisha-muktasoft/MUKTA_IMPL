@@ -9,7 +9,6 @@ import org.egov.works.measurement.config.MBRegistryConfiguration;
 import org.egov.works.measurement.kafka.MBRegistryProducer;
 import org.egov.works.measurement.repository.ServiceRequestRepository;
 import org.egov.works.measurement.util.MeasurementRegistryUtil;
-import org.egov.works.measurement.util.PaginationUtil;
 import org.egov.works.measurement.util.ResponseInfoFactory;
 import org.egov.works.measurement.validator.MeasurementValidator;
 import org.egov.works.measurement.web.models.*;
@@ -38,8 +37,6 @@ public class MeasurementRegistry {
     private MeasurementRegistryUtil measurementRegistryUtil;
     @Autowired
     private EnrichmentService enrichmentService;
-    @Autowired
-    private PaginationUtil paginationUtil;
 
     /**
      * Handles measurement create
@@ -55,9 +52,7 @@ public class MeasurementRegistry {
         // enrich measurements
         enrichmentService.enrichMeasurement(request);
         // push to kafka topic
-
         String tenantId = request.getMeasurements().get(0).getTenantId();
-
         MBRegistryProducer.push(tenantId, MBRegistryConfiguration.getCreateMeasurementTopic(),request);
 
         return  MeasurementResponse.builder().responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(request.getRequestInfo(),true)).measurements(request.getMeasurements()).build();
@@ -89,7 +84,6 @@ public class MeasurementRegistry {
         MeasurementResponse response = measurementRegistryUtil.makeUpdateResponse(measurementRegistrationRequest.getMeasurements(),measurementRegistrationRequest);
 
         String tenantId = measurementRegistrationRequest.getMeasurements().get(0).getTenantId();
-
         // Push the response to the MBRegistryProducer
         MBRegistryProducer.push(tenantId, MBRegistryConfiguration.getUpdateTopic(), response);
 
@@ -102,7 +96,7 @@ public class MeasurementRegistry {
      */
     public List<Measurement> searchMeasurements(MeasurementCriteria searchCriteria, MeasurementSearchRequest measurementSearchRequest) {
 
-        paginationUtil.handleNullPagination(measurementSearchRequest);
+        handleNullPagination(measurementSearchRequest);
         if (searchCriteria == null) {
             throw new CustomException(SEARCH_CRITERIA_MANDATORY_CODE, SEARCH_CRITERIA_MANDATORY_MSG);
         } else if (StringUtils.isEmpty(searchCriteria.getTenantId())) {
@@ -112,6 +106,19 @@ public class MeasurementRegistry {
         return measurements;
     }
 
+    public Integer getMeasurementCount(MeasurementCriteria searchCriteria) {
+        return serviceRequestRepository.getCount(searchCriteria);
+    }
+
+    private void handleNullPagination(MeasurementSearchRequest body){
+        if (body.getPagination() == null) {
+            body.setPagination(new Pagination());
+            body.getPagination().setLimit(null);
+            body.getPagination().setOffSet(null);
+            body.getPagination().setOrder(Pagination.OrderEnum.DESC);
+            body.getPagination().setSortBy("createdtime");
+        }
+    }
 
     public MeasurementResponse createSearchResponse(MeasurementSearchRequest body){
         MeasurementResponse response = new MeasurementResponse();

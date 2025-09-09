@@ -27,7 +27,6 @@ public class ServiceConstants {
     public static final String BUSINESS_SERVICES = "&businessServices=";
     public static final String MDMS_TENANTS_MASTER_NAME = "tenants";
     public static final String MDMS_TENANT_MODULE_NAME = "tenant";
-
     public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
 
 }

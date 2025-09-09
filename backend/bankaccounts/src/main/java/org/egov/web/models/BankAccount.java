@@ -1,7 +1,7 @@
 package org.egov.web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import digit.models.coremodels.AuditDetails;
+import org.egov.common.contract.models.AuditDetails;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +48,8 @@ public class BankAccount {
 
     @JsonProperty("bankAccountDetails")
     @Valid
+    @NotNull
+    @Size(min = 1)
     private List<BankAccountDetails> bankAccountDetails = null;
 
     @JsonProperty("additionalFields")

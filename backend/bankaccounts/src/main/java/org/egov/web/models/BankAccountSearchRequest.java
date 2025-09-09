@@ -1,11 +1,13 @@
 package org.egov.web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.works.services.common.models.bankaccounts.Pagination;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
@@ -26,6 +28,7 @@ public class BankAccountSearchRequest {
 
     @JsonProperty("bankAccountDetails")
     @Valid
+    @NotNull
     private BankAccountSearchCriteria bankAccountDetails = null;
 
     @JsonProperty("pagination")
