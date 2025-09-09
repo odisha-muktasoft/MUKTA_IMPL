@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 @Slf4j
 public class StatementQueryBuilder {
@@ -23,12 +23,12 @@ public class StatementQueryBuilder {
             "sorDetails.basic_sor_details AS sorDetailsBasicSorDetails, sorDetails.additional_details as sorAdditionalDetails, sorDetails.is_active as isActive, lineItems.id AS lineItemId, lineItems.tenantid AS lineItemsTenantId, " +
             "lineItems.sorid AS lineItemsSorId, lineItems.sortype AS lineItemSorType, lineItems.reference_id AS lineItemIdReferenceId, " +
             "lineItems.basic_sor_details AS lineItemsBasicSorDetails, lineItems.additional_details as lineItemAdditionalDetails " +
-            "FROM eg_statement AS statement " +
-            LEFT_JOIN +
-            "eg_statement_sor_details AS sorDetails " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_statement AS statement " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_statement_sor_details AS sorDetails " +
             "ON (statement.id = sorDetails.statement_id) " +
-            LEFT_JOIN +
-            "eg_statement_sor_line_items AS lineItems " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_statement_sor_line_items AS lineItems " +
             "ON (sorDetails.id = lineItems.reference_id)";
 
     private static final String ORDER_BY_STATEMENT_CREATED_TIME = " ORDER BY statement.createdtime ";

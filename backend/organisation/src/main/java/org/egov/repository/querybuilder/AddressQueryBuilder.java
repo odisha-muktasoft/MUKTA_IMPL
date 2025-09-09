@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 
 @Component
 @Slf4j
@@ -20,8 +21,8 @@ public class AddressQueryBuilder {
             "addrGeoLoc.id as addressGeoLocation_Id, addrGeoLoc.address_id as addressGeoLocation_addressId, " +
             "addrGeoLoc.latitude as addressGeoLocation_latitude, addrGeoLoc.longitude as addressGeoLocation_longitude, " +
             "addrGeoLoc.additional_details as addressGeoLocation_additionalDetails " +
-            "FROM eg_org_address addr " +
-            "LEFT JOIN eg_org_address_geo_location addrGeoLoc ON addr.id = addrGeoLoc.address_id";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_org_address addr " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_org_address_geo_location addrGeoLoc ON addr.id = addrGeoLoc.address_id";
 
     /* Constructs address search query based on organisation Ids */
     public String getAddressSearchQuery(Set<String> organisationIds, List<Object> preparedStmtList) {

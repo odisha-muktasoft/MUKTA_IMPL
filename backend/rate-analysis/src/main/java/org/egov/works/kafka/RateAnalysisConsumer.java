@@ -33,7 +33,7 @@ public class RateAnalysisConsumer {
         this.schedulerValidator = schedulerValidator;
     }
 
-    @KafkaListener(topics = {"${rate.analysis.job.create.topic}"})
+    @KafkaListener(topicPattern = "${rate.analysis.job.create.topic.pattern}")
     public void listen(final Map<String, Object> jobCreateRecord) {
         log.info("Received record for job creation: " + jobCreateRecord);
         try {

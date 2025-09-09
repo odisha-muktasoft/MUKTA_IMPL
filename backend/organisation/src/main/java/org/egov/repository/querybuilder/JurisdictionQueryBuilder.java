@@ -6,13 +6,14 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 
 @Component
 @Slf4j
 public class JurisdictionQueryBuilder {
     private static final String FETCH_JURISDICTION_QUERY = "SELECT j.id as jurisdiction_Id, j.org_id as jurisdiction_orgId, " +
             "j.code as jurisdiction_code, j.additional_details as jurisdiction_additionalDetails " +
-            "FROM eg_org_jurisdiction j";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_org_jurisdiction j";
 
     public String getJurisdictionSearchQuery(Set<String> organisationIds, List<Object> preparedStmtList) {
         StringBuilder queryBuilder = null;

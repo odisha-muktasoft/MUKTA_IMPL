@@ -56,11 +56,11 @@ public class UtilizationService {
         StatementPushRequest pushRequest = StatementPushRequest.builder().requestInfo(statementCreateRequest.getRequestInfo())
                 .statement(statement).build();
         if (previousStatements.isEmpty()) {
-            producer.push(statementConfiguration.getSaveAnalysisStatementTopic(), pushRequest);
+            producer.push(statementCreateRequest.getStatementRequest().getTenantId(), statementConfiguration.getSaveAnalysisStatementTopic(), pushRequest);
         }
         else {
             utilizationEnrichmentService.enrichPreviousIds(previousStatements.get(0), statement);
-            producer.push(statementConfiguration.getUpdateAnalysisStatementTopic(), pushRequest);
+            producer.push(statementCreateRequest.getStatementRequest().getTenantId(), statementConfiguration.getUpdateAnalysisStatementTopic(), pushRequest);
         }
         return statement;
     }

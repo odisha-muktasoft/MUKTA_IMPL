@@ -15,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 @Slf4j
 public class SchedulerQueryBuilder {
@@ -29,7 +29,7 @@ public class SchedulerQueryBuilder {
     private static final String JOB_SCHEDULER_SEARCH_QUERY = "Select ras.id as rateAnalysisScheduleId, ras.jobid as rateAnalysisScheduleJobId, ras.tenantId as rateAnalysisScheduleTenantId, ras.rateeffectivefrom as rateAnalysisScheduleRateEffectiveFrom, ras.jobStatus as rateAnalysisScheduleJobStatus," +
             " ras.createdtime as rateAnalysisScheduleCreatedTime, ras.lastmodifiedtime as rateAnalysisScheduleLastModifiedTime, ras.lastmodifiedby as rateAnalysisScheduleLastModifiedBy, ras.createdby as rateAnalysisScheduleCreatedBy," +
             " rasd.id as rateAnalysisScheduleDetailsId, rasd.sorId as rateAnalysisScheduleDetailsSorId, rasd.ratesJobId as rateAnalysisScheduleDetailsRatesJobId, rasd.sorCode as rateAnalysisScheduleDetailsSorCode, rasd.status as rateAnalysisScheduleDetailsStatus," +
-            " rasd.failureReason as rateAnalysisScheduleDetailsFailuerReason, rasd.additionaldetails as rateAnalysisScheduleDetailsAdditionalDetails From eg_rate_analysis_schedule ras INNER JOIN eg_rate_analysis_schedule_details rasd ON rasd.ratesjobid = ras.id";
+            " rasd.failureReason as rateAnalysisScheduleDetailsFailuerReason, rasd.additionaldetails as rateAnalysisScheduleDetailsAdditionalDetails From " + SCHEMA_REPLACE_STRING + ".eg_rate_analysis_schedule ras INNER JOIN " + SCHEMA_REPLACE_STRING + ".eg_rate_analysis_schedule_details rasd ON rasd.ratesjobid = ras.id";
 
     private static final String WRAPPER_QUERY = "SELECT * FROM " +
             "(SELECT *, DENSE_RANK() OVER (ORDER BY rateAnalysisSchedule{sortBy} {orderBy}) offset_ FROM " +

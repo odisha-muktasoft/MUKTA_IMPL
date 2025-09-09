@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 @Slf4j
 public class OrganisationFunctionQueryBuilder {
@@ -35,8 +35,8 @@ public class OrganisationFunctionQueryBuilder {
             "orgFunction.is_active as organisationFunction_isActive, orgFunction.additional_details as organisationFunction_additionalDetails, " +
             "orgFunction.created_by as organisationFunction_createdBy, orgFunction.last_modified_by as organisationFunction_lastModifiedBy, " +
             "orgFunction.created_time as organisationFunction_createdTime, orgFunction.last_modified_time as organisationFunction_lastModifiedTime " +
-            "FROM eg_org org " +
-            "LEFT JOIN eg_org_function orgFunction ON org.id = orgFunction.org_id";
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_org org " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_org_function orgFunction ON org.id = orgFunction.org_id";
 
     private static final String PAGINATION_WRAPPER = "SELECT * FROM " +
             "(SELECT *, DENSE_RANK() OVER (ORDER BY organisation_lastModifiedTime DESC , organisation_Id) offset_ FROM " +
@@ -45,7 +45,7 @@ public class OrganisationFunctionQueryBuilder {
             "WHERE offset_ > ? AND offset_ <= ?";
 
     private static final String ORGANISATIONS_COUNT_QUERY = "SELECT DISTINCT(org.id) from eg_org org " +
-            "LEFT JOIN eg_org_function orgFunction ON org.id = orgFunction.org_id";
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_org_function orgFunction ON org.id = orgFunction.org_id";
 
     private static final String COUNT_WRAPPER = "SELECT COUNT(*) FROM ({INTERNAL_QUERY}) as count";
 

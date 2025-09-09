@@ -56,5 +56,7 @@ public class OrganisationConstant {
 
     public static final String ORGANISATION_ENCRYPT_KEY = "Organisation";
 
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
+
 
 }

@@ -43,10 +43,10 @@ public class AnalysisStatementService {
         Boolean isCreate = statementServiceUtil.checkIfCreateOperation(statementCreateRequest, statementList);
             if (isCreate) {
                 statementPushRequest = enrichmentService.enrichStatementPushRequest(statementCreateRequest,estimate,Boolean.TRUE);
-                producer.push(statementConfiguration.getSaveAnalysisStatementTopic(), statementPushRequest);
+                producer.push(statementCreateRequest.getStatementRequest().getTenantId(), statementConfiguration.getSaveAnalysisStatementTopic(), statementPushRequest);
             } else {
                 statementPushRequest = enrichmentService.enrichStatementPushRequestForUpdate(statementCreateRequest, statementList.get(0),estimate,Boolean.FALSE);
-                producer.push(statementConfiguration.getUpdateAnalysisStatementTopic(), statementPushRequest);
+                producer.push(statementCreateRequest.getStatementRequest().getTenantId(), statementConfiguration.getUpdateAnalysisStatementTopic(), statementPushRequest);
             }
             if(statementPushRequest.getStatement()==null){
             log.error("Statement Push Request Not Created Successfully");

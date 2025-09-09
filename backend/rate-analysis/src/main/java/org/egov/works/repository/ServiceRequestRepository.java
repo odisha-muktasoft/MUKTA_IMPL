@@ -4,6 +4,8 @@ package org.egov.works.repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.tracer.model.CustomException;
 import org.egov.tracer.model.ServiceCallException;
 import org.egov.works.repository.QueryBuilder.SchedulerQueryBuilder;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.egov.works.config.ServiceConstants.EXTERNAL_SERVICE_EXCEPTION;
+import static org.egov.works.config.ServiceConstants.INVALID_TENANT_ID_ERR_CODE;
 import static org.egov.works.config.ServiceConstants.SEARCHER_SERVICE_EXCEPTION;
 
 @Repository
@@ -37,14 +40,16 @@ public class ServiceRequestRepository {
     private final JdbcTemplate jdbcTemplate;
     private final SchedulerRowMapper schedulerRowMapper;
 
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
 
     @Autowired
-    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate, SchedulerQueryBuilder schedulerQueryBuilder, JdbcTemplate jdbcTemplate, SchedulerRowMapper schedulerRowMapper) {
+    public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate, SchedulerQueryBuilder schedulerQueryBuilder, JdbcTemplate jdbcTemplate, SchedulerRowMapper schedulerRowMapper, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.mapper = mapper;
         this.restTemplate = restTemplate;
         this.schedulerQueryBuilder = schedulerQueryBuilder;
         this.jdbcTemplate = jdbcTemplate;
         this.schedulerRowMapper = schedulerRowMapper;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
 
@@ -74,6 +79,11 @@ public class ServiceRequestRepository {
         log.info("ServiceRequestRepository:getScheduledJobs");
         List<Object> preparedStmtList = new ArrayList<>();
         String query = schedulerQueryBuilder.getJobSchedulerSearchQuery(jobSchedulerSearchCriteria, preparedStmtList);
+        try {
+            query = multiStateInstanceUtil.replaceSchemaPlaceholder(query, jobSchedulerSearchCriteria.getSearchCriteria().getTenantId());
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
         return jdbcTemplate.query(query, new ArgumentPreparedStatementSetter(preparedStmtList.toArray()), schedulerRowMapper);
     }
 }

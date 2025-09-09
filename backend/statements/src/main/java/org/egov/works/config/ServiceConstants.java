@@ -61,6 +61,7 @@ public class ServiceConstants {
     public static final String WORKS_SOR_KEY = "WORKS-SOR";
     public static final String RATES_MASTER = "Rates";
     public static final String WORKS_TYPE = "W";
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
 }
 
 

@@ -82,4 +82,6 @@ public class ServiceConstants {
     public static final String ERROR_WHILE_UPDATING_MDMS = "Exception occurred while updating mdms data: ";
     public static final String JOB_REDIS_KEY = "SCHEDULE_JOB_{jobId}";
 
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
+
 }
