@@ -56,7 +56,7 @@ public class SchedulerService {
                 .requestInfo(jobSchedulerRequest.getRequestInfo())
                 .scheduledJobs(scheduledJobs.get(0))
                 .build();
-        rateAnalysisProducer.push(configuration.getRateAnalysisJobCreateTopic(), jobScheduledRequest);
+        rateAnalysisProducer.push(jobScheduledRequest.getScheduledJobs().getTenantId(), configuration.getRateAnalysisJobCreateTopic(), jobScheduledRequest);
         return scheduledJobs;
     }
 
@@ -122,7 +122,7 @@ public class SchedulerService {
     public void createScheduledJobsFromConsumer(JobScheduledRequest jobScheduledRequest) {
         log.info("SchedulerService: createScheduledJobsFromConsumer");
         jobScheduledRequest.getScheduledJobs().setStatus(StatusEnum.IN_PROGRESS);
-        rateAnalysisProducer.push(configuration.getRateAnalysisJobUpdateTopic(), jobScheduledRequest);
+        rateAnalysisProducer.push(jobScheduledRequest.getScheduledJobs().getTenantId(), configuration.getRateAnalysisJobUpdateTopic(), jobScheduledRequest);
         RequestInfo requestInfo = jobScheduledRequest.getRequestInfo();
         ScheduledJob scheduledJob = jobScheduledRequest.getScheduledJobs();
 
@@ -144,7 +144,7 @@ public class SchedulerService {
         }
         schedulerEnrichment.enrichScheduledJobsStatusAndEnrichAuditDetails(scheduledJob);
         log.info("Pushing Rate Analysis Job for update");
-        rateAnalysisProducer.push(configuration.getRateAnalysisJobUpdateTopic(), jobScheduledRequest);
+        rateAnalysisProducer.push(jobScheduledRequest.getScheduledJobs().getTenantId(), configuration.getRateAnalysisJobUpdateTopic(), jobScheduledRequest);
     }
 
     /**

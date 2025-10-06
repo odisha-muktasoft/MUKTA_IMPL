@@ -50,7 +50,7 @@ public class Consumer {
      * @param message
      * @param topic
      */
-    @KafkaListener(topics = {"${estimate.kafka.create.topic}","${estimate.kafka.update.topic}"})
+    @KafkaListener(topicPattern = "${kafka.estimate.consumer.topic.pattern}")
     public void listen(final String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Creating/Updating Analysis statement");
         EstimateRequest estimateRequest;
@@ -78,14 +78,14 @@ public class Consumer {
 
             } catch (Exception e) {
                 log.error("Error while creating analysis statement for estimate :: {}", estimate.getId(), e);
-                producer.push(configs.getAnalysisStatementErrorTopic(), estimate);
+                producer.push(estimate.getTenantId(), configs.getAnalysisStatementErrorTopic(), estimate);
             }
         }else{
             log.error("Estimate Not present in the request :: {}",estimateRequest);
         }
     }
 
-    @KafkaListener(topics = {"${measurement.kafka.create.topic}","${measurement.kafka.update.topic}"})
+    @KafkaListener(topicPattern = "${kafka.measurement.consumer.topic.pattern}")
     public void utilizationListener(final String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Creating/Updating Utilization statement");
         MeasurementRequest measurementRequest = new MeasurementRequest();
@@ -104,7 +104,7 @@ public class Consumer {
                 log.info("Successfully created utilization statement for measurement :: " + measurement.getId());
             } catch (Exception e) {
                 log.error("Error while creating utilization statement for measurement :: " + measurement.getId(), e);
-                producer.push(configs.getUtilizationErrorTopic(), measurement);
+                producer.push(measurement.getTenantId(), configs.getUtilizationErrorTopic(), measurement);
             }
 
         }

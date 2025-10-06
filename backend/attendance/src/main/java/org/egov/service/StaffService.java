@@ -4,7 +4,7 @@ import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.StaffEnrichmentService;
-import org.egov.common.producer.Producer;
+import org.egov.kafka.AttendanceProducer;
 import org.egov.repository.RegisterRepository;
 import org.egov.repository.StaffRepository;
 import org.egov.util.ResponseInfoFactory;
@@ -33,7 +33,7 @@ public class StaffService {
     private final RegisterRepository registerRepository;
 
 
-    private final Producer producer;
+    private final AttendanceProducer attendanceProducer;
 
     private final AttendanceServiceConfiguration serviceConfiguration;
 
@@ -42,13 +42,13 @@ public class StaffService {
     private final AttendanceServiceValidator attendanceServiceValidator;
 
     @Autowired
-    public StaffService(StaffServiceValidator staffServiceValidator, ResponseInfoFactory responseInfoFactory, StaffEnrichmentService staffEnrichmentService, StaffRepository staffRepository, RegisterRepository registerRepository, Producer producer, AttendanceServiceConfiguration serviceConfiguration, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator) {
+    public StaffService(StaffServiceValidator staffServiceValidator, ResponseInfoFactory responseInfoFactory, StaffEnrichmentService staffEnrichmentService, StaffRepository staffRepository, RegisterRepository registerRepository, AttendanceProducer attendanceProducer, AttendanceServiceConfiguration serviceConfiguration, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator) {
         this.staffServiceValidator = staffServiceValidator;
         this.responseInfoFactory = responseInfoFactory;
         this.staffEnrichmentService = staffEnrichmentService;
         this.staffRepository = staffRepository;
         this.registerRepository = registerRepository;
-        this.producer = producer;
+        this.attendanceProducer = attendanceProducer;
         this.serviceConfiguration = serviceConfiguration;
         this.attendanceRegisterService = attendanceRegisterService;
         this.attendanceServiceValidator = attendanceServiceValidator;
@@ -91,9 +91,9 @@ public class StaffService {
         log.info("staffEnrichmentService called to enrich Create StaffPermission request");
         staffEnrichmentService.enrichStaffPermissionOnCreate(staffPermissionRequest);
 
-        //push to producer
-        log.info("staff objects pushed via producer");
-        producer.push(serviceConfiguration.getSaveStaffTopic(), staffPermissionRequest);
+        //push to attendanceProducer
+        log.info("staff objects pushed via attendanceProducer");
+        attendanceProducer.push(tenantId,serviceConfiguration.getSaveStaffTopic(), staffPermissionRequest);
         log.info("staff present in Create StaffPermission request are enrolled to the register");
         return staffPermissionRequest;
     }
@@ -149,8 +149,8 @@ public class StaffService {
         log.info("staffEnrichmentService called to enrich Delete StaffPermission request");
         staffEnrichmentService.enrichStaffPermissionOnDelete(staffPermissionRequest, staffPermissionListFromDB);
 
-        log.info("staff objects pushed via producer");
-        producer.push(serviceConfiguration.getUpdateStaffTopic(), staffPermissionRequest);
+        log.info("staff objects pushed via attendanceProducer");
+        attendanceProducer.push(tenantId,serviceConfiguration.getUpdateStaffTopic(), staffPermissionRequest);
         log.info("staff present in Delete StaffPermission request are deenrolled from the register");
         return staffPermissionRequest;
     }

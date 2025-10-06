@@ -49,6 +49,7 @@ public class OrganisationServiceTest {
     //TODO fix the test case
     public void shouldCreateOrganisationSuccessfully(){
         OrgRequest orgRequest = OrganisationRequestTestBuilder.builder().withRequestInfo().addGoodOrganisationForCreate().build();
+        String tenantId = orgRequest.getOrganisations().get(0).getTenantId();
         when(configuration.getOrgKafkaCreateTopic()).thenReturn("save-organisation");
 
         organisationService.createOrganisationWithoutWorkFlow(orgRequest);
@@ -59,7 +60,7 @@ public class OrganisationServiceTest {
 
         verify(userService, times(1)).createIndividual(orgRequest);
 
-        verify(organizationProducer, times(1)).push(eq("save-organisation"), any(OrgRequest.class));
+        verify(organizationProducer, times(1)).push(eq(tenantId), eq("save-organisation"), any(OrgRequest.class));
 
         assertNotNull(orgRequest.getOrganisations());
 

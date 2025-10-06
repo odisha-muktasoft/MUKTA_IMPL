@@ -4,7 +4,7 @@ import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.config.AttendanceServiceConfiguration;
 import org.egov.enrichment.AttendeeEnrichmentService;
-import org.egov.common.producer.Producer;
+import org.egov.kafka.AttendanceProducer;
 import org.egov.repository.AttendeeRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.AttendanceServiceUtil;
@@ -37,13 +37,13 @@ public class AttendeeService {
 
     private final AttendanceServiceConfiguration attendanceServiceConfiguration;
 
-    private final Producer producer;
+    private final AttendanceProducer attendanceProducer;
 
     @Autowired
     private AttendanceServiceUtil attendanceServiceUtil;
 
     @Autowired
-    public AttendeeService(AttendeeServiceValidator attendeeServiceValidator, ResponseInfoFactory responseInfoFactory, AttendeeRepository attendeeRepository, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator, AttendeeEnrichmentService attendeeEnrichmentService, AttendanceServiceConfiguration attendanceServiceConfiguration, Producer producer) {
+    public AttendeeService(AttendeeServiceValidator attendeeServiceValidator, ResponseInfoFactory responseInfoFactory, AttendeeRepository attendeeRepository, AttendanceRegisterService attendanceRegisterService, AttendanceServiceValidator attendanceServiceValidator, AttendeeEnrichmentService attendeeEnrichmentService, AttendanceServiceConfiguration attendanceServiceConfiguration, AttendanceProducer attendanceProducer) {
         this.attendeeServiceValidator = attendeeServiceValidator;
         this.responseInfoFactory = responseInfoFactory;
         this.attendeeRepository = attendeeRepository;
@@ -51,7 +51,7 @@ public class AttendeeService {
         this.attendanceServiceValidator = attendanceServiceValidator;
         this.attendeeEnrichmentService = attendeeEnrichmentService;
         this.attendanceServiceConfiguration = attendanceServiceConfiguration;
-        this.producer = producer;
+        this.attendanceProducer = attendanceProducer;
     }
 
 
@@ -84,7 +84,7 @@ public class AttendeeService {
         List<String> registerIds = extractRegisterIdsFromCreateRequest(attendeeCreateRequest);
 
         //db call to get the attendeeList data
-        List<IndividualEntry> attendeeListFromDB = getAttendees(registerIds,attendeeIds);
+        List<IndividualEntry> attendeeListFromDB = getAttendees(tenantId,registerIds,attendeeIds);
 
         //db call to get registers from db
         List<AttendanceRegister> attendanceRegisterListFromDB = getAttendanceRegisters(attendeeCreateRequest,registerIds,tenantId);
@@ -102,15 +102,15 @@ public class AttendeeService {
         log.info("attendeeServiceValidator called to enrich Create attendee request");
         attendeeEnrichmentService.enrichAttendeeOnCreate(attendeeCreateRequest);
 
-        //push to producer
-        log.info("attendee objects pushed via producer");
-        producer.push(attendanceServiceConfiguration.getSaveAttendeeTopic(), attendeeCreateRequest);
+        //push to attendanceProducer
+        log.info("attendee objects pushed via attendanceProducer");
+        attendanceProducer.push(tenantId,attendanceServiceConfiguration.getSaveAttendeeTopic(), attendeeCreateRequest);
         log.info("attendees present in Create attendee request are enrolled to the registers");
         return attendeeCreateRequest;
     }
 
-    public List<IndividualEntry> getAttendees(List<String> registerIds,List<String> attendeeIds){
-        AttendeeSearchCriteria attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIds).individualIds(attendeeIds).build();
+    public List<IndividualEntry> getAttendees(String tenantId, List<String> registerIds,List<String> attendeeIds){
+        AttendeeSearchCriteria attendeeSearchCriteria = AttendeeSearchCriteria.builder().registerIds(registerIds).tenantId(tenantId).individualIds(attendeeIds).build();
         List<IndividualEntry> attendeeListFromDB = attendeeRepository.getAttendees(attendeeSearchCriteria);
         log.info("attendee List received From DB : " + attendeeListFromDB.size());
         return attendeeListFromDB;
@@ -148,7 +148,7 @@ public class AttendeeService {
         List<String> registerIds = extractRegisterIdsFromDeleteRequest(attendeeDeleteRequest);
 
         //db call to get the attendeeList data
-        List<IndividualEntry> attendeeListFromDB = getAttendees(registerIds,attendeeIds);
+        List<IndividualEntry> attendeeListFromDB = getAttendees(tenantId,registerIds,attendeeIds);
 
         //db call to get registers from db
         List<AttendanceRegister> attendanceRegisterListFromDB = getAttendanceRegisters(attendeeDeleteRequest,registerIds,tenantId);
@@ -168,9 +168,9 @@ public class AttendeeService {
 
         //Check if attendance logs are present for the individual for the provided de-ernollement date period or not
         attendanceServiceUtil. checkAttendanceLogsForIndividual(attendeeDeleteRequest);
-        //push to producer
-        log.info("attendee objects updated via producer");
-        producer.push(attendanceServiceConfiguration.getUpdateAttendeeTopic(), attendeeDeleteRequest);
+        //push to attendanceProducer
+        log.info("attendee objects updated via attendanceProducer");
+        attendanceProducer.push(tenantId,attendanceServiceConfiguration.getUpdateAttendeeTopic(), attendeeDeleteRequest);
         log.info("attendees present in delete attendee request are deenrolled from the registers");
         return attendeeDeleteRequest;
     }

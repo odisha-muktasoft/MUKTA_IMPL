@@ -83,5 +83,7 @@ public class EstimateServiceConstant {
     public static final String ESTIMATE_INWORKFLOW_STATUS = "INWORKFLOW";
     public static final String ESTIMATE_ACTIVE_STATUS = "ACTIVE";
     public static final String VALID_FROM = "validFrom";
+    public static final String TENANTID_MDC_STRING = "TENANTID";
 
+    public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
 }

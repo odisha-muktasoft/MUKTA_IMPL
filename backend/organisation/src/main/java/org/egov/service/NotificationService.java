@@ -128,7 +128,7 @@ public class NotificationService {
 
         for(Organisation organisation : request.getOrganisations()){
             OrgSearchRequest orgSearchRequest = OrgSearchRequest.builder().requestInfo(request.getRequestInfo())
-                    .searchCriteria(OrgSearchCriteria.builder().orgNumber(organisation.getOrgNumber()).build()).build();
+                    .searchCriteria(OrgSearchCriteria.builder().tenantId(organisation.getTenantId()).orgNumber(organisation.getOrgNumber()).build()).build();
             ContactDetails oldContactDetails = organisationRepository.getOrganisations(orgSearchRequest).get(0).getContactDetails().get(0);
 
 

@@ -47,9 +47,9 @@ public class AttendanceServiceUtil {
             individualIdSet.add(individualEntry.getIndividualId());
         }
 
-
+        String tenantId = attendeeDeleteRequest.getAttendees().get(0).getTenantId();
         if (0 != deenrollementDate && !registerId.isEmpty()) {
-            fetchAttendanceLogs(deenrollementDate, registerId, individualIdSet);
+            fetchAttendanceLogs(deenrollementDate, registerId, individualIdSet, tenantId);
         } else {
             log.info("REQUIRED_PARAMS_NOT_FOUND", "Either de-enrollementdate or registerId is empty");
         }
@@ -57,7 +57,7 @@ public class AttendanceServiceUtil {
 
     }
 
-    private void fetchAttendanceLogs(long deenrollementDate, String registerId, Set<String> individualIds) {
+    private void fetchAttendanceLogs(long deenrollementDate, String registerId, Set<String> individualIds, String tenantId) {
         // Convert epoch milliseconds to Instant
         Instant instant = Instant.ofEpochMilli(deenrollementDate);
 
@@ -74,6 +74,7 @@ public class AttendanceServiceUtil {
         long startOfWeekEpoch = startOfWeek.atStartOfDay(ZoneOffset.UTC).toEpochSecond() * 1000;
         long endOfWeekEpoch = endOfWeek.atTime(LocalTime.MAX).atZone(ZoneOffset.UTC).toEpochSecond() * 1000;
         AttendanceLogSearchCriteria searchCriteria = AttendanceLogSearchCriteria.builder()
+                .tenantId(tenantId)
                 .individualIds(new ArrayList<>(individualIds))
                 .registerId(registerId)
                 .fromTime(BigDecimal.valueOf(startOfWeekEpoch))

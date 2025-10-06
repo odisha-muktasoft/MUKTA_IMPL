@@ -70,7 +70,8 @@ public class EstimateService {
         workflowService.updateWorkflowStatus(estimateRequest);
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
-        producer.push(serviceConfiguration.getSaveEstimateTopic(), estimateRequest);
+        String tenantId = estimateRequest.getEstimate().getTenantId();
+        producer.push(tenantId, serviceConfiguration.getSaveEstimateTopic(), estimateRequest);
         estimateRequest.getEstimate().setProcessInstances(null);
         return estimateRequest;
     }
@@ -127,7 +128,8 @@ public class EstimateService {
         }
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
-        producer.push(serviceConfiguration.getUpdateEstimateTopic(), estimateRequest);
+        String tenantId = estimateRequest.getEstimate().getTenantId();
+        producer.push(tenantId, serviceConfiguration.getUpdateEstimateTopic(), estimateRequest);
         estimateRequest.getEstimate().setProcessInstances(null);
         try{
             notificationService.sendNotification(estimateRequest);
@@ -147,7 +149,9 @@ public class EstimateService {
                 EstimateRequest oldEstimateRequest = EstimateRequest.builder().requestInfo(estimateRequest.getRequestInfo()).estimate(oldEstimate).build();
                 if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
                     redisService.setCache(getEstimateRedisKey(oldEstimate.getId()), oldEstimate);
-                producer.push(serviceConfiguration.getUpdateEstimateTopic(), oldEstimateRequest);
+
+                String tenantId = estimateRequest.getEstimate().getTenantId();
+                producer.push(tenantId, serviceConfiguration.getUpdateEstimateTopic(), oldEstimateRequest);
             }
         }
     }

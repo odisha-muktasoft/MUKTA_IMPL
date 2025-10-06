@@ -1,10 +1,13 @@
 package org.egov.repository;
 
 import org.apache.commons.lang3.StringUtils;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.repository.querybuilder.*;
 import org.egov.repository.rowmapper.*;
 import org.egov.service.EncryptionService;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.tracer.model.CustomException;
 import org.egov.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.egov.util.OrganisationConstant.INVALID_TENANT_ID_ERR_CODE;
 import static org.egov.util.OrganisationConstant.ORGANISATION_ENCRYPT_KEY;
 
 @Repository
@@ -39,8 +43,10 @@ public class OrganisationRepository {
     private final EncryptionService encryptionService;
     private final JdbcTemplate jdbcTemplate;
 
+    private final MultiStateInstanceUtil multiStateInstanceUtil;
+
     @Autowired
-    public OrganisationRepository(AddressQueryBuilder addressQueryBuilder, OrganisationFunctionQueryBuilder organisationFunctionQueryBuilder, OrganisationFunctionRowMapper organisationFunctionRowMapper, AddressOrgIdsRowMapper addressOrgIdsRowMapper, AddressRowMapper addressRowMapper, DocumentQueryBuilder documentQueryBuilder, DocumentRowMapper documentRowMapper, ContactDetailsQueryBuilder contactDetailsQueryBuilder, TaxIdentifierRowMapper taxIdentifierRowMapper, ContactDetailsRowMapper contactDetailsRowMapper, ContactDetailsOrgIdsRowMapper contactDetailsOrgIdsRowMapper, JdbcTemplate jdbcTemplate, JurisdictionQueryBuilder jurisdictionQueryBuilder, TaxIdentifierOrgIdsRowMapper taxIdentifierOrgIdsRowMapper, JurisdictionRowMapper jurisdictionRowMapper, TaxIdentifierQueryBuilder taxIdentifierQueryBuilder, EncryptionService encryptionService) {
+    public OrganisationRepository(AddressQueryBuilder addressQueryBuilder, OrganisationFunctionQueryBuilder organisationFunctionQueryBuilder, OrganisationFunctionRowMapper organisationFunctionRowMapper, AddressOrgIdsRowMapper addressOrgIdsRowMapper, AddressRowMapper addressRowMapper, DocumentQueryBuilder documentQueryBuilder, DocumentRowMapper documentRowMapper, ContactDetailsQueryBuilder contactDetailsQueryBuilder, TaxIdentifierRowMapper taxIdentifierRowMapper, ContactDetailsRowMapper contactDetailsRowMapper, ContactDetailsOrgIdsRowMapper contactDetailsOrgIdsRowMapper, JdbcTemplate jdbcTemplate, JurisdictionQueryBuilder jurisdictionQueryBuilder, TaxIdentifierOrgIdsRowMapper taxIdentifierOrgIdsRowMapper, JurisdictionRowMapper jurisdictionRowMapper, TaxIdentifierQueryBuilder taxIdentifierQueryBuilder, EncryptionService encryptionService, MultiStateInstanceUtil multiStateInstanceUtil) {
         this.addressQueryBuilder = addressQueryBuilder;
         this.organisationFunctionQueryBuilder = organisationFunctionQueryBuilder;
         this.organisationFunctionRowMapper = organisationFunctionRowMapper;
@@ -58,6 +64,7 @@ public class OrganisationRepository {
         this.jurisdictionRowMapper = jurisdictionRowMapper;
         this.taxIdentifierQueryBuilder = taxIdentifierQueryBuilder;
         this.encryptionService = encryptionService;
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
     public List<Organisation> getOrganisations(OrgSearchRequest orgSearchRequest) {
@@ -89,23 +96,23 @@ public class OrganisationRepository {
         Set<String> organisationIds = organisations.stream().map(Organisation :: getId).collect(Collectors.toSet());
 
         //Fetch addresses based on organisation Ids
-        List<Address> addresses = getAddressBasedOnOrganisationIds(organisationIds);
+        List<Address> addresses = getAddressBasedOnOrganisationIds(orgSearchRequest, organisationIds);
 
         //Fetch contactDetails based on organisation Ids
-        List<ContactDetails> contactDetails = getContactDetailsBasedOnOrganisationIds(organisationIds);
+        List<ContactDetails> contactDetails = getContactDetailsBasedOnOrganisationIds(orgSearchRequest, organisationIds);
 
         Set<String> functionIds = organisations.stream()
                 .flatMap(org -> org.getFunctions().stream())
                 .map(Function::getId)
                 .collect(Collectors.toSet());
         //Fetch addresses based on organisation Ids
-        List<Document> documents = getDocumentsBasedOnOrganisationIds(organisationIds, functionIds);
+        List<Document> documents = getDocumentsBasedOnOrganisationIds(orgSearchRequest, organisationIds, functionIds);
 
         //Fetch jurisdictions based on organisation Ids
-        List<Jurisdiction> jurisdictions = getJurisdictionsBasedOnOrganisationIds(organisationIds);
+        List<Jurisdiction> jurisdictions = getJurisdictionsBasedOnOrganisationIds(orgSearchRequest, organisationIds);
 
         //Fetch identifiers based on organisation Ids
-        List<Identifier> identifiers = getIdentifiersBasedOnOrganisationIds(organisationIds);
+        List<Identifier> identifiers = getIdentifiersBasedOnOrganisationIds(orgSearchRequest, organisationIds);
 
         log.info("Fetched organisation details for search request");
         //Construct Organisation Objects with fetched organisations, addresses, contactDetails, jurisdictions, identifiers and documents using Organisation id
@@ -118,7 +125,8 @@ public class OrganisationRepository {
         if (StringUtils.isNotBlank(orgSearchRequest.getSearchCriteria().getContactMobileNumber())) {
             List<Object> preparedStmtListTarget = new ArrayList<>();
             String queryAddress = contactDetailsQueryBuilder.getContactDetailsSearchQueryBasedOnCriteria(orgSearchRequest.getSearchCriteria().getContactMobileNumber(), preparedStmtListTarget);
-            Set<String> orgIds = jdbcTemplate.query(queryAddress, contactDetailsOrgIdsRowMapper, preparedStmtListTarget.toArray());
+            String updatedQueryAddress = replaceSchemaInQuery(queryAddress, orgSearchRequest.getSearchCriteria().getTenantId());
+            Set<String> orgIds = jdbcTemplate.query(updatedQueryAddress, contactDetailsOrgIdsRowMapper, preparedStmtListTarget.toArray());
             log.info("Fetched Org Ids for contact details based on Contact Mobile Number search");
             return orgIds;
         }
@@ -130,7 +138,8 @@ public class OrganisationRepository {
         if (StringUtils.isNotBlank(orgSearchRequest.getSearchCriteria().getIdentifierType()) || StringUtils.isNotBlank(orgSearchRequest.getSearchCriteria().getIdentifierValue())) {
             List<Object> preparedStmtListTarget = new ArrayList<>();
             String queryIdentifier = taxIdentifierQueryBuilder.getTaxIdentifierSearchQueryBasedOnCriteria(orgSearchRequest.getSearchCriteria().getIdentifierType(), orgSearchRequest.getSearchCriteria().getIdentifierValue(), preparedStmtListTarget);
-            Set<String> orgIds = jdbcTemplate.query(queryIdentifier, taxIdentifierOrgIdsRowMapper, preparedStmtListTarget.toArray());
+            String updatedQueryIdentifier = replaceSchemaInQuery(queryIdentifier, orgSearchRequest.getSearchCriteria().getTenantId());
+            Set<String> orgIds = jdbcTemplate.query(updatedQueryIdentifier, taxIdentifierOrgIdsRowMapper, preparedStmtListTarget.toArray());
             log.info("Fetched Org Ids for identifiers based on Search criteria");
             return orgIds;
         }
@@ -142,7 +151,8 @@ public class OrganisationRepository {
         if (StringUtils.isNotBlank(orgSearchRequest.getSearchCriteria().getBoundaryCode())) {
             List<Object> preparedStmtListTarget = new ArrayList<>();
             String queryAddress = addressQueryBuilder.getAddressSearchQueryBasedOnCriteria(orgSearchRequest.getSearchCriteria().getBoundaryCode(), orgSearchRequest.getSearchCriteria().getTenantId(), preparedStmtListTarget);
-            Set<String> orgIds = jdbcTemplate.query(queryAddress, addressOrgIdsRowMapper, preparedStmtListTarget.toArray());
+            String updatedQueryAddress = replaceSchemaInQuery(queryAddress, orgSearchRequest.getSearchCriteria().getTenantId());
+            Set<String> orgIds = jdbcTemplate.query(updatedQueryAddress, addressOrgIdsRowMapper, preparedStmtListTarget.toArray());
             log.info("Fetched Org Ids for addresses based on Boundary Code search");
             return orgIds;
         }
@@ -153,7 +163,8 @@ public class OrganisationRepository {
     private List<Organisation> getOrganisationsBasedOnSearchCriteria(OrgSearchRequest orgSearchRequest, Set<String> orgIds) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = organisationFunctionQueryBuilder.getOrganisationSearchQuery(orgSearchRequest, orgIds, preparedStmtList, false);
-        List<Organisation> organisations = jdbcTemplate.query(query, organisationFunctionRowMapper, preparedStmtList.toArray());
+        String updatedQuery = replaceSchemaInQuery(query, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<Organisation> organisations = jdbcTemplate.query(updatedQuery, organisationFunctionRowMapper, preparedStmtList.toArray());
 
         log.info("Fetched organisations list based on given search criteria");
         return organisations;
@@ -221,46 +232,51 @@ public class OrganisationRepository {
     }
 
     /* Get addresses list based on organisation Ids */
-    private List<Address> getAddressBasedOnOrganisationIds(Set<String> organisationIds) {
+    private List<Address> getAddressBasedOnOrganisationIds(OrgSearchRequest orgSearchRequest, Set<String> organisationIds) {
         List<Object> preparedStmtListTarget = new ArrayList<>();
         String queryAddress = addressQueryBuilder.getAddressSearchQuery(organisationIds, preparedStmtListTarget);
-        List<Address> addresses = jdbcTemplate.query(queryAddress, addressRowMapper, preparedStmtListTarget.toArray());
+        String updatedQueryAddress = replaceSchemaInQuery(queryAddress, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<Address> addresses = jdbcTemplate.query(updatedQueryAddress, addressRowMapper, preparedStmtListTarget.toArray());
         log.info("Fetched addresses based on organisation Ids");
         return addresses;
     }
 
     /* Get documents list based on organisation Ids */
-    private List<Document> getDocumentsBasedOnOrganisationIds(Set<String> organisationIds, Set<String> functionIds) {
+    private List<Document> getDocumentsBasedOnOrganisationIds(OrgSearchRequest orgSearchRequest, Set<String> organisationIds, Set<String> functionIds) {
         List<Object> preparedStmtListTarget = new ArrayList<>();
         String queryDocument = documentQueryBuilder.getDocumentsSearchQuery(organisationIds, functionIds, preparedStmtListTarget);
-        List<Document> documents = jdbcTemplate.query(queryDocument, documentRowMapper, preparedStmtListTarget.toArray());
+        String updatedQueryDocument = replaceSchemaInQuery(queryDocument, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<Document> documents = jdbcTemplate.query(updatedQueryDocument, documentRowMapper, preparedStmtListTarget.toArray());
         log.info("Fetched documents based on organisation Ids");
         return documents;
     }
 
     /* Get contact details list based on organisation Ids */
-    private List<ContactDetails> getContactDetailsBasedOnOrganisationIds(Set<String> organisationIds) {
+    private List<ContactDetails> getContactDetailsBasedOnOrganisationIds(OrgSearchRequest orgSearchRequest, Set<String> organisationIds) {
         List<Object> preparedStmtListTarget = new ArrayList<>();
         String queryContactDetails = contactDetailsQueryBuilder.getContactDetailsSearchQuery(organisationIds, preparedStmtListTarget);
-        List<ContactDetails> contactDetails = jdbcTemplate.query(queryContactDetails, contactDetailsRowMapper, preparedStmtListTarget.toArray());
+        String updatedQueryContactDetails = replaceSchemaInQuery(queryContactDetails, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<ContactDetails> contactDetails = jdbcTemplate.query(updatedQueryContactDetails, contactDetailsRowMapper, preparedStmtListTarget.toArray());
         log.info("Fetched contactDetails based on organisation Ids");
         return contactDetails;
     }
 
     /* Get identifiers list based on organisation Ids */
-    private List<Identifier> getIdentifiersBasedOnOrganisationIds(Set<String> organisationIds) {
+    private List<Identifier> getIdentifiersBasedOnOrganisationIds(OrgSearchRequest orgSearchRequest, Set<String> organisationIds) {
         List<Object> preparedStmtListTarget = new ArrayList<>();
         String queryIdentifier = taxIdentifierQueryBuilder.getTaxIdentifierSearchQuery(organisationIds, preparedStmtListTarget);
-        List<Identifier> identifiers = jdbcTemplate.query(queryIdentifier, taxIdentifierRowMapper, preparedStmtListTarget.toArray());
+        String updatedQueryIdentifier = replaceSchemaInQuery(queryIdentifier, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<Identifier> identifiers = jdbcTemplate.query(updatedQueryIdentifier, taxIdentifierRowMapper, preparedStmtListTarget.toArray());
         log.info("Fetched identifiers based on organisation Ids");
         return identifiers;
     }
 
     /* Get jurisdictions list based on organisation Ids */
-    private List<Jurisdiction> getJurisdictionsBasedOnOrganisationIds(Set<String> organisationIds) {
+    private List<Jurisdiction> getJurisdictionsBasedOnOrganisationIds(OrgSearchRequest orgSearchRequest, Set<String> organisationIds) {
         List<Object> preparedStmtListTarget = new ArrayList<>();
         String queryJurisdictions = jurisdictionQueryBuilder.getJurisdictionSearchQuery(organisationIds, preparedStmtListTarget);
-        List<Jurisdiction> jurisdictions = jdbcTemplate.query(queryJurisdictions, jurisdictionRowMapper, preparedStmtListTarget.toArray());
+        String updatedQueryJurisdictions = replaceSchemaInQuery(queryJurisdictions, orgSearchRequest.getSearchCriteria().getTenantId());
+        List<Jurisdiction> jurisdictions = jdbcTemplate.query(updatedQueryJurisdictions, jurisdictionRowMapper, preparedStmtListTarget.toArray());
         log.info("Fetched jurisdictions based on organisation Ids");
         return jurisdictions;
     }
@@ -382,8 +398,17 @@ public class OrganisationRepository {
         if (query == null)
             return 0;
 
-        Integer count = jdbcTemplate.queryForObject(query, preparedStatement.toArray(), Integer.class);
+        String updatedQuery = replaceSchemaInQuery(query, orgSearchRequest.getSearchCriteria().getTenantId());
+        Integer count = jdbcTemplate.queryForObject(updatedQuery, preparedStatement.toArray(), Integer.class);
         log.info("Total organisation count is : " + count);
         return count;
+    }
+
+    private String replaceSchemaInQuery(String query, String tenantId) {
+        try {
+            return multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException(INVALID_TENANT_ID_ERR_CODE, e.getMessage());
+        }
     }
 }

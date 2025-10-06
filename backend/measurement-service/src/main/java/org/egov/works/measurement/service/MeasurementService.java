@@ -16,7 +16,6 @@ import org.egov.works.measurement.web.models.MeasurementServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +32,7 @@ public class MeasurementService {
     private final MeasurementServiceUtil measurementServiceUtil;
     private final MeasurementRegistryUtil measurementRegistryUtil;
     private final NotificationService notificationService;
-   private final MeasurementEnrichment measurementEnrichment;
+    private final MeasurementEnrichment measurementEnrichment;
 
     @Autowired
     public MeasurementService(MeasurementServiceValidator measurementServiceValidator, ResponseInfoFactory responseInfoFactory, MBServiceProducer MBServiceProducer, MBServiceConfiguration MBServiceConfiguration, MeasurementRegistry measurementRegistry, MeasurementServiceUtil measurementServiceUtil, MeasurementRegistryUtil measurementRegistryUtil, NotificationService notificationService,
@@ -76,8 +75,9 @@ public class MeasurementService {
         ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(body.getRequestInfo(), true);
         MeasurementServiceResponse measurementServiceResponse = MeasurementServiceResponse.builder().responseInfo(responseInfo).measurements(body.getMeasurements()).build();
 
+        String tenantId = body.getMeasurements().get(0).getTenantId();
         // push to kafka
-        MBServiceProducer.push(MBServiceConfiguration.getMeasurementServiceCreateTopic(), body);
+        MBServiceProducer.push(tenantId, MBServiceConfiguration.getMeasurementServiceCreateTopic(), body);
         return measurementServiceResponse;
 
     }
@@ -120,8 +120,9 @@ public class MeasurementService {
         // Create a MeasurementServiceResponse
         MeasurementServiceResponse response = measurementServiceUtil.makeUpdateResponseService(measurementServiceRequest);
 
+        String tenantId = measurementServiceRequest.getMeasurements().get(0).getTenantId();
         // Push the response to the service update topic
-        MBServiceProducer.push(MBServiceConfiguration.getServiceUpdateTopic(), measurementServiceRequest);
+        MBServiceProducer.push(tenantId, MBServiceConfiguration.getServiceUpdateTopic(), measurementServiceRequest);
 
         return response;
     }

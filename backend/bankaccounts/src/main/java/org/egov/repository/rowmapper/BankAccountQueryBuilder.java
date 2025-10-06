@@ -6,6 +6,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.config.Configuration;
 import org.egov.web.models.*;
+import org.egov.works.services.common.models.bankaccounts.Order;
+import org.egov.works.services.common.models.bankaccounts.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -13,12 +15,13 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 @Slf4j
 public class BankAccountQueryBuilder {
 
-    @Autowired
-    private Configuration config;
+    private final Configuration config;
 
 
     private static final String FETCH_BANK_ACCOUNT_QUERY = "SELECT bankAcct.*," +
@@ -28,27 +31,27 @@ public class BankAccountQueryBuilder {
             "bankAcctDetail.created_by AS bankAcctDetailCreatedBy,bankAcctDetail.last_modified_by AS bankAcctDetailLastModifiedBy," +
             "bankAcctDetail.created_time AS bankAcctDetailCreatedTime,bankAcctDetail.last_modified_time AS bankAcctDetailLastModifiedTime,bankAcctDetail.created_time AS bankAcctDetailCreatedTime," +
             "bankAcctIdntfr.id AS bankAcctIdntfrId,bankAcctDoc.bank_account_detail_id AS bankAcctDocAcctId " +
-            "FROM eg_bank_account AS bankAcct " +
-            "LEFT JOIN " +
-            "eg_bank_account_detail AS bankAcctDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_bank_account AS bankAcct " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_account_detail AS bankAcctDetail " +
             "ON (bankAcct.id=bankAcctDetail.bank_account_id) " +
-            "LEFT JOIN " +
-            "eg_bank_accounts_doc AS bankAcctDoc " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_accounts_doc AS bankAcctDoc " +
             "ON (bankAcctDetail.id=bankAcctDoc.bank_account_detail_id) " +
-            "LEFT JOIN " +
-            "eg_bank_branch_identifier AS bankAcctIdntfr " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_branch_identifier AS bankAcctIdntfr " +
             "ON (bankAcctDetail.id=bankAcctIdntfr.bank_account_detail_id) ";
 
     private static final String BANK_ACCOUNT_COUNT_QUERY = "SELECT distinct(bankAcct.id) " +
-            "FROM eg_bank_account AS bankAcct " +
-            "LEFT JOIN " +
-            "eg_bank_account_detail AS bankAcctDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_bank_account AS bankAcct " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_account_detail AS bankAcctDetail " +
             "ON (bankAcct.id=bankAcctDetail.bank_account_id) " +
-            "LEFT JOIN " +
-            "eg_bank_accounts_doc AS bankAcctDoc " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_accounts_doc AS bankAcctDoc " +
             "ON (bankAcctDetail.id=bankAcctDoc.bank_account_detail_id) " +
-            "LEFT JOIN " +
-            "eg_bank_branch_identifier AS bankAcctIdntfr " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_bank_branch_identifier AS bankAcctIdntfr " +
             "ON (bankAcctDetail.id=bankAcctIdntfr.bank_account_detail_id) ";
 
     private final String paginationWrapper = "SELECT * FROM " +
@@ -58,6 +61,11 @@ public class BankAccountQueryBuilder {
             "WHERE offset_ > ? AND offset_ <= ?";
 
     private static final String COUNT_WRAPPER = " SELECT COUNT(*) FROM ({INTERNAL_QUERY}) AS count ";
+
+    @Autowired
+    public BankAccountQueryBuilder(Configuration config) {
+        this.config = config;
+    }
 
     private static void addClauseIfRequired(List<Object> values, StringBuilder queryString) {
         if (values.isEmpty())

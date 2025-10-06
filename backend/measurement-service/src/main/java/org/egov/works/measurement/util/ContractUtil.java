@@ -161,7 +161,8 @@ public class ContractUtil {
     }
     public void validateByReferenceId(MeasurementServiceRequest measurementServiceRequest){
         MeasurementSearchRequest measurementSearchRequest=MeasurementSearchRequest.builder().requestInfo(measurementServiceRequest.getRequestInfo()).build();
-        MeasurementCriteria criteria=MeasurementCriteria.builder().tenantId(measurementServiceRequest.getMeasurements().get(0).getTenantId()).build();
+        String tenantId = measurementServiceRequest.getMeasurements().get(0).getTenantId();
+        MeasurementCriteria criteria=MeasurementCriteria.builder().tenantId(tenantId).build();
         Pagination pagination = Pagination.builder().limit(1).offSet(0).sortBy("createdTime").order(Pagination.OrderEnum.DESC).build();
         measurementSearchRequest.setPagination(pagination);
         NamedParameterJdbcTemplate namedParameterJdbcTemplate=new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -170,7 +171,7 @@ public class ContractUtil {
             measurementSearchRequest.setCriteria(criteria);
             List<Measurement> measurements=measurementRegistryUtil.searchMeasurements(measurementSearchRequest).getBody().getMeasurements();
             if(!measurements.isEmpty()){
-                List<MeasurementService> measurementServices=serviceRequestRepository.getMeasurementServicesFromMBSTable(namedParameterJdbcTemplate,Collections.singletonList(measurements.get(0).getMeasurementNumber()));
+                List<MeasurementService> measurementServices=serviceRequestRepository.getMeasurementServicesFromMBSTable(namedParameterJdbcTemplate,Collections.singletonList(measurements.get(0).getMeasurementNumber()), tenantId);
                 if(!measurementServices.isEmpty()&&!(measurementServices.get(0).getWfStatus().equals(REJECTED_STATUS)||measurementServices.get(0).getWfStatus().equals(APPROVED_STATUS))){
                     throw new CustomException(NOT_VALID_REFERENCE_ID_CODE, NOT_VALID_REFERENCE_ID_MSG + measurements.get(0).getReferenceId());
                 }

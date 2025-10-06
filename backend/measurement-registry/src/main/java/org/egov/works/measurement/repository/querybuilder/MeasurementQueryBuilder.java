@@ -12,16 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 @Slf4j
 public class MeasurementQueryBuilder {
-
-    @Autowired
-    private MeasurementQueryBuilder QueryUtil;
-
-    @Autowired
-    private Pagination pagination;
 
     @Autowired
     private MBRegistryConfiguration config;
@@ -39,19 +33,23 @@ public class MeasurementQueryBuilder {
 
             "dc.filestore as filestore, dc.documentType as documentType, dc.documentuuid as documentuuid, dc.additionaldetails as dcadditionaldetails, dc.id as dcid " +
 
-            "FROM eg_mb_measurements m " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_mb_measurements m " +
 
-            "INNER JOIN eg_mb_measurement_details md ON m.id = md.referenceId " +
-            "INNER JOIN eg_mb_measurement_measures mm ON md.id = mm.id "+
-            "LEFT JOIN eg_mb_measurement_documents dc ON m.id = dc.referenceId ";
+            "INNER JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_details md ON m.id = md.referenceId " +
+            "INNER JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_measures mm ON md.id = mm.id "+
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING + ".eg_mb_measurement_documents dc ON m.id = dc.referenceId ";
 
-    private final String ORDER_BY_CREATED_TIME = "ORDER BY m.createdtime DESC";
 
     private static String WRAPPER_QUERY = "SELECT * FROM " +
             "(SELECT *, DENSE_RANK() OVER (ORDER BY {sortBy} {orderBy}) offset_ FROM " +
             "({})" +
             " result) result_offset " +
             "WHERE offset_ > ? AND offset_ <= ?";
+
+    private static final String MEASUREMENT_COUNT_QUERY = "SELECT distinct(m.id) " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_mb_measurements m ";
+
+    private static final String COUNT_WRAPPER = " SELECT COUNT(*) FROM ({INTERNAL_QUERY}) AS count ";
 
 
     private void addClauseIfRequired(StringBuilder query, List<Object> preparedStmtList) {
@@ -62,8 +60,14 @@ public class MeasurementQueryBuilder {
         }
     }
 
-    public String getMeasurementSearchQuery(MeasurementCriteria criteria, List<Object> preparedStmtList, MeasurementSearchRequest measurementSearchRequest) {
-        StringBuilder query = new StringBuilder(BASE_MEASUREMENT_QUERY);
+    public String getMeasurementSearchQuery(MeasurementCriteria criteria, List<Object> preparedStmtList, MeasurementSearchRequest measurementSearchRequest, boolean isCountNeeded) {
+        StringBuilder query = null;
+
+        if(isCountNeeded) {
+            query = new StringBuilder(MEASUREMENT_COUNT_QUERY);
+        } else {
+            query = new StringBuilder(BASE_MEASUREMENT_QUERY);
+        }
 
         boolean tenantIdProvided = !ObjectUtils.isEmpty(criteria.getTenantId());
 
@@ -105,7 +109,7 @@ public class MeasurementQueryBuilder {
             preparedStmtList.add(criteria.getIsActive());
         }
 
-        return addPaginationWrapper(query, measurementSearchRequest.getPagination(), preparedStmtList);
+        return isCountNeeded? query.toString(): addPaginationWrapper(query, measurementSearchRequest.getPagination(), preparedStmtList);
     }
 
 
@@ -161,5 +165,14 @@ public class MeasurementQueryBuilder {
         ids.forEach(id -> {
             preparedStmtList.add(id);
         });
+    }
+
+    public String getSearchCountQueryString(MeasurementCriteria criteria, List<Object> preparedStmtList, MeasurementSearchRequest measurementSearchRequest) {
+        log.info("EstimateQueryBuilder::getSearchCountQueryString");
+        String query = getMeasurementSearchQuery(criteria, preparedStmtList, measurementSearchRequest, true);
+        if (query != null)
+            return COUNT_WRAPPER.replace("{INTERNAL_QUERY}", query);
+        else
+            return query;
     }
 }

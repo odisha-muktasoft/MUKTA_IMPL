@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
 @Component
 public class LineItemsQueryBuilder {
 
@@ -35,9 +36,9 @@ public class LineItemsQueryBuilder {
             "amountBreakups.last_modified_by AS amtLastModifiedBy, " +
             "amountBreakups.created_time AS amtCreatedTime, " +
             "amountBreakups.last_modified_time AS amtLastModifiedTime " +
-            "FROM eg_wms_contract_line_items AS lineItems " +
-            "LEFT JOIN " +
-            "eg_wms_contract_amount_breakups as amountBreakups " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_contract_line_items AS lineItems " +
+            "LEFT JOIN " + SCHEMA_REPLACE_STRING +
+            ".eg_wms_contract_amount_breakups as amountBreakups " +
             "ON (lineItems.id=amountBreakups.line_item_id) ";
 
     public String getLineItemsSearchQuery(ContractCriteria criteria, List<Object> preparedStmtList) {

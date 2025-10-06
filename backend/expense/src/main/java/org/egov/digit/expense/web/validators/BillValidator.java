@@ -323,7 +323,7 @@ public class BillValidator {
 
 		if(dueDate.compareTo(billDate) < 0)
 			errorMap.put("EG_EXPENSE_BILL_INVALID_DATE",
-					"The due Date : " + billDate + " cannot be greater than the due Date : " + dueDate);
+					"The bill Date : " + billDate + " cannot be greater than the due Date : " + dueDate);
 	}
 
 	/**

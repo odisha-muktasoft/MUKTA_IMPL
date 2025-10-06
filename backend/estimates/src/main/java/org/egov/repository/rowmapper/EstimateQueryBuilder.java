@@ -13,6 +13,8 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
+import static org.egov.common.utils.MultiStateInstanceUtil.SCHEMA_REPLACE_STRING;
+
 @Component
 @Slf4j
 public class EstimateQueryBuilder {
@@ -27,27 +29,27 @@ public class EstimateQueryBuilder {
             "estDetail.additional_details AS estDetailAdditional,estAmtDetail.additional_details AS estAmtDetailAdditional," +
             "estAdd.id AS estAddId,estAmtDetail.id AS estAmtDetailId,estDetail.estimate_id AS estDetailEstId," +
             "estDetail.is_active AS estDetailActive,estAmtDetail.is_active AS estAmtDetailActive,estDetail.name AS estDetailName "+
-            "FROM eg_wms_estimate AS est " +
-            LEFT_JOIN +
-            "eg_wms_estimate_detail AS estDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_estimate AS est " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_detail AS estDetail " +
             "ON (est.id=estDetail.estimate_id) " +
-            LEFT_JOIN +
-            "eg_wms_estimate_address AS estAdd " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_address AS estAdd " +
             "ON (est.id=estAdd.estimate_id) " +
-            LEFT_JOIN +
-            "eg_wms_estimate_amount_detail AS estAmtDetail " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_amount_detail AS estAmtDetail " +
             "ON (estDetail.id=estAmtDetail.estimate_detail_id) ";
 
     private static final String ESTIMATE_COUNT_QUERY = "SELECT distinct(est.estimate_number) " +
-            "FROM eg_wms_estimate AS est " +
-            LEFT_JOIN +
-            "eg_wms_estimate_detail AS estDetail " +
+            "FROM " + SCHEMA_REPLACE_STRING + ".eg_wms_estimate AS est " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_detail AS estDetail " +
             "ON (est.id=estDetail.estimate_id) " +
-            LEFT_JOIN+
-            "eg_wms_estimate_address AS estAdd " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_address AS estAdd " +
             "ON (est.id=estAdd.estimate_id) " +
-            LEFT_JOIN +
-            "eg_wms_estimate_amount_detail AS estAmtDetail " +
+            LEFT_JOIN + SCHEMA_REPLACE_STRING +
+            ".eg_wms_estimate_amount_detail AS estAmtDetail " +
             "ON (estDetail.id=estAmtDetail.estimate_detail_id) ";
 
     private static final String PAGINATION_WRAPPER = "SELECT * FROM " +
