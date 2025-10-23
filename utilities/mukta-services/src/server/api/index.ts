@@ -311,7 +311,7 @@ const mdmsv2_v1Search = async (tenantId: string, module: string, master: string,
 
 const mdmsv1_search = async (tenantId: string, module: string, master: string, filter: string, requestInfo:any) => {
   const requestBody = {
-    RequestInfo: requestInfo.RequestInfo,
+    RequestInfo: requestInfo,
     MdmsCriteria: {
       tenantId: tenantId,
       moduleDetails: [
