@@ -3,7 +3,7 @@ import * as express from "express";
 
 import {
   search_mdms,
-  mdmsv2_v1Search,
+  mdmsv1_search,
 } from "../../api/index";
 import {
   convertObjectForMdmsResponse,
@@ -49,13 +49,13 @@ class MdmsV1GetController {
         RequestInfo 
       ),
 
-      mdmsv2_v1Search(
+      mdmsv1_search(
         tenantId,
         moduleName,
         masterName,
         filter,
         RequestInfo
-      
+
       ),
     ];
 

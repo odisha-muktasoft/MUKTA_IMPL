@@ -309,6 +309,34 @@ const mdmsv2_v1Search = async (tenantId: string, module: string, master: string,
   ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
 }
 
+const mdmsv1_search = async (tenantId: string, module: string, master: string, filter: string, requestInfo:any) => {
+  const requestBody = {
+    RequestInfo: requestInfo.RequestInfo,
+    MdmsCriteria: {
+      tenantId: tenantId,
+      moduleDetails: [
+        {
+          moduleName: module,
+          masterDetails: [
+            {
+              name: master,
+              filter: filter
+            },
+          ]
+        },
+      ],
+    },
+  };
+  return await httpRequest(
+    url.resolve(config.host.mdms, config.paths.mdms_search),
+    requestBody,
+    null,
+    "post",
+    "",
+    { cachekey: `${tenantId}-${module}-${master}` }
+  ).then((response: { MdmsRes: any; })=>response.MdmsRes[module][master]);
+}
+
 const search_bank_account = async (bankAccountDetails: any, requestinfo: any) => {
   return await httpRequest(
     url.resolve(config.host.bank_account, config.paths.bank_account),
@@ -336,5 +364,6 @@ export {
   calculate_expense,
   searchRates,
   mdmsv2_v1Search,
+  mdmsv1_search,
   search_bank_account
 };
