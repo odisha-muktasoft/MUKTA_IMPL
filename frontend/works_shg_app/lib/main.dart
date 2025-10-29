@@ -324,7 +324,7 @@ class _MainApplicationState extends State<MainApplication> {
             builder: (context, authState) {
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
-                title: 'MUKTASoft App',
+                title: 'Sujog Works',
                 supportedLocales: appInitState.initMdmsModel != null
                     ? appInitState.digitRowCardItems!.map((e) {
                         final results = e.value.split('_');
