@@ -7,7 +7,7 @@
    <application
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:label="MUKTASoft App"
+        android:label="Sujog Works"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

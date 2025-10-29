@@ -79,7 +79,7 @@ class SuccessResponsePage extends StatelessWidget {
         // appBar: isWithoutLogin
         //     ? AppBar(
         //         backgroundColor: const Color(0xff0B4B66),
-        //         title: const Text('MuktaSoft'),
+        //         title: const Text('Sujog Works'),
         //         automaticallyImplyLeading: false,
         //       )
         //     : customAppBar(),
