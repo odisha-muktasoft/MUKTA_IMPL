@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 public class ServiceRequestRepository {
 	private ObjectMapper mapper;
 
-		@Autowired
+	@Autowired
 	private RestTemplate restTemplate;
 
 	@Autowired
