@@ -12,13 +12,20 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 
 @Repository
 @Slf4j
 public class ServiceRequestRepository {
 	private ObjectMapper mapper;
 
+	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private SearchConfiguration config;
 
 	@Autowired
 	public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate) {
@@ -31,6 +38,8 @@ public class ServiceRequestRepository {
 	 * @param request
 	 * @return
 	 */
+
+	/* Commenting to include ES related logic as well
 	public Object fetchResult(StringBuilder uri, Object request) {
 		Object response = null;
 		//log.debug("URI: " + uri.toString());
@@ -43,6 +52,29 @@ public class ServiceRequestRepository {
 		} catch (Exception e) {
 			//log.error("Exception while fetching from searcher: ", e);
 			throw new ServiceCallException(e.getMessage());
+		}
+
+		return response;
+	}*/
+	
+	public Object fetchResult(StringBuilder uri, Object request) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// Add Basic Auth for ES
+		String auth = config.getEsUserName() + ":" + config.getEsPassword();
+		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+		headers.set("Authorization", "Basic " + new String(encodedAuth));
+
+		HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+		Object response = null;
+
+		try {
+			response = restTemplate.postForObject(uri.toString(), httpEntity, Map.class);
+		} catch (Exception e) {
+			log.error("ES fetch error: {}", e.getMessage());
 		}
 
 		return response;
