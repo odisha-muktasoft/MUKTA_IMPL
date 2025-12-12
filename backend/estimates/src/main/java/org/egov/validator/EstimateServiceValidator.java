@@ -915,9 +915,9 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         List<EstimateDetail>estimateDetails=estimate.getEstimateDetails();
 
         if (StringUtils.isBlank(estimate.getTenantId())) {
-    log.warn("TenantId missing in estimate, using tenantId from RequestInfo user or default");
+            log.info("TenantId is " + estimate.getTenantId() + " missing in estimate, using tenantId from RequestInfo user or default");
             if (request.getRequestInfo() != null && request.getRequestInfo().getUserInfo() != null) {
-        estimate.setTenantId(request.getRequestInfo().getUserInfo().getTenantId());
+                estimate.setTenantId(request.getRequestInfo().getUserInfo().getTenantId());
             }
         }
 
@@ -945,6 +945,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
 
     }
     private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request, Map<String, String> errorMap){
+        log.info("EstimateServiceValidator::validateEstimateFromDBAndFetchPreviousEstimate");
         Estimate estimate = request.getEstimate();
         List<String> ids = new ArrayList<>();
         String id;
@@ -952,9 +953,12 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         EstimateSearchCriteria currentEstimateSearchCriteria;
         Boolean isPreviousEstimateSearch = Boolean.FALSE;
 
+        // tenantId null check and restoration
         String tenantId = estimate.getTenantId();
         if (StringUtils.isBlank(tenantId) && request.getRequestInfo() != null && request.getRequestInfo().getUserInfo() != null) {
             tenantId = request.getRequestInfo().getUserInfo().getTenantId();
+            estimate.setTenantId(tenantId);
+            log.info("TenantId was missing in estimate, restored from RequestInfo: {}", tenantId);
         }
         
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
