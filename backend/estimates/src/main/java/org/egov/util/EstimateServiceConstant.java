@@ -86,4 +86,5 @@ public class EstimateServiceConstant {
     public static final String TENANTID_MDC_STRING = "TENANTID";
 
     public static final String INVALID_TENANT_ID_ERR_CODE = "INVALID_TENANT_ID";
+    public static final String TENANT_ID_MISSING = "TENANT_ID_MISSING";
 }
