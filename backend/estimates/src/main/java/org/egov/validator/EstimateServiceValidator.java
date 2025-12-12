@@ -914,6 +914,13 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         Workflow workflow = request.getWorkflow();
         List<EstimateDetail>estimateDetails=estimate.getEstimateDetails();
 
+        if (StringUtils.isBlank(estimate.getTenantId())) {
+    log.warn("TenantId missing in estimate, using tenantId from RequestInfo user or default");
+            if (request.getRequestInfo() != null && request.getRequestInfo().getUserInfo() != null) {
+        estimate.setTenantId(request.getRequestInfo().getUserInfo().getTenantId());
+            }
+        }
+
         validateRequestInfo(requestInfo);
         validateEstimate(estimate, errorMap);
         validateWorkFlow(workflow);
@@ -944,6 +951,12 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         EstimateSearchCriteria previousEstimateSearchCriteria=new EstimateSearchCriteria();
         EstimateSearchCriteria currentEstimateSearchCriteria;
         Boolean isPreviousEstimateSearch = Boolean.FALSE;
+
+        String tenantId = estimate.getTenantId();
+        if (StringUtils.isBlank(tenantId) && request.getRequestInfo() != null && request.getRequestInfo().getUserInfo() != null) {
+            tenantId = request.getRequestInfo().getUserInfo().getTenantId();
+        }
+        
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
            id = estimate.getOldUuid();
             ids.add(id);
