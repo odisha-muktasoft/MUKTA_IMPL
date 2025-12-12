@@ -949,7 +949,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         Estimate estimate = request.getEstimate();
         List<String> ids = new ArrayList<>();
         String id;
-        EstimateSearchCriteria previousEstimateSearchCriteria=new EstimateSearchCriteria();
+        EstimateSearchCriteria previousEstimateSearchCriteria = null;
         EstimateSearchCriteria currentEstimateSearchCriteria;
         Boolean isPreviousEstimateSearch = Boolean.FALSE;
             
@@ -974,11 +974,19 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         log.info("---- TenantId Debug Trace End ----");
 
         
-        if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
-           id = estimate.getOldUuid();
+        if (request.getEstimate().getBusinessService() != null &&
+            request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())) {
+            id = estimate.getOldUuid();
             ids.add(id);
-            previousEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(tenantId).status(ESTIMATE_ACTIVE_STATUS).build();
-            isPreviousEstimateSearch=Boolean.TRUE;
+
+            previousEstimateSearchCriteria = EstimateSearchCriteria.builder()
+                .ids(ids)
+                .tenantId(tenantId)
+                .status(ESTIMATE_ACTIVE_STATUS)
+                .build();
+
+            log.info("✅ previousEstimateSearchCriteria built with tenantId='{}'", previousEstimateSearchCriteria.getTenantId());
+            isPreviousEstimateSearch = Boolean.TRUE;
         }
         id = estimate.getId();
         ids.add(id);
