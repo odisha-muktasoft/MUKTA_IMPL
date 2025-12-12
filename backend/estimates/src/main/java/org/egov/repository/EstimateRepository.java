@@ -22,6 +22,7 @@ import org.egov.common.exception.InvalidTenantIdException;
 import org.egov.common.utils.MultiStateInstanceUtil;
 
 import static org.egov.util.EstimateServiceConstant.INVALID_TENANT_ID_ERR_CODE;
+import static org.egov.util.EstimateServiceConstant.TENANT_ID_MISSING;
 
 @Repository
 @Slf4j
@@ -52,6 +53,10 @@ public class EstimateRepository {
      */
     public List<Estimate> getEstimate(EstimateSearchCriteria searchCriteria) {
         log.info("EstimateRepository::getEstimate");
+        if (searchCriteria.getTenantId() == null) {
+            log.error("TenantId is null in search criteria while calling getEstimate()");
+            throw new CustomException(TENANT_ID_MISSING, "TenantId cannot be null while fetching estimates");
+        }
         List<Object> preparedStmtList = new ArrayList<>();
         if (searchCriteria.getIsCountNeeded() == null) {
             searchCriteria.setIsCountNeeded(Boolean.FALSE);
