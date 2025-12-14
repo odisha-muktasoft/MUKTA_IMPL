@@ -945,58 +945,61 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
 
     }
     private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request, Map<String, String> errorMap){
-        log.info("EstimateServiceValidator::validateEstimateFromDBAndFetchPreviousEstimate");
-        Estimate estimate = request.getEstimate();
-        List<String> ids = new ArrayList<>();
-        String id;
-        EstimateSearchCriteria previousEstimateSearchCriteria = null;
-        EstimateSearchCriteria currentEstimateSearchCriteria;
-        Boolean isPreviousEstimateSearch = Boolean.FALSE;
-            
-        // --- TenantId Debug Start ---
-        String tenantId = estimate.getTenantId();
-        log.info("---- TenantId Debug Trace Start ----");
-        log.info("tenantId local variable (initial) = '{}'", tenantId);
-        log.info("estimate.getTenantId() (initial) = '{}'", estimate.getTenantId());
-        log.info("IsBlank(estimate.getTenantId()) = {}", StringUtils.isBlank(estimate.getTenantId()));
+    log.info("EstimateServiceValidator::validateEstimateFromDBAndFetchPreviousEstimate");
+    Estimate estimate = request.getEstimate();
+    String id;
 
+    EstimateSearchCriteria previousEstimateSearchCriteria = null;
+    EstimateSearchCriteria currentEstimateSearchCriteria;
+    boolean isPreviousEstimateSearch = false;
 
-        // tenantId null check and restoration
-        if (StringUtils.isBlank(tenantId) 
-                && request.getRequestInfo() != null 
-                && request.getRequestInfo().getUserInfo() != null) {
-            tenantId = request.getRequestInfo().getUserInfo().getTenantId();
-            estimate.setTenantId(tenantId);
-            log.info("TenantId was missing in estimate, restored from RequestInfo: {}", tenantId);
-        }
-        log.info("tenantId after restoration = '{}'", tenantId);
-        log.info("estimate.getTenantId() after restoration = '{}'", estimate.getTenantId());
-        log.info("---- TenantId Debug Trace End ----");
+    // --- TenantId handling ---
+    String tenantId = estimate.getTenantId();
+    if (StringUtils.isBlank(tenantId)
+        && request.getRequestInfo() != null
+        && request.getRequestInfo().getUserInfo() != null) {
+        tenantId = request.getRequestInfo().getUserInfo().getTenantId();
+        estimate.setTenantId(tenantId);
+    }
 
-        
-        if (request.getEstimate().getBusinessService() != null &&
-            request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())) {
-            id = estimate.getOldUuid();
-            ids.add(id);
+    log.info("TenantId resolved in validateEstimateFromDBAndFetchPreviousEstimate = '{}'", tenantId);
 
-            previousEstimateSearchCriteria = EstimateSearchCriteria.builder()
-                .ids(ids)
+    // ---------- Previous estimate (ONLY for revision estimates) ----------
+    List<Estimate> previousEstimateList = Collections.emptyList();
+
+    if (request.getEstimate().getBusinessService() != null
+            && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())) {
+
+        isPreviousEstimateSearch = true;
+        id = estimate.getOldUuid();
+
+        List<String> prevIds = Collections.singletonList(id);
+
+        previousEstimateSearchCriteria = EstimateSearchCriteria.builder()
+                .ids(prevIds)
                 .tenantId(tenantId)
                 .status(ESTIMATE_ACTIVE_STATUS)
                 .build();
 
-            log.info("✅ previousEstimateSearchCriteria built with tenantId='{}'", previousEstimateSearchCriteria.getTenantId());
-            isPreviousEstimateSearch = Boolean.TRUE;
-        }
-        id = estimate.getId();
-        ids.add(id);
-        currentEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(tenantId).build();
-        
         log.info("previousEstimateSearchCriteria.tenantId = '{}'", previousEstimateSearchCriteria.getTenantId());
-        log.info("currentEstimateSearchCriteria.tenantId = '{}'", currentEstimateSearchCriteria.getTenantId());
 
-        List<Estimate> previousEstimateList = estimateRepository.getEstimate(previousEstimateSearchCriteria);
-        List<Estimate> currentEstimateList=estimateRepository.getEstimate(currentEstimateSearchCriteria);
+        // Call repo ONLY when criteria is built
+        previousEstimateList = estimateRepository.getEstimate(previousEstimateSearchCriteria);
+    }
+
+    // ---------- Current estimate (always needed) ----------
+    id = estimate.getId();
+    List<String> currentIds = Collections.singletonList(id);
+
+    currentEstimateSearchCriteria = EstimateSearchCriteria.builder()
+            .ids(currentIds)
+            .tenantId(tenantId)
+            .build();
+
+    log.info("currentEstimateSearchCriteria.tenantId = '{}'", currentEstimateSearchCriteria.getTenantId());
+
+    List<Estimate> currentEstimateList = estimateRepository.getEstimate(currentEstimateSearchCriteria);
+
         if (isPreviousEstimateSearch && CollectionUtils.isEmpty(previousEstimateList)) {
             throw new CustomException("NO_ORIGINAL_ESTIMATE_FOUND", "The record that you are trying to update does not have any existing original estimate in the system");
         }
@@ -1032,6 +1035,9 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         }
 
         validateRequestOnMDMSV1AndV2(request,errorMap,false,currentEstimate);
+        log.info("Returning estimate from DB: isRevision={}, returningTenantId={}", 
+         isPreviousEstimateSearch, 
+         (isPreviousEstimateSearch && previousEstimateFromDB != null) ? previousEstimateFromDB.getTenantId() : currentEstimate.getTenantId());
 
         return (request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService()))? previousEstimateFromDB:currentEstimate;
     }
