@@ -51,8 +51,13 @@ public class BoundaryUtil {
             log.info("Validating boundary for boundary type " + boundaryType + " with hierarchyType " + hierarchyTypeCode);
             StringBuilder uri = getUri(tenantId, hierarchyTypeCode, boundaryType, boundaries);
 
+            log.info("uri for validating boundary data is  " + uri);
+            
             Optional<Object> response = Optional.ofNullable(serviceRequestRepository.fetchResult(uri, RequestInfoWrapper.builder().requestInfo(requestInfo).build()));
-
+            
+            log.info("RequestInfo is  {} " + requestInfo.toString() );
+            log.info("Response recieved from boundary validation is  {} " + response.toString() );
+            
             if (response.isPresent()) {
                 LinkedHashMap responseMap = (LinkedHashMap) response.get();
                 if (CollectionUtils.isEmpty(responseMap))
