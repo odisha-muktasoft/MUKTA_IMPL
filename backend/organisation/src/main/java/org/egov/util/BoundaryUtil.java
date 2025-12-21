@@ -55,7 +55,7 @@ public class BoundaryUtil {
             
             Optional<Object> response = Optional.ofNullable(serviceRequestRepository.fetchResult(uri, RequestInfoWrapper.builder().requestInfo(requestInfo).build()));
             
-            log.info("RequestInfo is  {} " + requestInfo.toString() );
+            log.info("RequestInfo is  {} " + requestInfo. );
             log.info("Response recieved from boundary validation is  {} " + response.toString() );
             
             if (response.isPresent()) {
