@@ -7,7 +7,7 @@ import org.egov.helper.MDMSTestBuilder;
 import org.egov.helper.OrganisationRequestTestBuilder;
 import org.egov.repository.OrganisationRepository;
 import org.egov.tracer.model.CustomException;
-import org.egov.util.BoundaryUtil;
+import org.egov.util.BoundaryV2Util;
 import org.egov.util.MDMSUtil;
 import org.egov.web.models.OrgRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class OrganisationServiceValidatorTest {
     private OrganisationRepository organisationRepository;
 
     @Mock
-    private BoundaryUtil boundaryUtil;
+    private BoundaryV2Util boundaryV2Util;
 
     @Mock
     private Configuration config;
@@ -44,6 +44,20 @@ class OrganisationServiceValidatorTest {
     void setUp() throws Exception {
         Object mdmsResponse = MDMSTestBuilder.builder().getMockMDMSData();
         lenient().when(mdmsUtil.mDMSCall(any(RequestInfo.class),any(String.class))).thenReturn(mdmsResponse);
+
+        lenient()
+            .doNothing()
+            .when(boundaryV2Util)
+            .validateBoundaryDetails(
+                anyMap(),
+                anyString(),
+                any(RequestInfo.class),
+                anyString()
+            );
+
+        lenient()
+            .when(config.getBoundaryHierarchyType())
+            .thenReturn("ADMIN");
     }
 
     @Test
