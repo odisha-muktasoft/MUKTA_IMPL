@@ -164,6 +164,16 @@ public class Configuration {
     @Value("${egov.location.hierarchy.type}")
     private String locationHierarchyType;
 
+    //Boundary
+    @Value("${egov.boundary.host}")
+    private String boundaryHost;
+
+    @Value("${egov.boundary.search.url}")
+    private String boundarySearchUrl;
+
+    @Value("${egov.boundary.hierarchy.type}")
+    private String boundaryHierarchyType;
+
     //Notification
     @Value("${notification.sms.enabled}")
     private Boolean isSMSEnabled;

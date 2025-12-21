@@ -7,7 +7,8 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.Configuration;
 import org.egov.repository.OrganisationRepository;
 import org.egov.tracer.model.CustomException;
-import org.egov.util.BoundaryUtil;
+//import org.egov.util.BoundaryUtil;
+import org.egov.util.BoundaryV2Util;
 import org.egov.util.MDMSUtil;
 import org.egov.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ public class OrganisationServiceValidator {
 
     private final OrganisationRepository organisationRepository;
 
-    private final BoundaryUtil boundaryUtil;
+    //private final BoundaryUtil boundaryUtil;
+
+    private final  BoundaryV2Util boundaryV2Util;
 
     private final Configuration config;
     private static final String MDMS_RES = "$.MdmsRes.";
@@ -35,10 +38,10 @@ public class OrganisationServiceValidator {
     private static final String VALID_FROM_PARAMETER_SHOULD_BE_LESS_THAN_VALID_TO = "Valid From in search parameters should be less than Valid To";
     private static final String INVALID_ORG_SEARCH_DATE ="INVALID_ORG_SEARCH_DATE";
     @Autowired
-    public OrganisationServiceValidator(MDMSUtil mdmsUtil, OrganisationRepository organisationRepository, BoundaryUtil boundaryUtil, Configuration config) {
+    public OrganisationServiceValidator(MDMSUtil mdmsUtil, OrganisationRepository organisationRepository, BoundaryV2Util boundaryV2Util, Configuration config) {
         this.mdmsUtil = mdmsUtil;
         this.organisationRepository = organisationRepository;
-        this.boundaryUtil = boundaryUtil;
+        this.boundaryV2Util = boundaryV2Util;
         this.config = config;
     }
 
@@ -69,7 +72,10 @@ public class OrganisationServiceValidator {
 
     private void validateBoundary(Map<String, List<String>> boundaries, String tenantId, RequestInfo requestInfo) {
         if (!boundaries.isEmpty()) {
-            boundaryUtil.validateBoundaryDetails(boundaries, tenantId, requestInfo, config.getLocationHierarchyType());
+            //boundaryUtil.validateBoundaryDetails(boundaries, tenantId, requestInfo, config.getLocationHierarchyType());
+
+            //validating boundary data from boundary service instead of location service
+            boundaryV2Util.validateBoundaryDetails(boundaries, tenantId, requestInfo, config.getBoundaryHierarchyType());
         }
     }
 
