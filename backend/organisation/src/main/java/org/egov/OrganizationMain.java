@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Import;
 @Import({TracerConfiguration.class})
 @SpringBootApplication
 @ComponentScan(
-    basePackages = {"org.egov.web.controllers", "org.egov.config", "org.egov.common", "org.egov.repository", "org.egov.service", "org.egov.util", "org.egov.validator"}
+    basePackages = {"org.egov.web.controllers", "org.egov.config", "org.egov.common", "org.egov.repository", "org.egov.service", "org.egov.util", "org.egov.validator", "org.egov.encryption"}, excludeFilters = @ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = {org.egov.encryption.producer.Producer.class, org.egov.common.producer.Producer.class}
+    )
 )
 public class OrganizationMain {
 
