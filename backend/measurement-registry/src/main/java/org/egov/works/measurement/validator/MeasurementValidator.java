@@ -101,6 +101,7 @@ public class MeasurementValidator {
         // Perform the measurement update
         setAuditDetails(measurementExisting, measurementRegistrationRequest);
     }
+    /*
     public void validateDocumentIds(List<Measurement> measurements) {
         List<String> documentIds = extractDocumentIds(measurements);
 
@@ -115,7 +116,35 @@ public class MeasurementValidator {
                 throw new CustomException(INVALID_DOCUMENTS_CODE, INVALID_DOCUMENTS_MSG);
             }
         }
-    }
+    } */
+
+      public void validateDocumentIds(List<Measurement> measurements) {
+          List<String> documentIds = extractDocumentIds(measurements);
+    
+          if(!documentIds.isEmpty()){
+              String tenantId = measurements.get(0).getTenantId();
+    
+              // Make an API request to validate document IDs
+              String responseJson = makeApiRequest(documentIds, tenantId);
+    
+              // Check if document IDs match the response
+              boolean documentIdsMatch = checkDocumentIdsMatch(documentIds, responseJson);
+    
+              // Workaround for central instance: Filestore may store files under "tenantId,tenantId" path
+              // If validation fails with single tenantId, retry with duplicate tenantId format
+              if (!documentIdsMatch && !tenantId.contains(",")) {
+                  String duplicateTenantId = tenantId + "," + tenantId;
+                  log.info("Retrying document validation with duplicate tenantId format: {}", duplicateTenantId);
+                  responseJson = makeApiRequest(documentIds, duplicateTenantId);
+                  documentIdsMatch = checkDocumentIdsMatch(documentIds, responseJson);
+              }
+    
+              if (!documentIdsMatch) {
+                  throw new CustomException(INVALID_DOCUMENTS_CODE, INVALID_DOCUMENTS_MSG);
+              }
+          }
+      }
+    
     public void validateMeasureRequest(Measurement existingMeasurement,Measurement measurement){
         Set<String> measuresIds=new HashSet<>();
         for(Measure measure:existingMeasurement.getMeasures()){
