@@ -180,7 +180,7 @@ config:
     build:
       - work-dir: "utilities/works-pdf"
         image-name: "works-pdf"
-      - work-dir: "utilities/works-pdf/migration"
+      - work-dir: "migration"
         image-name: "works-pdf-db"
         
   - name: "builds/mukta_impl/utilities/expense-cronjob"
