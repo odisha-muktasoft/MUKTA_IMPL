@@ -357,15 +357,18 @@ public class ExpenseCalculatorService {
             RateDetail rateDetail = mapper.convertValue(obj, RateDetail.class);
             rateDetails.add(rateDetail);
         }
+        
+        // Initialize rateDetails as empty list for all SorDetails to avoid NPE
+        for (SorDetail sorDetail : sorDetails) {
+            if (sorDetail.getRateDetails() == null) {
+                sorDetail.setRateDetails(new ArrayList<>());
+            }
+        }
+        // Populate matching rate details
         for (RateDetail rateDetail : rateDetails) {
             for (SorDetail sorDetail : sorDetails) {
                 if (rateDetail.getSorId().equalsIgnoreCase(sorDetail.getId())) {
-                    if (sorDetail.getRateDetails() == null) {
-                        sorDetail.setRateDetails(new ArrayList<>());
-                        sorDetail.getRateDetails().add(rateDetail);
-                    } else {
-                        sorDetail.getRateDetails().add(rateDetail);
-                    }
+                    sorDetail.getRateDetails().add(rateDetail);
                 }
             }
         }

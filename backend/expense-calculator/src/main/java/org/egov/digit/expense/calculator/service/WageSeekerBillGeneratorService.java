@@ -390,6 +390,11 @@ public class WageSeekerBillGeneratorService {
 		for (SorDetail sorDetail : sorDetails) {
 			if (sorDetail.getId().equalsIgnoreCase(skill)) {
 				isSkillCodePresent = true;
+				if (sorDetail.getRateDetails() == null || sorDetail.getRateDetails().isEmpty()) {
+					throw new CustomException("RATE_DETAILS_NOT_FOUND",
+						"Rate details are missing for SOR ID: " + sorDetail.getId() +
+						" (skill: " + skill + "). Please check SOR configuration in MDMS.");
+				}
 				for (RateDetail rateDetail : sorDetail.getRateDetails()) {
 					long validFrom = Long.parseLong(rateDetail.getValidFrom());
 					long validTo;
