@@ -302,11 +302,26 @@ public class ContractServiceValidator {
         }
         List<String> documentIds = contractRequest.getContract().getDocuments().stream().map(Document::getFileStore).collect(Collectors.toList());
 
+        String tenantId = contractRequest.getContract().getTenantId();
+
         // Make API request to file store service
-        String fileStoreResponse = getFileStoreResponse(documentIds, contractRequest.getContract().getTenantId());
+        String fileStoreResponse = getFileStoreResponse(documentIds, tenantId);
 
         // Match documentIds against fileStoreResponse
-        validateDocumentIdsAgainstFileStoreResponse(documentIds, fileStoreResponse);
+        boolean documentIdsMatch = validateDocumentIdsAgainstFileStoreResponse(documentIds, fileStoreResponse);
+        
+        // Workaround for central instance: Filestore may store files under "tenantId,tenantId" path
+        // If validation fails with single tenantId, retry with duplicate tenantId format
+        if (!documentIdsMatch && !tenantId.contains(",")) {
+            String duplicateTenantId = tenantId + "," + tenantId;
+            log.info("Retrying document validation with duplicate tenantId format: {}", duplicateTenantId);
+            fileStoreResponse = getFileStoreResponse(documentIds, duplicateTenantId);
+            documentIdsMatch = validateDocumentIdsAgainstFileStoreResponse(documentIds, fileStoreResponse);
+        }
+
+        if (!documentIdsMatch) {
+            throw new CustomException(INVALID_DOCUMENTS_CODE, INVALID_DOCUMENTS_MSG);
+        }
 
     }
 
@@ -336,7 +351,7 @@ public class ContractServiceValidator {
         }
     }
 
-    private void validateDocumentIdsAgainstFileStoreResponse(List<String> documentIds, String fileStoreResponse) {
+    private boolean validateDocumentIdsAgainstFileStoreResponse(List<String> documentIds, String fileStoreResponse) {
         Map<String, String> fileStoreResponseMap = new HashMap<>();
         try {
             fileStoreResponseMap = mapper.readValue(fileStoreResponse, Map.class);
@@ -345,9 +360,10 @@ public class ContractServiceValidator {
         }
         for (String documentId : documentIds) {
             if (!fileStoreResponseMap.containsKey(documentId)) {
-                throw new CustomException(INVALID_DOCUMENTS_CODE, INVALID_DOCUMENTS_MSG);
+                return false;
             }
         }
+        return true;
     }
 
     /**
