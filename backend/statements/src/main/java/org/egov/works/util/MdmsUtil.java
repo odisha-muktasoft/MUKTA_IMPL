@@ -261,7 +261,10 @@ public class MdmsUtil {
     public Map<String, Map<String, JSONArray>> fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
                                                                                 List<String> masterNameList) {
         StringBuilder uri = new StringBuilder();
-        uri.append(configs.getMdmsHost()).append(configs.getMdmsEndPoint());
+        //uri.append(configs.getMdmsHost()).append(configs.getMdmsEndPoint());
+
+        //fetching data from mdmsv2
+        uri.append(configs.getMdmsV2Host()).append(configs.getMdmsV2EndPoint());
         MdmsCriteriaReq mdmsCriteriaReq = getMdmsRequest(requestInfo, tenantId, moduleName, masterNameList);
         Object response = new HashMap<>();
         Integer rate = 0;
