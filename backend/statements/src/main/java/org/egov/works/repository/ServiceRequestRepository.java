@@ -37,6 +37,16 @@ public class ServiceRequestRepository {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         Object response = null;
         try {
+            // Log the request object for debugging
+            log.info("ServiceRequestRepository::fetchResult - URL: {}, Request object: {}", uri.toString(), request != null ? request.getClass().getName() : "null");
+            if (request != null) {
+                try {
+                    String requestJson = mapper.writeValueAsString(request);
+                    log.info("ServiceRequestRepository::fetchResult - Request JSON: {}", requestJson);
+                } catch (Exception ex) {
+                    log.error("Failed to serialize request object for logging", ex);
+                }
+            }
             response = restTemplate.postForObject(uri.toString(), request, Map.class);
         }catch(HttpClientErrorException e) {
             log.error(EXTERNAL_SERVICE_EXCEPTION,e);
