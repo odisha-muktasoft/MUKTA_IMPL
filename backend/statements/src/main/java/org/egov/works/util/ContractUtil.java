@@ -27,12 +27,16 @@ public class ContractUtil {
     }
 
     public List<Contract> fetchContracts(String contractNumber, String tenantId, RequestInfo requestInfo) {
+        log.info("ContractUtil::fetchContracts - Input params: contractNumber={}, tenantId={}, requestInfo={}",
+            contractNumber, tenantId, requestInfo != null ? "present" : "null");
         ContractCriteria contractCriteria = ContractCriteria.builder()
                 .requestInfo(requestInfo)
                 .tenantId(tenantId)
                 .status("ACTIVE")
                 .contractNumber(contractNumber)
                 .build();
+        log.info("ContractUtil::fetchContracts - Built ContractCriteria: tenantId={}, contractNumber={}",
+            contractCriteria.getTenantId(), contractCriteria.getContractNumber());
         StringBuilder url = getContractSearchUrl();
         Object response = restRepo.fetchResult(url, contractCriteria);
         ContractResponse contractResponse = mapper.convertValue(response, ContractResponse.class);
