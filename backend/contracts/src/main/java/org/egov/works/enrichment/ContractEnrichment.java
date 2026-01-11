@@ -362,6 +362,8 @@ public class ContractEnrichment {
             contract.setOldUuid(contractsFromDB.get(0).getId());
             Long versionNumber = contractsFromDB.get(0).getVersionNumber();
             setVersionNumber(contract, versionNumber);
+            // Reset workflow status to null so the revision starts from the workflow start state
+            contract.setWfStatus(null);
         } else {
             contract.setVersionNumber(1l);
         }
