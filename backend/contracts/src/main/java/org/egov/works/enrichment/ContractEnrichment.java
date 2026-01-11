@@ -356,6 +356,11 @@ public class ContractEnrichment {
 
     private void enrichIdsAgreementDateAndAuditDetailsOnCreate(ContractRequest contractRequest) {
         Contract contract = contractRequest.getContract();
+        log.info("CONTRACT-REVISION: Checking businessService: {}, CONTRACT_TIME_EXTENSION: {}, CONTRACT_REVISION_ESTIMATE: {}",
+           contract.getBusinessService(),
+           CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE,
+           CONTRACT_REVISION_ESTIMATE);
+        
         if (contract.getBusinessService() != null && (contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
                 || contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_REVISION_ESTIMATE))) {
             List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
@@ -364,6 +369,8 @@ public class ContractEnrichment {
             setVersionNumber(contract, versionNumber);
             // Reset workflow status to null so the revision starts from the workflow start state
             contract.setWfStatus(null);
+            log.info("CONTRACT-REVISION: Reset wfStatus to null for contract: {}, businessService: {}",
+           contract.getContractNumber(), contract.getBusinessService());
         } else {
             contract.setVersionNumber(1l);
         }
