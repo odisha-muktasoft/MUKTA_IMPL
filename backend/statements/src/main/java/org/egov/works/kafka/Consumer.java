@@ -60,6 +60,13 @@ public class Consumer {
             log.info("Error while creating analysis statement for estimate :: {}", message, e);
             throw new CustomException(CONVERSION_ERROR_KEY, ANALYSIS_CONVERSION_ERROR_VALUE + message);
         }
+
+                // Create default RequestInfo if missing from Kafka message
+        if (estimateRequest.getRequestInfo() == null) {
+            log.warn("RequestInfo is null in estimate Kafka message, creating default RequestInfo");
+            estimateRequest.setRequestInfo(enrichmentUtil.createDefaultRequestInfo());
+        }
+
         Estimate estimate=estimateRequest.getEstimate();
         if(estimate!=null){
             StatementCreateRequest statementCreateRequest = enrichmentUtil
@@ -94,6 +101,11 @@ public class Consumer {
         }catch (Exception e) {
             log.info("Error while creating utilization statement for measurement :: " + message, e);
             throw new CustomException(CONVERSION_ERROR_KEY, CONVERSION_ERROR_VALUE + message);
+        }
+         // Create default RequestInfo if missing from Kafka message
+        if (measurementRequest.getRequestInfo() == null) {
+            log.warn("RequestInfo is null in measurement Kafka message, creating default RequestInfo");
+            measurementRequest.setRequestInfo(enrichmentUtil.createDefaultRequestInfo());
         }
         for (Measurement measurement : measurementRequest.getMeasurements()) {
             StatementCreateRequest statementCreateRequest = enrichmentUtil

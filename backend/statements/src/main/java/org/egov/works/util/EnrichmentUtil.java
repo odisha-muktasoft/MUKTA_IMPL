@@ -125,4 +125,18 @@ public class EnrichmentUtil {
                 .build();
     }
 
+    /**
+     * Creates a default system RequestInfo when it's missing from Kafka messages
+     * This is needed for internal service-to-service calls
+     */
+    public RequestInfo createDefaultRequestInfo() {
+        return RequestInfo.builder()
+                .apiId("statement-service")
+                .ver("1.0")
+                .ts(System.currentTimeMillis())
+                .action("CREATE")
+                .msgId(UUID.randomUUID().toString())
+                .build();
+    }
+
 }
