@@ -2,6 +2,7 @@ package org.egov.works.web.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.works.service.ContractService;
 import org.egov.works.web.models.ContractCriteria;
 import org.egov.works.web.models.ContractRequest;
@@ -18,9 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
 import java.util.List;
 
 @jakarta.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2023-02-01T15:45:33.268+05:30")
@@ -59,6 +62,18 @@ public class ContractApiController {
     public ResponseEntity<ContractResponse> contractV1UpdatePost(@ApiParam(value = "", required = true) @Valid @RequestBody ContractRequest contractRequest) {
         ContractResponse contractResponse = contractService.updateContract(contractRequest);
         return new ResponseEntity<>(contractResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/_plainsearch", method = RequestMethod.POST)
+    public ResponseEntity<ContractResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+                                                        @Valid @RequestParam(required = false) String tenantId,
+                                                        @Valid @RequestParam Integer limit,
+                                                        @Valid @RequestParam Integer offset) {
+        List<Contract> contracts = contractService.searchContractPlainSearch(limit, offset, tenantId);
+        ContractResponse response = ContractResponse.builder().contracts(contracts).responseInfo(
+                        responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

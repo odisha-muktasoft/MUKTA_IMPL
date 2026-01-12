@@ -28,10 +28,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.egov.common.utils.CommonUtils.constructTotalCountCTEAndReturnResult;
@@ -357,5 +354,31 @@ public class IndividualRepository extends GenericRepository<Individual> {
             baseQueryBuilder.append(isDeletedClause);
         }
         return baseQueryBuilder.toString();
+    }
+
+    public List<Individual> getIndividualsForBulkSearch(Integer limit,
+                                                        Integer offset,
+                                                        String tenantId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        String query = "SELECT * FROM individual";
+
+        if (tenantId != null) {
+            query += " WHERE tenantId=:tenantId ";
+        }
+        query = query + "ORDER BY createdtime DESC LIMIT :limit OFFSET :offset";
+
+        paramsMap.put("tenantId", tenantId);
+        paramsMap.put("limit", limit);
+        paramsMap.put("offset", offset);
+
+        log.info("query-------------------------->");
+        log.info(query);
+
+        List<Individual> individuals = this.namedParameterJdbcTemplate.query(query, paramsMap, this.rowMapper);
+
+        if (!individuals.isEmpty()) {
+            enrichIndividuals(individuals, true);
+        }
+        return individuals;
     }
 }
