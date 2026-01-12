@@ -1,0 +1,20 @@
+Creating tables:
+
+CREATE TABLE eg_user_decpt AS SELECT * FROM eg_user;
+CREATE TABLE eg_mukta_ifms_disburse_decpt AS SELECT * FROM eg_mukta_ifms_disburse;
+CREATE TABLE jit_beneficiary_details_decpt AS SELECT * FROM jit_beneficiary_details;
+CREATE TABLE eg_org_contact_detail_decpt AS SELECT * FROM eg_org_contact_detail;
+CREATE TABLE INDIVIDUAL_decpt AS SELECT * FROM INDIVIDUAL;
+CREATE TABLE eg_bank_account_detail_decpt AS SELECT * FROM eg_bank_account_detail;
+CREATE TABLE individual_identifier_decpt AS SELECT * FROM individual_identifier;
+CREATE TABLE eg_user_address_decpt AS SELECT * FROM eg_user_address;
+CREATE TABLE eg_user_audit_table_decpt AS SELECT * FROM eg_user_audit_table;
+CREATE TABLE eg_program_disburse_decpt AS SELECT * FROM eg_program_disburse;
+CREATE TABLE ifix.eg_program_disburse_decpt AS SELECT * FROM ifix.eg_program_disburse;
+
+
+
+
+Field Details:
+
+https://docs.google.com/spreadsheets/d/1JzIYpOjuxSR3qAEaQfRsw4TTez_6IqzX/edit?gid=1915980387#gid=1915980387
