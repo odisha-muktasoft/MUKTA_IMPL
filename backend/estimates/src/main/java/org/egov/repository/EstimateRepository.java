@@ -2,6 +2,8 @@ package org.egov.repository;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.exception.InvalidTenantIdException;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.repository.rowmapper.EstimateQueryBuilder;
 import org.egov.repository.rowmapper.EstimateRowMapper;
 import org.egov.tracer.model.CustomException;
@@ -29,6 +31,9 @@ public class EstimateRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
+    private MultiStateInstanceUtil centralInstanceutil;
+
+    @Autowired
     public EstimateRepository(EstimateRowMapper rowMapper, EstimateQueryBuilder queryBuilder, JdbcTemplate jdbcTemplate) {
         this.rowMapper = rowMapper;
         this.queryBuilder = queryBuilder;
@@ -49,7 +54,8 @@ public class EstimateRepository {
             searchCriteria.setIsCountNeeded(Boolean.FALSE);
         }
         String query = queryBuilder.getEstimateQuery(searchCriteria, preparedStmtList);
-        return jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
+
+        return jdbcTemplate.query(checkCentralInstance(query, searchCriteria.getTenantId()), rowMapper, preparedStmtList.toArray());
     }
 
     /**
@@ -66,6 +72,17 @@ public class EstimateRepository {
         if (query == null)
             return 0;
 
-        return jdbcTemplate.queryForObject(query, preparedStatement.toArray(), Integer.class);
+        return jdbcTemplate.queryForObject(checkCentralInstance(query, criteria.getTenantId()), preparedStatement.toArray(), Integer.class);
+    }
+
+    private String checkCentralInstance(String query, String tenantId){
+        try {
+            query = centralInstanceutil.replaceSchemaPlaceholder(query, tenantId);
+        } catch (InvalidTenantIdException e) {
+            throw new CustomException("TENANTID_ERROR",
+                    "TenantId length is not sufficient to replace query schema in a multi state instance");
+        }
+        return query;
+
     }
 }

@@ -84,4 +84,6 @@ public class EstimateServiceConstant {
     public static final String ESTIMATE_ACTIVE_STATUS = "ACTIVE";
     public static final String VALID_FROM = "validFrom";
 
+    public static final String TENANTID_MDC_STRING = "TENANTID";
+
 }
