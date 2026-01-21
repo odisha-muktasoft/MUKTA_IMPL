@@ -19,21 +19,35 @@ const search_user = async (uuid: string, tenantId: string, requestinfo: any) => 
   This asynchronous function searches for muster rolls based on the provided parameters.
 */
 const search_muster = async (params: any, requestinfo: any, key: string) => {
-  // Send an HTTP request to the muster search endpoint using the provided parameters and request information.
-  const musterResponse = await httpRequest(
-    url.resolve(config.host.muster, config.paths.mus_search),
-    requestinfo,
-    params
-  );
+   try {
+    // Send an HTTP request to the measurement search endpoint using the provided parameters and request information.
+    const musterResponse = await httpRequest(
+      url.resolve(config.host.measurement, config.paths.measurement_search),
+      requestinfo,
+      null,
+      "post",
+      "",
+      { cachekey }
+    );
 
-  // Check if there are muster rolls in the response.
-  if (musterResponse?.musterRolls?.length > 0) {
-    // If muster rolls are found, return them.
-    return musterResponse?.musterRolls;
+    // Check if there are measurements in the response.
+    if (musterResponse?.measurements?.length > 0) {
+      // If measurements are found, return either all of them or just the first one based on the 'allResponse' parameter.
+      return allResponse ? musterResponse?.measurements : musterResponse?.measurements?.[0];
+    }
+
+    // If no measurements are found, return an error code.
+    return getErrorCodes("WORKS", "NO_MEASUREMENT_ROLL_FOUND");
+  } catch (error: any) {
+    // Handle "no attendance register" errors gracefully for fresh tenants during contract approval
+    const errorMessage = error?.message || "";
+    if (errorMessage.includes("NO_DATA_FOUND") || errorMessage.includes("No Attendance registers")) {
+      logger.info("No attendance registers found for user - returning no measurements");
+      return getErrorCodes("WORKS", "NO_MEASUREMENT_ROLL_FOUND");
+    }
+    // Re-throw other errors so they're properly reported
+    throw error;
   }
-
-  // If no muster rolls are found, return an error code.
-  return getErrorCodes("WORKS", "NO_MUSTER_ROLL_FOUND");
 }
 
 
