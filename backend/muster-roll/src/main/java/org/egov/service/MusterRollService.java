@@ -313,7 +313,10 @@ public class MusterRollService {
         }
 
         if (attendanceRegisterResponse == null || CollectionUtils.isEmpty(attendanceRegisterResponse.getAttendanceRegister())) {
-            throw new CustomException("NO_DATA_FOUND","No Attendance registers found for the user. So no muster created for the register");
+            if (attendanceRegisterResponse == null || CollectionUtils.isEmpty(attendanceRegisterResponse.getAttendanceRegister())) {
+                log.info("MusterRollService::fetchAttendanceRegistersOfUser::No Attendance registers found for the user. Returning empty list.");
+                return new ArrayList<>();
+            }
         }
 
         List<AttendanceRegister> attendanceRegisters = attendanceRegisterResponse.getAttendanceRegister();
