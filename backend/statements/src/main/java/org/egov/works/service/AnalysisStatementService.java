@@ -37,6 +37,11 @@ public class AnalysisStatementService {
 
     public StatementPushRequest createAnalysisStatement(StatementCreateRequest statementCreateRequest, Estimate estimate) {
         log.info("AnalysisStatementService::createAnalysisStatement");
+        
+        //Validate for Id
+         if (request.getStatementRequest().getId() == null) {
+                request.getStatementRequest().setId(UUID.randomUUID().toString());
+            }
         statementValidator.validateStatementOnCreate(statementCreateRequest);
         StatementPushRequest statementPushRequest ;
         List<Statement> statementList = new ArrayList<>();
