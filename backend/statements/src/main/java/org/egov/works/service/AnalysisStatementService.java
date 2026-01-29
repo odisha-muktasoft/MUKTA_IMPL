@@ -39,8 +39,8 @@ public class AnalysisStatementService {
         log.info("AnalysisStatementService::createAnalysisStatement");
         
         //Validate for Id
-         if (request.getStatementRequest().getId() == null) {
-                request.getStatementRequest().setId(UUID.randomUUID().toString());
+         if (statementCreateRequest.getStatementRequest().getId() == null) {
+                statementCreateRequest.getStatementRequest().setId(UUID.randomUUID().toString());
             }
         statementValidator.validateStatementOnCreate(statementCreateRequest);
         StatementPushRequest statementPushRequest ;
