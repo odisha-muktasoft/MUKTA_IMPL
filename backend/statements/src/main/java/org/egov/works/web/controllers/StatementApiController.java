@@ -44,7 +44,7 @@ public class StatementApiController {
 
 
     @RequestMapping(value = "/_create", method = RequestMethod.POST)
-    public ResponseEntity<StatementResponse> statementV1AnalysisCreatePost( @Valid @RequestBody StatementCreateRequest body) {
+    public ResponseEntity<StatementResponse> statementV1AnalysisCreatePost( @RequestBody StatementCreateRequest body) {
         StatementPushRequest statementPushRequest = analysisStatementService.createAnalysisStatement(body,null);
         ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(statementPushRequest.getRequestInfo(), true);
         StatementResponse statementResponse= StatementResponse.builder().responseInfo(responseInfo).statement(Arrays.asList(statementPushRequest.getStatement())).build();
