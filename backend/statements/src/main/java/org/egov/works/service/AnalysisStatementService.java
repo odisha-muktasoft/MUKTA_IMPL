@@ -39,10 +39,11 @@ public class AnalysisStatementService {
     public StatementPushRequest createAnalysisStatement(StatementCreateRequest statementCreateRequest, Estimate estimate) {
         log.info("AnalysisStatementService::createAnalysisStatement");
         
-        //Validate for Id
-         if (statementCreateRequest.getStatementRequest().getId() == null) {
-                statementCreateRequest.getStatementRequest().setId(UUID.randomUUID().toString());
-            }
+        // Enrich BEFORE validation
+        if (statementCreateRequest != null &&
+                statementCreateRequest.getStatementRequest() != null && statementCreateRequest.getStatementRequest().getId() == null) {
+            statementCreateRequest.getStatementRequest().setId(UUID.randomUUID().toString());
+        }
         statementValidator.validateStatementOnCreate(statementCreateRequest);
         StatementPushRequest statementPushRequest ;
         List<Statement> statementList = new ArrayList<>();
