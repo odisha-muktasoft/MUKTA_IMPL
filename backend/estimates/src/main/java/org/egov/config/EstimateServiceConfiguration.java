@@ -60,6 +60,9 @@ public class EstimateServiceConfiguration {
     @Value("${estimate.kafka.enrich.topic}")
     private String enrichEstimateTopic;
 
+    @Value("${kafka.consumer.topic.pattern}")
+    private String estimateTopicPattern;
+
     //id format
     @Value("${egov.idgen.estimate.number.name}")
     private String idgenEstimateNumberName;

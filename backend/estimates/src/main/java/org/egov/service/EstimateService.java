@@ -70,7 +70,7 @@ public class EstimateService {
         workflowService.updateWorkflowStatus(estimateRequest);
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
-        producer.push(serviceConfiguration.getSaveEstimateTopic(), estimateRequest);
+        producer.push(estimateRequest.getEstimate().getTenantId(),serviceConfiguration.getSaveEstimateTopic(), estimateRequest);
         estimateRequest.getEstimate().setProcessInstances(null);
         return estimateRequest;
     }
@@ -127,7 +127,7 @@ public class EstimateService {
         }
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
-        producer.push(serviceConfiguration.getUpdateEstimateTopic(), estimateRequest);
+        producer.push(estimateRequest.getEstimate().getTenantId(),serviceConfiguration.getUpdateEstimateTopic(), estimateRequest);
         estimateRequest.getEstimate().setProcessInstances(null);
         try{
             notificationService.sendNotification(estimateRequest);
@@ -147,7 +147,7 @@ public class EstimateService {
                 EstimateRequest oldEstimateRequest = EstimateRequest.builder().requestInfo(estimateRequest.getRequestInfo()).estimate(oldEstimate).build();
                 if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
                     redisService.setCache(getEstimateRedisKey(oldEstimate.getId()), oldEstimate);
-                producer.push(serviceConfiguration.getUpdateEstimateTopic(), oldEstimateRequest);
+                producer.push(estimateRequest.getEstimate().getTenantId(),serviceConfiguration.getUpdateEstimateTopic(), oldEstimateRequest);
             }
         }
     }
